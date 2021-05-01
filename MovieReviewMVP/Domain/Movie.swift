@@ -23,3 +23,7 @@ enum SearchError : Error {
     case requestError(Error)
     case responseError
 }
+
+class MovieRepository {
+    
+}

@@ -10,7 +10,7 @@ import UIKit
 class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    
+        
     static let reuserIdentifier = "MovieCell"
     
     func resetCell() {
@@ -26,7 +26,6 @@ class MovieTableViewCell: UITableViewCell {
             
             DispatchQueue.global().async { [weak self] in
                 guard let image = UIImage(data: imageData) else { return }
-                
                 DispatchQueue.main.async {
                     self?.movieImageView.image = image
                 }

@@ -16,4 +16,5 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     init(movie: MovieInfomation) {
         self.movieInfomation = movie
     }
+    
 }

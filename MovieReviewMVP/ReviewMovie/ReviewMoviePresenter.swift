@@ -8,11 +8,11 @@
 import Foundation
 
 protocol ReviewMoviePresenterInput {
-    
+    func viewDidLoad()
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
-    
+    func displayReviewMovie(_ movieInfomation: MovieInfomation)
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
@@ -26,4 +26,12 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         self.view = view
         self.model = model
     }
+
+    func viewDidLoad() {
+        self.view.displayReviewMovie(movieInfomation)
+    }
+    
+
+    
+    
 }
