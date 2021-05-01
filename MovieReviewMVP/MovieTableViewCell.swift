@@ -18,7 +18,7 @@ class MovieTableViewCell: UITableViewCell {
         titleLabel.text = nil
     }
     
-    func configureCell(movie: MovieContents) {
+    func configureCell(movie: MovieInfomation) {
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in

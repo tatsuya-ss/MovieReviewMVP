@@ -8,22 +8,19 @@
 import UIKit
 
 class ReviewMovieViewController: UIViewController {
+    
+    private var presenter: ReviewMoviePresenterInput!
+    func inject(presenter: ReviewMoviePresenterInput) {
+        self.presenter = presenter
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
     }
+
+}
+
+extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

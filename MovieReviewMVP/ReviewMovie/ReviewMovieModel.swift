@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+protocol ReviewMovieModelInput {
+    
+}
+
+final class ReviewMovieModel : ReviewMovieModelInput {
+    private let movieInfomation: MovieInfomation!
+    init(movie: MovieInfomation) {
+        self.movieInfomation = movie
+    }
+}

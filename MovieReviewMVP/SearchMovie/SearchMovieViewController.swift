@@ -61,6 +61,10 @@ extension SearchMovieViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         100
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didSelectRow(at: indexPath)
+    }
 }
 
 extension SearchMovieViewController : UITableViewDataSource {
@@ -84,7 +88,23 @@ extension SearchMovieViewController : UITableViewDataSource {
 }
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
-    func update(_ movie: [MovieContents]) {
+    
+    func update(_ movie: [MovieInfomation]) {
         tableView.reloadData()
+    }
+    
+    func reviewTheMovie(movie: MovieInfomation) {
+        print(movie)
+        
+        let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        
+        let model = ReviewMovieModel(movie: movie)
+        
+        let presenter = ReviewMoviePresenter(movieInfomation: movie, view: reviewMovieVC, model: model)
+        
+        reviewMovieVC.inject(presenter: presenter)
+        
+        self.present(reviewMovieVC, animated: true, completion: nil)
+        
     }
 }
