@@ -10,7 +10,7 @@ import UIKit
 class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    
+        
     static let reuserIdentifier = "MovieCell"
     
     func resetCell() {
@@ -18,7 +18,7 @@ class MovieTableViewCell: UITableViewCell {
         titleLabel.text = nil
     }
     
-    func configureCell(movie: MovieContents) {
+    func configureCell(movie: MovieInfomation) {
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
@@ -26,7 +26,6 @@ class MovieTableViewCell: UITableViewCell {
             
             DispatchQueue.global().async { [weak self] in
                 guard let image = UIImage(data: imageData) else { return }
-                
                 DispatchQueue.main.async {
                     self?.movieImageView.image = image
                 }

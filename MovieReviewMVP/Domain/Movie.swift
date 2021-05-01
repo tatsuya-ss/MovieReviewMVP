@@ -10,10 +10,10 @@ import Foundation
 // 依存なしで共通で使いたいもの
 
 struct MovieSearchResponses {
-    var results: [MovieContents]
+    var results: [MovieInfomation]
 }
 
-struct MovieContents : Codable {
+struct MovieInfomation : Codable {
     var title: String?
     var poster_path: String?
     var original_name: String?
@@ -22,4 +22,8 @@ struct MovieContents : Codable {
 enum SearchError : Error {
     case requestError(Error)
     case responseError
+}
+
+class MovieRepository {
+    
 }

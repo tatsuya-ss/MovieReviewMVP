@@ -11,14 +11,17 @@ protocol SearchMoviePresenterInput {
     func didTapSearchButton(text: String)
     func resetTableView()
     var numberOfMovies: Int { get }
-    func movie() -> [MovieContents]
+    func movie() -> [MovieInfomation]
+    func didSelectRow(at indexPath: IndexPath)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
-    func update(_ movie: [MovieContents])
+    func update(_ movie: [MovieInfomation])
+    func reviewTheMovie(movie: MovieInfomation)
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
+    
     func resetTableView() {
         self.movies = []
         self.view.update(movies)
@@ -28,7 +31,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private weak var view: SearchMoviePresenterOutput!
     private var model: SearchMovieModelInput
     
-    private(set) var movies: [MovieContents] = []
+    private(set) var movies: [MovieInfomation] = []
     
     init(view: SearchMoviePresenterOutput, model: SearchMovieModelInput) {
         self.view = view
@@ -39,7 +42,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         movies.count
     }
     
-    func movie() -> [MovieContents] {
+    func movie() -> [MovieInfomation] {
         movies
     }
     
@@ -61,5 +64,8 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             }
         })
     }
-
+    
+    func didSelectRow(at indexPath: IndexPath) {
+        view.reviewTheMovie(movie: movies[indexPath.row])
+    }
 }

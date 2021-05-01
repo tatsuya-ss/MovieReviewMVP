@@ -10,7 +10,7 @@ import Keys
 
 // TMDBに依存しているもの
 struct TMDBSearchResponses : Codable {
-    var results: [MovieContents]
+    var results: [MovieInfomation]
 }
 
 
