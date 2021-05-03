@@ -30,6 +30,16 @@ struct TMDBPosterURL {
     }
 }
 
+struct TMDBBackdropURL {
+    let backdropURL: String
+    init(backdropPath: String) {
+        self.backdropURL = "https://image.tmdb.org/t/p/w185\(backdropPath)"
+    }
+
+}
+
+
+
 //enum TMDBSearchError : Error {
 //    case TMDBrequestError(Error)
 //    case TMDBresponseError
