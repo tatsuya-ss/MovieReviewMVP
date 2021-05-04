@@ -16,14 +16,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-Q1-UzC">
-                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ss0-Jn-OVT">
                                 <rect key="frame" x="0.0" y="100" width="414" height="762"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-Q1-UzC">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KGb-Lq-u2a"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -37,7 +37,8 @@
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="una-js-Mdd"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="kf8-kb-6hW"/>
+                    <tabBarItem key="tabBarItem" title="Item" id="nSk-41-Iag"/>
+                    <navigationItem key="navigationItem" id="hBP-Z3-PC3"/>
                     <connections>
                         <outlet property="movieSearchBar" destination="ZbQ-Q1-UzC" id="d2g-5M-Muh"/>
                         <outlet property="tableView" destination="Ss0-Jn-OVT" id="k3l-gk-GMM"/>
@@ -46,7 +47,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDf-vD-iyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13" y="-350"/>
+            <point key="canvasLocation" x="1831.8840579710147" y="-350.22321428571428"/>
         </scene>
     </scenes>
     <resources>

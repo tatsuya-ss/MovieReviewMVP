@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // 依存なしで共通で使いたいもの
 
@@ -17,6 +18,9 @@ struct MovieInfomation : Codable {
     var title: String?
     var poster_path: String?
     var original_name: String?
+    var backdrop_path: String?
+    var overview: String?
+    var release_date: String?
 }
 
 enum SearchError : Error {
@@ -24,6 +28,16 @@ enum SearchError : Error {
     case responseError
 }
 
-class MovieRepository {
-    
+enum ReviewStarState {
+    case yellow
+    case glay
+    var starColor: UIColor {
+        switch self {
+        case .yellow:
+            return .systemYellow
+        case .glay:
+            return .lightGray
+        }
+    }
 }
+
