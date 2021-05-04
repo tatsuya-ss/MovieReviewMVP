@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // 依存なしで共通で使いたいもの
 
@@ -27,6 +28,16 @@ enum SearchError : Error {
     case responseError
 }
 
-class MovieRepository {
-    
+enum ReviewStarState {
+    case yellow
+    case glay
+    var starColor: UIColor {
+        switch self {
+        case .yellow:
+            return .systemYellow
+        case .glay:
+            return .lightGray
+        }
+    }
 }
+

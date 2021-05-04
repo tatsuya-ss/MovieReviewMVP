@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,41 +25,44 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" axis="vertical" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="eMO-3i-fHN">
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" axis="vertical" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="eMO-3i-fHN" userLabel="Image Star Stack View">
                                 <rect key="frame" x="10" y="54" width="153.5" height="245.5"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cUn-V3-lLN">
-                                        <rect key="frame" x="35.5" y="0.0" width="118" height="133.5"/>
+                                        <rect key="frame" x="35.5" y="0.0" width="118" height="217.5"/>
                                     </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="5Jb-uq-PLw" userLabel="Star Stack View">
-                                        <rect key="frame" x="35.5" y="141.5" width="118" height="104"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lWF-Ue-SKU">
+                                        <rect key="frame" x="10.5" y="225.5" width="143" height="20"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoG-gf-2zg" userLabel="Star1">
-                                                <rect key="frame" x="0.0" y="0.0" width="22" height="104"/>
-                                                <state key="normal" image="star.fill" catalog="system"/>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JkC-Rq-N4F" userLabel="Star2">
-                                                <rect key="frame" x="24" y="0.0" width="22" height="104"/>
-                                                <state key="normal" image="star.fill" catalog="system"/>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVF-12-d4I" userLabel="Star3">
-                                                <rect key="frame" x="48" y="0.0" width="22" height="104"/>
-                                                <state key="normal" image="star.fill" catalog="system"/>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Te7-Z5-knO" userLabel="Star4">
-                                                <rect key="frame" x="72" y="0.0" width="22" height="104"/>
-                                                <state key="normal" image="star.fill" catalog="system"/>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gjo-KA-NRz" userLabel="Star5">
-                                                <rect key="frame" x="96" y="0.0" width="22" height="104"/>
-                                                <state key="normal" image="star.fill" catalog="system"/>
-                                            </button>
+                                            <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hKO-cA-ZIQ" customClass="CosmosView" customModule="Cosmos">
+                                                <rect key="frame" x="0.0" y="0.0" width="143" height="20"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                                                        <color key="value" systemColor="systemYellowColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                        <color key="value" systemColor="systemYellowColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="textSize">
+                                                        <real key="value" value="12"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="minTouchRating">
+                                                        <real key="value" value="0.0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                                        <real key="value" value="0.0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="text" value="0.0"/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
+                                                        <color key="value" systemColor="systemYellowColor"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="eMO-3i-fHN" secondAttribute="height" multiplier="1:1.6" id="MF3-d3-eyK"/>
-                                    <constraint firstItem="cUn-V3-lLN" firstAttribute="width" secondItem="5Jb-uq-PLw" secondAttribute="width" id="c1q-Y2-3qe"/>
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgu-hF-U5G">
@@ -68,7 +72,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ITK-tN-EFd">
-                                <rect key="frame" x="20" y="314" width="374" height="448"/>
+                                <rect key="frame" x="20" y="329.5" width="374" height="448"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -94,6 +98,7 @@
                             <constraint firstItem="cKj-bX-Wgj" firstAttribute="leading" secondItem="eMO-3i-fHN" secondAttribute="trailing" constant="8" symbolic="YES" id="61p-3S-a0d"/>
                             <constraint firstItem="ITK-tN-EFd" firstAttribute="height" secondItem="SbJ-p4-WJX" secondAttribute="height" multiplier="0.5" id="7aW-xT-EWp"/>
                             <constraint firstItem="E8e-CX-TY7" firstAttribute="bottom" secondItem="SbJ-p4-WJX" secondAttribute="bottom" id="Ab5-iq-I3r"/>
+                            <constraint firstItem="ITK-tN-EFd" firstAttribute="top" secondItem="hKO-cA-ZIQ" secondAttribute="bottom" constant="30" id="HLn-Wv-7RB"/>
                             <constraint firstItem="eMO-3i-fHN" firstAttribute="height" secondItem="wCU-Yj-fWW" secondAttribute="height" multiplier="0.3" id="N8C-EL-nKN"/>
                             <constraint firstAttribute="bottom" secondItem="9fp-AP-HF7" secondAttribute="bottom" id="SV9-UX-Bcx"/>
                             <constraint firstItem="bgu-hF-U5G" firstAttribute="leading" secondItem="eMO-3i-fHN" secondAttribute="trailing" constant="8" symbolic="YES" id="YC4-na-bBd"/>
@@ -114,11 +119,11 @@
                             <constraint firstItem="9fp-AP-HF7" firstAttribute="trailing" secondItem="wCU-Yj-fWW" secondAttribute="trailing" id="siq-BY-N7n"/>
                             <constraint firstItem="wCU-Yj-fWW" firstAttribute="trailing" secondItem="bgu-hF-U5G" secondAttribute="trailing" constant="20" id="srS-lJ-Ac3"/>
                             <constraint firstItem="wCU-Yj-fWW" firstAttribute="trailing" secondItem="tEr-yg-wtL" secondAttribute="trailing" constant="20" id="uY9-ib-ceC"/>
-                            <constraint firstItem="wCU-Yj-fWW" firstAttribute="bottom" secondItem="ITK-tN-EFd" secondAttribute="bottom" constant="100" id="xhn-4K-FIt"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="E8e-CX-TY7" id="yHZ-In-KDA"/>
+                        <outlet property="cosmocView" destination="hKO-cA-ZIQ" id="ZBV-7c-2yS"/>
                         <outlet property="movieImageView" destination="cUn-V3-lLN" id="aRz-tb-gFA"/>
                         <outlet property="overviewTextView" destination="tEr-yg-wtL" id="aav-Mb-hKB"/>
                         <outlet property="releaseDateLabel" destination="cKj-bX-Wgj" id="7ZV-UV-qPk"/>
@@ -132,12 +137,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="star.fill" catalog="system" width="128" height="116"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

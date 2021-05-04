@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Cosmos
 
 class ReviewMovieViewController: UIViewController {
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -14,6 +15,7 @@ class ReviewMovieViewController: UIViewController {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var overviewTextView: UITextView!
     @IBOutlet weak var releaseDateLabel: UILabel!
+    @IBOutlet weak var cosmocView: CosmosView!
     
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
@@ -24,6 +26,10 @@ class ReviewMovieViewController: UIViewController {
         super.viewDidLoad()
         presenter.viewDidLoad()
         setLayout()
+        cosmocView.didTouchCosmos = { review in
+            self.cosmocView.text = String(review)
+        }
+        cosmocView.settings.fillMode = .half
     }
     
     func setLayout() {
@@ -31,10 +37,10 @@ class ReviewMovieViewController: UIViewController {
         reviewTextView.layer.borderColor = UIColor.systemGray4.cgColor
         reviewTextView.layer.borderWidth = 1.0
     }
-    
 }
 
-extension ReviewMovieViewController : ReviewMoviePresenterOutput {
+extension ReviewMovieViewController : ReviewMoviePresenterOutput {    
+    
     func displayReviewMovie(_ movieInfomation: MovieInfomation) {
         fetchMovieImage(movie: movieInfomation)
     }
@@ -66,3 +72,4 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         }
     }
 }
+

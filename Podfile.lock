@@ -1,16 +1,23 @@
 PODS:
+  - Cosmos (23.0.0)
   - Keys (1.0.1)
 
 DEPENDENCIES:
+  - Cosmos (~> 23.0)
   - Keys (from `Pods/CocoaPodsKeys`)
+
+SPEC REPOS:
+  trunk:
+    - Cosmos
 
 EXTERNAL SOURCES:
   Keys:
     :path: Pods/CocoaPodsKeys
 
 SPEC CHECKSUMS:
+  Cosmos: b5c6a9a637e28a061b54c8f8b1d8529d7d4db73f
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
 
-PODFILE CHECKSUM: f4f8c86a37fe387c72e164e8ea8c6ecb6cbd5d6e
+PODFILE CHECKSUM: c6cafca56313ec53009f1e18d36f7d9738deb212
 
 COCOAPODS: 1.10.1
