@@ -15,7 +15,7 @@ class ReviewMovieViewController: UIViewController {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var overviewTextView: UITextView!
     @IBOutlet weak var releaseDateLabel: UILabel!
-    @IBOutlet weak var cosmocView: CosmosView!
+    @IBOutlet weak var cosmosView: CosmosView!
     
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
@@ -26,16 +26,20 @@ class ReviewMovieViewController: UIViewController {
         super.viewDidLoad()
         presenter.viewDidLoad()
         setLayout()
-        cosmocView.didTouchCosmos = { review in
-            self.cosmocView.text = String(review)
-        }
-        cosmocView.settings.fillMode = .half
+        setReview()
     }
     
     func setLayout() {
         backgroundImageView.alpha = 0.5
         reviewTextView.layer.borderColor = UIColor.systemGray4.cgColor
         reviewTextView.layer.borderWidth = 1.0
+    }
+    
+    func setReview() {
+        cosmosView.didTouchCosmos = { review in
+            self.cosmosView.text = String(review)
+        }
+        cosmosView.settings.fillMode = .half
     }
 }
 
