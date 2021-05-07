@@ -66,6 +66,7 @@ class ReviewMovieViewController: UIViewController {
     }
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 
 }
