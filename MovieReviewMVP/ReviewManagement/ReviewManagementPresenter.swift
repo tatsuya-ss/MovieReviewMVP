@@ -11,6 +11,7 @@ protocol ReviewManagementPresenterInput {
     func returnReviewContent()
     var numberOfMovies: Int { get }
     func movieReview(forRow row: Int) -> MovieReviewContent?
+    func didDeleteReviewMovie(index: IndexPath)
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
@@ -18,6 +19,7 @@ protocol ReviewManagementPresenterOutput: AnyObject {
 }
 
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
+    
     func movieReview(forRow row: Int) -> MovieReviewContent? {
         movieReviewContent[row]
     }
@@ -45,4 +47,11 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         print(movieReviewContent)
         view.updataMovieReview()
     }
+    
+    func didDeleteReviewMovie(index: IndexPath) {
+        model.deleteReviewMovie(index)
+        returnReviewContent()
+        
+    }
+
 }

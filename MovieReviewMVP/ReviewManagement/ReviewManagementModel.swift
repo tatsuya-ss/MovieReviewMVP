@@ -8,9 +8,14 @@
 import Foundation
 
 protocol ReviewManagementModelInput {
-    
+    func deleteReviewMovie(_ index: IndexPath)
 }
 
 class ReviewManagementModel : ReviewManagementModelInput {
+    func deleteReviewMovie(_ index: IndexPath) {
+        let movieReviewSave = MovieReviewSave()
+        movieReviewSave.deleteMovieReview(index)
+    }
+    
     
 }
