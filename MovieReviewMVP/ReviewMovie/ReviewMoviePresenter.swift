@@ -9,7 +9,7 @@ import Foundation
 
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
-    func getMovieInfomation() -> MovieInfomation
+    func didTapSaveButton(reviewScore: Double, review: String)
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
@@ -17,8 +17,6 @@ protocol ReviewMoviePresenterOutput : AnyObject {
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
-    
-    
     
     private var movieInfomation: MovieInfomation
     
@@ -35,8 +33,10 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         self.view.displayReviewMovie(movieInfomation)
     }
     
-    func getMovieInfomation() -> MovieInfomation {
-        movieInfomation
+    func didTapSaveButton(reviewScore: Double, review: String) {
+        let movieReviewContent = MovieReviewContent(title: movieInfomation.title ?? "", reviewStars: reviewScore, releaseDay: movieInfomation.release_date ?? "", overview: movieInfomation.overview ?? "", review: review, movieImagePath: movieInfomation.poster_path ?? "")
+        model.saveMovieReview(movieReviewContent)
     }
+
 
 }

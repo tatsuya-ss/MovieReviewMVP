@@ -15,7 +15,7 @@ class ReviewMovieViewController: UIViewController {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    private var storeButton: UIBarButtonItem!
+    private var saveButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
     @IBOutlet weak var reviewStarView: CosmosView!
     @IBOutlet weak var reviewTextView: UITextView!
@@ -46,9 +46,9 @@ class ReviewMovieViewController: UIViewController {
     func setLayout() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        storeButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(storeButtonTapped))
-        storeButton.tintColor = .white
-        self.navigationItem.rightBarButtonItem = storeButton
+        saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+        saveButton.tintColor = .white
+        self.navigationItem.rightBarButtonItem = saveButton
 
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
         stopButton.tintColor = .white
@@ -64,15 +64,8 @@ class ReviewMovieViewController: UIViewController {
 
     }
     
-    @objc func storeButtonTapped(_ sender: UIBarButtonItem) {
-        let movieInfomation = presenter.getMovieInfomation()
-        let reviewMovie = MovieReviewContent(title: movieInfomation.title ?? "",
-                                             reviewStars: Double(reviewStarView.text!) ?? 0.0,
-                                             releaseDay: movieInfomation.release_date ?? "",
-                                             overview: movieInfomation.overview ?? "",
-                                             review: reviewTextView.text ?? "",
-                                             movieImagePath: movieInfomation.poster_path ?? "")
-        movieReviewSave.setMovieReview(reviewMovie)
+    @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
+        presenter.didTapSaveButton(reviewScore: Double(reviewStarView.text!) ?? 0.0, review: reviewTextView.text ?? "")
         dismiss(animated: true, completion: nil)
     }
     
