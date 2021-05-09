@@ -37,6 +37,4 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         let movieReviewContent = MovieReviewContent(title: movieInfomation.title ?? "", reviewStars: reviewScore, releaseDay: movieInfomation.release_date ?? "", overview: movieInfomation.overview ?? "", review: review, movieImagePath: movieInfomation.poster_path ?? "")
         model.saveMovieReview(movieReviewContent)
     }
-
-
 }

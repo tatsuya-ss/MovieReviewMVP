@@ -28,7 +28,7 @@ struct MovieReviewContent {
 
 protocol MovieReviewRepository {
     func setMovieReview(_ movie: MovieReviewContent)
-    func fetchMovieReview(_ index: IndexPath) -> MyMovieInfomations
+    func fetchMovieReview() -> [MovieReviewContent]
     func saveMovieReview(_ movie: MovieReviewContent)
 }
 
@@ -50,10 +50,18 @@ struct MovieReviewSave : MovieReviewRepository {
         print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
-    func fetchMovieReview(_ index: IndexPath) -> MyMovieInfomations {
+    func fetchMovieReview() -> [MovieReviewContent] {
+        var movieReviews: [MyMovieInfomations] = []
         let realm = try! Realm()
-         let movie = realm.objects(MyMovieInfomations.self)[index.row]
-        return movie
+         let movies = realm.objects(MyMovieInfomations.self)
+        for movie in movies {
+            movieReviews.append(movie)
+        }
+        var movieReviewContents: [MovieReviewContent] = []
+        for movie in movieReviews {
+            movieReviewContents.append(MovieReviewContent(title: movie.title, reviewStars: movie.reviewStars, releaseDay: movie.releaseDay, overview: movie.overview, review: movie.review, movieImagePath: movie.movieImagePath))
+        }
+        return movieReviewContents
     }
     
     func saveMovieReview(_ movie: MovieReviewContent) {
