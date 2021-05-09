@@ -10,13 +10,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReviewMovieViewController" customModule="MovieReviewMVP" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundImageView" destination="TUf-tF-Y2T" id="dKc-Ci-puu"/>
-                <outlet property="movieImageView" destination="rwh-PO-286" id="Em5-r7-3RO"/>
-                <outlet property="overviewTextView" destination="K6c-CB-7ch" id="D61-nT-Kff"/>
-                <outlet property="releaseDateLabel" destination="GPg-nb-bHI" id="lSd-A3-vLG"/>
-                <outlet property="reviewStarView" destination="3Eb-6N-gBj" id="abZ-fe-jjt"/>
-                <outlet property="reviewTextView" destination="PdG-ZI-IRT" id="Cig-WK-b4S"/>
-                <outlet property="titleLabel" destination="nM3-Rt-ckA" id="sJg-m6-gQl"/>
+                <outlet property="backgroundImageView" destination="TUf-tF-Y2T" id="8sM-Bz-h6Y"/>
+                <outlet property="movieImageView" destination="rwh-PO-286" id="EqQ-VA-MMT"/>
+                <outlet property="overviewTextView" destination="K6c-CB-7ch" id="7R8-z3-MU8"/>
+                <outlet property="releaseDateLabel" destination="GPg-nb-bHI" id="kuO-Im-v6w"/>
+                <outlet property="reviewStarView" destination="3Eb-6N-gBj" id="pip-IY-74g"/>
+                <outlet property="reviewTextView" destination="PdG-ZI-IRT" id="ln0-Uq-p1m"/>
+                <outlet property="titleLabel" destination="nM3-Rt-ckA" id="hlt-mh-Hrk"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

@@ -108,6 +108,5 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         navigationReviewMovieVC.modalPresentationStyle = .fullScreen
         
         self.present(navigationReviewMovieVC, animated: true, completion: nil)
-        
     }
 }

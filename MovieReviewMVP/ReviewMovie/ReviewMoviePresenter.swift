@@ -9,6 +9,7 @@ import Foundation
 
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
+    func getMovieInfomation() -> MovieInfomation
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
@@ -16,6 +17,7 @@ protocol ReviewMoviePresenterOutput : AnyObject {
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
+    
     
     
     private var movieInfomation: MovieInfomation
@@ -32,4 +34,9 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func viewDidLoad() {
         self.view.displayReviewMovie(movieInfomation)
     }
+    
+    func getMovieInfomation() -> MovieInfomation {
+        movieInfomation
+    }
+
 }

@@ -20,6 +20,8 @@ class ReviewMovieViewController: UIViewController {
     @IBOutlet weak var reviewStarView: CosmosView!
     @IBOutlet weak var reviewTextView: UITextView!
     
+    let movieReviewSave = MovieReviewSave()
+    
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
@@ -63,6 +65,15 @@ class ReviewMovieViewController: UIViewController {
     }
     
     @objc func storeButtonTapped(_ sender: UIBarButtonItem) {
+        let movieInfomation = presenter.getMovieInfomation()
+        let reviewMovie = MovieReviewContent(title: movieInfomation.title ?? "",
+                                             reviewStars: Double(reviewStarView.text!) ?? 0.0,
+                                             releaseDay: movieInfomation.release_date ?? "",
+                                             overview: movieInfomation.overview ?? "",
+                                             review: reviewTextView.text ?? "",
+                                             movieImagePath: movieInfomation.poster_path ?? "")
+        movieReviewSave.setMovieReview(reviewMovie)
+        dismiss(animated: true, completion: nil)
     }
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
