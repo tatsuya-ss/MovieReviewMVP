@@ -1,49 +1,96 @@
 //
-//  ReviewMovieViewController.swift
+//  ReviewDemoViewController.swift
 //  MovieReviewMVP
 //
-//  Created by 坂本龍哉 on 2021/04/30.
+//  Created by 坂本龍哉 on 2021/05/06.
 //
 
 import UIKit
 import Cosmos
 
 class ReviewMovieViewController: UIViewController {
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var reviewTextView: UITextView!
-    @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var overviewTextView: UITextView!
+    @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var releaseDateLabel: UILabel!
-    @IBOutlet weak var cosmosView: CosmosView!
+    @IBOutlet weak var titleLabel: UILabel!
+    private var storeButton: UIBarButtonItem!
+    private var stopButton: UIBarButtonItem!
+    @IBOutlet weak var reviewStarView: CosmosView!
+    @IBOutlet weak var reviewTextView: UITextView!
+    
+    let movieReviewSave = MovieReviewSave()
     
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setSubView()
         presenter.viewDidLoad()
         setLayout()
-        setReview()
+        reviewTextView.delegate = self
+    }
+
+    func setSubView() {
+        let nib =  UINib(nibName: "ReviewMovie", bundle: nil)
+        if let subView = nib.instantiate(withOwner: self, options: nil).first as? UIView {
+            subView.frame = self.view.bounds
+            self.view.addSubview(subView)
+        }
     }
     
     func setLayout() {
-        backgroundImageView.alpha = 0.5
-        reviewTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        reviewTextView.layer.borderWidth = 1.0
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        storeButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(storeButtonTapped))
+        storeButton.tintColor = .white
+        self.navigationItem.rightBarButtonItem = storeButton
+
+        stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
+        stopButton.tintColor = .white
+        self.navigationItem.leftBarButtonItem = stopButton
+        
+        reviewStarView.didTouchCosmos = { review in
+            self.reviewStarView.text = String(review)
+        }
+        reviewStarView.settings.fillMode = .half
+        
+        overviewTextView.isEditable = false
+        overviewTextView.isSelectable = false
+
     }
     
-    func setReview() {
-        cosmosView.didTouchCosmos = { review in
-            self.cosmosView.text = String(review)
-        }
-        cosmosView.settings.fillMode = .half
+    @objc func storeButtonTapped(_ sender: UIBarButtonItem) {
+        let movieInfomation = presenter.getMovieInfomation()
+        let reviewMovie = MovieReviewContent(title: movieInfomation.title ?? "",
+                                             reviewStars: Double(reviewStarView.text!) ?? 0.0,
+                                             releaseDay: movieInfomation.release_date ?? "",
+                                             overview: movieInfomation.overview ?? "",
+                                             review: reviewTextView.text ?? "",
+                                             movieImagePath: movieInfomation.poster_path ?? "")
+        movieReviewSave.setMovieReview(reviewMovie)
+        dismiss(animated: true, completion: nil)
     }
+    
+    @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
 }
 
-extension ReviewMovieViewController : ReviewMoviePresenterOutput {    
+extension ReviewMovieViewController : UITextViewDelegate {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        reviewTextView.resignFirstResponder()
+    }
+    
+}
+
+extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(_ movieInfomation: MovieInfomation) {
         fetchMovieImage(movie: movieInfomation)
@@ -76,4 +123,5 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         }
     }
 }
+
 

@@ -104,7 +104,9 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         
         reviewMovieVC.inject(presenter: presenter)
         
-        self.present(reviewMovieVC, animated: true, completion: nil)
+        let navigationReviewMovieVC = UINavigationController(rootViewController: reviewMovieVC)
+        navigationReviewMovieVC.modalPresentationStyle = .fullScreen
         
+        self.present(navigationReviewMovieVC, animated: true, completion: nil)
     }
 }
