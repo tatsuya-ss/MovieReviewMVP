@@ -17,5 +17,4 @@ class ReviewManagementModel : ReviewManagementModelInput {
         movieReviewSave.deleteMovieReview(index)
     }
     
-    
 }

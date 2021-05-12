@@ -34,7 +34,10 @@ class ReviewMovieViewController: UIViewController {
         presenter.viewDidLoad()
         reviewTextView.delegate = self
     }
-    
+}
+
+// MARK: - setup
+private extension ReviewMovieViewController {
     func setSubView() {
         let nib =  UINib(nibName: "ReviewMovie", bundle: nil)
         if let subView = nib.instantiate(withOwner: self, options: nil).first as? UIView {
@@ -42,7 +45,7 @@ class ReviewMovieViewController: UIViewController {
             self.view.addSubview(subView)
         }
     }
-    
+
     func setLayout() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -63,10 +66,9 @@ class ReviewMovieViewController: UIViewController {
         overviewTextView.isSelectable = false
 
     }
-    
-    func setupPresenter() {
-
-    }
+}
+// MARK: - @objc
+private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
         presenter.didTapSaveButton(reviewScore: Double(reviewStarView.text!) ?? 0.0, review: reviewTextView.text ?? "")
@@ -76,17 +78,17 @@ class ReviewMovieViewController: UIViewController {
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-
 }
 
+// MARK: - UITextViewDelegate
 extension ReviewMovieViewController : UITextViewDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         reviewTextView.resignFirstResponder()
     }
-    
 }
 
+// MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(_ movieInfomation: MovieInfomation) {

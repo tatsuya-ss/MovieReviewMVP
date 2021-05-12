@@ -28,6 +28,11 @@ class ReviewManagementViewController: UIViewController {
         presenter.returnReviewContent()
     }
     
+}
+
+// MARK: - setup
+private extension ReviewManagementViewController {
+    
     func setup() {
         tableView.register(UINib(nibName: "ReviewManagementTableViewCell", bundle: nil), forCellReuseIdentifier: ReviewManagementTableViewCell.reuseCellIdentifier)
     }
@@ -37,15 +42,19 @@ class ReviewManagementViewController: UIViewController {
         let reviewManagementPresenter = ReviewManagementPresenter(view: self, model: reviewManagementModel)
         inject(presenter: reviewManagementPresenter)
     }
+    
 }
 
+// MARK: - UITableViewDelegate
 extension ReviewManagementViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         100
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ReviewManagementViewController : UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.numberOfMovies
     }
@@ -56,7 +65,6 @@ extension ReviewManagementViewController : UITableViewDataSource {
         if let movieReview = presenter.movieReview(forRow: indexPath.row) {
             cell.configure(movieReview: movieReview)
         }
-        
         return cell
     }
     
@@ -68,13 +76,10 @@ extension ReviewManagementViewController : UITableViewDataSource {
     
 }
 
-
-
-
+// MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementViewController : ReviewManagementPresenterOutput {
+    
     func updataMovieReview() {
         tableView.reloadData()
     }
-    
-    
 }

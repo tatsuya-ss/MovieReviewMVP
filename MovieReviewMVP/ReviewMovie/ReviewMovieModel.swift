@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ReviewMovieModelInput {
-    func saveMovieReview(_ movie: MovieReviewContent)
+    func saveMovieReview(_ movie: MovieReviewElement)
 }
 
 final class ReviewMovieModel : ReviewMovieModelInput {
@@ -18,7 +18,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         self.movieInfomation = movie
     }
     
-    func saveMovieReview(_ movie: MovieReviewContent) {
+    func saveMovieReview(_ movie: MovieReviewElement) {
         let movieReviewSave = MovieReviewSave()
         movieReviewSave.setMovieReview(movie)
     }

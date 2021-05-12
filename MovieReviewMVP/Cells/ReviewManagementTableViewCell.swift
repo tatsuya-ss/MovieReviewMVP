@@ -14,7 +14,7 @@ class ReviewManagementTableViewCell: UITableViewCell {
     @IBOutlet weak var reviewStarView: CosmosView!
     static let reuseCellIdentifier = "reviewCell"
     
-    func configure(movieReview: MovieReviewContent) {
+    func configure(movieReview: MovieReviewElement) {
         titleLabel.text = movieReview.title
         reviewStarView.rating = movieReview.reviewStars
         reviewStarView.text = String(movieReview.reviewStars)

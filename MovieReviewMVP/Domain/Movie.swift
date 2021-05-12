@@ -28,16 +28,3 @@ enum SearchError : Error {
     case responseError
 }
 
-enum ReviewStarState {
-    case yellow
-    case glay
-    var starColor: UIColor {
-        switch self {
-        case .yellow:
-            return .systemYellow
-        case .glay:
-            return .lightGray
-        }
-    }
-}
-
