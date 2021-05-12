@@ -18,6 +18,7 @@ class ReviewManagementViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupPresenter()
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -29,6 +30,12 @@ class ReviewManagementViewController: UIViewController {
     
     func setup() {
         tableView.register(UINib(nibName: "ReviewManagementTableViewCell", bundle: nil), forCellReuseIdentifier: ReviewManagementTableViewCell.reuseCellIdentifier)
+    }
+    
+    func setupPresenter() {
+        let reviewManagementModel = ReviewManagementModel()
+        let reviewManagementPresenter = ReviewManagementPresenter(view: self, model: reviewManagementModel)
+        inject(presenter: reviewManagementPresenter)
     }
 }
 

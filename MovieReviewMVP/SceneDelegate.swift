@@ -12,19 +12,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let _ = (scene as? UIWindowScene) else { return }
         // 指定されたリソースファイルのストーリーボードオブジェクトを作成して返す
         // この初期化で、アクセスしたいviewcontrollerのストーリーボードを取得
         //.instantiateInitialViewControllerで初期のビューコントローラーを作成し、ストーリーボードからのデータで初期化する
         
-        let tabBar = MovieTabBarController()
-        let vc = UINavigationController(rootViewController: tabBar)
-
-        window = UIWindow(frame: UIScreen.main.bounds)
-
-        window?.rootViewController = vc
-        window?.makeKeyAndVisible()
-        window?.windowScene = windowScene
+//        let tabBar = MovieTabBarController()
+//        let vc = UINavigationController(rootViewController: tabBar)
+//
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//
+//        window?.rootViewController = vc
+//        window?.makeKeyAndVisible()
+//        window?.windowScene = windowScene
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

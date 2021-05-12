@@ -30,11 +30,11 @@ class ReviewMovieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setSubView()
-        presenter.viewDidLoad()
         setLayout()
+        presenter.viewDidLoad()
         reviewTextView.delegate = self
     }
-
+    
     func setSubView() {
         let nib =  UINib(nibName: "ReviewMovie", bundle: nil)
         if let subView = nib.instantiate(withOwner: self, options: nil).first as? UIView {
@@ -61,6 +61,10 @@ class ReviewMovieViewController: UIViewController {
         
         overviewTextView.isEditable = false
         overviewTextView.isSelectable = false
+
+    }
+    
+    func setupPresenter() {
 
     }
     
