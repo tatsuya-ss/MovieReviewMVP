@@ -22,6 +22,7 @@ class SearchMovieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupPresenter()
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
         tableView.dataSource = self
@@ -30,6 +31,12 @@ class SearchMovieViewController: UIViewController {
     
     private func setup() {
         tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
+    }
+    
+    private func setupPresenter() {
+        let searchMovieModel = SearchMovieModel()
+        let searchMoviePresenter = SearchMoviePresenter(view: self, model: searchMovieModel)
+        self.inject(presenter: searchMoviePresenter)
     }
 }
 
@@ -83,8 +90,6 @@ extension SearchMovieViewController : UITableViewDataSource {
         
         return cell
     }
-    
-    
 }
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
@@ -104,9 +109,10 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         
         reviewMovieVC.inject(presenter: presenter)
         
-        let navigationReviewMovieVC = UINavigationController(rootViewController: reviewMovieVC)
-        navigationReviewMovieVC.modalPresentationStyle = .fullScreen
+        let nav = UINavigationController(rootViewController: reviewMovieVC)
         
-        self.present(navigationReviewMovieVC, animated: true, completion: nil)
+//        nav.modalPresentationStyle = .fullScreen
+        
+        self.present(nav, animated: true, completion: nil)
     }
 }

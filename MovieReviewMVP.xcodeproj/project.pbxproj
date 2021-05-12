@@ -11,11 +11,9 @@
 		755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755D71E0264385F5007C0D77 /* ReviewMovie.xib */; };
 		755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */; };
 		75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75636BE5263B994F00281DB1 /* SearchMovie.storyboard */; };
-		75636BEF263C008200281DB1 /* ReviewMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75636BEE263C008200281DB1 /* ReviewMovie.storyboard */; };
 		75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */; };
 		75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */; };
 		75656036263F60F300284980 /* MovieTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75656035263F60F300284980 /* MovieTabBarController.swift */; };
-		756620D92647B12D00D211EC /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756620D82647B12D00D211EC /* ReviewManagement.storyboard */; };
 		756620DE2647B14300D211EC /* ReviewManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756620DD2647B14300D211EC /* ReviewManagementViewController.swift */; };
 		756620E32647B14F00D211EC /* ReviewManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756620E22647B14F00D211EC /* ReviewManagementPresenter.swift */; };
 		756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756620E72647B15C00D211EC /* ReviewManagementModel.swift */; };
@@ -34,6 +32,8 @@
 		75676F22263A97E300569AF5 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75676F20263A97E300569AF5 /* MovieTableViewCell.xib */; };
 		75676F2B263AA0B900569AF5 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F2A263AA0B900569AF5 /* Movie.swift */; };
 		75676F33263AA2FA00569AF5 /* TMDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F32263AA2FA00569AF5 /* TMDB.swift */; };
+		75699F10264BAAAA001904C4 /* ReviewMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */; };
+		75699F1B264BB932001904C4 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75699F1A264BB932001904C4 /* ReviewManagement.storyboard */; };
 		756E4EAE26468334009AA060 /* MovieDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E4EAD26468334009AA060 /* MovieDatabase.swift */; };
 		8E2A557D1AF49C807E7A8C6B /* Pods_MovieReviewMVPTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295042AF8F23A7316C15563 /* Pods_MovieReviewMVPTests.framework */; };
 		D500AA2732A15AA87E1E1F45 /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */; };
@@ -64,11 +64,9 @@
 		755D71E0264385F5007C0D77 /* ReviewMovie.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovie.xib; sourceTree = "<group>"; };
 		755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieViewController.swift; sourceTree = "<group>"; };
 		75636BE5263B994F00281DB1 /* SearchMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchMovie.storyboard; sourceTree = "<group>"; };
-		75636BEE263C008200281DB1 /* ReviewMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewMovie.storyboard; sourceTree = "<group>"; };
 		75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieModel.swift; sourceTree = "<group>"; };
 		75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMoviePresenter.swift; sourceTree = "<group>"; };
 		75656035263F60F300284980 /* MovieTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTabBarController.swift; sourceTree = "<group>"; };
-		756620D82647B12D00D211EC /* ReviewManagement.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewManagement.storyboard; sourceTree = "<group>"; };
 		756620DD2647B14300D211EC /* ReviewManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementViewController.swift; sourceTree = "<group>"; };
 		756620E22647B14F00D211EC /* ReviewManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementPresenter.swift; sourceTree = "<group>"; };
 		756620E72647B15C00D211EC /* ReviewManagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementModel.swift; sourceTree = "<group>"; };
@@ -93,6 +91,8 @@
 		75676F20263A97E300569AF5 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
 		75676F2A263AA0B900569AF5 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		75676F32263AA2FA00569AF5 /* TMDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDB.swift; sourceTree = "<group>"; };
+		75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewMovie.storyboard; sourceTree = "<group>"; };
+		75699F1A264BB932001904C4 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/SearchMovie/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756E4EAD26468334009AA060 /* MovieDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDatabase.swift; sourceTree = "<group>"; };
 		8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVP_MovieReviewMVPUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		851DF11BBDD60E59E84AD1BF /* Pods-MovieReviewMVPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviewMVPTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieReviewMVPTests/Pods-MovieReviewMVPTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		75636BED263C004400281DB1 /* ReviewMovie */ = {
 			isa = PBXGroup;
 			children = (
-				75636BEE263C008200281DB1 /* ReviewMovie.storyboard */,
+				75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */,
 				75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */,
 				75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */,
 				755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */,
@@ -157,7 +157,7 @@
 		756620D72647AF8700D211EC /* ReviewManagement */ = {
 			isa = PBXGroup;
 			children = (
-				756620D82647B12D00D211EC /* ReviewManagement.storyboard */,
+				75699F1A264BB932001904C4 /* ReviewManagement.storyboard */,
 				756620E72647B15C00D211EC /* ReviewManagementModel.swift */,
 				756620E22647B14F00D211EC /* ReviewManagementPresenter.swift */,
 				756620DD2647B14300D211EC /* ReviewManagementViewController.swift */,
@@ -365,14 +365,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				756620D92647B12D00D211EC /* ReviewManagement.storyboard in Resources */,
 				75676EE8263A89B500569AF5 /* LaunchScreen.storyboard in Resources */,
+				75699F1B264BB932001904C4 /* ReviewManagement.storyboard in Resources */,
 				75676EE5263A89B500569AF5 /* Assets.xcassets in Resources */,
 				755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */,
 				756620F22647C4F100D211EC /* ReviewManagementTableViewCell.xib in Resources */,
 				75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */,
-				75636BEF263C008200281DB1 /* ReviewMovie.storyboard in Resources */,
 				75676F22263A97E300569AF5 /* MovieTableViewCell.xib in Resources */,
+				75699F10264BAAAA001904C4 /* ReviewMovie.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

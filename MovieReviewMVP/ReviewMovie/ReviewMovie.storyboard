@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aj6-eI-GlF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d9o-hP-B8Q">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -9,20 +9,19 @@
     </dependencies>
     <scenes>
         <!--Review Movie View Controller-->
-        <scene sceneID="ggn-GE-e3j">
+        <scene sceneID="29Z-fY-YHl">
             <objects>
-                <viewController id="aj6-eI-GlF" customClass="ReviewMovieViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="d8R-lf-jSJ">
+                <viewController id="d9o-hP-B8Q" customClass="ReviewMovieViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lva-YU-zQi">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="yZ1-uw-pfO"/>
+                        <viewLayoutGuide key="safeArea" id="HrI-PI-CqY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="jL2-mx-951"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0kN-zk-9ve" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pQf-u7-Q3F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1150.7246376811595" y="-1236.1607142857142"/>
+            <point key="canvasLocation" x="470" y="-456"/>
         </scene>
     </scenes>
     <resources>
