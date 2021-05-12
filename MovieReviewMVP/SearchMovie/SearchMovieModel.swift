@@ -13,6 +13,7 @@ protocol SearchMovieModelInput {
 }
 
 final class SearchMovieModel : SearchMovieModelInput {
+    
     func fetchMovie(query: String, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void) {
         let url = TMDBApi(query: query).searchURL
         guard let encodingUrlString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),

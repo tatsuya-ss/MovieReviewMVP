@@ -10,7 +10,7 @@ import Foundation
 protocol ReviewManagementPresenterInput {
     func returnReviewContent()
     var numberOfMovies: Int { get }
-    func movieReview(forRow row: Int) -> MovieReviewContent?
+    func movieReview(forRow row: Int) -> MovieReviewElement?
     func didDeleteReviewMovie(index: IndexPath)
 }
 
@@ -20,12 +20,6 @@ protocol ReviewManagementPresenterOutput: AnyObject {
 
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
-    func movieReview(forRow row: Int) -> MovieReviewContent? {
-        movieReviewContent[row]
-    }
-    
-    
-    
     private weak var view: ReviewManagementPresenterOutput!
     
     private var model: ReviewManagementModelInput
@@ -34,7 +28,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         self.view = view
         self.model = model
     }
-    private(set) var movieReviewContent: [MovieReviewContent] = []
+    private(set) var movieReviewContent: [MovieReviewElement] = []
     
     var numberOfMovies: Int {
         return movieReviewContent.count
@@ -52,6 +46,10 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         model.deleteReviewMovie(index)
         returnReviewContent()
         
+    }
+    
+    func movieReview(forRow row: Int) -> MovieReviewElement? {
+        movieReviewContent[row]
     }
 
 }

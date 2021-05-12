@@ -29,6 +29,11 @@ class SearchMovieViewController: UIViewController {
         tableView.delegate = self
     }
     
+}
+
+// MARK: - setup
+private extension SearchMovieViewController {
+    
     private func setup() {
         tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
     }
@@ -40,6 +45,7 @@ class SearchMovieViewController: UIViewController {
     }
 }
 
+// MARK: - UISearchBarDelegate
 extension SearchMovieViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -64,6 +70,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SearchMovieViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         100
@@ -73,6 +80,8 @@ extension SearchMovieViewController : UITableViewDelegate {
         presenter.didSelectRow(at: indexPath)
     }
 }
+
+// MARK: - UITableViewDataSource
 
 extension SearchMovieViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,6 +100,8 @@ extension SearchMovieViewController : UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - SearchMoviePresenterOutput
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
