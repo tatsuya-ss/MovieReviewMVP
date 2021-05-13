@@ -22,7 +22,6 @@ class SearchMovieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setupPresenter()
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
         tableView.dataSource = self
@@ -35,7 +34,29 @@ class SearchMovieViewController: UIViewController {
 private extension SearchMovieViewController {
     
     private func setup() {
+        setupTabBarController()
+        setupNavigationController()
+        setupTableViewController()
+        setupSearchBar()
+        setupPresenter()
+    }
+    
+    
+    private func setupTabBarController() {
+        tabBarController?.tabBar.isTranslucent = false
+    }
+    
+    private func setupNavigationController() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationItem.title = "検索"
+    }
+    
+    private func setupTableViewController() {
         tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
+    }
+    
+    private func setupSearchBar() {
+        movieSearchBar.isTranslucent = true
     }
     
     private func setupPresenter() {
@@ -67,6 +88,11 @@ extension SearchMovieViewController : UISearchBarDelegate {
             presenter.didTapSearchButton(text: searchText)
         }
         
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = nil
+        searchBar.resignFirstResponder()
     }
 }
 

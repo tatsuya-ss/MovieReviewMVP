@@ -45,16 +45,15 @@
             </objects>
             <point key="canvasLocation" x="3179.7101449275365" y="817.63392857142856"/>
         </scene>
-        <!--Item-->
+        <!--Review-->
         <scene sceneID="Qfr-R9-Cvb">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="66E-pZ-GJN" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Cot-LQ-xYN"/>
+                    <tabBarItem key="tabBarItem" title="Review" image="star" catalog="system" id="Cot-LQ-xYN"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="a8R-jS-cUe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="a8R-jS-cUe">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
@@ -69,4 +68,7 @@
             <point key="canvasLocation" x="2269.5652173913045" y="817.63392857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="star" catalog="system" width="128" height="116"/>
+    </resources>
 </document>

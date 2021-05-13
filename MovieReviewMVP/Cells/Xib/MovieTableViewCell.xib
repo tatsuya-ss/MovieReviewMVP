@@ -25,10 +25,11 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPv-CF-fLb">
                         <rect key="frame" x="64" y="12" width="236" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="cVZ-eo-cvu" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="I2e-Lr-EPz"/>
                     <constraint firstItem="NPv-CF-fLb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="c8K-B1-Fcm"/>

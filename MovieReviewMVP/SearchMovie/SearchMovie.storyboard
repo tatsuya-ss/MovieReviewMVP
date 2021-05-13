@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,15 +17,21 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ss0-Jn-OVT">
                                 <rect key="frame" x="0.0" y="144" width="414" height="669"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-Q1-UzC">
+                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" placeholder="検索" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-Q1-UzC">
                                 <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
                             </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KGb-Lq-u2a"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="bottom" secondItem="KGb-Lq-u2a" secondAttribute="bottom" id="2Mj-rS-CPN"/>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="E1g-Vh-P8b"/>
@@ -53,7 +58,7 @@
             <objects>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="361-8J-pcL" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Xlm-at-tlW">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="Xlm-at-tlW">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -67,15 +72,18 @@
             </objects>
             <point key="canvasLocation" x="1831.8840579710147" y="-350.22321428571428"/>
         </scene>
-        <!--Item-->
+        <!--Search-->
         <scene sceneID="jnS-Po-Wq5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XsA-oV-lAE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="nSk-41-Iag"/>
+                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" id="nSk-41-Iag"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4zt-lO-u8j">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="4zt-lO-u8j">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -90,7 +98,7 @@
         <scene sceneID="q1S-P7-m7U">
             <objects>
                 <viewControllerPlaceholder storyboardName="ReviewManagement" id="t3Y-Hi-AeX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="kLq-X3-uvG"/>
+                    <tabBarItem key="tabBarItem" title="Review" image="star.fill" catalog="system" id="kLq-X3-uvG"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ke-ru-tzk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -98,8 +106,7 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="star.fill" catalog="system" width="128" height="116"/>
     </resources>
 </document>

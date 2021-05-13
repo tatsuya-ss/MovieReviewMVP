@@ -38,6 +38,8 @@ private extension ReviewManagementCollectionViewController {
     func setup() {
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
         navigationController?.navigationBar.isTranslucent = false
+        navigationItem.title = "マイレビュー"
+        tabBarController?.tabBar.isTranslucent = false
     }
     
     func setupPresenter() {
