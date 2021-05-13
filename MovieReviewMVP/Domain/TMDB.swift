@@ -8,12 +8,13 @@
 import Foundation
 import Keys
 
+// MARK: - Codable
 // TMDBに依存しているもの
 struct TMDBSearchResponses : Codable {
     var results: [MovieInfomation]
 }
 
-
+// MARK: - API
 struct TMDBApi {
     static let key = MovieReviewMVPKeys().tMDBApiKey
     let searchURL: String
@@ -23,6 +24,7 @@ struct TMDBApi {
     
 }
 
+// MARK: - PosterURL
 struct TMDBPosterURL {
     let posterURL: String
     init(posterPath: String) {
@@ -30,6 +32,7 @@ struct TMDBPosterURL {
     }
 }
 
+// MARK: - BackdropURL
 struct TMDBBackdropURL {
     let backdropURL: String
     init(backdropPath: String) {

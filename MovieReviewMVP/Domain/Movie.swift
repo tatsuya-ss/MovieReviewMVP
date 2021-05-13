@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 // 依存なしで共通で使いたいもの
 

@@ -13,8 +13,8 @@ protocol ReviewManagementModelInput {
 
 class ReviewManagementModel : ReviewManagementModelInput {
     func deleteReviewMovie(_ index: IndexPath) {
-        let movieReviewSave = MovieReviewSave()
-        movieReviewSave.deleteMovieReview(index)
+        let movieUseCase = MovieUseCase()
+        movieUseCase.delete(index)
     }
     
 }

@@ -7,7 +7,7 @@
 
 import RealmSwift
 
-class RealmMyMovieInfomations: Object {
+class RealmMyMovieInfomation: Object {
     @objc dynamic var title: String = ""
     @objc dynamic var reviewStars: Double = 0.0
     @objc dynamic var releaseDay: String = ""
@@ -16,13 +16,5 @@ class RealmMyMovieInfomations: Object {
     @objc dynamic var movieImagePath: String = ""
 }
 
-struct MovieReviewElement {
-    let title: String
-    let reviewStars: Double
-    let releaseDay: String
-    let overview: String
-    let review: String
-    let movieImagePath: String
-}
 
 

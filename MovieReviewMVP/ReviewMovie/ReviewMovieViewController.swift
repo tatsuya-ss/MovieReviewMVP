@@ -19,9 +19,7 @@ class ReviewMovieViewController: UIViewController {
     private var stopButton: UIBarButtonItem!
     @IBOutlet weak var reviewStarView: CosmosView!
     @IBOutlet weak var reviewTextView: UITextView!
-    
-    let movieReviewSave = MovieReviewSave()
-    
+        
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
