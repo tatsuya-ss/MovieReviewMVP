@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ss0-Jn-OVT">
-                                <rect key="frame" x="0.0" y="144" width="414" height="669"/>
+                                <rect key="frame" x="0.0" y="168" width="414" height="645"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
@@ -29,21 +29,31 @@
                                     <string>Title</string>
                                 </scopeButtonTitles>
                             </searchBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mdR-U8-AD1">
+                                <rect key="frame" x="20" y="144" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KGb-Lq-u2a"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="bottom" secondItem="KGb-Lq-u2a" secondAttribute="bottom" id="2Mj-rS-CPN"/>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="E1g-Vh-P8b"/>
-                            <constraint firstItem="Ss0-Jn-OVT" firstAttribute="top" secondItem="ZbQ-Q1-UzC" secondAttribute="bottom" id="QqZ-5u-c1J"/>
+                            <constraint firstItem="mdR-U8-AD1" firstAttribute="top" secondItem="ZbQ-Q1-UzC" secondAttribute="bottom" id="Jhb-k5-O3f"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="cfG-aq-C0c"/>
+                            <constraint firstItem="KGb-Lq-u2a" firstAttribute="trailing" secondItem="mdR-U8-AD1" secondAttribute="trailing" constant="20" id="csw-R4-73n"/>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="fME-H4-nDa"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="top" secondItem="KGb-Lq-u2a" secondAttribute="top" id="hJH-If-tUb"/>
+                            <constraint firstItem="mdR-U8-AD1" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" constant="20" id="oR0-Ho-Cl0"/>
+                            <constraint firstItem="Ss0-Jn-OVT" firstAttribute="top" secondItem="mdR-U8-AD1" secondAttribute="bottom" id="sgN-bZ-pLy"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="una-js-Mdd"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hBP-Z3-PC3"/>
                     <connections>
+                        <outlet property="displayLabel" destination="mdR-U8-AD1" id="5Ve-G0-zai"/>
                         <outlet property="movieSearchBar" destination="ZbQ-Q1-UzC" id="d2g-5M-Muh"/>
                         <outlet property="tableView" destination="Ss0-Jn-OVT" id="k3l-gk-GMM"/>
                         <outlet property="view" destination="oTg-gg-1IR" id="Lvp-4f-eIB"/>

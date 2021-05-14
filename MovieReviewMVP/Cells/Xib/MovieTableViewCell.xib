@@ -16,14 +16,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cVZ-eo-cvu">
-                        <rect key="frame" x="16" y="2" width="40" height="40"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cVZ-eo-cvu">
+                        <rect key="frame" x="20" y="2" width="27" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="cVZ-eo-cvu" secondAttribute="height" multiplier="1:1" id="ilm-dW-Fm6"/>
+                            <constraint firstAttribute="width" secondItem="cVZ-eo-cvu" secondAttribute="height" multiplier="19:28" id="ilm-dW-Fm6"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPv-CF-fLb">
-                        <rect key="frame" x="64" y="12" width="236" height="20.5"/>
+                        <rect key="frame" x="55" y="12" width="245" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -34,7 +34,7 @@
                     <constraint firstItem="cVZ-eo-cvu" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="I2e-Lr-EPz"/>
                     <constraint firstItem="NPv-CF-fLb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="c8K-B1-Fcm"/>
                     <constraint firstAttribute="trailing" secondItem="NPv-CF-fLb" secondAttribute="trailing" constant="20" symbolic="YES" id="eQJ-m6-mWm"/>
-                    <constraint firstItem="cVZ-eo-cvu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="gqg-HL-bni"/>
+                    <constraint firstItem="cVZ-eo-cvu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" symbolic="YES" id="gqg-HL-bni"/>
                     <constraint firstItem="NPv-CF-fLb" firstAttribute="leading" secondItem="cVZ-eo-cvu" secondAttribute="trailing" constant="8" symbolic="YES" id="kjt-Fi-7Hx"/>
                     <constraint firstItem="cVZ-eo-cvu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="pwd-QK-RjE"/>
                 </constraints>

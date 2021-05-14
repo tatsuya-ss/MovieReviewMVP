@@ -41,7 +41,17 @@ struct TMDBBackdropURL {
 
 }
 
+// MARK: - PopularMovieURL
+struct TMDBPopularMovieURL {
+    static let key = MovieReviewMVPKeys().tMDBApiKey
+    let popularMovieURL = "https://api.themoviedb.org/3/movie/popular?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1"
+}
 
+// MARK: - upcoming
+struct TMDBUpcomingMovieURL {
+    
+    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1&region=JP"
+}
 
 //enum TMDBSearchError : Error {
 //    case TMDBrequestError(Error)

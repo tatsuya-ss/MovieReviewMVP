@@ -10,6 +10,8 @@ import UIKit
 class SearchMovieViewController: UIViewController {
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var displayLabel: UILabel!
+    
     
     var searchMovieViewController: SearchMovieViewController!
     
@@ -26,6 +28,7 @@ class SearchMovieViewController: UIViewController {
         movieSearchBar.keyboardType = .namePhonePad
         tableView.dataSource = self
         tableView.delegate = self
+        presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
 }
@@ -37,7 +40,6 @@ private extension SearchMovieViewController {
         setupTabBarController()
         setupNavigationController()
         setupTableViewController()
-        setupSearchBar()
         setupPresenter()
     }
     
@@ -55,9 +57,6 @@ private extension SearchMovieViewController {
         tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
     }
     
-    private func setupSearchBar() {
-        movieSearchBar.isTranslucent = true
-    }
     
     private func setupPresenter() {
         let searchMovieModel = SearchMovieModel()
@@ -68,38 +67,52 @@ private extension SearchMovieViewController {
 
 // MARK: - UISearchBarDelegate
 extension SearchMovieViewController : UISearchBarDelegate {
+    
+    // MARK: 検索ボタンが押された時
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
     
+    // MARK: 入力中に呼ばれる
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            self.searchEntering()
+
+            if searchBar.text?.isEmpty == false {
+                self.presenter.fetchMovie(state: .search, text: searchBar.text)
+            }
         })
         return true
     }
     
-    func searchEntering() {
-        guard let searchText = movieSearchBar.text else { return }
+    // MARK: 入力確定後に呼ばれる
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        if searchText.isEmpty == true {
-            presenter.resetTableView()
-        } else {
-            presenter.didTapSearchButton(text: searchText)
-        }
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            
+            if searchBar.text?.isEmpty == true {
+                self.presenter.fetchMovie(state: .upcoming, text: nil)
+            }
+        })
+
     }
     
+    // MARK: キャンセルボタンが押された時
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
         searchBar.text = nil
+        presenter.fetchMovie(state: .upcoming, text: nil)
         searchBar.resignFirstResponder()
+        
     }
+
 }
 
 // MARK: - UITableViewDelegate
 extension SearchMovieViewController : UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
+        120
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -110,6 +123,7 @@ extension SearchMovieViewController : UITableViewDelegate {
 // MARK: - UITableViewDataSource
 
 extension SearchMovieViewController : UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.numberOfMovies
     }
@@ -131,12 +145,17 @@ extension SearchMovieViewController : UITableViewDataSource {
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
-    func update(_ movie: [MovieInfomation]) {
+    func update(_ movie: [MovieInfomation], _ state: fetchMovieState) {
+        switch state {
+        case .search:
+            displayLabel.text = "検索結果"
+        case .upcoming:
+            displayLabel.text = "近日公開"
+        }
         tableView.reloadData()
     }
     
     func reviewTheMovie(movie: MovieInfomation) {
-        print(movie)
         
         let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
