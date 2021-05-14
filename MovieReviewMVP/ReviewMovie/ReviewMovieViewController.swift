@@ -9,49 +9,41 @@ import UIKit
 import Cosmos
 
 class ReviewMovieViewController: UIViewController {
-    
-    @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var overviewTextView: UITextView!
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var releaseDateLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
+
     private var saveButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
-    @IBOutlet weak var reviewStarView: CosmosView!
-    @IBOutlet weak var reviewTextView: UITextView!
+    
+    private var reviewMovieOwner: ReviewMovieOwner!
         
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
     }
+    
+    override func loadView() {
+        super.loadView()
+        
+        reviewMovieOwner = ReviewMovieOwner()
+        view.addSubview(reviewMovieOwner.reviewMovieView)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        
+        setNavigationController()
         presenter.viewDidLoad()
-        reviewTextView.delegate = self
+        reviewMovieOwner.reviewTextView.delegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        reviewMovieOwner.reviewMovieView.frame = view.frame
     }
 }
 
 // MARK: - setup
 private extension ReviewMovieViewController {
-    
-    func setup() {
-        setSubView()
-        setNavigationController()
-        setReviwStars()
-        setOverView()
-    }
-    
-    func setSubView() {
-        
-        let nib =  UINib(nibName: "ReviewMovie", bundle: nil)
-        if let subView = nib.instantiate(withOwner: self, options: nil).first as? UIView {
-            subView.frame = self.view.bounds
-            self.view.addSubview(subView)
-        }
-    }
-    
+
     func setNavigationController() {
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -67,28 +59,12 @@ private extension ReviewMovieViewController {
 
     }
     
-    func setReviwStars() {
-        
-        reviewStarView.didTouchCosmos = { review in
-            self.reviewStarView.text = String(review)
-        }
-        reviewStarView.settings.fillMode = .half
-
-    }
-
-    func setOverView() {
-                
-        overviewTextView.isEditable = false
-        overviewTextView.isSelectable = false
-
-    }
-    
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
-        presenter.didTapSaveButton(reviewScore: Double(reviewStarView.text!) ?? 0.0, review: reviewTextView.text ?? "")
+        presenter.didTapSaveButton(reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0, review: reviewMovieOwner.reviewTextView.text ?? "")
         dismiss(animated: true, completion: nil)
     }
     
@@ -101,7 +77,7 @@ private extension ReviewMovieViewController {
 extension ReviewMovieViewController : UITextViewDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        reviewTextView.resignFirstResponder()
+        reviewMovieOwner.reviewTextView.resignFirstResponder()
     }
 }
 
@@ -109,35 +85,6 @@ extension ReviewMovieViewController : UITextViewDelegate {
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(_ movieInfomation: MovieInfomation) {
-        fetchMovieImage(movie: movieInfomation)
-    }
-    
-    func fetchMovieImage(movie: MovieInfomation) {
-        
-        guard let posperPath = movie.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
-        let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-            guard let imageData = data else { return }
-            DispatchQueue.global().async { [weak self] in
-                guard let image = UIImage(data: imageData) else { return }
-                DispatchQueue.main.async {
-                    self?.movieImageView.image = image
-                    self?.backgroundImageView.image = image
-                    self?.overviewTextView.text = movie.overview
-                    self?.releaseDateLabel.text = movie.release_date
-                }
-            }
-        }
-        task.resume()
-        
-        if movie.title == nil || movie.title == "" {
-            titleLabel.text = movie.original_name
-        } else if movie.title != nil {
-            titleLabel.text = movie.title
-        } else {
-            titleLabel.text = "タイトルがありません"
-        }
+        reviewMovieOwner.fetchMovieImage(movie: movieInfomation)
     }
 }
-
-
