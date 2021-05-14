@@ -8,15 +8,24 @@
 import Foundation
 
 protocol SearchMovieModelInput {
-    func fetchMovie(query: String, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void)
-
+    func fetchMovie(fetchState: fetchMovieState, query: String?, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void)
 }
 
 final class SearchMovieModel : SearchMovieModelInput {
     
-    func fetchMovie(query: String, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void) {
-        let url = TMDBApi(query: query).searchURL
-        guard let encodingUrlString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+    func fetchMovie(fetchState: fetchMovieState, query: String?, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void) {
+        
+        var url: String?
+        switch fetchState {
+        case .search:
+            guard let query = query else { return }
+            url = TMDBApi(query: query).searchURL
+        case .upcoming:
+            url = TMDBUpcomingMovieURL().upcomingMovieURL
+        }
+        
+        guard let fetchUrl = url,
+              let encodingUrlString = fetchUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodeUrl = URL(string: encodingUrlString) else { return }
         let urlRequest = URLRequest(url: encodeUrl)
         
@@ -49,7 +58,7 @@ private extension MovieSearchResponses {
         self = MovieSearchResponses(results: response.results)
     }
 }
-//
+
 //private extension SearchError {
 //    init(error: TMDBSearchError) {
 //        switch error {

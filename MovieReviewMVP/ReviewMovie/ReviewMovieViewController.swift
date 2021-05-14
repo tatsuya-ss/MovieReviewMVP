@@ -19,9 +19,7 @@ class ReviewMovieViewController: UIViewController {
     private var stopButton: UIBarButtonItem!
     @IBOutlet weak var reviewStarView: CosmosView!
     @IBOutlet weak var reviewTextView: UITextView!
-    
-    let movieReviewSave = MovieReviewSave()
-    
+        
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
@@ -29,8 +27,7 @@ class ReviewMovieViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setSubView()
-        setLayout()
+        setup()
         presenter.viewDidLoad()
         reviewTextView.delegate = self
     }
@@ -38,17 +35,28 @@ class ReviewMovieViewController: UIViewController {
 
 // MARK: - setup
 private extension ReviewMovieViewController {
+    
+    func setup() {
+        setSubView()
+        setNavigationController()
+        setReviwStars()
+        setOverView()
+    }
+    
     func setSubView() {
+        
         let nib =  UINib(nibName: "ReviewMovie", bundle: nil)
         if let subView = nib.instantiate(withOwner: self, options: nil).first as? UIView {
             subView.frame = self.view.bounds
             self.view.addSubview(subView)
         }
     }
-
-    func setLayout() {
+    
+    func setNavigationController() {
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        
         saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .white
         self.navigationItem.rightBarButtonItem = saveButton
@@ -56,16 +64,25 @@ private extension ReviewMovieViewController {
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
         stopButton.tintColor = .white
         self.navigationItem.leftBarButtonItem = stopButton
+
+    }
+    
+    func setReviwStars() {
         
         reviewStarView.didTouchCosmos = { review in
             self.reviewStarView.text = String(review)
         }
         reviewStarView.settings.fillMode = .half
-        
+
+    }
+
+    func setOverView() {
+                
         overviewTextView.isEditable = false
         overviewTextView.isSelectable = false
 
     }
+    
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {

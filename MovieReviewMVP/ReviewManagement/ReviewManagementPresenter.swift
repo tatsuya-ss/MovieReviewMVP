@@ -28,17 +28,16 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         self.view = view
         self.model = model
     }
-    private(set) var movieReviewContent: [MovieReviewElement] = []
+    private(set) var movieReviewElements: [MovieReviewElement] = []
     
     var numberOfMovies: Int {
-        return movieReviewContent.count
+        return movieReviewElements.count
     }
 
     func returnReviewContent() {
-        let movieReviewSave = MovieReviewSave()
-        let movieReviews = movieReviewSave.fetchMovieReview()
-        movieReviewContent = movieReviews
-        print(movieReviewContent)
+        let movieUseCase = MovieUseCase()
+        let movieReviewElements = movieUseCase.fetch()
+        self.movieReviewElements = movieReviewElements
         view.updataMovieReview()
     }
     
@@ -49,7 +48,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func movieReview(forRow row: Int) -> MovieReviewElement? {
-        movieReviewContent[row]
+        movieReviewElements[row]
     }
 
 }

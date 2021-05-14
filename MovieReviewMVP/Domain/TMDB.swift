@@ -8,12 +8,13 @@
 import Foundation
 import Keys
 
+// MARK: - Codable
 // TMDBに依存しているもの
 struct TMDBSearchResponses : Codable {
     var results: [MovieInfomation]
 }
 
-
+// MARK: - API
 struct TMDBApi {
     static let key = MovieReviewMVPKeys().tMDBApiKey
     let searchURL: String
@@ -23,6 +24,7 @@ struct TMDBApi {
     
 }
 
+// MARK: - PosterURL
 struct TMDBPosterURL {
     let posterURL: String
     init(posterPath: String) {
@@ -30,6 +32,7 @@ struct TMDBPosterURL {
     }
 }
 
+// MARK: - BackdropURL
 struct TMDBBackdropURL {
     let backdropURL: String
     init(backdropPath: String) {
@@ -38,7 +41,17 @@ struct TMDBBackdropURL {
 
 }
 
+// MARK: - PopularMovieURL
+struct TMDBPopularMovieURL {
+    static let key = MovieReviewMVPKeys().tMDBApiKey
+    let popularMovieURL = "https://api.themoviedb.org/3/movie/popular?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1"
+}
 
+// MARK: - upcoming
+struct TMDBUpcomingMovieURL {
+    
+    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1&region=JP"
+}
 
 //enum TMDBSearchError : Error {
 //    case TMDBrequestError(Error)

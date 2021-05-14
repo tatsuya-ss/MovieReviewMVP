@@ -8,25 +8,18 @@
 import Foundation
 
 protocol SearchMoviePresenterInput {
-    func didTapSearchButton(text: String)
-    func resetTableView()
     var numberOfMovies: Int { get }
     func movie() -> [MovieInfomation]
     func didSelectRow(at indexPath: IndexPath)
+    func fetchMovie(state: fetchMovieState, text: String?)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
-    func update(_ movie: [MovieInfomation])
+    func update(_ movie: [MovieInfomation], _ state: fetchMovieState)
     func reviewTheMovie(movie: MovieInfomation)
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
-    
-    func resetTableView() {
-        self.movies = []
-        self.view.update(movies)
-    }
-    
     
     private weak var view: SearchMoviePresenterOutput!
     private var model: SearchMovieModelInput
@@ -46,16 +39,18 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         movies
     }
     
-
-    func didTapSearchButton(text: String) {
-        guard !text.isEmpty else { return }
+    func didSelectRow(at indexPath: IndexPath) {
+        view.reviewTheMovie(movie: movies[indexPath.row])
+    }
+    
+    func fetchMovie(state: fetchMovieState, text: String?) {
         
-        model.fetchMovie(query: text, completion: { [weak self] result in
+        model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
             switch result {
             case let .success(movies):
                 self?.movies = movies.results
                 DispatchQueue.main.async {
-                    self?.view.update(movies.results)
+                    self?.view.update(movies.results, state)
                 }
             case let .failure(SearchError.requestError(error)):
                 print(error)
@@ -63,9 +58,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 print(error)
             }
         })
+
     }
     
-    func didSelectRow(at indexPath: IndexPath) {
-        view.reviewTheMovie(movie: movies[indexPath.row])
-    }
 }

@@ -29,12 +29,19 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         self.model = model
     }
 
+    // MARK: viewDidLoad時
     func viewDidLoad() {
         self.view.displayReviewMovie(movieInfomation)
     }
     
+    // MARK: 保存ボタンが押された時の処理
     func didTapSaveButton(reviewScore: Double, review: String) {
-        let movieReviewContent = MovieReviewElement(title: movieInfomation.title ?? "", reviewStars: reviewScore, releaseDay: movieInfomation.release_date ?? "", overview: movieInfomation.overview ?? "", review: review, movieImagePath: movieInfomation.poster_path ?? "")
-        model.saveMovieReview(movieReviewContent)
+        let movieReviewContent = MovieReviewElement(title: movieInfomation.title ?? "",
+                                                    reviewStars: reviewScore,
+                                                    releaseDay: movieInfomation.release_date ?? "",
+                                                    overview: movieInfomation.overview ?? "",
+                                                    review: review,
+                                                    movieImagePath: movieInfomation.poster_path ?? "")
+        model.createMovieReview(movieReviewContent)
     }
 }
