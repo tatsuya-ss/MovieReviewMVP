@@ -18,7 +18,8 @@ class MovieTableViewCell: UITableViewCell {
         titleLabel.text = nil
     }
     
-    func configureCell(movie: MovieInfomation) {
+    func configureCell(movie: MovieInfomation, height: CGFloat) {
+        
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
@@ -32,6 +33,7 @@ class MovieTableViewCell: UITableViewCell {
             }
         }
         task.resume()
+        
         if movie.title == nil || movie.title == "" {
             titleLabel.text = movie.original_name
         } else if movie.title != nil {
@@ -39,5 +41,8 @@ class MovieTableViewCell: UITableViewCell {
         } else {
             titleLabel.text = "タイトルがありません"
         }
+        
+        movieImageView.layer.cornerRadius = height * 0.03
+
     }
 }

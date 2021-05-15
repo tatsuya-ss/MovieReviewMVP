@@ -8,8 +8,8 @@
 import UIKit
 
 class ReviewManagementCollectionViewController: UIViewController {
-    @IBOutlet weak var collectionView: UICollectionView!
-    private var cellImageViewWidth: CGFloat?
+    @IBOutlet weak var collectionView: UICollectionView!    
+    private var collectionViewCellWidth: CGFloat?
     
     private var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -19,8 +19,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        setupPresenter()
-        cellImageViewWidth = CollectionViewLayout().getImageViewSize(view: view)
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -36,16 +34,50 @@ class ReviewManagementCollectionViewController: UIViewController {
 private extension ReviewManagementCollectionViewController {
     
     func setup() {
-        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
-        navigationController?.navigationBar.isTranslucent = false
-        navigationItem.title = "マイレビュー"
-        tabBarController?.tabBar.isTranslucent = false
+        setupPresenter()
+        setupNavigation()
+        setupTabBar()
+        setupCollectionView()
+        collectionViewCellLayout()
     }
     
     func setupPresenter() {
         let reviewManagementModel = ReviewManagementModel()
         let reviewManagementPresenter = ReviewManagementPresenter(view: self, model: reviewManagementModel)
         inject(presenter: reviewManagementPresenter)
+    }
+
+    func setupNavigation() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationItem.title = "マイレビュー"
+    }
+    
+    func setupTabBar() {
+        tabBarController?.tabBar.isTranslucent = false
+    }
+    
+    
+    func setupCollectionView() {
+        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+    }
+
+    
+    func collectionViewCellLayout() {
+        let layout = UICollectionViewFlowLayout()
+        
+        let safeAreaWidth = view.bounds.width - 20
+        let cellWidth = (safeAreaWidth - 10) / 3
+        collectionViewCellWidth = cellWidth
+        // ここの25は何回もビルドして調整したため、他にいい方法ないか調べる
+        let cellHeight = (collectionView.bounds.height - 25) / 4
+
+        
+        layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        layout.minimumLineSpacing = 5
+        
+
+        collectionView.collectionViewLayout = layout
+        
     }
 
 }
@@ -72,12 +104,14 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
         
         if let movieReviews = presenter.movieReview(forRow: indexPath.row),
-           let cellImageViewWidth = cellImageViewWidth {
+           let cellWidth = collectionViewCellWidth {
+            
             cell.configure(movieReview: movieReviews)
-            cell.movieImageView.widthAnchor.constraint(equalToConstant: cellImageViewWidth).isActive = true
+            cell.setupLayout(width: cellWidth)
         }
         
         return cell
@@ -91,6 +125,5 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     func updataMovieReview() {
         collectionView.reloadData()
     }
-    
     
 }

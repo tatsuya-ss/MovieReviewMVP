@@ -12,6 +12,7 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
     
+    private var tableViewCellHeight: CGFloat?
     
     var searchMovieViewController: SearchMovieViewController!
     
@@ -55,6 +56,14 @@ private extension SearchMovieViewController {
     
     private func setupTableViewController() {
         tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
+        
+        // MARK: tableViewの高さを設定
+        tableViewCellHeight = tableView.bounds.height / 5
+        if let height = tableViewCellHeight {
+            tableView.rowHeight = height
+            tableView.estimatedRowHeight = height
+        }
+        
     }
     
     
@@ -111,9 +120,6 @@ extension SearchMovieViewController : UISearchBarDelegate {
 // MARK: - UITableViewDelegate
 extension SearchMovieViewController : UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        120
-    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.didSelectRow(at: indexPath)
@@ -132,11 +138,15 @@ extension SearchMovieViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
         
         cell.resetCell()
-        
+
         let movies = presenter.movie()
-        
-        cell.configureCell(movie: movies[indexPath.row])
-        
+
+        if let tableViewHeight = tableViewCellHeight {
+            cell.configureCell(movie: movies[indexPath.row], height: tableViewHeight)
+        } else {
+            cell.configureCell(movie: movies[indexPath.row], height: tableView.bounds.height / 5)
+        }
+
         return cell
     }
 }
@@ -148,9 +158,9 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     func update(_ movie: [MovieInfomation], _ state: fetchMovieState) {
         switch state {
         case .search:
-            displayLabel.text = "検索結果"
+            displayLabel.text = state.displayLabelText
         case .upcoming:
-            displayLabel.text = "近日公開"
+            displayLabel.text = state.displayLabelText
         }
         tableView.reloadData()
     }
