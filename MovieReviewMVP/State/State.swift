@@ -7,12 +7,17 @@
 
 import Foundation
 
-enum searchBarState {
-    case Enpty
-    case notEnpty
-}
 
 enum fetchMovieState {
     case search
     case upcoming
+    
+    var displayLabelText: String {
+        switch self {
+        case .search:
+            return "検索結果"
+        case .upcoming:
+            return "近日公開"
+        }
+    }
 }

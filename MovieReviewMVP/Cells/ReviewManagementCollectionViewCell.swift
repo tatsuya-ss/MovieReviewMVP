@@ -17,6 +17,8 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
 
     static let identifier = String(describing: ReviewManagementCollectionViewCell.self)
     
+    
+    
     // MARK: configure
     func configure(movieReview: MovieReviewElement) {
         reviewView.rating = movieReview.reviewStars
@@ -36,17 +38,9 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: setup
-    func setupLayout(view: UIView) {
-        let safeAreaWidth = view.bounds.width - 20
-        let cellWidth = (safeAreaWidth - 10) / 3
-        
-        let safeAreaHeight = view.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
-        let cellHeight = (safeAreaHeight - 10) / 3
-        let imageHeight = cellHeight - reviewView.bounds.height
-        
-        [movieImageView.widthAnchor.constraint(equalToConstant: cellWidth),
-         movieImageView.heightAnchor.constraint(equalToConstant: imageHeight)
-        ].forEach { $0.isActive = true }
+    func setupLayout(width: CGFloat) {
+        movieImageView.layoutIfNeeded()
+        movieImageView.layer.cornerRadius = width * 0.03
     }
     
 }

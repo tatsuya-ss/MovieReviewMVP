@@ -23,8 +23,8 @@
                             <constraint firstAttribute="width" secondItem="mGi-RA-Atg" secondAttribute="height" multiplier="19:28" id="Q9r-zx-1og"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleAspectFit" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K7q-rl-KyM" customClass="CosmosView" customModule="Cosmos">
-                        <rect key="frame" x="0.0" y="151" width="103" height="19"/>
+                    <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="K7q-rl-KyM" customClass="CosmosView" customModule="Cosmos">
+                        <rect key="frame" x="0.0" y="154" width="103" height="16"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
                                 <color key="value" systemColor="systemYellowColor"/>
@@ -57,7 +57,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="mGi-RA-Atg" secondAttribute="trailing" id="KBD-fQ-YPz"/>
                 <constraint firstItem="mGi-RA-Atg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="OPx-hG-CFa"/>
-                <constraint firstItem="K7q-rl-KyM" firstAttribute="top" secondItem="mGi-RA-Atg" secondAttribute="bottom" constant="4" id="PiT-0U-HEQ"/>
+                <constraint firstItem="K7q-rl-KyM" firstAttribute="top" secondItem="mGi-RA-Atg" secondAttribute="bottom" constant="2" id="PiT-0U-HEQ"/>
                 <constraint firstItem="mGi-RA-Atg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="a2q-YU-vjY"/>
                 <constraint firstAttribute="trailing" secondItem="K7q-rl-KyM" secondAttribute="trailing" id="aiH-gA-GwV"/>
                 <constraint firstAttribute="bottom" secondItem="K7q-rl-KyM" secondAttribute="bottom" id="eTp-FW-TKt"/>
