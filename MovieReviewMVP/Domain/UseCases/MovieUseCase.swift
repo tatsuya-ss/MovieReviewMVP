@@ -9,7 +9,7 @@ import Foundation
 
 class MovieUseCase {
     
-    private let repository: MovieReviewRepository
+    private var repository: MovieReviewRepository
     
     init(repository: MovieReviewRepository = MovieDataStore()) {
         self.repository = repository
@@ -30,4 +30,10 @@ class MovieUseCase {
     func delete(_ index: IndexPath) {
         repository.deleteMovieReview(index)
     }
+    
+    // MARK: 更新通知を受け取る
+    func notification(_ presenter: ReviewManagementPresenterInput) {
+        repository.notification(presenter)
+    }
+    
 }
