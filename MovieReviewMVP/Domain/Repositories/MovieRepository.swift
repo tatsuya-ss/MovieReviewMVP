@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
 protocol MovieReviewRepository {
     func createMovieReview(_ movie: MovieReviewElement)
     func fetchMovieReview() -> [MovieReviewElement]
     func updateMovieReview(_ movie: MovieReviewElement)
     func deleteMovieReview(_ index: IndexPath)
+    mutating func notification(_ presenter: ReviewManagementPresenterInput)
 }
 
 struct MovieReviewElement {

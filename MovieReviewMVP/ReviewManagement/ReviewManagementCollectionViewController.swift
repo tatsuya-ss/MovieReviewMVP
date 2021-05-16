@@ -10,6 +10,7 @@ import UIKit
 class ReviewManagementCollectionViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!    
     private var collectionViewCellWidth: CGFloat?
+    let movieUseCase = MovieUseCase()
     
     private var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -21,11 +22,7 @@ class ReviewManagementCollectionViewController: UIViewController {
         setup()
         collectionView.dataSource = self
         collectionView.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        presenter.returnReviewContent()
+        movieUseCase.notification(presenter)
     }
     
 }
