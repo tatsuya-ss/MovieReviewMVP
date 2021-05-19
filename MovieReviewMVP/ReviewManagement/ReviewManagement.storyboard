@@ -36,9 +36,16 @@
                             <constraint firstItem="TBe-6n-WPe" firstAttribute="leading" secondItem="TUH-qs-qL5" secondAttribute="leading" constant="10" id="zrR-te-Qay"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="HGn-4s-VNT"/>
+                    <navigationItem key="navigationItem" id="HGn-4s-VNT">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="85M-SP-O1o">
+                            <connections>
+                                <action selector="trashButtonTapped:" destination="fnF-bp-mOz" id="fRk-yr-G9l"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="TBe-6n-WPe" id="y5H-zf-CZG"/>
+                        <outlet property="trashButton" destination="85M-SP-O1o" id="iWT-bu-0ii"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQ5-aB-otn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

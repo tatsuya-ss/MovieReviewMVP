@@ -18,10 +18,18 @@ struct MovieDataStore : MovieReviewRepository {
         notificationToken = results.observe { changes in
             switch changes {
             case .initial:
-                presenter.returnReviewContent()
+                presenter.updateReviewMovies(.initial, nil)
                 print("初期表示を行いました")
             case let .update(_, deletions, insertions, modifications):
-                presenter.returnReviewContent()
+                
+                if let deletionIndex = deletions.first {
+                    presenter.updateReviewMovies(.delete, deletionIndex)
+                } else if let insertionIndex = insertions.first {
+                    presenter.updateReviewMovies(.insert, insertionIndex)
+                } else if let modificationIndex = modifications.first {
+                    presenter.updateReviewMovies(.modificate, modificationIndex)
+                }
+
                 print("更新処理を行いました",deletions, insertions, modifications)
             case let .error(error):
                 print(error)

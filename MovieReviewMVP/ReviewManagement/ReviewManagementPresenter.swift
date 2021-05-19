@@ -8,17 +8,25 @@
 import Foundation
 
 protocol ReviewManagementPresenterInput {
-    func returnReviewContent()
     var numberOfMovies: Int { get }
     func movieReview(forRow row: Int) -> MovieReviewElement?
-    func didDeleteReviewMovie(index: IndexPath)
+    func didDeleteReviewMovie(indexs: [IndexPath]?)
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func updateReviewMovies(_ state: movieUpdateState, _ index: Int?)
+    
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
-    func updataMovieReview()
+    func deselectItem(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func updateItem(_ state: movieUpdateState, _ index: Int?)
+
 }
 
+
+
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
+    
+    
     
     private weak var view: ReviewManagementPresenterOutput!
     
@@ -28,27 +36,41 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         self.view = view
         self.model = model
     }
+    
     private(set) var movieReviewElements: [MovieReviewElement] = []
     
     var numberOfMovies: Int {
         return movieReviewElements.count
     }
-
-    func returnReviewContent() {
+    
+    func updateReviewMovies(_ state: movieUpdateState, _ index: Int?) {
         let movieUseCase = MovieUseCase()
         let movieReviewElements = movieUseCase.fetch()
         self.movieReviewElements = movieReviewElements
-        view.updataMovieReview()
+        
+        view.updateItem(state, index)
     }
+
     
-    func didDeleteReviewMovie(index: IndexPath) {
-        model.deleteReviewMovie(index)
-        returnReviewContent()
+    func didDeleteReviewMovie(indexs: [IndexPath]?) {
+        print(indexs!)
+        if var selectedIndexPaths = indexs {
+            selectedIndexPaths.sort { $0 > $1 }
+            for index in selectedIndexPaths {
+                model.deleteReviewMovie(index)
+            }
+        }
         
     }
     
     func movieReview(forRow row: Int) -> MovieReviewElement? {
         movieReviewElements[row]
     }
+    
+    
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+            view.deselectItem(editing, indexPaths)
+    }
+
 
 }

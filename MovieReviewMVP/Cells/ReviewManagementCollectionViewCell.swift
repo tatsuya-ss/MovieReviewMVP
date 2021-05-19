@@ -23,6 +23,7 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     func configure(movieReview: MovieReviewElement) {
         reviewView.rating = movieReview.reviewStars
         reviewView.text = String(movieReview.reviewStars)
+        
         guard let posterUrl = URL(string: TMDBPosterURL(posterPath: movieReview.movieImagePath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
             guard let imageData = data else { return }
@@ -41,6 +42,14 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     func setupLayout(width: CGFloat) {
         movieImageView.layoutIfNeeded()
         movieImageView.layer.cornerRadius = width * 0.03
+    }
+    
+    func selectedCell() {
+        alpha = 0.5
+    }
+    
+    func deselectedCell() {
+        alpha = 1
     }
     
 }

@@ -5,12 +5,16 @@
 //  Created by 坂本龍哉 on 2021/05/12.
 //
 
+
+
 import UIKit
 
 class ReviewManagementCollectionViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!    
     private var collectionViewCellWidth: CGFloat?
+    @IBOutlet weak var trashButton: UIBarButtonItem!
     let movieUseCase = MovieUseCase()
+    
     
     private var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -23,7 +27,21 @@ class ReviewManagementCollectionViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         movieUseCase.notification(presenter)
+        isEditing = false
     }
+    
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        presenter.changeEditingStateProcess(editing, collectionView.indexPathsForSelectedItems)
+        
+    }
+    
+    @IBAction func trashButtonTapped(_ sender: Any) {
+        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
+    }
+    
     
 }
 
@@ -38,6 +56,7 @@ private extension ReviewManagementCollectionViewController {
         collectionViewCellLayout()
     }
     
+    
     func setupPresenter() {
         let reviewManagementModel = ReviewManagementModel()
         let reviewManagementPresenter = ReviewManagementPresenter(view: self, model: reviewManagementModel)
@@ -47,6 +66,7 @@ private extension ReviewManagementCollectionViewController {
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "マイレビュー"
+        navigationItem.leftBarButtonItem = editButtonItem
     }
     
     func setupTabBar() {
@@ -56,6 +76,7 @@ private extension ReviewManagementCollectionViewController {
     
     func setupCollectionView() {
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+        collectionView.allowsMultipleSelection = true
     }
 
     
@@ -79,6 +100,28 @@ private extension ReviewManagementCollectionViewController {
 
 }
 
+// MARK: - UICollectionViewDelegate
+extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+        if isEditing == true {
+            cell.selectedCell()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+        if isEditing == true {
+            cell.deselectedCell()
+        }
+        
+    }
+
+}
+
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ReviewManagementCollectionViewController : UICollectionViewDelegateFlowLayout {
     
@@ -89,7 +132,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         CGFloat(5)
     }
-
+    
 }
 
 
@@ -119,8 +162,56 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 // MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
-    func updataMovieReview() {
-        collectionView.reloadData()
+    
+    func updateItem(_ state: movieUpdateState, _ index: Int?) {
+        
+        switch state {
+        
+        case .initial:
+            collectionView.reloadData()
+
+        case .delete:
+            guard let index = index else { return }
+            collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+
+        case .insert:
+            guard let index = index else { return }
+            collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
+
+        case .modificate:
+            guard let index = index else { return }
+            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+
+        }
+        
+        isEditing = false
+    }
+    
+    func deselectItem(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+        
+        switch editing {
+        case true:
+            trashButton.isEnabled = true
+            collectionView.allowsMultipleSelection = true
+            tabBarController?.tabBar.isHidden = true
+            
+            if let indexPaths = indexPaths {
+                for index in indexPaths {
+                    collectionView.deselectItem(at: index, animated: false)
+                }
+            }
+            
+        case false:
+            trashButton.isEnabled = false
+            tabBarController?.tabBar.isHidden = false
+            
+            if let indexPaths = indexPaths {
+                for index in indexPaths {
+                    collectionView.deselectItem(at: index, animated: false)
+                    collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
+                }
+            }
+        }
     }
     
 }
