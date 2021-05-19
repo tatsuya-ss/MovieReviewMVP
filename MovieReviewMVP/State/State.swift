@@ -21,3 +21,10 @@ enum fetchMovieState {
         }
     }
 }
+
+enum movieUpdateState {
+    case initial
+    case delete
+    case insert
+    case modificate
+}
