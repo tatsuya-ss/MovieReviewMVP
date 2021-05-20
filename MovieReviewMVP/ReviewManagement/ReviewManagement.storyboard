@@ -44,7 +44,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="collectionView" destination="TBe-6n-WPe" id="y5H-zf-CZG"/>
                         <outlet property="trashButton" destination="85M-SP-O1o" id="iWT-bu-0ii"/>
                     </connections>
                 </viewController>
