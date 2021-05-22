@@ -11,10 +11,12 @@ import UIKit
 
 class ReviewManagementCollectionViewController: UIViewController {
     
-    private var collectionview: UICollectionView!
+    private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
-
     @IBOutlet weak var trashButton: UIBarButtonItem!
+    
+    
+    
     let movieUseCase = MovieUseCase()
     
     private var presenter: ReviewManagementPresenterInput!
@@ -25,8 +27,8 @@ class ReviewManagementCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        collectionview.dataSource = self
-        collectionview.delegate = self
+        collectionView.dataSource = self
+        collectionView.delegate = self
         movieUseCase.notification(presenter)
         isEditing = false
     }
@@ -35,12 +37,12 @@ class ReviewManagementCollectionViewController: UIViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
-        presenter.changeEditingStateProcess(editing, collectionview.indexPathsForSelectedItems)
+        presenter.changeEditingStateProcess(editing, collectionView.indexPathsForSelectedItems)
         
     }
     
     @IBAction func trashButtonTapped(_ sender: Any) {
-        presenter.didDeleteReviewMovie(indexs: collectionview.indexPathsForSelectedItems)
+        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
     }
     
     
@@ -52,10 +54,9 @@ private extension ReviewManagementCollectionViewController {
     func setup() {
         setupPresenter()
         setupNavigation()
-        setupTabBar()
         setupCollectionView()
+        setupTabBar()
     }
-    
     
     func setupPresenter() {
         let reviewManagementModel = ReviewManagementModel()
@@ -71,23 +72,38 @@ private extension ReviewManagementCollectionViewController {
     
     func setupTabBar() {
         tabBarController?.tabBar.isTranslucent = false
+        
     }
+    
+    
+    @objc func trashButtonTapped() {
+        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
+    }
+
     
     
     func setupCollectionView() {
         
         colunmFlowLayout = ColumnFlowLayout()
+        print("*********************")
+        print(view.bounds)
+        print(view.frame)
+        print("*********************")
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
+        collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = .black
+        collectionView.alwaysBounceVertical = true
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView)
         
-        collectionview = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
-        collectionview.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
-        collectionview.backgroundColor = .black
-        collectionview.alwaysBounceVertical = true
-        view.addSubview(collectionview)
+        [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+         collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),].forEach { $0.isActive = true}
         
-        
-        collectionview.allowsMultipleSelection = true
+        collectionView.allowsMultipleSelection = true
 
-        collectionview.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
     }
 
 }
@@ -158,19 +174,19 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         switch state {
         
         case .initial:
-            collectionview.reloadData()
+            collectionView.reloadData()
 
         case .delete:
             guard let index = index else { return }
-            collectionview.deleteItems(at: [IndexPath(item: index, section: 0)])
+            collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
 
         case .insert:
             guard let index = index else { return }
-            collectionview.insertItems(at: [IndexPath(item: index, section: 0)])
+            collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
 
         case .modificate:
             guard let index = index else { return }
-            collectionview.reloadItems(at: [IndexPath(item: index, section: 0)])
+            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
 
         }
         
@@ -182,12 +198,12 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         switch editing {
         case true:
             trashButton.isEnabled = true
-            collectionview.allowsMultipleSelection = true
+            collectionView.allowsMultipleSelection = true
             tabBarController?.tabBar.isHidden = true
             
             if let indexPaths = indexPaths {
                 for index in indexPaths {
-                    collectionview.deselectItem(at: index, animated: false)
+                    collectionView.deselectItem(at: index, animated: false)
                 }
             }
             
@@ -197,8 +213,8 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             
             if let indexPaths = indexPaths {
                 for index in indexPaths {
-                    collectionview.deselectItem(at: index, animated: false)
-                    collectionview.reloadItems(at: [IndexPath(item: index.row, section: 0)])
+                    collectionView.deselectItem(at: index, animated: false)
+                    collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
                 }
             }
         }

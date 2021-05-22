@@ -73,6 +73,11 @@
             <point key="canvasLocation" x="213.768115942029" y="143.97321428571428"/>
         </collectionViewCell>
     </objects>
+    <designables>
+        <designable name="K7q-rl-KyM">
+            <size key="intrinsicContentSize" width="98.765625" height="16"/>
+        </designable>
+    </designables>
     <resources>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -15,6 +15,7 @@ class ColumnFlowLayout: UICollectionViewFlowLayout {
         
         let availavleWidth = cv.bounds.inset(by: cv.layoutMargins).size.width
         
+        
         let minColumnWidth = CGFloat(100.0)
         
         let maxNumberColumns = Int(availavleWidth / minColumnWidth)
