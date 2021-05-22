@@ -25,6 +25,9 @@
                     </imageView>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="K7q-rl-KyM" customClass="CosmosView" customModule="Cosmos">
                         <rect key="frame" x="0.0" y="154" width="103" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="fHY-8d-0dm"/>
+                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
                                 <color key="value" systemColor="systemYellowColor"/>
@@ -33,7 +36,7 @@
                                 <color key="value" systemColor="systemYellowColor"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="starSize">
-                                <real key="value" value="17"/>
+                                <real key="value" value="16"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
                                 <real key="value" value="-1"/>
@@ -43,7 +46,7 @@
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="string" keyPath="text" value="3.0"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="textSize">
-                                <real key="value" value="11"/>
+                                <real key="value" value="12"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="updateOnTouch" value="NO"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
@@ -55,12 +58,11 @@
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="mGi-RA-Atg" secondAttribute="trailing" id="KBD-fQ-YPz"/>
-                <constraint firstItem="mGi-RA-Atg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="OPx-hG-CFa"/>
-                <constraint firstItem="K7q-rl-KyM" firstAttribute="top" secondItem="mGi-RA-Atg" secondAttribute="bottom" constant="2" id="PiT-0U-HEQ"/>
+                <constraint firstItem="mGi-RA-Atg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="E1b-Z5-OWE"/>
+                <constraint firstItem="K7q-rl-KyM" firstAttribute="top" secondItem="mGi-RA-Atg" secondAttribute="bottom" constant="2" id="ESY-5S-4ZK"/>
+                <constraint firstAttribute="trailing" secondItem="mGi-RA-Atg" secondAttribute="trailing" id="Ldn-y5-szk"/>
                 <constraint firstItem="mGi-RA-Atg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="a2q-YU-vjY"/>
                 <constraint firstAttribute="trailing" secondItem="K7q-rl-KyM" secondAttribute="trailing" id="aiH-gA-GwV"/>
-                <constraint firstAttribute="bottom" secondItem="K7q-rl-KyM" secondAttribute="bottom" id="eTp-FW-TKt"/>
                 <constraint firstItem="K7q-rl-KyM" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="mKb-7H-GPX"/>
             </constraints>
             <size key="customSize" width="103" height="170"/>
@@ -73,7 +75,7 @@
     </objects>
     <designables>
         <designable name="K7q-rl-KyM">
-            <size key="intrinsicContentSize" width="102.478515625" height="17"/>
+            <size key="intrinsicContentSize" width="98.765625" height="16"/>
         </designable>
     </designables>
     <resources>

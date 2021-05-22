@@ -10,11 +10,14 @@
 import UIKit
 
 class ReviewManagementCollectionViewController: UIViewController {
-    @IBOutlet weak var collectionView: UICollectionView!    
-    private var collectionViewCellWidth: CGFloat?
-    @IBOutlet weak var trashButton: UIBarButtonItem!
-    let movieUseCase = MovieUseCase()
     
+    private var collectionView: UICollectionView!
+    private var colunmFlowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var trashButton: UIBarButtonItem!
+    
+    
+    
+    let movieUseCase = MovieUseCase()
     
     private var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -51,11 +54,9 @@ private extension ReviewManagementCollectionViewController {
     func setup() {
         setupPresenter()
         setupNavigation()
-        setupTabBar()
         setupCollectionView()
-        collectionViewCellLayout()
+        setupTabBar()
     }
-    
     
     func setupPresenter() {
         let reviewManagementModel = ReviewManagementModel()
@@ -71,31 +72,38 @@ private extension ReviewManagementCollectionViewController {
     
     func setupTabBar() {
         tabBarController?.tabBar.isTranslucent = false
+        
     }
+    
+    
+    @objc func trashButtonTapped() {
+        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
+    }
+
     
     
     func setupCollectionView() {
-        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+        
+        colunmFlowLayout = ColumnFlowLayout()
+        print("*********************")
+        print(view.bounds)
+        print(view.frame)
+        print("*********************")
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
+        collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = .black
+        collectionView.alwaysBounceVertical = true
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView)
+        
+        [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+         collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),].forEach { $0.isActive = true}
+        
         collectionView.allowsMultipleSelection = true
-    }
 
-    
-    func collectionViewCellLayout() {
-        let layout = UICollectionViewFlowLayout()
-        
-        let safeAreaWidth = view.bounds.width - 20
-        let cellWidth = (safeAreaWidth - 10) / 3
-        collectionViewCellWidth = cellWidth
-        // ここの25は何回もビルドして調整したため、他にいい方法ないか調べる
-        let cellHeight = (collectionView.bounds.height - 25) / 4
-
-        
-        layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        layout.minimumLineSpacing = 5
-        
-
-        collectionView.collectionViewLayout = layout
-        
+        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
     }
 
 }
@@ -126,11 +134,11 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
 extension ReviewManagementCollectionViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        CGFloat(5)
+        CGFloat(10)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        CGFloat(5)
+        CGFloat(1)
     }
     
 }
@@ -147,11 +155,9 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
         
-        if let movieReviews = presenter.movieReview(forRow: indexPath.row),
-           let cellWidth = collectionViewCellWidth {
-            
+        if let movieReviews = presenter.movieReview(forRow: indexPath.row) {
             cell.configure(movieReview: movieReviews)
-            cell.setupLayout(width: cellWidth)
+            cell.setupLayout()
         }
         
         return cell

@@ -22,6 +22,7 @@ class SearchMovieViewController: UIViewController {
         self.presenter = presenter
     }
     
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
