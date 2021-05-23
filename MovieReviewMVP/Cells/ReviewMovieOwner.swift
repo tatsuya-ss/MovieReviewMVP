@@ -52,7 +52,7 @@ class ReviewMovieOwner: NSObject {
 
     
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
-    func fetchMovieImage(movie: MovieInfomation) {
+    func fetchMovieImage(movieReviewState: MovieReviewState, movie: MovieReviewElement) {
         
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
@@ -76,7 +76,17 @@ class ReviewMovieOwner: NSObject {
             titleLabel.text = "タイトルがありません"
         }
         overviewTextView.text = movie.overview
-        releaseDateLabel.text = movie.release_date
+        releaseDateLabel.text = movie.releaseDay
+        
+        switch movieReviewState {
+        case .beforeStore:
+            print("初期保存しました")
+        case .afterStore:
+            reviewTextView.text = movie.review
+            reviewStarView.rating = movie.reviewStars ?? 0
+            reviewStarView.text = String(movie.reviewStars ?? 0)
+        }
+        
     }
 
 }

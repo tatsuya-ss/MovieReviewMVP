@@ -18,7 +18,7 @@ class MovieTableViewCell: UITableViewCell {
         titleLabel.text = nil
     }
     
-    func configureCell(movie: MovieInfomation, height: CGFloat) {
+    func configureCell(movie: MovieReviewElement, height: CGFloat) {
         
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }

@@ -9,18 +9,25 @@ import Foundation
 
 protocol ReviewMovieModelInput {
     func createMovieReview(_ movie: MovieReviewElement)
+    func modificateMovieReview(_ movie: MovieReviewElement)
+
 }
 
 final class ReviewMovieModel : ReviewMovieModelInput {
     
-    private let movieInfomation: MovieInfomation!
-    init(movie: MovieInfomation) {
-        self.movieInfomation = movie
+    private var movieReviewElement: MovieReviewElement?
+    init(movie: MovieReviewElement?, movieReviewElement: MovieReviewElement?) {
+        self.movieReviewElement = movie
     }
     
     func createMovieReview(_ movie: MovieReviewElement) {
         let movieUseCase = MovieUseCase()
         movieUseCase.create(movie)
     }
-
+    
+    func modificateMovieReview(_ movie: MovieReviewElement) {
+        let movieUseCase = MovieUseCase()
+        movieUseCase.update(movie)
+    }
+    
 }

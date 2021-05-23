@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import UIKit
 
-
-enum fetchMovieState {
+enum FetchMovieState {
     case search
     case upcoming
     
@@ -22,9 +22,28 @@ enum fetchMovieState {
     }
 }
 
-enum movieUpdateState {
+enum MovieUpdateState {
     case initial
     case delete
     case insert
     case modificate
+}
+
+enum MovieReviewState {
+    case beforeStore
+    case afterStore
+}
+
+enum CellSelectedState {
+    case selected
+    case deselected
+    
+    var imageAlpha: CGFloat {
+        switch self {
+        case .selected:
+            return 0.5
+        case .deselected:
+            return 1
+        }
+    }
 }

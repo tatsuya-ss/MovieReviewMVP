@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 protocol MovieReviewRepository {
     func createMovieReview(_ movie: MovieReviewElement)
@@ -16,11 +15,3 @@ protocol MovieReviewRepository {
     mutating func notification(_ presenter: ReviewManagementPresenterInput)
 }
 
-struct MovieReviewElement {
-    let title: String
-    let reviewStars: Double
-    let releaseDay: String
-    let overview: String
-    let review: String
-    let movieImagePath: String
-}

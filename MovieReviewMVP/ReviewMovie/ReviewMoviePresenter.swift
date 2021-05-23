@@ -10,38 +10,55 @@ import Foundation
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
     func didTapSaveButton(reviewScore: Double, review: String)
+    func returnMovieReviewState() -> MovieReviewState
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
-    func displayReviewMovie(_ movieInfomation: MovieInfomation)
+    func displayReviewMovie(movieReviewState: MovieReviewState, _ movieInfomation: MovieReviewElement)
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
+    func returnMovieReviewState() -> MovieReviewState {
+        movieReviewState
+    }
     
-    private var movieInfomation: MovieInfomation
+    
+    private var movieReviewState: MovieReviewState
+    private var movieReviewElement: MovieReviewElement
+
     
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
     
-    init(movieInfomation: MovieInfomation, view: ReviewMoviePresenterOutput, model: ReviewMovieModelInput) {
-        self.movieInfomation = movieInfomation
+    init(movieReviewState: MovieReviewState, movieReviewElement: MovieReviewElement, view: ReviewMoviePresenterOutput, model: ReviewMovieModelInput) {
+        self.movieReviewState = movieReviewState
+        self.movieReviewElement = movieReviewElement
         self.view = view
         self.model = model
     }
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
-        self.view.displayReviewMovie(movieInfomation)
+        switch movieReviewState {
+        case .beforeStore:
+            self.view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        case .afterStore:
+            self.view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+            print(movieReviewElement)
+        }
     }
     
     // MARK: 保存ボタンが押された時の処理
     func didTapSaveButton(reviewScore: Double, review: String) {
-        let movieReviewContent = MovieReviewElement(title: movieInfomation.title ?? "",
-                                                    reviewStars: reviewScore,
-                                                    releaseDay: movieInfomation.release_date ?? "",
-                                                    overview: movieInfomation.overview ?? "",
-                                                    review: review,
-                                                    movieImagePath: movieInfomation.poster_path ?? "")
-        model.createMovieReview(movieReviewContent)
+
+        movieReviewElement.reviewStars = reviewScore
+        movieReviewElement.review = review
+        
+        switch movieReviewState {
+        case .beforeStore:
+            model.createMovieReview(movieReviewElement)
+        case .afterStore:
+            model.modificateMovieReview(movieReviewElement)
+        }
     }
 }
