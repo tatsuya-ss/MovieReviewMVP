@@ -14,6 +14,12 @@ class RealmMyMovieInfomation: Object {
     @objc dynamic var overview: String = ""
     @objc dynamic var review: String = ""
     @objc dynamic var movieImagePath: String = ""
+    @objc dynamic var original_name: String = ""
+    @objc dynamic var backdrop_path: String = ""
+    
+    override class func primaryKey() -> String? {
+        "title"
+    }
 }
 
 

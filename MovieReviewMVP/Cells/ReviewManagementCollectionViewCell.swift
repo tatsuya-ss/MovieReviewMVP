@@ -21,13 +21,12 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     
     // MARK: configure
     func configure(movieReview: MovieReviewElement) {
-        reviewView.rating = movieReview.reviewStars
-        reviewView.text = String(movieReview.reviewStars)
         
-        guard let posterUrl = URL(string: TMDBPosterURL(posterPath: movieReview.movieImagePath).posterURL) else { return }
+        guard let posterPath = movieReview.poster_path,
+              let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
             guard let imageData = data else { return }
-            
+
             DispatchQueue.global().async { [weak self] in
                 guard let image = UIImage(data: imageData) else { return }
                 DispatchQueue.main.async {
@@ -36,6 +35,11 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
             }
         }
         task.resume()
+        
+        
+        reviewView.rating = movieReview.reviewStars ?? 0.0
+        reviewView.text = String(movieReview.reviewStars ?? 0.0)
+
     }
     
     // MARK: setup
@@ -44,12 +48,13 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
         movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.03
     }
     
-    func selectedCell() {
-        alpha = 0.5
-    }
-    
-    func deselectedCell() {
-        alpha = 1
+    func tapCell(state: CellSelectedState) {
+        switch state {
+        case .selected:
+            alpha = state.imageAlpha
+        case .deselected:
+            alpha = state.imageAlpha
+        }
     }
     
 }

@@ -14,6 +14,16 @@ struct TMDBSearchResponses : Codable {
     var results: [MovieInfomation]
 }
 
+struct MovieInfomation : Codable {
+    var title: String?
+    var poster_path: String?
+    var original_name: String?
+    var backdrop_path: String?
+    var overview: String?
+    var release_date: String?
+}
+
+
 // MARK: - API
 struct TMDBApi {
     static let key = MovieReviewMVPKeys().tMDBApiKey
@@ -49,9 +59,10 @@ struct TMDBPopularMovieURL {
 
 // MARK: - upcoming
 struct TMDBUpcomingMovieURL {
-    
-    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1&region=JP"
+    static let key = MovieReviewMVPKeys().tMDBApiKey
+    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBUpcomingMovieURL.key)&language=ja-JA&page=1&region=JP"
 }
+
 
 //enum TMDBSearchError : Error {
 //    case TMDBrequestError(Error)

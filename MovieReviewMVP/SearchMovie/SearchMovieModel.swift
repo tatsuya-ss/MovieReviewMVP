@@ -8,12 +8,12 @@
 import Foundation
 
 protocol SearchMovieModelInput {
-    func fetchMovie(fetchState: fetchMovieState, query: String?, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void)
+    func fetchMovie(fetchState: FetchMovieState, query: String?, completion: @escaping (Result<[MovieReviewElement], SearchError>) -> Void)
 }
 
 final class SearchMovieModel : SearchMovieModelInput {
     
-    func fetchMovie(fetchState: fetchMovieState, query: String?, completion: @escaping (Result<MovieSearchResponses, SearchError>) -> Void) {
+    func fetchMovie(fetchState: FetchMovieState, query: String?, completion: @escaping (Result<[MovieReviewElement], SearchError>) -> Void) {
         
         var url: String?
         switch fetchState {
@@ -42,7 +42,14 @@ final class SearchMovieModel : SearchMovieModelInput {
                 
                 if response.statusCode == 200 {
                     let data: TMDBSearchResponses = try JSONDecoder().decode(TMDBSearchResponses.self, from: data)
-                    completion(.success(MovieSearchResponses(response: data)))
+                                        
+                    var movieSearchResponses: [MovieReviewElement] = []
+                    
+                    // CodableのmovieInfomation型から共通で使いたいMovieReviewElement型に変換
+                    for review in data.results {
+                        movieSearchResponses.append(MovieReviewElement(movieInfomation: review))
+                    }
+                    completion(.success(movieSearchResponses))
                 }
                 
             } catch {
@@ -53,9 +60,16 @@ final class SearchMovieModel : SearchMovieModelInput {
     }
 }
 
-private extension MovieSearchResponses {
-    init(response: TMDBSearchResponses) {
-        self = MovieSearchResponses(results: response.results)
+private extension MovieReviewElement {
+    init(movieInfomation: MovieInfomation) {
+        self = MovieReviewElement(title: movieInfomation.title,
+                                  poster_path: movieInfomation.poster_path,
+                                  original_name: movieInfomation.original_name,
+                                  backdrop_path: movieInfomation.backdrop_path,
+                                  overview: movieInfomation.overview,
+                                  releaseDay: movieInfomation.release_date,
+                                  reviewStars: nil,
+                                  review: nil)
     }
 }
 

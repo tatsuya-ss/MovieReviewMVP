@@ -9,22 +9,21 @@ import Foundation
 
 protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
-    func movie() -> [MovieInfomation]
+    func movie() -> [MovieReviewElement]
     func didSelectRow(at indexPath: IndexPath)
-    func fetchMovie(state: fetchMovieState, text: String?)
+    func fetchMovie(state: FetchMovieState, text: String?)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
-    func update(_ movie: [MovieInfomation], _ state: fetchMovieState)
-    func reviewTheMovie(movie: MovieInfomation)
+    func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement])
+    func reviewTheMovie(movie: MovieReviewElement)
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     private weak var view: SearchMoviePresenterOutput!
     private var model: SearchMovieModelInput
-    
-    private(set) var movies: [MovieInfomation] = []
+    private(set) var movies: [MovieReviewElement] = []
     
     init(view: SearchMoviePresenterOutput, model: SearchMovieModelInput) {
         self.view = view
@@ -35,7 +34,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         movies.count
     }
     
-    func movie() -> [MovieInfomation] {
+    func movie() -> [MovieReviewElement] {
         movies
     }
     
@@ -43,14 +42,14 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         view.reviewTheMovie(movie: movies[indexPath.row])
     }
     
-    func fetchMovie(state: fetchMovieState, text: String?) {
+    func fetchMovie(state: FetchMovieState, text: String?) {
         
         model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
             switch result {
             case let .success(movies):
-                self?.movies = movies.results
+                self?.movies = movies
                 DispatchQueue.main.async {
-                    self?.view.update(movies.results, state)
+                    self?.view.update(state, movies)
                 }
             case let .failure(SearchError.requestError(error)):
                 print(error)

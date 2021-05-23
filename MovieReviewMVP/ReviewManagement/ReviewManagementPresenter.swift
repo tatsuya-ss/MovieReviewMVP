@@ -12,20 +12,20 @@ protocol ReviewManagementPresenterInput {
     func movieReview(forRow row: Int) -> MovieReviewElement?
     func didDeleteReviewMovie(indexs: [IndexPath]?)
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateReviewMovies(_ state: movieUpdateState, _ index: Int?)
+    func updateReviewMovies(_ state: MovieUpdateState, _ index: Int?)
+    func didSelectRow(at: IndexPath)
     
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
     func deselectItem(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateItem(_ state: movieUpdateState, _ index: Int?)
-
+    func updateItem(_ state: MovieUpdateState, _ index: Int?)
+    func displayMyReview(_ movie: MovieReviewElement)
 }
 
 
 
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
-    
     
     
     private weak var view: ReviewManagementPresenterOutput!
@@ -43,13 +43,20 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         return movieReviewElements.count
     }
     
-    func updateReviewMovies(_ state: movieUpdateState, _ index: Int?) {
+    func updateReviewMovies(_ state: MovieUpdateState, _ index: Int?) {
         let movieUseCase = MovieUseCase()
         let movieReviewElements = movieUseCase.fetch()
         self.movieReviewElements = movieReviewElements
-        
         view.updateItem(state, index)
     }
+    
+    
+    func didSelectRow(at indexPath: IndexPath) {
+        view.displayMyReview(movieReviewElements[indexPath.row])
+    }
+    
+    
+
 
     
     func didDeleteReviewMovie(indexs: [IndexPath]?) {

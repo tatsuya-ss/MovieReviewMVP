@@ -15,8 +15,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var trashButton: UIBarButtonItem!
     
-    
-    
     let movieUseCase = MovieUseCase()
     
     private var presenter: ReviewManagementPresenterInput!
@@ -85,10 +83,7 @@ private extension ReviewManagementCollectionViewController {
     func setupCollectionView() {
         
         colunmFlowLayout = ColumnFlowLayout()
-        print("*********************")
-        print(view.bounds)
-        print(view.frame)
-        print("*********************")
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
         collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .black
@@ -114,16 +109,20 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+        
         if isEditing == true {
-            cell.selectedCell()
+            cell.tapCell(state: .selected)
+        } else {
+            presenter.didSelectRow(at: indexPath)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+        
         if isEditing == true {
-            cell.deselectedCell()
+            cell.tapCell(state: .deselected)
         }
         
     }
@@ -169,7 +168,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
     
-    func updateItem(_ state: movieUpdateState, _ index: Int?) {
+    func updateItem(_ state: MovieUpdateState, _ index: Int?) {
         
         switch state {
         
@@ -201,6 +200,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             collectionView.allowsMultipleSelection = true
             tabBarController?.tabBar.isHidden = true
             
+            // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths {
                 for index in indexPaths {
                     collectionView.deselectItem(at: index, animated: false)
@@ -211,6 +211,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             trashButton.isEnabled = false
             tabBarController?.tabBar.isHidden = false
             
+            // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             if let indexPaths = indexPaths {
                 for index in indexPaths {
                     collectionView.deselectItem(at: index, animated: false)
@@ -219,5 +220,25 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             }
         }
     }
+    
+    
+    
+    func displayMyReview(_ movie: MovieReviewElement) {
+        
+        let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        
+        let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
+        
+        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore, movieReviewElement: movie, view: reviewMovieVC, model: model)
+                
+        reviewMovieVC.inject(presenter: presenter)
+        
+        let nav = UINavigationController(rootViewController: reviewMovieVC)
+        
+        nav.modalPresentationStyle = .fullScreen
+        
+        self.present(nav, animated: true, completion: nil)
+    }
+
     
 }

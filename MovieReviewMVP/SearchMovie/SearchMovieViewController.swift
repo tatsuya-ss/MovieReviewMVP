@@ -13,9 +13,7 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var displayLabel: UILabel!
     
     private var tableViewCellHeight: CGFloat?
-    
-    var searchMovieViewController: SearchMovieViewController!
-    
+    private var searchMovieViewController: SearchMovieViewController!
     private var presenter: SearchMoviePresenterInput!
     
     func inject(presenter: SearchMoviePresenterInput) {
@@ -59,8 +57,13 @@ private extension SearchMovieViewController {
         tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
         
         // MARK: tableViewの高さを設定
-        tableViewCellHeight = tableView.bounds.height / 5
+        
         if let height = tableViewCellHeight {
+            tableView.rowHeight = height
+            tableView.estimatedRowHeight = height
+        } else {
+            tableViewCellHeight = tableView.bounds.height / 5
+            guard let height = tableViewCellHeight else { return }
             tableView.rowHeight = height
             tableView.estimatedRowHeight = height
         }
@@ -156,30 +159,28 @@ extension SearchMovieViewController : UITableViewDataSource {
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
-    func update(_ movie: [MovieInfomation], _ state: fetchMovieState) {
-        switch state {
+    func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
+        switch fetchState {
         case .search:
-            displayLabel.text = state.displayLabelText
+            displayLabel.text = fetchState.displayLabelText
         case .upcoming:
-            displayLabel.text = state.displayLabelText
+            displayLabel.text = fetchState.displayLabelText
         }
         tableView.reloadData()
     }
     
-    func reviewTheMovie(movie: MovieInfomation) {
+    func reviewTheMovie(movie: MovieReviewElement) {
         
         let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
-        let model = ReviewMovieModel(movie: movie)
+        let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
         
-        let presenter = ReviewMoviePresenter(movieInfomation: movie, view: reviewMovieVC, model: model)
+        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore, movieReviewElement: movie, view: reviewMovieVC, model: model)
         
         reviewMovieVC.inject(presenter: presenter)
         
         let nav = UINavigationController(rootViewController: reviewMovieVC)
-        
-//        nav.modalPresentationStyle = .fullScreen
-        
+                
         self.present(nav, animated: true, completion: nil)
     }
 }

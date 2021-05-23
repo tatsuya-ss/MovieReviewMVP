@@ -12,6 +12,7 @@ struct MovieDataStore : MovieReviewRepository {
     
     // MARK: 更新通知を受け取り、collectionViewをreload
     mutating func notification(_ presenter: ReviewManagementPresenterInput) {
+        
         let realm = try! Realm()
         let results = realm.objects(RealmMyMovieInfomation.self)
 
@@ -42,17 +43,20 @@ struct MovieDataStore : MovieReviewRepository {
         let realmMyMovieInfomation = RealmMyMovieInfomation()
         let realm = try! Realm()
         
-        realmMyMovieInfomation.title = movie.title
-        realmMyMovieInfomation.reviewStars = movie.reviewStars
-        realmMyMovieInfomation.releaseDay = movie.releaseDay
-        realmMyMovieInfomation.overview = movie.overview
-        realmMyMovieInfomation.review = movie.review
-        realmMyMovieInfomation.movieImagePath = movie.movieImagePath
+        realmMyMovieInfomation.title = movie.title ?? ""
+        realmMyMovieInfomation.reviewStars = movie.reviewStars ?? 0.0
+        realmMyMovieInfomation.releaseDay = movie.releaseDay ?? ""
+        realmMyMovieInfomation.overview = movie.overview ?? ""
+        realmMyMovieInfomation.review = movie.review ?? ""
+        realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
+        
+        
         
         try! realm.write {
             realm.add(realmMyMovieInfomation.self)
+            
         }
-//        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     func fetchMovieReview() -> [MovieReviewElement] {
@@ -64,28 +68,29 @@ struct MovieDataStore : MovieReviewRepository {
         }
         
         var movieReviewElements: [MovieReviewElement] = []
+        
         for movie in realmMyMovieInfomations {
-            movieReviewElements.append(MovieReviewElement(title: movie.title,
-                                                          reviewStars: movie.reviewStars,
-                                                          releaseDay: movie.releaseDay,
-                                                          overview: movie.overview,
-                                                          review: movie.review,
-                                                          movieImagePath: movie.movieImagePath))
+            
+            movieReviewElements.append(MovieReviewElement(title: movie.title, poster_path: movie.movieImagePath, original_name: movie.original_name, backdrop_path: movie.backdrop_path, overview: movie.overview, releaseDay: movie.releaseDay, reviewStars: movie.reviewStars, review: movie.review))
+            
         }
         return movieReviewElements
     }
     
     func updateMovieReview(_ movie: MovieReviewElement) {
+        
         let realmMyMovieInfomation = RealmMyMovieInfomation()
+        realmMyMovieInfomation.title = movie.title ?? ""
+        realmMyMovieInfomation.reviewStars = movie.reviewStars ?? 0.0
+        realmMyMovieInfomation.releaseDay = movie.releaseDay ?? ""
+        realmMyMovieInfomation.overview = movie.overview ?? ""
+        realmMyMovieInfomation.review = movie.review ?? ""
+        realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
+
         let realm = try! Realm()
         
         try! realm.write {
-            realmMyMovieInfomation.title = movie.title
-            realmMyMovieInfomation.reviewStars = movie.reviewStars
-            realmMyMovieInfomation.releaseDay = movie.releaseDay
-            realmMyMovieInfomation.overview = movie.overview
-            realmMyMovieInfomation.review = movie.review
-            realmMyMovieInfomation.movieImagePath = movie.movieImagePath
+            realm.add(realmMyMovieInfomation, update: .modified)
         }
 
     }

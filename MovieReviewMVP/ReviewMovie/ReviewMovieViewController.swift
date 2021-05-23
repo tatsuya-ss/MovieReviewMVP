@@ -46,16 +46,25 @@ private extension ReviewMovieViewController {
 
     func setNavigationController() {
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        switch presenter.returnMovieReviewState() {
+        case .beforeStore:
+            saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+
+        case .afterStore:
+            saveButton = UIBarButtonItem(title: "更新", style: .done, target: self, action: #selector(saveButtonTapped))
+
+        }
         
-        saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .white
         self.navigationItem.rightBarButtonItem = saveButton
 
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
         stopButton.tintColor = .white
         self.navigationItem.leftBarButtonItem = stopButton
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
 
     }
     
@@ -67,6 +76,7 @@ private extension ReviewMovieViewController {
         presenter.didTapSaveButton(reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0, review: reviewMovieOwner.reviewTextView.text ?? "")
         dismiss(animated: true, completion: nil)
     }
+
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
@@ -84,7 +94,7 @@ extension ReviewMovieViewController : UITextViewDelegate {
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-    func displayReviewMovie(_ movieInfomation: MovieInfomation) {
-        reviewMovieOwner.fetchMovieImage(movie: movieInfomation)
+    func displayReviewMovie(movieReviewState: MovieReviewState, _ movieReviewElement: MovieReviewElement) {
+        reviewMovieOwner.fetchMovieImage(movieReviewState: movieReviewState, movie: movieReviewElement)
     }
 }
