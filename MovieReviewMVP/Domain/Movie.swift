@@ -23,6 +23,7 @@ struct MovieReviewElement {
     var releaseDay: String?
     var reviewStars: Double?
     var review: String?
+    var create_at: Date?
 }
 
 

@@ -12,6 +12,7 @@ protocol MovieReviewRepository {
     func fetchMovieReview() -> [MovieReviewElement]
     func updateMovieReview(_ movie: MovieReviewElement)
     func deleteMovieReview(_ index: IndexPath)
+    func sortMovieReview(_ movie: MovieReviewElement)
     mutating func notification(_ presenter: ReviewManagementPresenterInput)
 }
 

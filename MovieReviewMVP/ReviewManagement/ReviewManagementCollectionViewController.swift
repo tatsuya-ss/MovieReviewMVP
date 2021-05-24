@@ -178,10 +178,9 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         case .delete:
             guard let index = index else { return }
             collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-
         case .insert:
-            guard let index = index else { return }
-            collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
+            
+            collectionView.reloadData()
 
         case .modificate:
             guard let index = index else { return }
