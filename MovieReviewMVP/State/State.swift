@@ -47,3 +47,21 @@ enum CellSelectedState {
         }
     }
 }
+
+enum sortState {
+    case created
+    case title
+    case reviewStar
+        
+    
+    var keyPath: String {
+        switch self {
+        case .created:
+            return "created_at"
+        case .title:
+            return "title"
+        case .reviewStar:
+            return "reviewStars"
+        }
+    }
+}

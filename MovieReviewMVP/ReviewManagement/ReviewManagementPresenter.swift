@@ -47,6 +47,8 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         let movieUseCase = MovieUseCase()
         let movieReviewElements = movieUseCase.fetch()
         self.movieReviewElements = movieReviewElements
+        print(movieReviewElements)
+
         view.updateItem(state, index)
     }
     
@@ -63,11 +65,11 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         print(indexs!)
         if var selectedIndexPaths = indexs {
             selectedIndexPaths.sort { $0 > $1 }
+            print(selectedIndexPaths)
             for index in selectedIndexPaths {
                 model.deleteReviewMovie(index)
             }
         }
-        
     }
     
     func movieReview(forRow row: Int) -> MovieReviewElement? {

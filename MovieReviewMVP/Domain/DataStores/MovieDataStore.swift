@@ -14,7 +14,7 @@ struct MovieDataStore : MovieReviewRepository {
     mutating func notification(_ presenter: ReviewManagementPresenterInput) {
         
         let realm = try! Realm()
-        let results = realm.objects(RealmMyMovieInfomation.self)
+        let results = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
 
         notificationToken = results.observe { changes in
             switch changes {
@@ -25,9 +25,11 @@ struct MovieDataStore : MovieReviewRepository {
                 
                 if let deletionIndex = deletions.first {
                     presenter.updateReviewMovies(.delete, deletionIndex)
+                    print(deletionIndex)
                 } else if let insertionIndex = insertions.first {
                     presenter.updateReviewMovies(.insert, insertionIndex)
                 } else if let modificationIndex = modifications.first {
+                    
                     presenter.updateReviewMovies(.modificate, modificationIndex)
                 }
 
@@ -37,7 +39,6 @@ struct MovieDataStore : MovieReviewRepository {
             }
         }
     }
-    
     
     func createMovieReview(_ movie: MovieReviewElement) {
         let realmMyMovieInfomation = RealmMyMovieInfomation()
@@ -49,7 +50,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.overview = movie.overview ?? ""
         realmMyMovieInfomation.review = movie.review ?? ""
         realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
-        
+        realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         
         
         try! realm.write {
@@ -62,7 +63,7 @@ struct MovieDataStore : MovieReviewRepository {
     func fetchMovieReview() -> [MovieReviewElement] {
         var realmMyMovieInfomations: [RealmMyMovieInfomation] = []
         let realm = try! Realm()
-         let fetchedMovies = realm.objects(RealmMyMovieInfomation.self)
+         let fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
         for movie in fetchedMovies {
             realmMyMovieInfomations.append(movie)
         }
@@ -71,7 +72,7 @@ struct MovieDataStore : MovieReviewRepository {
         
         for movie in realmMyMovieInfomations {
             
-            movieReviewElements.append(MovieReviewElement(title: movie.title, poster_path: movie.movieImagePath, original_name: movie.original_name, backdrop_path: movie.backdrop_path, overview: movie.overview, releaseDay: movie.releaseDay, reviewStars: movie.reviewStars, review: movie.review))
+            movieReviewElements.append(MovieReviewElement(title: movie.title, poster_path: movie.movieImagePath, original_name: movie.original_name, backdrop_path: movie.backdrop_path, overview: movie.overview, releaseDay: movie.releaseDay, reviewStars: movie.reviewStars, review: movie.review, create_at: movie.created_at))
             
         }
         return movieReviewElements
@@ -86,6 +87,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.overview = movie.overview ?? ""
         realmMyMovieInfomation.review = movie.review ?? ""
         realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
+        realmMyMovieInfomation.created_at = movie.create_at ?? Date()
 
         let realm = try! Realm()
         
@@ -97,13 +99,24 @@ struct MovieDataStore : MovieReviewRepository {
     
     func deleteMovieReview(_ index: IndexPath) {
         let realm = try! Realm()
-        let realmMyMovieInfomations = realm.objects(RealmMyMovieInfomation.self)
+        let realmMyMovieInfomations = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
+        print(realmMyMovieInfomations)
+        print("*********************************************************")
         
         try! realm.write {
+            print(realmMyMovieInfomations[index.row])
             realm.delete(realmMyMovieInfomations[index.row])
+            
         }
     }
     
+    
+    func sortMovieReview(_ movie: MovieReviewElement) {
+        let realm = try! Realm()
+        
+        let sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
+    }
+
 
     
 }

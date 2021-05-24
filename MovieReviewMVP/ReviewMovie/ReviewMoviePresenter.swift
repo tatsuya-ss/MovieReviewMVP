@@ -9,7 +9,7 @@ import Foundation
 
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
-    func didTapSaveButton(reviewScore: Double, review: String)
+    func didTapSaveButton(date: Date, reviewScore: Double, review: String)
     func returnMovieReviewState() -> MovieReviewState
 }
 
@@ -18,9 +18,6 @@ protocol ReviewMoviePresenterOutput : AnyObject {
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
-    func returnMovieReviewState() -> MovieReviewState {
-        movieReviewState
-    }
     
     
     private var movieReviewState: MovieReviewState
@@ -44,21 +41,32 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             self.view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         case .afterStore:
             self.view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-            print(movieReviewElement)
         }
     }
     
-    // MARK: 保存ボタンが押された時の処理
-    func didTapSaveButton(reviewScore: Double, review: String) {
+    // MARK: どこから画面遷移されたのかをenumで区別
+    func returnMovieReviewState() -> MovieReviewState {
+        movieReviewState
+    }
 
-        movieReviewElement.reviewStars = reviewScore
-        movieReviewElement.review = review
+    
+    // MARK: 保存ボタンが押された時の処理
+    func didTapSaveButton(date: Date, reviewScore: Double, review: String) {
         
         switch movieReviewState {
         case .beforeStore:
-            model.createMovieReview(movieReviewElement)
+            movieReviewElement.create_at = date
+            movieReviewElement.reviewStars = reviewScore
+            movieReviewElement.review = review
+            print(movieReviewElement.create_at)
+            
         case .afterStore:
-            model.modificateMovieReview(movieReviewElement)
+            movieReviewElement.reviewStars = reviewScore
+            movieReviewElement.review = review
+            print(movieReviewElement.create_at)
         }
+
+        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+
     }
 }

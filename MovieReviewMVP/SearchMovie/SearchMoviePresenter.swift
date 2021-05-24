@@ -39,6 +39,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
+        
         view.reviewTheMovie(movie: movies[indexPath.row])
     }
     
