@@ -13,7 +13,10 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
-    @IBOutlet weak var trashButton: UIBarButtonItem!
+    
+    var trashButton: UIBarButtonItem!
+    var sortButton: UIBarButtonItem!
+    var editButton: UIBarButtonItem!
     
     let movieUseCase = MovieUseCase()
     
@@ -39,10 +42,8 @@ class ReviewManagementCollectionViewController: UIViewController {
         
     }
     
-    @IBAction func trashButtonTapped(_ sender: Any) {
-        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
-    }
     
+
     
 }
 
@@ -54,6 +55,7 @@ private extension ReviewManagementCollectionViewController {
         setupNavigation()
         setupCollectionView()
         setupTabBar()
+        
     }
     
     func setupPresenter() {
@@ -64,19 +66,59 @@ private extension ReviewManagementCollectionViewController {
 
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.title = "マイレビュー"
-        navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
+
+        trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashButtonTapped))
+        
+        
+        
+        sortButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "arrow.up.arrow.down"), primaryAction: nil, menu: contextMenuActions())
+        
+        
+        editButton = editButtonItem
+        
+        navigationItem.rightBarButtonItems = [editButton, trashButton, sortButton]
+        
+        
+    }
+    
+
+
+    
+    func setNavigationTitleLeft(title: String) -> UILabel {
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.text = title
+        label.font = UIFont.boldSystemFont(ofSize: 26)
+
+        return label
+    }
+    
+    // MARK: メニュー表示用にUIMenuを返すメソッド
+    func contextMenuActions() -> UIMenu {
+        
+        let createdAction = UIAction(title: sortState.created.title, image: nil, state: .mixed, handler: { _ in
+            print("\(sortState.title.title)に並び替えました。")
+        })
+        
+        let titleAction = UIAction(title: sortState.title.title, image: nil, state: .mixed, handler: { _ in
+            print("\(sortState.title.title)に並び替えました。")
+        })
+        
+        let reviewAction = UIAction(title: sortState.reviewStar.title, image: nil, state: .mixed, handler: { _ in
+            print("\(sortState.title.title)に並び替えました。")
+        })
+        
+        let menu = UIMenu(children: [createdAction, titleAction, reviewAction])
+        
+        return menu
+
     }
     
     func setupTabBar() {
         tabBarController?.tabBar.isTranslucent = false
-        
     }
     
-    
-    @objc func trashButtonTapped() {
-        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
-    }
 
     
     
@@ -99,6 +141,16 @@ private extension ReviewManagementCollectionViewController {
         collectionView.allowsMultipleSelection = true
 
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+    }
+    
+    
+
+}
+
+// MARK: - @objc
+extension ReviewManagementCollectionViewController {
+    @objc func trashButtonTapped() {
+        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
     }
 
 }
@@ -198,6 +250,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             trashButton.isEnabled = true
             collectionView.allowsMultipleSelection = true
             tabBarController?.tabBar.isHidden = true
+            sortButton.isEnabled = false
             
             // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths {
@@ -209,6 +262,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         case false:
             trashButton.isEnabled = false
             tabBarController?.tabBar.isHidden = false
+            sortButton.isEnabled = true
             
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             if let indexPaths = indexPaths {

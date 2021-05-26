@@ -64,4 +64,15 @@ enum sortState {
             return "reviewStars"
         }
     }
+    
+    var title: String {
+        switch self {
+        case .created:
+            return "作成日順"
+        case .title:
+            return "タイトル順"
+        case .reviewStar:
+            return "評価順"
+        }
+    }
 }
