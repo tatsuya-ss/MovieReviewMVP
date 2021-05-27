@@ -14,9 +14,9 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     
-    var trashButton: UIBarButtonItem!
     var sortButton: UIBarButtonItem!
     var editButton: UIBarButtonItem!
+    var trashButton: UIButton!
     
     let movieUseCase = MovieUseCase()
     
@@ -53,6 +53,37 @@ private extension ReviewManagementCollectionViewController {
         setupNavigation()
         setupCollectionView()
         setupTabBar()
+        setupTrashButton()
+    }
+    
+    func setupTrashButton() {
+        
+        trashButton = UIButton()
+        trashButton.setImage(UIImage(systemName: "trash"), for: .normal)
+
+        trashButton.tintColor = .white
+        trashButton.backgroundColor = .systemBlue
+        trashButton.translatesAutoresizingMaskIntoConstraints = false
+        trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
+        collectionView.addSubview(trashButton)
+        
+        let buttonWidth: CGFloat = 55
+        
+        [
+            trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
+            trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor),
+        ].forEach { $0.isActive = true }
+        
+        trashButton.layer.cornerRadius = buttonWidth / 2
+        
+        trashButton.layer.shadowColor = UIColor.black.cgColor
+        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        trashButton.layer.shadowOpacity = 0.7
+        trashButton.layer.shadowRadius = 10
+        
+        trashButton.isHidden = true
     }
     
     func setupPresenter() {
@@ -64,18 +95,13 @@ private extension ReviewManagementCollectionViewController {
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
-
-        trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashButtonTapped))
         
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
-
-                
-//        sortButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "arrow.up.arrow.down"), primaryAction: nil, menu: contextMenuActions())
         
         
         editButton = editButtonItem
         
-        navigationItem.rightBarButtonItems = [editButton, trashButton, sortButton]
+        navigationItem.rightBarButtonItems = [editButton, sortButton]
         
     }
 
@@ -267,10 +293,10 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         
         switch editing {
         case true:
-            trashButton.isEnabled = true
             collectionView.allowsMultipleSelection = true
             tabBarController?.tabBar.isHidden = true
             sortButton.isEnabled = false
+            trashButton.isHidden = false
             
             // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths {
@@ -280,10 +306,9 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             }
             
         case false:
-            trashButton.isEnabled = false
             tabBarController?.tabBar.isHidden = false
             sortButton.isEnabled = true
-            
+            trashButton.isHidden = true
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             if let indexPaths = indexPaths {
                 for index in indexPaths {
