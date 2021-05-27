@@ -13,9 +13,13 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
-    @IBOutlet weak var trashButton: UIBarButtonItem!
+    
+    var trashButton: UIBarButtonItem!
+    var sortButton: UIBarButtonItem!
+    var editButton: UIBarButtonItem!
     
     let movieUseCase = MovieUseCase()
+    
     
     private var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -39,11 +43,6 @@ class ReviewManagementCollectionViewController: UIViewController {
         
     }
     
-    @IBAction func trashButtonTapped(_ sender: Any) {
-        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
-    }
-    
-    
 }
 
 // MARK: - setup
@@ -64,19 +63,69 @@ private extension ReviewManagementCollectionViewController {
 
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.title = "マイレビュー"
-        navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
+
+        trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashButtonTapped))
+        
+        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
+
+                
+//        sortButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "arrow.up.arrow.down"), primaryAction: nil, menu: contextMenuActions())
+        
+        
+        editButton = editButtonItem
+        
+        navigationItem.rightBarButtonItems = [editButton, trashButton, sortButton]
+        
+    }
+
+    
+    func setNavigationTitleLeft(title: String) -> UILabel {
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.text = title
+        label.font = UIFont.boldSystemFont(ofSize: 26)
+
+        return label
+    }
+    
+    // MARK: メニュー表示用にUIMenuを返すメソッド
+    func contextMenuActions() -> UIMenu {
+        
+        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapsortButton(.createdDescend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.createdDescend.title)に並び替えました。")
+        })
+
+        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapsortButton(.createdAscend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.createdAscend.title)に並び替えました。")
+        })
+        
+        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapsortButton(.reviewStarAscend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.reviewStarAscend.title)に並び替えました。")
+        })
+        
+        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapsortButton(.reviewStarDescend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.reviewStarDescend.title)に並び替えました。")
+        })
+        
+        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
+        
+        return menu
+
     }
     
     func setupTabBar() {
         tabBarController?.tabBar.isTranslucent = false
-        
     }
     
-    
-    @objc func trashButtonTapped() {
-        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
-    }
 
     
     
@@ -99,6 +148,22 @@ private extension ReviewManagementCollectionViewController {
         collectionView.allowsMultipleSelection = true
 
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+    }
+    
+    
+
+}
+
+// MARK: - @objc
+extension ReviewManagementCollectionViewController {
+    @objc func trashButtonTapped() {
+        
+        if var selectedIndexPaths = collectionView.indexPathsForSelectedItems {
+            selectedIndexPaths.sort { $0 > $1 }
+            for index in selectedIndexPaths {
+                presenter.didDeleteReviewMovie(index: index)
+            }
+        }
     }
 
 }
@@ -167,37 +232,45 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 // MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
+    func sortReview() {
+        for index in 0...presenter.numberOfMovies - 1 {
+            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        }
+    }
     
-    func updateItem(_ state: MovieUpdateState, _ index: Int?) {
+    
+    // MARK: 初期化、削除、挿入、修正を行う
+    func updateReview(_ state: MovieUpdateState, _ index: Int?) {
         
         switch state {
         
         case .initial:
             collectionView.reloadData()
-
+            
         case .delete:
             guard let index = index else { return }
             collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-        case .insert:
             
+        case .insert:
             collectionView.reloadData()
-
+            
         case .modificate:
-            guard let index = index else { return }
-            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-
+            collectionView.reloadData()
+            
         }
         
         isEditing = false
     }
     
-    func deselectItem(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+    // MARK: 選択解除を行う
+    func deselectReview(_ editing: Bool, _ indexPaths: [IndexPath]?) {
         
         switch editing {
         case true:
             trashButton.isEnabled = true
             collectionView.allowsMultipleSelection = true
             tabBarController?.tabBar.isHidden = true
+            sortButton.isEnabled = false
             
             // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths {
@@ -209,6 +282,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         case false:
             trashButton.isEnabled = false
             tabBarController?.tabBar.isHidden = false
+            sortButton.isEnabled = true
             
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             if let indexPaths = indexPaths {
@@ -221,8 +295,8 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
     
     
-    
-    func displayMyReview(_ movie: MovieReviewElement) {
+    // MARK: tapしたレビューを詳細表示
+    func displaySelectMyReview(_ movie: MovieReviewElement) {
         
         let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         

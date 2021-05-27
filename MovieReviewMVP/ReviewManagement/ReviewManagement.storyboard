@@ -17,16 +17,7 @@
                         <viewLayoutGuide key="safeArea" id="zsy-Id-ibr"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" id="HGn-4s-VNT">
-                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="85M-SP-O1o">
-                            <connections>
-                                <action selector="trashButtonTapped:" destination="fnF-bp-mOz" id="fRk-yr-G9l"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="trashButton" destination="85M-SP-O1o" id="iWT-bu-0ii"/>
-                    </connections>
+                    <navigationItem key="navigationItem" id="HGn-4s-VNT"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQ5-aB-otn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -46,6 +37,9 @@
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Wc8-4w-KEs">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="fnF-bp-mOz" kind="relationship" relationship="rootViewController" id="30l-hD-E1F"/>
                     </connections>

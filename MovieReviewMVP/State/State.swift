@@ -49,19 +49,53 @@ enum CellSelectedState {
 }
 
 enum sortState {
-    case created
-    case title
-    case reviewStar
+    case createdAscend
+    case createdDescend
+    case reviewStarAscend
+    case reviewStarDescend
+
         
+    var ascending: Bool {
+        switch self {
+        case .createdAscend:
+            return false
+        case .createdDescend:
+            return true
+        case .reviewStarAscend:
+            return false
+        case .reviewStarDescend:
+            return true
+        }
+    }
     
     var keyPath: String {
         switch self {
-        case .created:
+        case .createdAscend:
             return "created_at"
-        case .title:
-            return "title"
-        case .reviewStar:
+        case .createdDescend:
+            return "created_at"
+        case .reviewStarAscend:
+            return "reviewStars"
+        case .reviewStarDescend:
             return "reviewStars"
         }
     }
+    
+    var title: String {
+        switch self {
+        case .createdAscend:
+            return "新しい順"
+        case .createdDescend:
+            return "古い順"
+        case .reviewStarAscend:
+            return "評価が高い順"
+        case .reviewStarDescend:
+            return "評価が低い順"
+        }
+    }
+    
+    var buttonTitle: String {
+        title + "⋁"
+    }
+    // ⌄ ⋁ ▼
 }

@@ -8,32 +8,36 @@
 import RealmSwift
 
 struct MovieDataStore : MovieReviewRepository {
+    
     var notificationToken: NotificationToken?
     
     // MARK: 更新通知を受け取り、collectionViewをreload
     mutating func notification(_ presenter: ReviewManagementPresenterInput) {
         
         let realm = try! Realm()
-        let results = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
+        // １回しか呼ばれてない
+        let results = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: presenter.returnSortState().keyPath)
 
+        print("NotificationのsortState → \(presenter.returnSortState())")
+        print("通知受け取り時の\(results)")
+        
         notificationToken = results.observe { changes in
             switch changes {
+            
             case .initial:
-                presenter.updateReviewMovies(.initial, nil)
+                presenter.updateReviewMovies(.initial)
                 print("初期表示を行いました")
-            case let .update(_, deletions, insertions, modifications):
                 
-                if let deletionIndex = deletions.first {
-                    presenter.updateReviewMovies(.delete, deletionIndex)
-                    print(deletionIndex)
-                } else if let insertionIndex = insertions.first {
-                    presenter.updateReviewMovies(.insert, insertionIndex)
-                } else if let modificationIndex = modifications.first {
-                    
-                    presenter.updateReviewMovies(.modificate, modificationIndex)
+            case let .update(_, deletions, insertions, modifications):
+                if deletions.first != nil {
+                    presenter.updateReviewMovies(.delete)
+                } else if insertions.first != nil {
+                    presenter.updateReviewMovies(.insert)
+                } else if modifications.first != nil {
+                    presenter.updateReviewMovies(.modificate)
                 }
-
                 print("更新処理を行いました",deletions, insertions, modifications)
+                
             case let .error(error):
                 print(error)
             }
@@ -60,21 +64,18 @@ struct MovieDataStore : MovieReviewRepository {
         print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
-    func fetchMovieReview() -> [MovieReviewElement] {
-        var realmMyMovieInfomations: [RealmMyMovieInfomation] = []
+    func fetchMovieReview(_ sortState: sortState) -> [MovieReviewElement] {
+            
         let realm = try! Realm()
-         let fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
-        for movie in fetchedMovies {
-            realmMyMovieInfomations.append(movie)
-        }
+        
+        let fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
         
         var movieReviewElements: [MovieReviewElement] = []
         
-        for movie in realmMyMovieInfomations {
-            
-            movieReviewElements.append(MovieReviewElement(title: movie.title, poster_path: movie.movieImagePath, original_name: movie.original_name, backdrop_path: movie.backdrop_path, overview: movie.overview, releaseDay: movie.releaseDay, reviewStars: movie.reviewStars, review: movie.review, create_at: movie.created_at))
-            
+        for movie in fetchedMovies {
+            movieReviewElements.append(MovieReviewElement(movieInfomation: movie))
         }
+        
         return movieReviewElements
     }
     
@@ -97,26 +98,41 @@ struct MovieDataStore : MovieReviewRepository {
 
     }
     
-    func deleteMovieReview(_ index: IndexPath) {
+    func deleteMovieReview(_ sortState: sortState, _ index: IndexPath) {
         let realm = try! Realm()
-        let realmMyMovieInfomations = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
-        print(realmMyMovieInfomations)
-        print("*********************************************************")
+        let realmMyMovieInfomations = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
         
         try! realm.write {
             print(realmMyMovieInfomations[index.row])
             realm.delete(realmMyMovieInfomations[index.row])
-            
         }
     }
     
     
-    func sortMovieReview(_ movie: MovieReviewElement) {
+    func sortMovieReview(_ sortState: sortState) -> [MovieReviewElement] {
         let realm = try! Realm()
         
-        let sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.created.keyPath)
+        let sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+    
+        var movieReviewElements: [MovieReviewElement] = []
+        
+        for movie in sortedStoreDate {
+            movieReviewElements.append(MovieReviewElement(movieInfomation: movie))
+        }
+        
+        return movieReviewElements
+
     }
-
-
+    
     
 }
+
+// MARK: Realm型をMovieReviewElementに変換
+private extension MovieReviewElement {
+    init(movieInfomation: RealmMyMovieInfomation) {
+    
+        self = MovieReviewElement(title: movieInfomation.title, poster_path: movieInfomation.movieImagePath, original_name: movieInfomation.original_name, backdrop_path: movieInfomation.backdrop_path, overview: movieInfomation.overview, releaseDay: movieInfomation.releaseDay, reviewStars: movieInfomation.reviewStars, review: movieInfomation.review, create_at: movieInfomation.created_at)
+    }
+    
+}
+

@@ -60,6 +60,7 @@ final class SearchMovieModel : SearchMovieModelInput {
     }
 }
 
+// MARK: TMDBから取得した型をMovieReviewElementに変換
 private extension MovieReviewElement {
     init(movieInfomation: MovieInfomation) {
         self = MovieReviewElement(title: movieInfomation.title,
