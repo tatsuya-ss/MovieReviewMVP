@@ -93,4 +93,9 @@ enum sortState {
             return "評価が低い順"
         }
     }
+    
+    var buttonTitle: String {
+        title + "⋁"
+    }
+    // ⌄ ⋁ ▼
 }
