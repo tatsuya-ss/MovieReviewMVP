@@ -8,13 +8,20 @@
 import Foundation
 
 protocol ReviewManagementModelInput {
-    func deleteReviewMovie(_ index: IndexPath)
+    func deleteReviewMovie(_ sortState: sortState, _ index: IndexPath)
+    func sortReview(_ sortState: sortState) -> [MovieReviewElement]
 }
 
 class ReviewManagementModel : ReviewManagementModelInput {
-    func deleteReviewMovie(_ index: IndexPath) {
-        let movieUseCase = MovieUseCase()
-        movieUseCase.delete(index)
+    let movieUseCase = MovieUseCase()
+
+    func deleteReviewMovie(_ sortState: sortState, _ index: IndexPath) {
+        movieUseCase.delete(sortState, index)
     }
+    
+    func sortReview(_ sortState: sortState) -> [MovieReviewElement] {
+        movieUseCase.sort(sortState)
+    }
+
     
 }

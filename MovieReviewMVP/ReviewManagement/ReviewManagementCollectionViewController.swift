@@ -20,6 +20,7 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     let movieUseCase = MovieUseCase()
     
+    
     private var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
         self.presenter = presenter
@@ -42,9 +43,6 @@ class ReviewManagementCollectionViewController: UIViewController {
         
     }
     
-    
-
-    
 }
 
 // MARK: - setup
@@ -55,7 +53,6 @@ private extension ReviewManagementCollectionViewController {
         setupNavigation()
         setupCollectionView()
         setupTabBar()
-        
     }
     
     func setupPresenter() {
@@ -69,9 +66,7 @@ private extension ReviewManagementCollectionViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
 
         trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashButtonTapped))
-        
-        
-        
+                
         sortButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "arrow.up.arrow.down"), primaryAction: nil, menu: contextMenuActions())
         
         
@@ -79,10 +74,7 @@ private extension ReviewManagementCollectionViewController {
         
         navigationItem.rightBarButtonItems = [editButton, trashButton, sortButton]
         
-        
     }
-    
-
 
     
     func setNavigationTitleLeft(title: String) -> UILabel {
@@ -97,19 +89,31 @@ private extension ReviewManagementCollectionViewController {
     // MARK: メニュー表示用にUIMenuを返すメソッド
     func contextMenuActions() -> UIMenu {
         
-        let createdAction = UIAction(title: sortState.created.title, image: nil, state: .mixed, handler: { _ in
-            print("\(sortState.title.title)に並び替えました。")
+        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapsortButton(.createdAscend)
+
+            print("\(sortState.createdAscend.title)に並び替えました。")
         })
         
-        let titleAction = UIAction(title: sortState.title.title, image: nil, state: .mixed, handler: { _ in
-            print("\(sortState.title.title)に並び替えました。")
+        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapsortButton(.createdDescend)
+
+            print("\(sortState.createdDescend.title)に並び替えました。")
         })
         
-        let reviewAction = UIAction(title: sortState.reviewStar.title, image: nil, state: .mixed, handler: { _ in
-            print("\(sortState.title.title)に並び替えました。")
+        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .mixed, handler: { _ in
+            self.presenter.didTapsortButton(.reviewStarAscend)
+
+            print("\(sortState.reviewStarAscend.title)に並び替えました。")
         })
         
-        let menu = UIMenu(children: [createdAction, titleAction, reviewAction])
+        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .mixed, handler: { _ in
+            self.presenter.didTapsortButton(.reviewStarDescend)
+
+            print("\(sortState.reviewStarDescend.title)に並び替えました。")
+        })
+        
+        let menu = UIMenu(children: [createdAscendAction, createdDescendAction, reviewStarAscendAction, reviewStarDescendAction])
         
         return menu
 
@@ -150,7 +154,13 @@ private extension ReviewManagementCollectionViewController {
 // MARK: - @objc
 extension ReviewManagementCollectionViewController {
     @objc func trashButtonTapped() {
-        presenter.didDeleteReviewMovie(indexs: collectionView.indexPathsForSelectedItems)
+        
+        if var selectedIndexPaths = collectionView.indexPathsForSelectedItems {
+            selectedIndexPaths.sort { $0 > $1 }
+            for index in selectedIndexPaths {
+                presenter.didDeleteReviewMovie(index: index)
+            }
+        }
     }
 
 }
@@ -219,31 +229,38 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 // MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
+    func sortReview() {
+        for index in 0...presenter.numberOfMovies - 1 {
+            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        }
+    }
     
-    func updateItem(_ state: MovieUpdateState, _ index: Int?) {
+    
+    // MARK: 初期化、削除、挿入、修正を行う
+    func updateReview(_ state: MovieUpdateState, _ index: Int?) {
         
         switch state {
         
         case .initial:
             collectionView.reloadData()
-
+            
         case .delete:
             guard let index = index else { return }
             collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-        case .insert:
             
+        case .insert:
             collectionView.reloadData()
-
+            
         case .modificate:
-            guard let index = index else { return }
-            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-
+            collectionView.reloadData()
+            
         }
         
         isEditing = false
     }
     
-    func deselectItem(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+    // MARK: 選択解除を行う
+    func deselectReview(_ editing: Bool, _ indexPaths: [IndexPath]?) {
         
         switch editing {
         case true:
@@ -275,8 +292,8 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
     
     
-    
-    func displayMyReview(_ movie: MovieReviewElement) {
+    // MARK: tapしたレビューを詳細表示
+    func displaySelectMyReview(_ movie: MovieReviewElement) {
         
         let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         

@@ -10,26 +10,26 @@ import Foundation
 protocol ReviewManagementPresenterInput {
     var numberOfMovies: Int { get }
     func movieReview(forRow row: Int) -> MovieReviewElement?
-    func didDeleteReviewMovie(indexs: [IndexPath]?)
+    func didDeleteReviewMovie(index: IndexPath)
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateReviewMovies(_ state: MovieUpdateState, _ index: Int?)
+    func updateReviewMovies(_ state: MovieUpdateState)
     func didSelectRow(at: IndexPath)
-    
+    func didTapsortButton(_ sortState: sortState)
+    func returnSortState() -> sortState
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
-    func deselectItem(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateItem(_ state: MovieUpdateState, _ index: Int?)
-    func displayMyReview(_ movie: MovieReviewElement)
+    func deselectReview(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func updateReview(_ state: MovieUpdateState, _ index: Int?)
+    func displaySelectMyReview(_ movie: MovieReviewElement)
+    func sortReview()
 }
 
 
 
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
-    
     private weak var view: ReviewManagementPresenterOutput!
-    
     private var model: ReviewManagementModelInput
     
     init(view: ReviewManagementPresenterOutput, model: ReviewManagementModelInput) {
@@ -38,48 +38,49 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     private(set) var movieReviewElements: [MovieReviewElement] = []
+    private var sortStateManagement: sortState = .createdDescend
+    private var deleteIndex: IndexPath?
+    
     
     var numberOfMovies: Int {
         return movieReviewElements.count
     }
     
-    func updateReviewMovies(_ state: MovieUpdateState, _ index: Int?) {
-        let movieUseCase = MovieUseCase()
-        let movieReviewElements = movieUseCase.fetch()
-        self.movieReviewElements = movieReviewElements
-        print(movieReviewElements)
-
-        view.updateItem(state, index)
-    }
-    
-    
     func didSelectRow(at indexPath: IndexPath) {
-        view.displayMyReview(movieReviewElements[indexPath.row])
+        view.displaySelectMyReview(movieReviewElements[indexPath.row])
     }
     
-    
-
-
-    
-    func didDeleteReviewMovie(indexs: [IndexPath]?) {
-        print(indexs!)
-        if var selectedIndexPaths = indexs {
-            selectedIndexPaths.sort { $0 > $1 }
-            print(selectedIndexPaths)
-            for index in selectedIndexPaths {
-                model.deleteReviewMovie(index)
-            }
-        }
+    func returnSortState() -> sortState {
+        sortStateManagement
     }
     
     func movieReview(forRow row: Int) -> MovieReviewElement? {
         movieReviewElements[row]
     }
     
-    
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
-            view.deselectItem(editing, indexPaths)
+            view.deselectReview(editing, indexPaths)
     }
+    
+    func updateReviewMovies(_ state: MovieUpdateState) {
+        let movieUseCase = MovieUseCase()
+        self.movieReviewElements = movieUseCase.fetch(sortStateManagement)
+
+        view.updateReview(state, deleteIndex?.row)
+    }
+    
+    func didTapsortButton(_ sortState: sortState) {
+        sortStateManagement = sortState
+        movieReviewElements = model.sortReview(sortState)
+        view.sortReview()
+    }
+    
+    func didDeleteReviewMovie(index: IndexPath) {
+        print("削除時のsortStateManagement → \(sortStateManagement)")
+        deleteIndex = index
+        model.deleteReviewMovie(sortStateManagement, index)
+    }
+
 
 
 }

@@ -58,12 +58,10 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             movieReviewElement.create_at = date
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = review
-            print(movieReviewElement.create_at)
             
         case .afterStore:
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = review
-            print(movieReviewElement.create_at)
         }
 
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
