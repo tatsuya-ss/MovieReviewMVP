@@ -10,6 +10,7 @@ import Foundation
 protocol ReviewManagementModelInput {
     func deleteReviewMovie(_ sortState: sortState, _ index: IndexPath)
     func sortReview(_ sortState: sortState) -> [MovieReviewElement]
+    func fetchReviewMovie(_ sortState: sortState) -> [MovieReviewElement]
 }
 
 class ReviewManagementModel : ReviewManagementModelInput {
@@ -23,5 +24,8 @@ class ReviewManagementModel : ReviewManagementModelInput {
         movieUseCase.sort(sortState)
     }
 
+    func fetchReviewMovie(_ sortState: sortState) -> [MovieReviewElement] {
+        movieUseCase.fetch(sortState)
+    }
     
 }
