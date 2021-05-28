@@ -25,16 +25,20 @@ struct MovieDataStore : MovieReviewRepository {
             switch changes {
             
             case .initial:
-                presenter.updateReviewMovies(.initial)
+                presenter.fetchUpdateReviewMovies(.initial)
                 print("初期表示を行いました")
                 
             case let .update(_, deletions, insertions, modifications):
                 if deletions.first != nil {
-                    presenter.updateReviewMovies(.delete)
+//                    presenter.deleteReviewMovies(.delete)
+                    print("削除しました")
+                    
                 } else if insertions.first != nil {
-                    presenter.updateReviewMovies(.insert)
+                    presenter.fetchUpdateReviewMovies(.insert)
+                    
                 } else if modifications.first != nil {
-                    presenter.updateReviewMovies(.modificate)
+                    presenter.fetchUpdateReviewMovies(.modificate)
+                    
                 }
                 print("更新処理を行いました",deletions, insertions, modifications)
                 

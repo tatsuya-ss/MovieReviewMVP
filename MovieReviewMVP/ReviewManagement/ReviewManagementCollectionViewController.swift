@@ -152,9 +152,6 @@ private extension ReviewManagementCollectionViewController {
         tabBarController?.tabBar.isTranslucent = false
     }
     
-
-    
-    
     func setupCollectionView() {
         
         colunmFlowLayout = ColumnFlowLayout()
@@ -177,21 +174,29 @@ private extension ReviewManagementCollectionViewController {
     }
     
     
-
+    
 }
 
 // MARK: - @objc
 extension ReviewManagementCollectionViewController {
     @objc func trashButtonTapped() {
         
-        if var selectedIndexPaths = collectionView.indexPathsForSelectedItems {
-            selectedIndexPaths.sort { $0 > $1 }
-            for index in selectedIndexPaths {
-                presenter.didDeleteReviewMovie(index: index)
-            }
-        }
+        let deleteAlert = UIAlertController(title: nil, message: "選択したレビューを削除しますか？", preferredStyle: .alert)
+        
+        deleteAlert.addAction(UIAlertAction(title: "レビューを削除", style: .destructive, handler: { _ in
+            let indexPathsForSelectedItems = self.collectionView.indexPathsForSelectedItems
+            let sortedIndexPathsForSelectedItems = indexPathsForSelectedItems?.sorted { $0 > $1 }
+            guard let sortedIndex = sortedIndexPathsForSelectedItems else { return }
+            print(sortedIndex)
+            
+            self.presenter.didDeleteReviewMovie(.delete, indexs: sortedIndex)
+            
+        }))
+        deleteAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        self.present(deleteAlert, animated: true, completion: nil)
+        
     }
-
+    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -259,9 +264,11 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
     func sortReview() {
+        
         for index in 0...presenter.numberOfMovies - 1 {
             collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
         }
+        
     }
     
     
@@ -275,14 +282,20 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             
         case .delete:
             guard let index = index else { return }
-            collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+            collectionView.performBatchUpdates {
+                collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+            }
             
         case .insert:
-            collectionView.reloadData()
-            
+            for index in 0...presenter.numberOfMovies - 1 {
+                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            }
+
         case .modificate:
-            collectionView.reloadData()
-            
+            for index in 0...presenter.numberOfMovies - 1 {
+                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            }
+
         }
         
         isEditing = false
