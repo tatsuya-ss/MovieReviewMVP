@@ -24,6 +24,7 @@ struct MovieReviewElement {
     var reviewStars: Double?
     var review: String?
     var create_at: Date?
+    var id: Int
 }
 
 

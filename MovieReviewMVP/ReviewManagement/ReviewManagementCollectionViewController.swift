@@ -287,8 +287,12 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             }
             
         case .insert:
-            for index in 0...presenter.numberOfMovies - 1 {
-                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            if presenter.numberOfMovies == 1 {
+                collectionView.reloadData()
+            } else {
+                for index in 0...presenter.numberOfMovies - 1 {
+                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+                }
             }
 
         case .modificate:

@@ -21,6 +21,7 @@ struct MovieInfomation : Codable {
     var backdrop_path: String?
     var overview: String?
     var release_date: String?
+    var id: Int
 }
 
 

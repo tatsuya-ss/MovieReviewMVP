@@ -23,25 +23,35 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPv-CF-fLb">
-                        <rect key="frame" x="55" y="12" width="245" height="20.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="55" y="4" width="245" height="20.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d2J-ZR-DrG">
+                        <rect key="frame" x="55" y="28.5" width="245" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="d2J-ZR-DrG" secondAttribute="trailing" constant="20" symbolic="YES" id="4ta-22-2sB"/>
+                    <constraint firstItem="NPv-CF-fLb" firstAttribute="leading" secondItem="cVZ-eo-cvu" secondAttribute="trailing" constant="8" symbolic="YES" id="65U-ua-WRZ"/>
+                    <constraint firstItem="d2J-ZR-DrG" firstAttribute="leading" secondItem="cVZ-eo-cvu" secondAttribute="trailing" constant="8" symbolic="YES" id="EGH-cH-Va4"/>
                     <constraint firstItem="cVZ-eo-cvu" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="I2e-Lr-EPz"/>
-                    <constraint firstItem="NPv-CF-fLb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="c8K-B1-Fcm"/>
                     <constraint firstAttribute="trailing" secondItem="NPv-CF-fLb" secondAttribute="trailing" constant="20" symbolic="YES" id="eQJ-m6-mWm"/>
                     <constraint firstItem="cVZ-eo-cvu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" symbolic="YES" id="gqg-HL-bni"/>
-                    <constraint firstItem="NPv-CF-fLb" firstAttribute="leading" secondItem="cVZ-eo-cvu" secondAttribute="trailing" constant="8" symbolic="YES" id="kjt-Fi-7Hx"/>
+                    <constraint firstItem="d2J-ZR-DrG" firstAttribute="top" secondItem="NPv-CF-fLb" secondAttribute="bottom" constant="4" id="iiE-M7-I6U"/>
                     <constraint firstItem="cVZ-eo-cvu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="pwd-QK-RjE"/>
+                    <constraint firstItem="NPv-CF-fLb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="vU3-Jt-O6K"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="movieImageView" destination="cVZ-eo-cvu" id="fM5-zO-cSG"/>
+                <outlet property="releaseDateLabel" destination="d2J-ZR-DrG" id="mAS-li-mtw"/>
                 <outlet property="titleLabel" destination="NPv-CF-fLb" id="4Dj-pC-0jK"/>
             </connections>
             <point key="canvasLocation" x="140.57971014492756" y="118.52678571428571"/>

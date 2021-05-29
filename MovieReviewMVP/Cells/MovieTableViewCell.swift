@@ -10,7 +10,8 @@ import UIKit
 class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-        
+    @IBOutlet weak var releaseDateLabel: UILabel!
+    
     static let reuserIdentifier = "MovieCell"
     
     func resetCell() {
@@ -41,7 +42,7 @@ class MovieTableViewCell: UITableViewCell {
         } else {
             titleLabel.text = "タイトルがありません"
         }
-        
+        releaseDateLabel.text = "(\(movie.releaseDay ?? "未定"))"
         movieImageView.layer.cornerRadius = height * 0.03
 
     }

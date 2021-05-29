@@ -17,10 +17,10 @@ class RealmMyMovieInfomation: Object {
     @objc dynamic var original_name: String = ""
     @objc dynamic var backdrop_path: String = ""
     @objc dynamic var created_at: Date = Date()
-
+    @objc dynamic var id: Int = 0
     
     override class func primaryKey() -> String? {
-        "title"
+        "id"
     }
 }
 

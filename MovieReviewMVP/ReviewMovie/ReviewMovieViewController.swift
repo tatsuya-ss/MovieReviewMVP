@@ -74,7 +74,9 @@ private extension ReviewMovieViewController {
 private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
-        presenter.didTapSaveButton(date: Date(), reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0, review: reviewMovieOwner.reviewTextView.text ?? "")
+        presenter.didTapSaveButton(date: Date(),
+                                   reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                   review: reviewMovieOwner.reviewTextView.text ?? "")
         dismiss(animated: true, completion: nil)
     }
 
