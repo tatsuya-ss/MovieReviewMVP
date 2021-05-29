@@ -12,6 +12,7 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var reviewView: CosmosView!
+    @IBOutlet weak var checkImageView: UIImageView!
     
     static let nib = UINib(nibName: String(describing: ReviewManagementCollectionViewCell.self), bundle: nil)
 
@@ -36,13 +37,15 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
         }
         task.resume()
         
-        
         reviewView.rating = movieReview.reviewStars ?? 0.0
         reviewView.text = String(movieReview.reviewStars ?? 0.0)
-
+        checkImageView.image = UIImage(named: "check")
+        
+        checkImageView.isHidden = true
+        setupLayout()
     }
     
-    // MARK: setup
+    // MARK: setupLayout
     func setupLayout() {
         movieImageView.layoutIfNeeded()
         movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.03
@@ -51,9 +54,11 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     func tapCell(state: CellSelectedState) {
         switch state {
         case .selected:
-            alpha = state.imageAlpha
+            [movieImageView, reviewView].forEach { $0?.alpha = state.imageAlpha }
+            checkImageView.isHidden = false
         case .deselected:
-            alpha = state.imageAlpha
+            [movieImageView, reviewView].forEach { $0?.alpha = state.imageAlpha }
+            checkImageView.isHidden = true
         }
     }
     

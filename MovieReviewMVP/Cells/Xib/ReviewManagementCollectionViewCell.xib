@@ -54,6 +54,12 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HLL-S5-jVz">
+                        <rect key="frame" x="72.5" y="123" width="25.5" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="HLL-S5-jVz" secondAttribute="height" multiplier="1:1" id="s7g-vJ-5cc"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -61,12 +67,16 @@
                 <constraint firstItem="mGi-RA-Atg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="E1b-Z5-OWE"/>
                 <constraint firstItem="K7q-rl-KyM" firstAttribute="top" secondItem="mGi-RA-Atg" secondAttribute="bottom" constant="2" id="ESY-5S-4ZK"/>
                 <constraint firstAttribute="trailing" secondItem="mGi-RA-Atg" secondAttribute="trailing" id="Ldn-y5-szk"/>
+                <constraint firstItem="K7q-rl-KyM" firstAttribute="top" secondItem="HLL-S5-jVz" secondAttribute="bottom" constant="5" id="Pmq-gg-1a9"/>
+                <constraint firstAttribute="trailing" secondItem="HLL-S5-jVz" secondAttribute="trailing" constant="5" id="Vtf-3G-QiS"/>
                 <constraint firstItem="mGi-RA-Atg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="a2q-YU-vjY"/>
                 <constraint firstAttribute="trailing" secondItem="K7q-rl-KyM" secondAttribute="trailing" id="aiH-gA-GwV"/>
                 <constraint firstItem="K7q-rl-KyM" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="mKb-7H-GPX"/>
+                <constraint firstItem="HLL-S5-jVz" firstAttribute="width" secondItem="mGi-RA-Atg" secondAttribute="width" multiplier="0.25" id="ubR-kJ-jgC"/>
             </constraints>
             <size key="customSize" width="103" height="170"/>
             <connections>
+                <outlet property="checkImageView" destination="HLL-S5-jVz" id="PJ5-mx-BXP"/>
                 <outlet property="movieImageView" destination="mGi-RA-Atg" id="VbW-PC-oDR"/>
                 <outlet property="reviewView" destination="K7q-rl-KyM" id="Uyy-ti-DOc"/>
             </connections>

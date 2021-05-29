@@ -250,10 +250,15 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
         
-        if let movieReviews = presenter.movieReview(forRow: indexPath.row) {
+        guard let movieReviews = presenter.movieReview(forRow: indexPath.row) else { return cell }
+        
             cell.configure(movieReview: movieReviews)
-            cell.setupLayout()
-        }
+            
+            if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
+                cell.tapCell(state: .selected)
+            } else {
+                cell.tapCell(state: .deselected)
+            }
         
         return cell
     }
