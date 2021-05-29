@@ -208,6 +208,10 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
         
         if isEditing == true {
             cell.tapCell(state: .selected)
+            
+            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+
+            
         } else {
             presenter.didSelectRow(at: indexPath)
         }
@@ -219,6 +223,9 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
         
         if isEditing == true {
             cell.tapCell(state: .deselected)
+            
+            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+
         }
         
     }
@@ -319,6 +326,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             tabBarController?.tabBar.isHidden = true
             sortButton.isEnabled = false
             trashButton.isHidden = false
+            trashButton.isEnabled = false
             
             // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths {
