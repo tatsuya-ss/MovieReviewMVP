@@ -318,7 +318,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
     
     // MARK: 選択解除を行う
-    func deselectReview(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+    func changeTheDisplayByEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {
         
         switch editing {
         case true:
