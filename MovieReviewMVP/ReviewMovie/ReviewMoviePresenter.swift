@@ -15,6 +15,7 @@ protocol ReviewMoviePresenterInput {
 
 protocol ReviewMoviePresenterOutput : AnyObject {
     func displayReviewMovie(movieReviewState: MovieReviewState, _ movieInfomation: MovieReviewElement)
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool)
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
@@ -53,18 +54,35 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     // MARK: 保存ボタンが押された時の処理
     func didTapSaveButton(date: Date, reviewScore: Double, review: String) {
         
+        var primaryKeyIsStored = false
+
         switch movieReviewState {
         case .beforeStore:
-            movieReviewElement.create_at = date
-            movieReviewElement.reviewStars = reviewScore
-            movieReviewElement.review = review
+            // プライマリーキーが被っていないかの検証
+            let movies = model.fetchMovie(sortState: .createdAscend)
+            for movie in movies {
+                if primaryKeyIsStored == false {
+                    movie.id == movieReviewElement.id ? (primaryKeyIsStored = true) : (primaryKeyIsStored = false)
+                } else {
+                    break
+                }
+            }
             
+            if primaryKeyIsStored == false {
+                movieReviewElement.create_at = date
+                movieReviewElement.reviewStars = reviewScore
+                movieReviewElement.review = review
+                model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+            }
+
         case .afterStore:
+            primaryKeyIsStored = false
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = review
+            model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         }
-
-        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-
+        
+        view.displayAfterStoreButtonTapped(primaryKeyIsStored)
     }
+    
 }

@@ -208,6 +208,10 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
         
         if isEditing == true {
             cell.tapCell(state: .selected)
+            
+            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+
+            
         } else {
             presenter.didSelectRow(at: indexPath)
         }
@@ -219,6 +223,9 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
         
         if isEditing == true {
             cell.tapCell(state: .deselected)
+            
+            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+
         }
         
     }
@@ -250,10 +257,15 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
         
-        if let movieReviews = presenter.movieReview(forRow: indexPath.row) {
+        guard let movieReviews = presenter.movieReview(forRow: indexPath.row) else { return cell }
+        
             cell.configure(movieReview: movieReviews)
-            cell.setupLayout()
-        }
+            
+            if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
+                cell.tapCell(state: .selected)
+            } else {
+                cell.tapCell(state: .deselected)
+            }
         
         return cell
     }
@@ -287,8 +299,12 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             }
             
         case .insert:
-            for index in 0...presenter.numberOfMovies - 1 {
-                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            if presenter.numberOfMovies == 1 {
+                collectionView.reloadData()
+            } else {
+                for index in 0...presenter.numberOfMovies - 1 {
+                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+                }
             }
 
         case .modificate:
@@ -302,7 +318,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
     
     // MARK: 選択解除を行う
-    func deselectReview(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+    func changeTheDisplayByEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {
         
         switch editing {
         case true:
@@ -310,6 +326,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             tabBarController?.tabBar.isHidden = true
             sortButton.isEnabled = false
             trashButton.isHidden = false
+            trashButton.isEnabled = false
             
             // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths {

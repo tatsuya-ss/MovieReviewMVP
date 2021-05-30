@@ -74,8 +74,10 @@ private extension ReviewMovieViewController {
 private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
-        presenter.didTapSaveButton(date: Date(), reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0, review: reviewMovieOwner.reviewTextView.text ?? "")
-        dismiss(animated: true, completion: nil)
+        presenter.didTapSaveButton(date: Date(),
+                                   reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                   review: reviewMovieOwner.reviewTextView.text ?? "")
+
     }
 
     
@@ -97,5 +99,18 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(movieReviewState: MovieReviewState, _ movieReviewElement: MovieReviewElement) {
         reviewMovieOwner.fetchMovieImage(movieReviewState: movieReviewState, movie: movieReviewElement)
+    }
+    
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool) {
+        switch primaryKeyIsStored {
+        case true:
+            let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
+            storedAlert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+            self.present(storedAlert, animated: true, completion: nil)
+            
+        case false:
+            dismiss(animated: true, completion: nil)
+        }
+
     }
 }

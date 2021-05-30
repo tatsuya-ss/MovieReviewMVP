@@ -71,7 +71,7 @@ private extension MovieReviewElement {
                                   releaseDay: movieInfomation.release_date,
                                   reviewStars: nil,
                                   review: nil,
-                                  create_at: nil)
+                                  create_at: nil, id: movieInfomation.id)
     }
 }
 

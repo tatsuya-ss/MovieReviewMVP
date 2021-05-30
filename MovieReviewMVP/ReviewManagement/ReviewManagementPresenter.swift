@@ -20,7 +20,7 @@ protocol ReviewManagementPresenterInput {
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
-    func deselectReview(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func changeTheDisplayByEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func updateReview(_ state: MovieUpdateState, _ index: Int?)
     func displaySelectMyReview(_ movie: MovieReviewElement)
     func sortReview()
@@ -63,7 +63,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
-        view.deselectReview(editing, indexPaths)
+        view.changeTheDisplayByEditingState(editing, indexPaths)
     }
     
     func fetchUpdateReviewMovies(_ state: MovieUpdateState) {
