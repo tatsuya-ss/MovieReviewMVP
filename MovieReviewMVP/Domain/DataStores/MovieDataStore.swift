@@ -65,11 +65,11 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
         
-        
         try! realm.write {
             realm.add(realmMyMovieInfomation.self)
-            
         }
+        
+        
         print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     

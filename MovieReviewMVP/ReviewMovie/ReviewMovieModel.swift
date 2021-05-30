@@ -9,6 +9,8 @@ import Foundation
 
 protocol ReviewMovieModelInput {
     func reviewMovie(movieReviewState: MovieReviewState, _ movie: MovieReviewElement)
+    
+    func fetchMovie(sortState: sortState) -> [MovieReviewElement]
 }
 
 final class ReviewMovieModel : ReviewMovieModelInput {
@@ -19,9 +21,10 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         self.movieReviewElement = movie
     }
     
+    let movieUseCase = MovieUseCase()
+
     func reviewMovie(movieReviewState: MovieReviewState, _ movie: MovieReviewElement) {
         
-        let movieUseCase = MovieUseCase()
 
         switch movieReviewState {
         case .beforeStore:
@@ -30,6 +33,10 @@ final class ReviewMovieModel : ReviewMovieModelInput {
             movieUseCase.update(movie)
         }
         
+    }
+    
+    func fetchMovie(sortState: sortState) -> [MovieReviewElement] {
+        movieUseCase.fetch(sortState)
     }
 
     
