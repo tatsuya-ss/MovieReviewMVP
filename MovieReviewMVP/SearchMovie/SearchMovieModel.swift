@@ -13,13 +13,24 @@ protocol SearchMovieModelInput {
 
 final class SearchMovieModel : SearchMovieModelInput {
     
+    var refreshQuery: String?
+    var page = 1
+    
     func fetchMovie(fetchState: FetchMovieState, query: String?, completion: @escaping (Result<[MovieReviewElement], SearchError>) -> Void) {
-        
         var url: String?
         switch fetchState {
-        case .search:
+        
+        case .search(.initial):
+            page = 1
             guard let query = query else { return }
-            url = TMDBApi(query: query).searchURL
+            refreshQuery = query
+            url = TMDBApi(query: query, page: String(page)).searchURL
+            
+        case .search(.refresh):
+            page += 1
+            guard let refreshQuery = refreshQuery else { return }
+            url = TMDBApi(query: refreshQuery, page: String(page)).searchURL
+
         case .upcoming:
             url = TMDBUpcomingMovieURL().upcomingMovieURL
         }

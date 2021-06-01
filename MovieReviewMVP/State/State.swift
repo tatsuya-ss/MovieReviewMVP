@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum FetchMovieState {
-    case search
+    case search(refreshState)
     case upcoming
     
     var displayLabelText: String {
@@ -20,6 +20,11 @@ enum FetchMovieState {
             return "近日公開"
         }
     }
+}
+
+enum refreshState {
+    case initial
+    case refresh
 }
 
 enum MovieUpdateState {

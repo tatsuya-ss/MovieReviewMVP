@@ -11,6 +11,7 @@ import Foundation
 
 struct MovieSearchResponses {
     var results: [MovieReviewElement]
+    var total_pages: Int
 }
 
 
