@@ -12,6 +12,10 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
     
+    var scrollIndicator: UIActivityIndicatorView!
+    var isLoadingMore = false
+
+    
     private var tableViewCellHeight: CGFloat?
     private var searchMovieViewController: SearchMovieViewController!
     private var presenter: SearchMoviePresenterInput!
@@ -41,6 +45,7 @@ private extension SearchMovieViewController {
         setupNavigationController()
         setupTableViewController()
         setupPresenter()
+        setupIndicator()
     }
     
     
@@ -70,11 +75,39 @@ private extension SearchMovieViewController {
         
     }
     
+    func setupIndicator() {
+        scrollIndicator = UIActivityIndicatorView()
+        scrollIndicator.color = .white
+        scrollIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollIndicator)
+        
+        [scrollIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+         scrollIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+         scrollIndicator.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+         scrollIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor)].forEach { $0.isActive = true }
+
+        
+    }
+    
     
     private func setupPresenter() {
         let searchMovieModel = SearchMovieModel()
         let searchMoviePresenter = SearchMoviePresenter(view: self, model: searchMovieModel)
         self.inject(presenter: searchMoviePresenter)
+    }
+}
+
+
+// MARK: - @objc
+@objc extension SearchMovieViewController {
+    func handleRefreshControl() {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            
+            self.presenter.fetchMovie(state: .search(.refresh), text: nil)
+        })
+        
+        tableView.refreshControl?.endRefreshing()
     }
 }
 
@@ -92,7 +125,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
 
             if searchBar.text?.isEmpty == false {
-                self.presenter.fetchMovie(state: .search, text: searchBar.text)
+                self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
             }
         })
         return true
@@ -128,6 +161,47 @@ extension SearchMovieViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.didSelectRow(at: indexPath)
     }
+    
+    // MARK: 下部スクロール
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let contentSize = scrollView.contentSize.height
+        let tableSize = scrollView.frame.size.height
+        let canLoadFromBottom = contentSize > tableSize
+        // 何かの位置を指し示す際に、基準となる位置からの差（距離、ズレ、相対位置）を表す値のことをオフセット
+        // Offset
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = contentSize - tableSize
+        let difference = maximumOffset - currentOffset
+        
+        scrollView.backgroundColor = .black
+        
+        let previousScrollViewBottomInset = CGFloat(0)
+        let indicatorHeight = scrollIndicator.bounds.height + 16
+        
+        if isLoadingMore == true {
+            scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
+        } else {
+            scrollView.contentInset.bottom = previousScrollViewBottomInset
+        }
+        
+        
+        if canLoadFromBottom, difference <= -120 {
+            isLoadingMore = true
+            
+            scrollIndicator.isHidden = false
+            scrollIndicator.startAnimating()
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+                
+                self.presenter.fetchMovie(state: .search(.refresh), text: nil)
+                self.scrollIndicator.stopAnimating()
+                self.scrollIndicator.isHidden = true
+                self.isLoadingMore = false
+            }
+        }
+        
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -160,12 +234,9 @@ extension SearchMovieViewController : UITableViewDataSource {
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
-        switch fetchState {
-        case .search:
-            displayLabel.text = fetchState.displayLabelText
-        case .upcoming:
-            displayLabel.text = fetchState.displayLabelText
-        }
+        
+        displayLabel.text = fetchState.displayLabelText
+        
         tableView.reloadData()
     }
     

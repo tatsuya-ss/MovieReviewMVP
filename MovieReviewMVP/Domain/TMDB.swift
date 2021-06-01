@@ -12,6 +12,7 @@ import Keys
 // TMDBに依存しているもの
 struct TMDBSearchResponses : Codable {
     var results: [MovieInfomation]
+    var total_pages: Int
 }
 
 struct MovieInfomation : Codable {
@@ -29,8 +30,8 @@ struct MovieInfomation : Codable {
 struct TMDBApi {
     static let key = MovieReviewMVPKeys().tMDBApiKey
     let searchURL: String
-    init(query: String) {
-        self.searchURL = "https://api.themoviedb.org/3/search/multi?api_key=\(TMDBApi.key)&language=ja-JP&page=1&query=\(query)"
+    init(query: String, page: String) {
+        self.searchURL = "https://api.themoviedb.org/3/search/multi?api_key=\(TMDBApi.key)&language=ja-JP&page=\(page)&query=\(query)"
     }
     
 }

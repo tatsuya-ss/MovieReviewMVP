@@ -39,7 +39,6 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        
         view.reviewTheMovie(movie: movies[indexPath.row])
     }
     
@@ -48,12 +47,24 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
             switch result {
             case let .success(movies):
-                self?.movies = movies
+                switch state {
+                case .search(.initial):
+                    self?.movies = movies
+                    
+                case .search(.refresh):
+                    self?.movies.append(contentsOf: movies)
+                    
+                case .upcoming:
+                    self?.movies = movies
+                }
+                
                 DispatchQueue.main.async {
                     self?.view.update(state, movies)
                 }
+                
             case let .failure(SearchError.requestError(error)):
                 print(error)
+                
             case let .failure(error):
                 print(error)
             }
