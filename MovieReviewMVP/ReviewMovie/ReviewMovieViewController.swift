@@ -14,6 +14,7 @@ class ReviewMovieViewController: UIViewController {
     private var stopButton: UIBarButtonItem!
     
     private var reviewMovieOwner: ReviewMovieOwner!
+    private var keyboardHeight: CGFloat?
         
     private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
@@ -31,8 +32,10 @@ class ReviewMovieViewController: UIViewController {
         super.viewDidLoad()
         
         setNavigationController()
+        setupTextView()
         presenter.viewDidLoad()
         reviewMovieOwner.reviewTextView.delegate = self
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,6 +72,13 @@ private extension ReviewMovieViewController {
 
     }
     
+    func setupTextView() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
+
+        textViewState.empty.configurePlaceholder(reviewMovieOwner.reviewTextView)
+    }
+    
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
@@ -84,10 +94,52 @@ private extension ReviewMovieViewController {
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: Any],
+              let keyboardInfo = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardInfo.cgRectValue.size
+        let keyboardHeight = keyboardSize.height
+        self.keyboardHeight = keyboardHeight
+        
+        reviewMovieOwner.reviewTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight - view.safeAreaInsets.bottom, right: 0)
+
+    }
+
 }
 
 // MARK: - UITextViewDelegate
 extension ReviewMovieViewController : UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == textViewState.empty.textColor {
+            textViewState.notEnpty.configurePlaceholder(textView)
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textViewState.empty.configurePlaceholder(textView)
+        }
+    }
+
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        guard let selectedTextRangeStart = textView.selectedTextRange?.start,
+              let keyboardHeight = keyboardHeight else { return false }
+        
+        let caret = reviewMovieOwner.reviewTextView.caretRect(for: selectedTextRangeStart)
+        
+        let keyboardTopBorder = reviewMovieOwner.reviewTextView.bounds.size.height - keyboardHeight
+        
+        if caret.origin.y > keyboardTopBorder {
+            reviewMovieOwner.reviewTextView.scrollRectToVisible(caret, animated: true)
+        }
+        
+        return true
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         reviewMovieOwner.reviewTextView.resignFirstResponder()
