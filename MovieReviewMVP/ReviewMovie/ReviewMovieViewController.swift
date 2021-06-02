@@ -32,10 +32,10 @@ class ReviewMovieViewController: UIViewController {
         super.viewDidLoad()
         
         setNavigationController()
+        setupTextView()
         presenter.viewDidLoad()
         reviewMovieOwner.reviewTextView.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -72,6 +72,13 @@ private extension ReviewMovieViewController {
 
     }
     
+    func setupTextView() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
+
+        textViewState.empty.configurePlaceholder(reviewMovieOwner.reviewTextView)
+    }
+    
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
@@ -105,6 +112,19 @@ private extension ReviewMovieViewController {
 // MARK: - UITextViewDelegate
 extension ReviewMovieViewController : UITextViewDelegate {
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == textViewState.empty.textColor {
+            textViewState.notEnpty.configurePlaceholder(textView)
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textViewState.empty.configurePlaceholder(textView)
+        }
+    }
+
+
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         guard let selectedTextRangeStart = textView.selectedTextRange?.start,

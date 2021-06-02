@@ -104,3 +104,40 @@ enum sortState {
     }
     // ⌄ ⋁ ▼
 }
+
+
+enum textViewState {
+    case empty
+    case notEnpty
+    
+    var text: String? {
+        switch self {
+        case .empty:
+            return "レビューを入力してください"
+        case .notEnpty:
+            return nil
+        }
+    }
+    
+    var textColor: UIColor {
+        switch self {
+        case .empty:
+            return .lightGray
+        case .notEnpty:
+            return .white
+        }
+    }
+    
+    func configurePlaceholder(_ textView: UITextView) {
+        switch self {
+        case .empty:
+            textView.text = self.text
+            textView.textColor = self.textColor
+
+        case .notEnpty:
+            textView.text = self.text
+            textView.textColor = self.textColor
+        }
+    }
+
+}
