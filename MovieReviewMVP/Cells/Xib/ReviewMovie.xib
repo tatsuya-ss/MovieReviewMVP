@@ -86,7 +86,7 @@
                         <constraint firstAttribute="width" secondItem="q0W-fP-KyB" secondAttribute="height" multiplier="1:1.6" id="3dd-jx-hNv"/>
                     </constraints>
                 </stackView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="レビュー欄" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-ZI-IRT" userLabel="Review Text View">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-ZI-IRT" userLabel="Review Text View">
                     <rect key="frame" x="20" y="284" width="374" height="578"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

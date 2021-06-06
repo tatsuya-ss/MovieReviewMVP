@@ -108,14 +108,14 @@ enum sortState {
 
 enum textViewState {
     case empty
-    case notEnpty
+    case notEnpty(String?)
     
     var text: String? {
         switch self {
         case .empty:
             return "レビューを入力してください"
-        case .notEnpty:
-            return nil
+        case let .notEnpty(review):
+            return review
         }
     }
     
