@@ -214,6 +214,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
             
         } else {
             presenter.didSelectRow(at: indexPath)
+            collectionView.deselectItem(at: indexPath, animated: false)
         }
     }
     
@@ -274,6 +275,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 
 // MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
+    
     
     func sortReview() {
         

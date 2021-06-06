@@ -82,7 +82,13 @@ class ReviewMovieOwner: NSObject {
         case .beforeStore:
             print("初期保存しました")
         case .afterStore:
-            reviewTextView.text = movie.review
+            
+            if movie.review == "" {
+                textViewState.empty.configurePlaceholder(reviewTextView)
+            } else {
+                textViewState.notEnpty(movie.review).configurePlaceholder(reviewTextView)
+            }
+            
             reviewStarView.rating = movie.reviewStars ?? 0
             reviewStarView.text = String(movie.reviewStars ?? 0)
         }

@@ -77,6 +77,7 @@ private extension ReviewMovieViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
 
         textViewState.empty.configurePlaceholder(reviewMovieOwner.reviewTextView)
+        
     }
     
 }
@@ -84,9 +85,16 @@ private extension ReviewMovieViewController {
 private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
-        presenter.didTapSaveButton(date: Date(),
-                                   reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
-                                   review: reviewMovieOwner.reviewTextView.text ?? "")
+        if reviewMovieOwner.reviewTextView.text.isEmpty || reviewMovieOwner.reviewTextView.textColor == textViewState.empty.textColor {
+            presenter.didTapSaveButton(date: Date(),
+                                       reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                       review: "")
+
+        } else {
+            presenter.didTapSaveButton(date: Date(),
+                                       reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                       review: reviewMovieOwner.reviewTextView.text ?? "")
+        }
 
     }
 
@@ -113,8 +121,11 @@ private extension ReviewMovieViewController {
 extension ReviewMovieViewController : UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        
         if textView.textColor == textViewState.empty.textColor {
-            textViewState.notEnpty.configurePlaceholder(textView)
+//            textView.text = nil
+//            textView.textColor = textViewState.notEnpty.textColor
+            textViewState.notEnpty(nil).configurePlaceholder(textView)
         }
     }
     
