@@ -26,6 +26,7 @@ struct MovieReviewElement {
     var review: String?
     var create_at: Date?
     var id: Int
+    var isStoredAsReview: Bool?
 }
 
 

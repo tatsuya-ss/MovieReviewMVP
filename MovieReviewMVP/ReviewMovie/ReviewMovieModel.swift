@@ -36,7 +36,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     }
     
     func fetchMovie(sortState: sortState) -> [MovieReviewElement] {
-        movieUseCase.fetch(sortState)
+        movieUseCase.fetch(sortState, isStoredAsReview: nil)
     }
 
     
