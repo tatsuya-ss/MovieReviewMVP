@@ -64,6 +64,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
+        realmMyMovieInfomation.isStoredAsReview = movie.isStoredAsReview ?? true
         
         try! realm.write {
             realm.add(realmMyMovieInfomation.self)
@@ -73,11 +74,19 @@ struct MovieDataStore : MovieReviewRepository {
         print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
-    func fetchMovieReview(_ sortState: sortState) -> [MovieReviewElement] {
+    func fetchMovieReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
             
         let realm = try! Realm()
+        var fetchedMovies: Results<RealmMyMovieInfomation>
         
-        let fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+        if let isStoredAsReview = isStoredAsReview {
+            fetchedMovies = realm.objects(RealmMyMovieInfomation.self).filter("isStoredAsReview = \(isStoredAsReview)").sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+
+        } else {
+            fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+
+        }
+        
         
         var movieReviewElements: [MovieReviewElement] = []
         
@@ -99,6 +108,8 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
+        realmMyMovieInfomation.isStoredAsReview = movie.isStoredAsReview ?? true
+
 
         let realm = try! Realm()
         
@@ -119,10 +130,18 @@ struct MovieDataStore : MovieReviewRepository {
     }
     
     
-    func sortMovieReview(_ sortState: sortState) -> [MovieReviewElement] {
+    func sortMovieReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
         let realm = try! Realm()
+        var sortedStoreDate: Results<RealmMyMovieInfomation>
+
         
-        let sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+        if let isStoredAsReview = isStoredAsReview {
+            sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).filter("isStoredAsReview = \(isStoredAsReview)").sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+
+        } else {
+            sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+
+        }
     
         var movieReviewElements: [MovieReviewElement] = []
         
@@ -141,7 +160,7 @@ struct MovieDataStore : MovieReviewRepository {
 private extension MovieReviewElement {
     init(movieInfomation: RealmMyMovieInfomation) {
     
-        self = MovieReviewElement(title: movieInfomation.title, poster_path: movieInfomation.movieImagePath, original_name: movieInfomation.original_name, backdrop_path: movieInfomation.backdrop_path, overview: movieInfomation.overview, releaseDay: movieInfomation.releaseDay, reviewStars: movieInfomation.reviewStars, review: movieInfomation.review, create_at: movieInfomation.created_at, id: movieInfomation.id)
+        self = MovieReviewElement(title: movieInfomation.title, poster_path: movieInfomation.movieImagePath, original_name: movieInfomation.original_name, backdrop_path: movieInfomation.backdrop_path, overview: movieInfomation.overview, releaseDay: movieInfomation.releaseDay, reviewStars: movieInfomation.reviewStars, review: movieInfomation.review, create_at: movieInfomation.created_at, id: movieInfomation.id, isStoredAsReview: movieInfomation.isStoredAsReview)
     }
     
 }

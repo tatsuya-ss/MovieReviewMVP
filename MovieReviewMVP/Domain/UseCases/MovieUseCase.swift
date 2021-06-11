@@ -19,8 +19,8 @@ class MovieUseCase {
         repository.createMovieReview(movie)
     }
     
-    func fetch(_ sortState: sortState) -> [MovieReviewElement] {
-        repository.fetchMovieReview(sortState)
+    func fetch(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
+        repository.fetchMovieReview(sortState, isStoredAsReview: isStoredAsReview)
     }
     
     func update(_ movie: MovieReviewElement) {
@@ -31,8 +31,8 @@ class MovieUseCase {
         repository.deleteMovieReview(sortState, index)
     }
     
-    func sort(_ sortState: sortState) -> [MovieReviewElement] {
-        repository.sortMovieReview(sortState)
+    func sort(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
+        repository.sortMovieReview(sortState, isStoredAsReview: isStoredAsReview)
     }
     
     // MARK: 更新通知を受け取る

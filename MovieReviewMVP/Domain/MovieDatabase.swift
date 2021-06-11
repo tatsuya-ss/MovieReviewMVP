@@ -18,6 +18,7 @@ class RealmMyMovieInfomation: Object {
     @objc dynamic var backdrop_path: String = ""
     @objc dynamic var created_at: Date = Date()
     @objc dynamic var id: Int = 0
+    @objc dynamic var isStoredAsReview: Bool = true
     
     override class func primaryKey() -> String? {
         "id"

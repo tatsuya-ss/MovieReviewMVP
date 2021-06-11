@@ -9,7 +9,11 @@ import Foundation
 
 protocol ReviewManagementPresenterInput {
     var numberOfMovies: Int { get }
-    func movieReview(forRow row: Int) -> MovieReviewElement?
+    var numberOfStockMovies: Int { get }
+
+    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement?
+    func returnStockMovieReviewForCell(forRow row: Int) -> MovieReviewElement?
+
     func didDeleteReviewMovie(_ state: MovieUpdateState, indexs: [IndexPath])
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func fetchUpdateReviewMovies(_ state: MovieUpdateState)
@@ -43,11 +47,17 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     private(set) var movieReviewElements: [MovieReviewElement] = []
+    private(set) var movieReviewStockElements: [MovieReviewElement] = []
+
     private var sortStateManagement: sortState = .createdDescend
     
     
     var numberOfMovies: Int {
         return movieReviewElements.count
+    }
+    
+    var numberOfStockMovies: Int {
+        return movieReviewStockElements.count
     }
     
     func didSelectRow(at indexPath: IndexPath) {
@@ -58,8 +68,12 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         sortStateManagement
     }
     
-    func movieReview(forRow row: Int) -> MovieReviewElement? {
+    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement? {
         movieReviewElements[row]
+    }
+    
+    func returnStockMovieReviewForCell(forRow row: Int) -> MovieReviewElement? {
+        movieReviewStockElements[row]
     }
     
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
@@ -67,7 +81,10 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func fetchUpdateReviewMovies(_ state: MovieUpdateState) {
-        self.movieReviewElements = model.fetchReviewMovie(sortStateManagement)
+        self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
+        self.movieReviewStockElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: false)
+        print("movieReviewStockElements\n\(movieReviewStockElements)")
+
         view.updateReview(state, nil)
     }
     
@@ -90,7 +107,8 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func didTapsortButton(_ sortState: sortState) {
         sortStateManagement = sortState
-        movieReviewElements = model.sortReview(sortState)
+        movieReviewElements = model.sortReview(sortState, isStoredAsReview: true)
+        movieReviewStockElements = model.sortReview(sortState, isStoredAsReview: false)
         // print用の処理
         print("ソート後の内容")
         for movie in movieReviewElements {

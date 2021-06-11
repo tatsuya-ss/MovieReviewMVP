@@ -164,7 +164,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         reviewMovieOwner.fetchMovieImage(movieReviewState: movieReviewState, movie: movieReviewElement)
     }
     
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool) {
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewState) {
         switch primaryKeyIsStored {
         case true:
             let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
@@ -172,8 +172,24 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
             self.present(storedAlert, animated: true, completion: nil)
             
         case false:
-            dismiss(animated: true, completion: nil)
+            switch movieReviewState {
+            case .beforeStore:
+                let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
+                storeLocationAlert.addAction(UIAlertAction(title: "後でレビューするに保存", style: .default, handler: { _ in
+                                                            self.presenter.didTapStoreLocationAlert(false)}))
+                storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default, handler: { _ in
+                                                            self.presenter.didTapStoreLocationAlert(true)}))
+                storeLocationAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                self.present(storeLocationAlert, animated: true, completion: nil)
+                
+            case .afterStore:
+                dismiss(animated: true, completion: nil)
+            }
         }
 
+    }
+    
+    func closeReviewMovieView() {
+        dismiss(animated: true, completion: nil)
     }
 }

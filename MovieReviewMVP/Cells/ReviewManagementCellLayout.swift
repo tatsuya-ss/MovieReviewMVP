@@ -13,17 +13,37 @@ class ColumnFlowLayout: UICollectionViewFlowLayout {
         
         guard let cv = collectionView else { return }
         
-        let availavleWidth = cv.bounds.inset(by: cv.layoutMargins).size.width
+        let availableWidth = cv.bounds.inset(by: cv.layoutMargins).size.width
         
         
         let minColumnWidth = CGFloat(100.0)
         
-        let maxNumberColumns = Int(availavleWidth / minColumnWidth)
+        let maxNumberColumns = Int(availableWidth / minColumnWidth)
         
-        let cellWidth = (availavleWidth / CGFloat(maxNumberColumns)).rounded(.down)
+        let cellWidth = (availableWidth / CGFloat(maxNumberColumns)).rounded(.down)
                 
         let cellHeight = (cellWidth * 28 / 19) + 2 + 16
         
         self.itemSize = CGSize(width: cellWidth, height: cellHeight)
+    }
+}
+
+class StockColumnFlowLayout : UICollectionViewFlowLayout {
+    
+    override func prepare() {
+        
+        guard let cv = collectionView else { return }
+        
+        scrollDirection = .horizontal
+        
+        let availableWidth = cv.bounds.inset(by: cv.layoutMargins).size.width
+        
+        let cellWidth = availableWidth / CGFloat(6).rounded(.down)
+        
+        let cellheight = cv.bounds.height - 10
+        
+        self.itemSize = CGSize(width: cellWidth, height: cellheight)
+        
+        
     }
 }

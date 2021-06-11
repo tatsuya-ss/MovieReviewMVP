@@ -14,6 +14,11 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     
+    private var stockCollectionView: UICollectionView!
+    private var stockColunmFlowLayout: UICollectionViewFlowLayout!
+    private var stockCollectionViewHeight: CGFloat?
+
+    
     var sortButton: UIBarButtonItem!
     var editButton: UIBarButtonItem!
     var trashButton: UIButton!
@@ -31,6 +36,8 @@ class ReviewManagementCollectionViewController: UIViewController {
         setup()
         collectionView.dataSource = self
         collectionView.delegate = self
+        stockCollectionView.dataSource = self
+//        stockCollectionView.delegate = self
         movieUseCase.notification(presenter)
         isEditing = false
     }
@@ -171,6 +178,27 @@ private extension ReviewManagementCollectionViewController {
         collectionView.allowsMultipleSelection = true
 
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+        
+        // stockCollectionView
+        stockColunmFlowLayout = StockColumnFlowLayout()
+        stockCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: stockColunmFlowLayout)
+        stockCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        stockCollectionView.backgroundColor = .black
+        stockCollectionView.alwaysBounceHorizontal = true
+        stockCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stockCollectionView)
+        
+        [stockCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+         stockCollectionView.heightAnchor.constraint(equalToConstant: view.bounds.height / 9),
+         stockCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+         stockCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),].forEach { $0.isActive = true}
+        
+        stockCollectionView.register(StockReviewMovieCollectionViewCell.nib, forCellWithReuseIdentifier: StockReviewMovieCollectionViewCell.identifier)
+        
+        collectionView.contentInset.top = view.bounds.height / 9
+        stockCollectionViewHeight = view.bounds.height / 9
+
+
     }
     
     
@@ -230,6 +258,24 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
         }
         
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let stockCollectionViewHeight = stockCollectionViewHeight else { return }
+        let contentOffset = scrollView.contentOffset.y
+        
+        if contentOffset <= -stockCollectionViewHeight {
+            stockCollectionView.isHidden = false
+            collectionView.contentInset.top = stockCollectionViewHeight
+            stockCollectionView.frame.origin.y = 0
+        } else if contentOffset <= 0 {
+            stockCollectionView.isHidden = false
+            collectionView.contentInset.top = stockCollectionViewHeight - (contentOffset + stockCollectionViewHeight)
+            stockCollectionView.frame.origin.y = -(stockCollectionViewHeight + contentOffset)
+        } else {
+            stockCollectionView.isHidden = true
+            stockCollectionView.frame.origin.y = -(stockCollectionViewHeight)
+        }
+    }
 
 }
 
@@ -251,17 +297,41 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegateFlo
 extension ReviewManagementCollectionViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        presenter.numberOfMovies
+        switch collectionView {
+        case self.collectionView:
+            print(presenter.numberOfMovies)
+            return presenter.numberOfMovies
+
+        case stockCollectionView:
+            print(presenter.numberOfStockMovies)
+            return presenter.numberOfStockMovies
+        default:
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
-        
-        guard let movieReviews = presenter.movieReview(forRow: indexPath.row) else { return cell }
-        
-            cell.configure(movieReview: movieReviews)
+        switch collectionView {
+        case self.collectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
+            if let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row) {
+                cell.configure(movieReview: movieReviews)
+                if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
+                    cell.tapCell(state: .selected)
+                } else {
+                    cell.tapCell(state: .deselected)
+                }
+            }
             
+            return cell
+
+            
+        default:
+            let cell = stockCollectionView.dequeueReusableCell(withReuseIdentifier: StockReviewMovieCollectionViewCell.identifier, for: indexPath) as! StockReviewMovieCollectionViewCell
+            if let movieReviews = presenter.returnStockMovieReviewForCell(forRow: indexPath.row) {
+                cell.configure(movieReview: movieReviews)
+            }
             if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
                 cell.tapCell(state: .selected)
             } else {
@@ -269,6 +339,10 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
             }
         
         return cell
+
+        }
+        
+        
     }
     
 }
@@ -281,6 +355,12 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         
         for index in 0...presenter.numberOfMovies - 1 {
             collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            
+        }
+        
+        for index in 0...presenter.numberOfStockMovies - 1 {
+            stockCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+
         }
         
     }
@@ -293,6 +373,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         
         case .initial:
             collectionView.reloadData()
+            stockCollectionView.reloadData()
             
         case .delete:
             guard let index = index else { return }
@@ -303,9 +384,13 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         case .insert:
             if presenter.numberOfMovies == 1 {
                 collectionView.reloadData()
+                stockCollectionView.reloadData()
             } else {
                 for index in 0...presenter.numberOfMovies - 1 {
                     collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+                }
+                for index in 0...presenter.numberOfStockMovies - 1 {
+                    stockCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
                 }
             }
 
