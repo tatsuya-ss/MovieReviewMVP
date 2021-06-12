@@ -17,7 +17,8 @@ protocol ReviewManagementPresenterInput {
     func didDeleteReviewMovie(_ state: MovieUpdateState, indexs: [IndexPath])
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func fetchUpdateReviewMovies(_ state: MovieUpdateState)
-    func didSelectRow(at: IndexPath)
+    func didSelectRowCollectionView(at indexPath: IndexPath)
+    func didSelectRowStockCollectionView(at indexPath: IndexPath)
     func didTapsortButton(_ sortState: sortState)
     func returnSortState() -> sortState
     func returnMovieReview() -> [MovieReviewElement]
@@ -26,7 +27,7 @@ protocol ReviewManagementPresenterInput {
 protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayByEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func updateReview(_ state: MovieUpdateState, _ index: Int?)
-    func displaySelectMyReview(_ movie: MovieReviewElement)
+    func displaySelectMyReview(_ movie: MovieReviewElement, _ afterStoreState: afterStoreState)
     func sortReview()
 }
 
@@ -60,8 +61,12 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         return movieReviewStockElements.count
     }
     
-    func didSelectRow(at indexPath: IndexPath) {
-        view.displaySelectMyReview(movieReviewElements[indexPath.row])
+    func didSelectRowCollectionView(at indexPath: IndexPath) {
+        view.displaySelectMyReview(movieReviewElements[indexPath.row], .reviewed)
+    }
+    
+    func didSelectRowStockCollectionView(at indexPath: IndexPath) {
+        view.displaySelectMyReview(movieReviewStockElements[indexPath.row], .stock)
     }
     
     func returnSortState() -> sortState {

@@ -11,6 +11,7 @@ protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
     func movie() -> [MovieReviewElement]
     func didSelectRow(at indexPath: IndexPath)
+
     func fetchMovie(state: FetchMovieState, text: String?)
 }
 
@@ -24,6 +25,8 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private weak var view: SearchMoviePresenterOutput!
     private var model: SearchMovieModelInput
     private(set) var movies: [MovieReviewElement] = []
+    private(set) var stockMovies: [MovieReviewElement] = []
+
     
     init(view: SearchMoviePresenterOutput, model: SearchMovieModelInput) {
         self.view = view

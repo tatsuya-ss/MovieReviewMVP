@@ -12,6 +12,8 @@ protocol ReviewMoviePresenterInput {
     func didTapSaveButton(date: Date, reviewScore: Double, review: String)
     func returnMovieReviewState() -> MovieReviewState
     func didTapStoreLocationAlert(_ isStoredAsReview: Bool)
+    func didTapStoreDateAlert(date: Date?, reviewScore: Double, review: String)
+
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
@@ -76,12 +78,14 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 movieReviewElement.reviewStars = reviewScore
                 movieReviewElement.review = review
             }
-
-        case .afterStore:
-            primaryKeyIsStored = false
+            
+        case .afterStore(.reviewed):
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = review
             model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+
+        case .afterStore(.stock):
+            break
         }
         
         view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState)
@@ -89,6 +93,17 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     
     func didTapStoreLocationAlert(_ isStoredAsReview: Bool) {
         movieReviewElement.isStoredAsReview = isStoredAsReview
+        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        view.closeReviewMovieView()
+    }
+    
+    func didTapStoreDateAlert(date: Date?, reviewScore: Double, review: String) {
+        if let date = date {
+            movieReviewElement.create_at = date
+        }
+        movieReviewElement.reviewStars = reviewScore
+        movieReviewElement.review = review
+        movieReviewElement.isStoredAsReview = true
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         view.closeReviewMovieView()
     }

@@ -54,8 +54,12 @@ private extension ReviewMovieViewController {
         case .beforeStore:
             saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
 
-        case .afterStore:
+        case .afterStore(.reviewed):
             saveButton = UIBarButtonItem(title: "更新", style: .done, target: self, action: #selector(saveButtonTapped))
+            
+        case .afterStore(.stock):
+            saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+
 
         }
         
@@ -85,6 +89,8 @@ private extension ReviewMovieViewController {
 private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
+        // textViewに入力がない場合とある場合の保存処理
+        // ストックかレビュー済みかとか関係ないやつ
         if reviewMovieOwner.reviewTextView.text.isEmpty || reviewMovieOwner.reviewTextView.textColor == textViewState.empty.textColor {
             presenter.didTapSaveButton(date: Date(),
                                        reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
@@ -182,8 +188,25 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
                 storeLocationAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                 self.present(storeLocationAlert, animated: true, completion: nil)
                 
-            case .afterStore:
+            case .afterStore(.reviewed):
                 dismiss(animated: true, completion: nil)
+                
+            case .afterStore(.stock):
+                let storeDateAlert = UIAlertController(title: nil, message: "保存日を選択してください", preferredStyle: .actionSheet)
+                storeDateAlert.addAction(UIAlertAction(title: "追加した日で保存", style: .default, handler: {_ in
+                    // アラートの処理を書く
+                    self.presenter.didTapStoreDateAlert(date: nil, reviewScore: Double(self.reviewMovieOwner.reviewStarView.text!) ?? 0.0, review: self.reviewMovieOwner.reviewTextView.text ?? "")
+                }))
+                storeDateAlert.addAction(UIAlertAction(title: "今日の日付で保存", style: .default, handler: {_ in
+                    // アラートの処理を書く
+                    self.presenter.didTapStoreDateAlert(date: Date(),
+                                                        reviewScore: Double(self.reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                                        review: self.reviewMovieOwner.reviewTextView.text ?? "")
+
+                }))
+                storeDateAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                self.present(storeDateAlert, animated: true, completion: nil)
+
             }
         }
 

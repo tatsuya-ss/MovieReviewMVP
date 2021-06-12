@@ -36,8 +36,14 @@ enum MovieUpdateState {
 
 enum MovieReviewState {
     case beforeStore
-    case afterStore
+    case afterStore(afterStoreState)
+    
 }
+enum afterStoreState {
+    case reviewed
+    case stock
+}
+
 
 enum CellSelectedState {
     case selected
@@ -141,3 +147,4 @@ enum textViewState {
     }
 
 }
+
