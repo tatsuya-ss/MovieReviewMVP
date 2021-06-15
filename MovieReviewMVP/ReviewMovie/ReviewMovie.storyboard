@@ -18,8 +18,13 @@
                         <viewLayoutGuide key="safeArea" id="HrI-PI-CqY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <segue destination="mAv-Qe-Hxo" kind="unwind" identifier="saveButtonTappedSegue" unwindAction="saveButtonTappedSegueWithSegue:" id="Ncn-Bk-Aoo"/>
+                        <segue destination="mAv-Qe-Hxo" kind="unwind" identifier="saveButtonTappedForInsertSegue" unwindAction="saveButtonTappedForInsertSegueWithSegue:" id="s4U-DD-siC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pQf-u7-Q3F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="mAv-Qe-Hxo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="470" y="-456"/>
         </scene>

@@ -11,8 +11,8 @@ protocol MovieReviewRepository {
     func createMovieReview(_ movie: MovieReviewElement)
     func fetchMovieReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement]
     func updateMovieReview(_ movie: MovieReviewElement)
-    func deleteMovieReview(_ sortState: sortState, _ index: IndexPath)
+    func deleteMovieReview(_ sortState: sortState, _ id: Int)
     func sortMovieReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement]
-    mutating func notification(_ presenter: ReviewManagementPresenterInput)
+//    mutating func notification(_ presenter: ReviewManagementPresenterInput)
 }
 

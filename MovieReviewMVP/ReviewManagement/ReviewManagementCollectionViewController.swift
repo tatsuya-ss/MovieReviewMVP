@@ -13,20 +13,16 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
-    
     private var stockCollectionView: UICollectionView!
     private var stockColunmFlowLayout: UICollectionViewFlowLayout!
     private var stockCollectionViewHeight: CGFloat?
-
-    
-    var sortButton: UIBarButtonItem!
-    var editButton: UIBarButtonItem!
-    var trashButton: UIButton!
+    private var sortButton: UIBarButtonItem!
+    private var editButton: UIBarButtonItem!
+    private var trashButton: UIButton!
     
     let movieUseCase = MovieUseCase()
     
-    
-    private var presenter: ReviewManagementPresenterInput!
+    private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
         self.presenter = presenter
     }
@@ -34,20 +30,31 @@ class ReviewManagementCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        stockCollectionView.dataSource = self
-        stockCollectionView.delegate = self
-        movieUseCase.notification(presenter)
+//        movieUseCase.notification(presenter)
+        presenter.fetchUpdateReviewMovies(.initial)
         isEditing = false
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        if appDelegate.isInsert {
+            presenter.fetchUpdateReviewMovies(.insert)
+            appDelegate.isInsert = false
+        }
+    }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        let indexPaths: [[IndexPath]?] = [collectionView.indexPathsForSelectedItems, stockCollectionView.indexPathsForSelectedItems]
+        presenter.changeEditingStateProcess(editing, indexPaths)
         
-        presenter.changeEditingStateProcess(editing, collectionView.indexPathsForSelectedItems)
-        
+    }
+    
+    @IBAction func saveButtonTappedSegue(segue: UIStoryboardSegue) {
+        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
+        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
+        presenter.fetchUpdateReviewMovies(movieUpdateState)
     }
     
 }
@@ -80,7 +87,7 @@ private extension ReviewManagementCollectionViewController {
             trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-            trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor),
+            trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)
         ].forEach { $0.isActive = true }
         
         trashButton.layer.cornerRadius = buttonWidth / 2
@@ -104,7 +111,6 @@ private extension ReviewManagementCollectionViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
         
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
-        
         
         editButton = editButtonItem
         
@@ -162,24 +168,23 @@ private extension ReviewManagementCollectionViewController {
     func setupCollectionView() {
         
         colunmFlowLayout = ColumnFlowLayout()
-        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
         collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .black
         collectionView.alwaysBounceVertical = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
-        
         [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
          collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
          collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),].forEach { $0.isActive = true}
-        
+         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+        ].forEach { $0.isActive = true}
         collectionView.allowsMultipleSelection = true
-        
-
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
         collectionView.register(ReviewMovieManagementCollectionReusableView.nib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReviewMovieManagementCollectionReusableView.identifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+
         
         // stockCollectionView
         stockColunmFlowLayout = StockColumnFlowLayout()
@@ -189,17 +194,18 @@ private extension ReviewManagementCollectionViewController {
         stockCollectionView.alwaysBounceHorizontal = true
         stockCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stockCollectionView)
-        
         [stockCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
          stockCollectionView.heightAnchor.constraint(equalToConstant: view.bounds.height / 7),
          stockCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-         stockCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),].forEach { $0.isActive = true}
-        
+         stockCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+        ].forEach { $0.isActive = true}
+        stockCollectionView.allowsMultipleSelection = true
         stockCollectionView.register(StockReviewMovieCollectionViewCell.nib, forCellWithReuseIdentifier: StockReviewMovieCollectionViewCell.identifier)
-        
         collectionView.contentInset.top = view.bounds.height / 7
         stockCollectionViewHeight = view.bounds.height / 7
-
+        stockCollectionView.dataSource = self
+        stockCollectionView.delegate = self
+        
 
     }
     
@@ -214,26 +220,21 @@ extension ReviewManagementCollectionViewController {
         let deleteAlert = UIAlertController(title: nil, message: "選択したレビューを削除しますか？", preferredStyle: .alert)
         
         deleteAlert.addAction(UIAlertAction(title: "レビューを削除", style: .destructive, handler: { _ in
-            let indexPathsForSelectedItems = self.collectionView.indexPathsForSelectedItems
-            let sortedIndexPathsForSelectedItems = indexPathsForSelectedItems?.sorted { $0 > $1 }
-            guard let sortedIndex = sortedIndexPathsForSelectedItems else { return }
-            print(sortedIndex)
-            
-            self.presenter.didDeleteReviewMovie(.delete, indexs: sortedIndex)
-            
+            guard let reviewSortedIndex = (self.collectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }),
+                  let stockSortedIndex = (self.stockCollectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
+            self.presenter.didDeleteReviewMovie(.delete, indexs: reviewSortedIndex)
+            self.presenter.didDeleteStockMovie(.delete, indexs: stockSortedIndex)
         }))
         deleteAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
-        
     }
-    
+
 }
 
 // MARK: - UICollectionViewDelegate
 extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         switch collectionView {
         case self.collectionView:
             guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
@@ -257,20 +258,25 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
 
             print("tap\(indexPath.row)")
         default:
-        print("default")
+            break
         }
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-        
         if isEditing == true {
-            cell.tapCell(state: .deselected)
-            
-            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
-
+            switch collectionView {
+            case self.collectionView:
+                guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+                    cell.tapCell(state: .deselected)
+                    collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+            case stockCollectionView:
+                guard let cell = collectionView.cellForItem(at: indexPath) as? StockReviewMovieCollectionViewCell else { return }
+                    cell.tapCell(state: .deselected)
+                    collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+            default:
+                break
+            }
         }
         
     }
@@ -403,7 +409,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     
     
     func sortReview() {
-        
         if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
             collectionView.reloadData()
         } else {
@@ -424,19 +429,28 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     
     
     // MARK: 初期化、削除、挿入、修正を行う
-    func updateReview(_ state: MovieUpdateState, _ index: Int?) {
+    func updateReview(_ movieUpdateState: MovieUpdateState, _ index: Int?, _ collectionViewState: collectionViewState?) {
         
-        switch state {
+        switch movieUpdateState {
         
         case .initial:
             collectionView.reloadData()
             stockCollectionView.reloadData()
             
         case .delete:
-            guard let index = index else { return }
-            collectionView.performBatchUpdates {
-                collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+            guard let index = index,
+                  let collectionViewState = collectionViewState else { return }
+            switch collectionViewState {
+            case .review:
+                collectionView.performBatchUpdates {
+                    collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+                }
+            case .stock:
+                stockCollectionView.performBatchUpdates {
+                    stockCollectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+                }
             }
+            
             
         case .insert:
             
@@ -444,6 +458,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
                 collectionView.reloadData()
             } else {
                 for index in 0...presenter.numberOfMovies - 1 {
+                    
                     collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
                 }
             }
@@ -479,20 +494,23 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
     
     // MARK: 選択解除を行う
-    func changeTheDisplayByEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [[IndexPath]?]) {
         
         switch editing {
         case true:
-            collectionView.allowsMultipleSelection = true
             tabBarController?.tabBar.isHidden = true
             sortButton.isEnabled = false
             trashButton.isHidden = false
             trashButton.isEnabled = false
-            
             // trueになった時、一旦全選択解除
-            if let indexPaths = indexPaths {
+            if let indexPaths = indexPaths[0] {
                 for index in indexPaths {
-                    collectionView.deselectItem(at: index, animated: false)
+                    collectionView.deselectItem(at: index, animated: true)
+                }
+            }
+            if let indexPaths = indexPaths[1] {
+                for index in indexPaths {
+                    stockCollectionView.deselectItem(at: index, animated: true)
                 }
             }
             
@@ -501,10 +519,16 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             sortButton.isEnabled = true
             trashButton.isHidden = true
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
-            if let indexPaths = indexPaths {
+            if let indexPaths = indexPaths[0] {
                 for index in indexPaths {
-                    collectionView.deselectItem(at: index, animated: false)
+                    collectionView.deselectItem(at: index, animated: true)
                     collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
+                }
+            }
+            if let indexPaths = indexPaths[1] {
+                for index in indexPaths {
+                    stockCollectionView.deselectItem(at: index, animated: true)
+                    stockCollectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
                 }
             }
         }
@@ -512,13 +536,13 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     
     
     // MARK: tapしたレビューを詳細表示
-    func displaySelectMyReview(_ movie: MovieReviewElement, _ afterStoreState: afterStoreState) {
+    func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         
         let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
         let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
         
-        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, view: reviewMovieVC, model: model)
+        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
                 
         reviewMovieVC.inject(presenter: presenter)
         

@@ -16,7 +16,7 @@ class ReviewMovieViewController: UIViewController {
     private var reviewMovieOwner: ReviewMovieOwner!
     private var keyboardHeight: CGFloat?
         
-    private var presenter: ReviewMoviePresenterInput!
+    private(set) var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
     }
@@ -129,8 +129,6 @@ extension ReviewMovieViewController : UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         
         if textView.textColor == textViewState.empty.textColor {
-//            textView.text = nil
-//            textView.textColor = textViewState.notEnpty.textColor
             textViewState.notEnpty(nil).configurePlaceholder(textView)
         }
     }
@@ -166,11 +164,11 @@ extension ReviewMovieViewController : UITextViewDelegate {
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-    func displayReviewMovie(movieReviewState: MovieReviewState, _ movieReviewElement: MovieReviewElement) {
+    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
         reviewMovieOwner.fetchMovieImage(movieReviewState: movieReviewState, movie: movieReviewElement)
     }
     
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewState) {
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState) {
         switch primaryKeyIsStored {
         case true:
             let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
@@ -182,24 +180,27 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
             case .beforeStore:
                 let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
                 storeLocationAlert.addAction(UIAlertAction(title: "後でレビューするに保存", style: .default, handler: { _ in
-                                                            self.presenter.didTapStoreLocationAlert(false)}))
+                                                            self.presenter.didTapStoreLocationAlert(isStoredAsReview: false)}))
                 storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default, handler: { _ in
-                                                            self.presenter.didTapStoreLocationAlert(true)}))
+                                                            self.presenter.didTapStoreLocationAlert(isStoredAsReview: true)}))
                 storeLocationAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                 self.present(storeLocationAlert, animated: true, completion: nil)
                 
             case .afterStore(.reviewed):
                 dismiss(animated: true, completion: nil)
+                performSegue(withIdentifier: "saveButtonTappedSegue", sender: nil)
                 
             case .afterStore(.stock):
                 let storeDateAlert = UIAlertController(title: nil, message: "保存日を選択してください", preferredStyle: .actionSheet)
                 storeDateAlert.addAction(UIAlertAction(title: "追加した日で保存", style: .default, handler: {_ in
                     // アラートの処理を書く
-                    self.presenter.didTapStoreDateAlert(date: nil, reviewScore: Double(self.reviewMovieOwner.reviewStarView.text!) ?? 0.0, review: self.reviewMovieOwner.reviewTextView.text ?? "")
+                    self.presenter.didTapSelectStoreDateAlert(storeDateState: .stockDate,
+                                                        reviewScore: Double(self.reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                                        review: self.reviewMovieOwner.reviewTextView.text ?? "")
                 }))
                 storeDateAlert.addAction(UIAlertAction(title: "今日の日付で保存", style: .default, handler: {_ in
                     // アラートの処理を書く
-                    self.presenter.didTapStoreDateAlert(date: Date(),
+                    self.presenter.didTapSelectStoreDateAlert(storeDateState: .today,
                                                         reviewScore: Double(self.reviewMovieOwner.reviewStarView.text!) ?? 0.0,
                                                         review: self.reviewMovieOwner.reviewTextView.text ?? "")
 
@@ -212,7 +213,15 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
 
     }
     
-    func closeReviewMovieView() {
-        dismiss(animated: true, completion: nil)
+    func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
+        switch movieUpdateState {
+        case .insert:
+            performSegue(withIdentifier: "saveButtonTappedForInsertSegue", sender: nil)
+        case .modificate:
+            performSegue(withIdentifier: "saveButtonTappedSegue", sender: nil)
+        default:
+            break
+        }
     }
 }
+

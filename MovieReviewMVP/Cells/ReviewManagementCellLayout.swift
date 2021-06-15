@@ -37,7 +37,7 @@ class StockColumnFlowLayout : UICollectionViewFlowLayout {
         guard let cv = collectionView else { return }
         
         scrollDirection = .horizontal
-        
+
         let cellheight = cv.bounds.height - 10
         let cellWidth = cellheight * 19 / 28
 

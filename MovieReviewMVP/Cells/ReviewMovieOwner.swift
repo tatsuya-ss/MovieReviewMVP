@@ -52,7 +52,7 @@ class ReviewMovieOwner: NSObject {
 
     
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
-    func fetchMovieImage(movieReviewState: MovieReviewState, movie: MovieReviewElement) {
+    func fetchMovieImage(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
         
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
