@@ -10,29 +10,34 @@ import Foundation
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
     func didTapSaveButton(date: Date, reviewScore: Double, review: String)
-    func returnMovieReviewState() -> MovieReviewState
-    func didTapStoreLocationAlert(_ isStoredAsReview: Bool)
+    func returnMovieReviewState() -> MovieReviewStoreState
+    func didTapStoreLocationAlert(isStoredAsReview: Bool)
+    func didTapSelectStoreDateAlert(storeDateState: storeDateState, reviewScore: Double, review: String)
+    func returnMovieUpdateState() -> MovieUpdateState
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
-    func displayReviewMovie(movieReviewState: MovieReviewState, _ movieInfomation: MovieReviewElement)
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewState)
-    func closeReviewMovieView()
+    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieInfomation: MovieReviewElement)
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState)
+    func closeReviewMovieView(movieUpdateState: MovieUpdateState)
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     
-    
-    private var movieReviewState: MovieReviewState
+    private var movieReviewState: MovieReviewStoreState
     private var movieReviewElement: MovieReviewElement
-
-    
+    private var movieUpdateState: MovieUpdateState
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
     
-    init(movieReviewState: MovieReviewState, movieReviewElement: MovieReviewElement, view: ReviewMoviePresenterOutput, model: ReviewMovieModelInput) {
+    init(movieReviewState: MovieReviewStoreState,
+         movieReviewElement: MovieReviewElement,
+         movieUpdateState: MovieUpdateState,
+         view: ReviewMoviePresenterOutput,
+         model: ReviewMovieModelInput) {
         self.movieReviewState = movieReviewState
         self.movieReviewElement = movieReviewElement
+        self.movieUpdateState = movieUpdateState
         self.view = view
         self.model = model
     }
@@ -48,10 +53,13 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     }
     
     // MARK: どこから画面遷移されたのかをenumで区別
-    func returnMovieReviewState() -> MovieReviewState {
+    func returnMovieReviewState() -> MovieReviewStoreState {
         movieReviewState
     }
 
+    func returnMovieUpdateState() -> MovieUpdateState {
+        movieUpdateState
+    }
     
     // MARK: 保存ボタンが押された時の処理
     func didTapSaveButton(date: Date, reviewScore: Double, review: String) {
@@ -76,21 +84,36 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 movieReviewElement.reviewStars = reviewScore
                 movieReviewElement.review = review
             }
-
-        case .afterStore:
-            primaryKeyIsStored = false
+            
+        case .afterStore(.reviewed):
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = review
             model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+
+        case .afterStore(.stock):
+            movieReviewElement.reviewStars = reviewScore
+            movieReviewElement.review = review
+            movieReviewElement.isStoredAsReview = true
         }
         
         view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState)
     }
     
-    func didTapStoreLocationAlert(_ isStoredAsReview: Bool) {
+    func didTapStoreLocationAlert(isStoredAsReview: Bool) {
         movieReviewElement.isStoredAsReview = isStoredAsReview
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        view.closeReviewMovieView()
+        view.closeReviewMovieView(movieUpdateState: movieUpdateState)
+    }
+    
+    func didTapSelectStoreDateAlert(storeDateState: storeDateState, reviewScore: Double, review: String) {
+        switch storeDateState {
+        case .stockDate:
+            break
+        case .today:
+            movieReviewElement.create_at = Date()
+        }
+        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
 }

@@ -34,10 +34,16 @@ enum MovieUpdateState {
     case modificate
 }
 
-enum MovieReviewState {
+enum MovieReviewStoreState {
     case beforeStore
-    case afterStore
+    case afterStore(afterStoreState)
+    
 }
+enum afterStoreState {
+    case reviewed
+    case stock
+}
+
 
 enum CellSelectedState {
     case selected
@@ -141,3 +147,14 @@ enum textViewState {
     }
 
 }
+
+enum collectionViewState {
+    case review
+    case stock
+}
+
+enum storeDateState {
+    case stockDate
+    case today
+}
+

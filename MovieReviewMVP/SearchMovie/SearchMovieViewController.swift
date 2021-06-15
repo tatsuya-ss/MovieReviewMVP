@@ -35,6 +35,13 @@ class SearchMovieViewController: UIViewController {
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
+    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
+        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
+        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
+        presenter.didInsertMovieReview(movieUpdateState: movieUpdateState)
+        
+    }
+    
 }
 
 // MARK: - setup
@@ -232,7 +239,7 @@ extension SearchMovieViewController : UITableViewDataSource {
 // MARK: - SearchMoviePresenterOutput
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
-    
+
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
         
         displayLabel.text = fetchState.displayLabelText
@@ -240,18 +247,25 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         tableView.reloadData()
     }
     
-    func reviewTheMovie(movie: MovieReviewElement) {
+    func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
         
         let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
         let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
         
-        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore, movieReviewElement: movie, view: reviewMovieVC, model: model)
+        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore, movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
         
         reviewMovieVC.inject(presenter: presenter)
         
         let nav = UINavigationController(rootViewController: reviewMovieVC)
                 
         self.present(nav, animated: true, completion: nil)
+
     }
+    
+    func insertMovieReivew(movieUpdateState: MovieUpdateState) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.isInsert = true
+    }
+
 }

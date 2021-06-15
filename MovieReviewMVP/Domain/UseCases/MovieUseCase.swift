@@ -27,8 +27,8 @@ class MovieUseCase {
         repository.updateMovieReview(movie)
     }
     
-    func delete(_ sortState: sortState, _ index: IndexPath) {
-        repository.deleteMovieReview(sortState, index)
+    func delete(_ sortState: sortState, _ id: Int) {
+        repository.deleteMovieReview(sortState, id)
     }
     
     func sort(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
@@ -37,7 +37,7 @@ class MovieUseCase {
     
     // MARK: 更新通知を受け取る
     func notification(_ presenter: ReviewManagementPresenterInput) {
-        repository.notification(presenter)
+//        repository.notification(presenter)
     }
     
 }

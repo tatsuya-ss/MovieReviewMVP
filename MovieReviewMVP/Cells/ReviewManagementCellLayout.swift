@@ -25,6 +25,8 @@ class ColumnFlowLayout: UICollectionViewFlowLayout {
         let cellHeight = (cellWidth * 28 / 19) + 2 + 16
         
         self.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        
+        headerReferenceSize = CGSize(width: cv.bounds.width, height: 30)
     }
 }
 
@@ -35,15 +37,11 @@ class StockColumnFlowLayout : UICollectionViewFlowLayout {
         guard let cv = collectionView else { return }
         
         scrollDirection = .horizontal
-        
-        let availableWidth = cv.bounds.inset(by: cv.layoutMargins).size.width
-        
-        let cellWidth = availableWidth / CGFloat(6).rounded(.down)
-        
+
         let cellheight = cv.bounds.height - 10
-        
+        let cellWidth = cellheight * 19 / 28
+
         self.itemSize = CGSize(width: cellWidth, height: cellheight)
-        
         
     }
 }
