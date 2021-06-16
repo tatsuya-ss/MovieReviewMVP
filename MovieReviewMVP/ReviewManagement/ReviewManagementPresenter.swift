@@ -14,7 +14,6 @@ protocol ReviewManagementPresenterInput {
     func returnStockMovieReviewForCell(forRow row: Int) -> MovieReviewElement?
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexs: [IndexPath])
     func didDeleteStockMovie(_ movieUpdateState: MovieUpdateState, indexs: [IndexPath])
-
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [[IndexPath]?])
     func fetchUpdateReviewMovies(_ state: MovieUpdateState)
     func didSelectRowCollectionView(at indexPath: IndexPath)
@@ -26,7 +25,7 @@ protocol ReviewManagementPresenterInput {
 
 protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [[IndexPath]?])
-    func updateReview(_ movieUpdateState: MovieUpdateState, _ index: Int?, _ collectionViewState: collectionViewState?)
+    func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?, collectionViewState: collectionViewState?)
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
 }
@@ -90,7 +89,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
         self.movieReviewStockElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: false)
         print("movieReviewStockElements\n\(movieReviewStockElements)")
-        view.updateReview(state, nil, nil)
+        view.updateReview(state, index: nil, collectionViewState: nil)
     }
     
     
@@ -101,7 +100,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         for index in indexs {
             model.deleteReviewMovie(sortStateManagement, movieReviewElements[index.row].id)
             movieReviewElements.remove(at: index.row)
-            view.updateReview(movieUpdateState, index.row, .review)
+            view.updateReview(movieUpdateState, index: index.row, collectionViewState: .review)
         }
 
     }
@@ -111,7 +110,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
             model.deleteReviewMovie(sortStateManagement, movieReviewStockElements[index.row].id)
             print(movieReviewStockElements[index.row])
             movieReviewStockElements.remove(at: index.row)
-            view.updateReview(movieUpdateState, index.row, .stock)
+            view.updateReview(movieUpdateState, index: index.row, collectionViewState: .stock)
         }
 
     }

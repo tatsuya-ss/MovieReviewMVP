@@ -37,7 +37,7 @@ class MovieUseCase {
     
     // MARK: 更新通知を受け取る
     func notification(_ presenter: ReviewManagementPresenterInput) {
-//        repository.notification(presenter)
+        repository.notification(presenter)
     }
     
 }
