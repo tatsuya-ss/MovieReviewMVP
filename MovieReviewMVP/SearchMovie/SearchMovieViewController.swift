@@ -35,12 +35,12 @@ class SearchMovieViewController: UIViewController {
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
-    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
-        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
-        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
-        presenter.didInsertMovieReview(movieUpdateState: movieUpdateState)
-        
-    }
+//    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
+//        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
+//        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
+//        presenter.didInsertMovieReview(movieUpdateState: movieUpdateState)
+//        
+//    }
     
 }
 
@@ -264,8 +264,8 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     }
     
     func insertMovieReivew(movieUpdateState: MovieUpdateState) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        appDelegate.isInsert = true
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+//        appDelegate.isInsert = true
     }
 
 }

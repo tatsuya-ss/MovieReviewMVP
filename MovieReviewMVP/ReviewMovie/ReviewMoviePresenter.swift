@@ -12,7 +12,7 @@ protocol ReviewMoviePresenterInput {
     func didTapSaveButton(date: Date, reviewScore: Double, review: String)
     func returnMovieReviewState() -> MovieReviewStoreState
     func didTapStoreLocationAlert(isStoredAsReview: Bool)
-    func didTapSelectStoreDateAlert(storeDateState: storeDateState, reviewScore: Double, review: String)
+    func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
 }
 
@@ -73,7 +73,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             for movie in movies {
                 if primaryKeyIsStored == false {
                     movie.id == movieReviewElement.id ? (primaryKeyIsStored = true) : (primaryKeyIsStored = false)
-                } else {
+                } else { // trueがあれば処理を終了
                     break
                 }
             }
@@ -88,6 +88,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         case .afterStore(.reviewed):
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = review
+            // realmのデータ更新
             model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
 
         case .afterStore(.stock):
@@ -105,7 +106,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
-    func didTapSelectStoreDateAlert(storeDateState: storeDateState, reviewScore: Double, review: String) {
+    func didTapSelectStoreDateAlert(storeDateState: storeDateState) {
         switch storeDateState {
         case .stockDate:
             break

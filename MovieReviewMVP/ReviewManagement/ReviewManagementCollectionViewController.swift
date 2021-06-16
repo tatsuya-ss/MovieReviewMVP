@@ -30,19 +30,19 @@ class ReviewManagementCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-//        movieUseCase.notification(presenter)
+        movieUseCase.notification(presenter)
         presenter.fetchUpdateReviewMovies(.initial)
         isEditing = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        if appDelegate.isInsert {
-            presenter.fetchUpdateReviewMovies(.insert)
-            appDelegate.isInsert = false
-        }
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+//        if appDelegate.isInsert {
+//            presenter.fetchUpdateReviewMovies(.insert)
+//            appDelegate.isInsert = false
+//        }
+//    }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
@@ -407,29 +407,23 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 // MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
-    
     func sortReview() {
-        if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-            collectionView.reloadData()
-        } else {
+        if presenter.numberOfMovies > 1 {
             for index in 0...presenter.numberOfMovies - 1 {
                 collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
             }
         }
         
-        if presenter.numberOfStockMovies == 0 || presenter.numberOfStockMovies == 1 {
-            stockCollectionView.reloadData()
-        } else {
+        if presenter.numberOfStockMovies > 1 {
             for index in 0...presenter.numberOfStockMovies - 1 {
                 stockCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
             }
         }
-
     }
     
     
     // MARK: 初期化、削除、挿入、修正を行う
-    func updateReview(_ movieUpdateState: MovieUpdateState, _ index: Int?, _ collectionViewState: collectionViewState?) {
+    func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?, collectionViewState: collectionViewState?) {
         
         switch movieUpdateState {
         
@@ -458,7 +452,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
                 collectionView.reloadData()
             } else {
                 for index in 0...presenter.numberOfMovies - 1 {
-                    
                     collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
                 }
             }

@@ -13,6 +13,6 @@ protocol MovieReviewRepository {
     func updateMovieReview(_ movie: MovieReviewElement)
     func deleteMovieReview(_ sortState: sortState, _ id: Int)
     func sortMovieReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement]
-//    mutating func notification(_ presenter: ReviewManagementPresenterInput)
+    mutating func notification(_ presenter: ReviewManagementPresenterInput)
 }
 
