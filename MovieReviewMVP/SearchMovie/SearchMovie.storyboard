@@ -84,7 +84,7 @@
         <scene sceneID="jnS-Po-Wq5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XsA-oV-lAE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" id="nSk-41-Iag"/>
+                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" selectedImage="magnifyingglass" id="nSk-41-Iag"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="4zt-lO-u8j">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
