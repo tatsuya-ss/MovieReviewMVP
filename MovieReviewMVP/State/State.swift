@@ -148,11 +148,6 @@ enum textViewState {
 
 }
 
-enum collectionViewState {
-    case review
-    case stock
-}
-
 enum storeDateState {
     case stockDate
     case today

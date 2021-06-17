@@ -66,7 +66,7 @@ private extension ReviewMovieViewController {
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
         stopButton.tintColor = .white
         self.navigationItem.leftBarButtonItem = stopButton
-        
+        self.navigationController?.navigationBar.barStyle = .black
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
