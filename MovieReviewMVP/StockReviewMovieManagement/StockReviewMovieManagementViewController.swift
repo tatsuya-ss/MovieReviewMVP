@@ -10,6 +10,7 @@ import UIKit
 class StockReviewMovieManagementViewController: UIViewController {
     @IBOutlet var stockCollectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
+    private var stopButton: UIBarButtonItem!
     
     private var presenter: StockReviewMovieManagementPresenterInput!
     func inject(presenter: StockReviewMovieManagementPresenterInput) {
@@ -38,10 +39,20 @@ class StockReviewMovieManagementViewController: UIViewController {
     }
     
     func setupNavigation() {
+        // MARK: navigationBarを透明にする
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        // MARK: キャンセルボタン
+        stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
+        stopButton.tintColor = .white
+        self.navigationItem.leftBarButtonItem = stopButton
 
     }
+    
+    @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
 
 }
 
