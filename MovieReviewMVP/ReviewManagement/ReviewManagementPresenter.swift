@@ -33,10 +33,6 @@ protocol ReviewManagementPresenterOutput: AnyObject {
 
 
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
-    func returnMovieReview() -> [MovieReviewElement] {
-        movieReviewElements
-    }
-    
     
     private weak var view: ReviewManagementPresenterOutput!
     private var model: ReviewManagementModelInput
@@ -71,6 +67,10 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func returnSortState() -> sortState {
         sortStateManagement
+    }
+    
+    func returnMovieReview() -> [MovieReviewElement] {
+        movieReviewElements
     }
     
     func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement? {

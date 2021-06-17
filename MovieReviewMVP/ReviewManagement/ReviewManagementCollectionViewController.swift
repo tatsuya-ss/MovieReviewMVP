@@ -19,6 +19,8 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var sortButton: UIBarButtonItem!
     private var editButton: UIBarButtonItem!
     private var trashButton: UIButton!
+    private var stockButton: UIButton!
+
     
     let movieUseCase = MovieUseCase()
     
@@ -68,6 +70,7 @@ private extension ReviewManagementCollectionViewController {
         setupCollectionView()
         setupTabBar()
         setupTrashButton()
+        setupStockButton()
     }
     
     func setupTrashButton() {
@@ -98,6 +101,36 @@ private extension ReviewManagementCollectionViewController {
         trashButton.layer.shadowRadius = 10
         
         trashButton.isHidden = true
+    }
+    
+    func setupStockButton() {
+        stockButton = UIButton()
+        stockButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+
+        stockButton.tintColor = .black
+        stockButton.backgroundColor = .systemYellow
+        stockButton.translatesAutoresizingMaskIntoConstraints = false
+        stockButton.addTarget(self, action: #selector(stockButtonTapped), for: .touchUpInside)
+        collectionView.addSubview(stockButton)
+        
+        let buttonWidth: CGFloat = 55
+        
+        [
+            stockButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            stockButton.widthAnchor.constraint(equalToConstant: buttonWidth),
+            stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)
+        ].forEach { $0.isActive = true }
+        
+        stockButton.layer.cornerRadius = buttonWidth / 2
+        
+        stockButton.layer.shadowColor = UIColor.black.cgColor
+        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        stockButton.layer.shadowOpacity = 0.7
+        stockButton.layer.shadowRadius = 10
+        
+        stockButton.isHidden = false
+
     }
     
     func setupPresenter() {
@@ -228,6 +261,17 @@ extension ReviewManagementCollectionViewController {
         deleteAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
     }
+    
+    @objc func stockButtonTapped() {
+        
+        let stockReviewMovieVC = UIStoryboard(name: "StockReviewMovieManagement", bundle: nil).instantiateInitialViewController() as! StockReviewMovieManagementViewController
+        let model = StockReviewMovieManagementModel()
+        let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, model: model)
+        stockReviewMovieVC.inject(presenter: presenter)
+        let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
+        self.present(navigationController, animated: true, completion: nil)
+    }
+
 
 }
 
@@ -391,7 +435,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
         case self.collectionView:
             if kind == UICollectionView.elementKindSectionHeader,
                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReviewMovieManagementCollectionReusableView.identifier, for: indexPath) as? ReviewMovieManagementCollectionReusableView {
-                headerView.titleLabel.text = "レビュー"
+                headerView.configure()
                 return headerView
             }
 
@@ -401,6 +445,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
         
         return UICollectionReusableView()
     }
+    
     
 }
 
@@ -495,6 +540,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             sortButton.isEnabled = false
             trashButton.isHidden = false
             trashButton.isEnabled = false
+            stockButton.isHidden = true
             // trueになった時、一旦全選択解除
             if let indexPaths = indexPaths[0] {
                 for index in indexPaths {
@@ -511,6 +557,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             tabBarController?.tabBar.isHidden = false
             sortButton.isEnabled = true
             trashButton.isHidden = true
+            stockButton.isHidden = false
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             if let indexPaths = indexPaths[0] {
                 for index in indexPaths {
@@ -539,11 +586,11 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
                 
         reviewMovieVC.inject(presenter: presenter)
         
-        let nav = UINavigationController(rootViewController: reviewMovieVC)
+        let navigationController = UINavigationController(rootViewController: reviewMovieVC)
         
-        nav.modalPresentationStyle = .fullScreen
+        navigationController.modalPresentationStyle = .fullScreen
         
-        self.present(nav, animated: true, completion: nil)
+        self.present(navigationController, animated: true, completion: nil)
     }
 
     
