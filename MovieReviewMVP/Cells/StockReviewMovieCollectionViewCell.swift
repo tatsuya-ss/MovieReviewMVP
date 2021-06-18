@@ -10,12 +10,13 @@ import UIKit
 class StockReviewMovieCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var movieImageView: UIImageView!
+    @IBOutlet weak var checkImageView: UIImageView!
     
     static let nib = UINib(nibName: String(describing: StockReviewMovieCollectionViewCell.self), bundle: nil)
     
     static let identifier = String(describing: StockReviewMovieCollectionViewCell.self)
 
-    func configure(movieReview: MovieReviewElement) {
+    func configure(movieReview: MovieReviewElement, cellSelectedState: CellSelectedState) {
         
         guard let posterPath = movieReview.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) else { return }
@@ -30,8 +31,10 @@ class StockReviewMovieCollectionViewCell: UICollectionViewCell {
             }
         }
         task.resume()
-        
+        checkImageView.image = UIImage(named: "check")
+        checkImageView.isHidden = true
         setupLayout()
+        tapCell(state: cellSelectedState)
     }
 
     // MARK: setupLayout
@@ -43,13 +46,14 @@ class StockReviewMovieCollectionViewCell: UICollectionViewCell {
 
 
     func tapCell(state: CellSelectedState) {
-        movieImageView.alpha = state.imageAlpha
-//        switch state {
-//        case .selected:
-//            checkImageView.isHidden = false
-//        case .deselected:
-//            checkImageView.isHidden = true
-//        }
+        switch state {
+        case .selected:
+            movieImageView.alpha = state.imageAlpha
+            checkImageView.isHidden = false
+        case .deselected:
+            movieImageView.alpha = state.imageAlpha
+            checkImageView.isHidden = true
+        }
     }
 
 }

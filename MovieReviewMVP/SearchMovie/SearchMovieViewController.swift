@@ -57,7 +57,7 @@ private extension SearchMovieViewController {
     
     
     private func setupTabBarController() {
-        tabBarController?.tabBar.isTranslucent = false
+        tabBarController?.tabBar.tintColor = .baseColor
     }
     
     private func setupNavigationController() {

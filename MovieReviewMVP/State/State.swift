@@ -64,7 +64,6 @@ enum sortState {
     case createdDescend
     case reviewStarAscend
     case reviewStarDescend
-
         
     var ascending: Bool {
         switch self {
@@ -99,9 +98,9 @@ enum sortState {
         case .createdDescend:
             return "古い順"
         case .reviewStarAscend:
-            return "評価が高い順"
+            return "高評価順"
         case .reviewStarDescend:
-            return "評価が低い順"
+            return "低評価順"
         }
     }
     
@@ -146,11 +145,6 @@ enum textViewState {
         }
     }
 
-}
-
-enum collectionViewState {
-    case review
-    case stock
 }
 
 enum storeDateState {

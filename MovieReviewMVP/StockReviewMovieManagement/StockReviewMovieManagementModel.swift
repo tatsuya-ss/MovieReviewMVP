@@ -9,6 +9,8 @@ import Foundation
 
 protocol StockReviewMovieManagementModelInput {
     func fetchStockMovies(sortState: sortState) -> [MovieReviewElement]
+    func sortReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement]
+    func deleteReviewMovie(_ sortState: sortState, _ id: Int)
 }
 
 final class StockReviewMovieManagementModel : StockReviewMovieManagementModelInput {
@@ -16,5 +18,13 @@ final class StockReviewMovieManagementModel : StockReviewMovieManagementModelInp
     
     func fetchStockMovies(sortState: sortState) -> [MovieReviewElement] {
         movieUseCase.fetch(sortState, isStoredAsReview: false)
+    }
+    
+    func sortReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
+        movieUseCase.sort(sortState, isStoredAsReview: isStoredAsReview)
+    }
+
+    func deleteReviewMovie(_ sortState: sortState, _ id: Int) {
+        movieUseCase.delete(sortState, id)
     }
 }

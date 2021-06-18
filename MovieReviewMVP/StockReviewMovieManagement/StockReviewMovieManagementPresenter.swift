@@ -11,9 +11,16 @@ protocol StockReviewMovieManagementPresenterInput {
     var numberOfStockMovies: Int { get }
     func returnStockMovieForCell(forRow row: Int) -> MovieReviewElement
     func fetchStockMovies()
+    func returnSortState() -> sortState
+    func didTapSortButton(_ sortState: sortState)
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
 }
 
 protocol StockReviewMovieManagementPresenterOutput : AnyObject {
+    func sortReview()
+    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
 }
 
 
@@ -30,6 +37,10 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
         self.model = model
     }
     
+    func returnSortState() -> sortState {
+        sortStateManagement
+    }
+
     var numberOfStockMovies: Int {
         movieReviewStockElements.count
     }
@@ -40,6 +51,25 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     
     func fetchStockMovies() {
         movieReviewStockElements = model.fetchStockMovies(sortState: sortStateManagement)
+    }
+    
+    func didTapSortButton(_ sortState: sortState) {
+        sortStateManagement = sortState
+        movieReviewStockElements = model.sortReview(sortState, isStoredAsReview: false)
+        view.sortReview()
+    }
+    
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+        view.changeTheDisplayDependingOnTheEditingState(editing, indexPaths)
+    }
+    
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            model.deleteReviewMovie(sortStateManagement, movieReviewStockElements[indexPath.row].id)
+            movieReviewStockElements.remove(at: indexPath.row)
+            view.updateStockCollectionView(movieUpdateState: movieUpdateState, indexPath: indexPath)
+        }
+        
     }
     
 }
