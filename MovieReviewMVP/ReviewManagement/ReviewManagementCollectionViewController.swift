@@ -217,12 +217,11 @@ private extension ReviewManagementCollectionViewController {
 // MARK: - @objc
 extension ReviewManagementCollectionViewController {
     @objc func trashButtonTapped() {
-        
         let deleteAlert = UIAlertController(title: nil, message: "選択したレビューを削除しますか？", preferredStyle: .alert)
         
         deleteAlert.addAction(UIAlertAction(title: "レビューを削除", style: .destructive, handler: { _ in
             guard let reviewSortedIndex = (self.collectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
-            self.presenter.didDeleteReviewMovie(.delete, indexs: reviewSortedIndex)
+            self.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
         }))
         deleteAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
@@ -246,7 +245,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-        if isEditing == true {
+        if isEditing {
             cell.tapCell(state: .selected)
             collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
         } else {
@@ -292,15 +291,13 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
-        if let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row) {
-            cell.configure(movieReview: movieReviews)
-            if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
-                cell.tapCell(state: .selected)
-            } else {
-                cell.tapCell(state: .deselected)
-            }
+        let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row)
+        if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
+            cell.configure(movieReview: movieReviews, cellSelectedState: .selected)
+        } else {
+            cell.configure(movieReview: movieReviews, cellSelectedState: .deselected)
         }
-        
+
         return cell
     }
     
@@ -378,23 +375,21 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             trashButton.isEnabled = false
             stockButton.isHidden = true
             // trueになった時、一旦全選択解除
-            if let indexPaths = indexPaths {
-                for index in indexPaths {
-                    collectionView.deselectItem(at: index, animated: true)
-                }
+            guard let indexPaths = indexPaths else { return }
+            for index in indexPaths {
+                collectionView.deselectItem(at: index, animated: true)
             }
-            
+
         case false:
             tabBarController?.tabBar.isHidden = false
             sortButton.isEnabled = true
             trashButton.isHidden = true
             stockButton.isHidden = false
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
-            if let indexPaths = indexPaths {
-                for index in indexPaths {
-                    collectionView.deselectItem(at: index, animated: true)
-                    collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
-                }
+            guard let indexPaths = indexPaths else { return }
+            for index in indexPaths {
+                collectionView.deselectItem(at: index, animated: true)
+                collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
             }
         }
     }

@@ -9,8 +9,8 @@ import Foundation
 
 protocol ReviewManagementPresenterInput {
     var numberOfMovies: Int { get }
-    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement?
-    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexs: [IndexPath])
+    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func fetchUpdateReviewMovies(_ state: MovieUpdateState)
     func didSelectRowCollectionView(at indexPath: IndexPath)
@@ -59,7 +59,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         movieReviewElements
     }
     
-    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement? {
+    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement {
         movieReviewElements[row]
     }
     
@@ -73,14 +73,14 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     
-    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexs: [IndexPath]) {
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
         // trashが押されたら最初に呼ばれる
         print("削除時のsortStateManagement → \(sortStateManagement)")
         
-        for index in indexs {
-            model.deleteReviewMovie(sortStateManagement, movieReviewElements[index.row].id)
-            movieReviewElements.remove(at: index.row)
-            view.updateReview(movieUpdateState, index: index.row)
+        for indexPath in indexPaths {
+            model.deleteReviewMovie(sortStateManagement, movieReviewElements[indexPath.row].id)
+            movieReviewElements.remove(at: indexPath.row)
+            view.updateReview(movieUpdateState, index: indexPath.row)
         }
 
     }

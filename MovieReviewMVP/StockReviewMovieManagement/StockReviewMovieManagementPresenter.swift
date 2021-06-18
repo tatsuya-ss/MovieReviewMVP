@@ -13,10 +13,14 @@ protocol StockReviewMovieManagementPresenterInput {
     func fetchStockMovies()
     func returnSortState() -> sortState
     func didTapSortButton(_ sortState: sortState)
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
 }
 
 protocol StockReviewMovieManagementPresenterOutput : AnyObject {
     func sortReview()
+    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
 }
 
 
@@ -53,6 +57,19 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
         sortStateManagement = sortState
         movieReviewStockElements = model.sortReview(sortState, isStoredAsReview: false)
         view.sortReview()
+    }
+    
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+        view.changeTheDisplayDependingOnTheEditingState(editing, indexPaths)
+    }
+    
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            model.deleteReviewMovie(sortStateManagement, movieReviewStockElements[indexPath.row].id)
+            movieReviewStockElements.remove(at: indexPath.row)
+            view.updateStockCollectionView(movieUpdateState: movieUpdateState, indexPath: indexPath)
+        }
+        
     }
     
 }

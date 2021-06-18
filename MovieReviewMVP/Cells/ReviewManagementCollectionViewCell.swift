@@ -21,7 +21,7 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     
     
     // MARK: configure
-    func configure(movieReview: MovieReviewElement) {
+    func configure(movieReview: MovieReviewElement, cellSelectedState: CellSelectedState) {
         
         guard let posterPath = movieReview.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) else { return }
@@ -40,9 +40,9 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
         reviewView.rating = movieReview.reviewStars ?? 0.0
         reviewView.text = String(movieReview.reviewStars ?? 0.0)
         checkImageView.image = UIImage(named: "check")
-        
         checkImageView.isHidden = true
         setupLayout()
+        tapCell(state: cellSelectedState)
     }
     
     // MARK: setupLayout
