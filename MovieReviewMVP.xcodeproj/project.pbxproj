@@ -39,6 +39,7 @@
 		7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */; };
 		7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */; };
 		7569BABB2679F0610058D495 /* StockReviewMovieManagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BABA2679F0610058D495 /* StockReviewMovieManagementModel.swift */; };
+		7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAC9267B40EA0058D495 /* UIColor+Ext.swift */; };
 		756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */; };
 		756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */; };
 		756D8FC826735C490026889B /* ReviewMovieManagementCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */; };
@@ -111,6 +112,7 @@
 		7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementViewController.swift; sourceTree = "<group>"; };
 		7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementPresenter.swift; sourceTree = "<group>"; };
 		7569BABA2679F0610058D495 /* StockReviewMovieManagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementModel.swift; sourceTree = "<group>"; };
+		7569BAC9267B40EA0058D495 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
 		756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieManagementCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				75676EE4263A89B500569AF5 /* Assets.xcassets */,
 				75676EE6263A89B500569AF5 /* LaunchScreen.storyboard */,
 				75676EE9263A89B500569AF5 /* Info.plist */,
+				7569BAC8267B40B20058D495 /* Extension */,
 				756DFCB9264D5B5500C6AF07 /* State */,
 				75676F29263AA0A200569AF5 /* Domain */,
 				75699F1F264BC363001904C4 /* Cells */,
@@ -307,6 +310,14 @@
 				7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */,
 			);
 			path = StockReviewMovieManagement;
+			sourceTree = "<group>";
+		};
+		7569BAC8267B40B20058D495 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				7569BAC9267B40EA0058D495 /* UIColor+Ext.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		756D8FC526735C0C0026889B /* Header */ = {
@@ -607,6 +618,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
+				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,
 				75699F33264BC6EB001904C4 /* MovieRepository.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,

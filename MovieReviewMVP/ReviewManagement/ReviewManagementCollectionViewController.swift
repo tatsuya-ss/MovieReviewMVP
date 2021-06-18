@@ -65,7 +65,6 @@ private extension ReviewManagementCollectionViewController {
         setupPresenter()
         setupNavigation()
         setupCollectionView()
-        setupTabBar()
         setupTrashButton()
         setupStockButton()
     }
@@ -75,8 +74,8 @@ private extension ReviewManagementCollectionViewController {
         trashButton = UIButton()
         trashButton.setImage(UIImage(systemName: "trash"), for: .normal)
         
-        trashButton.tintColor = .white
-        trashButton.backgroundColor = .systemBlue
+        trashButton.tintColor = .black
+        trashButton.backgroundColor = .baseColor
         trashButton.translatesAutoresizingMaskIntoConstraints = false
         trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
         collectionView.addSubview(trashButton)
@@ -139,8 +138,8 @@ private extension ReviewManagementCollectionViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
         
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
-        
         editButton = editButtonItem
+        [sortButton, editButton].forEach { $0?.tintColor = .stringColor }
         
         navigationItem.rightBarButtonItems = [editButton, sortButton]
         
@@ -188,11 +187,7 @@ private extension ReviewManagementCollectionViewController {
         return menu
         
     }
-    
-    func setupTabBar() {
-        tabBarController?.tabBar.isTranslucent = false
-    }
-    
+        
     func setupCollectionView() {
         
         colunmFlowLayout = ColumnFlowLayout()

@@ -11,9 +11,12 @@ protocol StockReviewMovieManagementPresenterInput {
     var numberOfStockMovies: Int { get }
     func returnStockMovieForCell(forRow row: Int) -> MovieReviewElement
     func fetchStockMovies()
+    func returnSortState() -> sortState
+    func didTapSortButton(_ sortState: sortState)
 }
 
 protocol StockReviewMovieManagementPresenterOutput : AnyObject {
+    func sortReview()
 }
 
 
@@ -30,6 +33,10 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
         self.model = model
     }
     
+    func returnSortState() -> sortState {
+        sortStateManagement
+    }
+
     var numberOfStockMovies: Int {
         movieReviewStockElements.count
     }
@@ -40,6 +47,12 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     
     func fetchStockMovies() {
         movieReviewStockElements = model.fetchStockMovies(sortState: sortStateManagement)
+    }
+    
+    func didTapSortButton(_ sortState: sortState) {
+        sortStateManagement = sortState
+        movieReviewStockElements = model.sortReview(sortState, isStoredAsReview: false)
+        view.sortReview()
     }
     
 }

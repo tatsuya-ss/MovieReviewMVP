@@ -11,6 +11,10 @@ class StockReviewMovieManagementViewController: UIViewController {
     @IBOutlet var stockCollectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     private var stopButton: UIBarButtonItem!
+    private var sortButton: UIBarButtonItem!
+    private var editButton: UIBarButtonItem!
+    private var trashButton: UIButton!
+
     
     private var presenter: StockReviewMovieManagementPresenterInput!
     func inject(presenter: StockReviewMovieManagementPresenterInput) {
@@ -40,12 +44,48 @@ class StockReviewMovieManagementViewController: UIViewController {
     
     func setupNavigation() {
         // MARK: navigationBarを透明にする
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         // MARK: キャンセルボタン
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
-        stopButton.tintColor = .white
-        self.navigationItem.leftBarButtonItem = stopButton
+        navigationItem.leftBarButtonItem = stopButton
+        // MARK: 編集ボタン
+        editButton = editButtonItem
+        // MARK: 並び替えボタン
+        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
+        [stopButton, editButton, sortButton].forEach { $0.tintColor = .stringColor }
+        navigationItem.rightBarButtonItems = [editButton, sortButton]
+
+    }
+    
+    func contextMenuActions() -> UIMenu {
+        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapSortButton(.createdDescend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.createdDescend.title)に並び替えました。")
+        })
+        
+        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapSortButton(.createdAscend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.createdAscend.title)に並び替えました。")
+        })
+        
+        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapSortButton(.reviewStarAscend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.reviewStarAscend.title)に並び替えました。")
+        })
+        
+        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { _ in
+            self.presenter.didTapSortButton(.reviewStarDescend)
+            self.sortButton.title = self.presenter.returnSortState().buttonTitle
+            print("\(sortState.reviewStarDescend.title)に並び替えました。")
+        })
+        
+        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
+        
+        return menu
 
     }
     
@@ -89,5 +129,14 @@ extension StockReviewMovieManagementViewController : UICollectionViewDelegate {
 
 
 extension StockReviewMovieManagementViewController : StockReviewMovieManagementPresenterOutput {
+    func sortReview() {
+        if presenter.numberOfStockMovies > 1 {
+            for index in 0...presenter.numberOfStockMovies - 1 {
+                stockCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+            }
+        }
+
+    }
+    
     
 }

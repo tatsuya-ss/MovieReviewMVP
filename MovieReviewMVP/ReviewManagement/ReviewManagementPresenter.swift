@@ -27,7 +27,6 @@ protocol ReviewManagementPresenterOutput: AnyObject {
 }
 
 
-
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     private weak var view: ReviewManagementPresenterOutput!
