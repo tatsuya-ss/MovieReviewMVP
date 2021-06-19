@@ -52,23 +52,31 @@ private extension ReviewMovieViewController {
         switch presenter.returnMovieReviewState() {
         case .beforeStore:
             saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+            stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
+            stopButton.tintColor = .white
+            navigationItem.leftBarButtonItem = stopButton
+
         case .afterStore(.reviewed):
             saveButton = UIBarButtonItem(title: "更新", style: .done, target: self, action: #selector(saveButtonTapped))
+            stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
+            stopButton.tintColor = .white
+            navigationItem.leftBarButtonItem = stopButton
+
         case .afterStore(.stock):
+            let backButton = UIBarButtonItem()
+            backButton.title = "ストック"
+            backButton.tintColor = .stringColor
+            self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
             saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
 
 
         }
         
         saveButton.tintColor = .white
-        self.navigationItem.rightBarButtonItem = saveButton
-
-        stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
-        stopButton.tintColor = .white
-        self.navigationItem.leftBarButtonItem = stopButton
-        self.navigationController?.navigationBar.barStyle = .black
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        navigationItem.rightBarButtonItem = saveButton
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         
 
     }

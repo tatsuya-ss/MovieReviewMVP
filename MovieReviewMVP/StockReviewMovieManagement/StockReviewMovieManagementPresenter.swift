@@ -15,12 +15,14 @@ protocol StockReviewMovieManagementPresenterInput {
     func didTapSortButton(_ sortState: sortState)
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
+    func didSelectRowStockCollectionView(at indexPath: IndexPath)
 }
 
 protocol StockReviewMovieManagementPresenterOutput : AnyObject {
     func sortReview()
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
+    func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
 }
 
 
@@ -70,6 +72,11 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
             view.updateStockCollectionView(movieUpdateState: movieUpdateState, indexPath: indexPath)
         }
         
+    }
+    
+    func didSelectRowStockCollectionView(at indexPath: IndexPath) {
+        let selectStockMovie = movieReviewStockElements[indexPath.row]
+        view.displayReviewMovieView(selectStockMovie, afterStoreState: .stock, movieUpdateState: .modificate)
     }
     
 }
