@@ -171,7 +171,7 @@ extension ReviewMovieViewController : UITextViewDelegate {
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
-        reviewMovieOwner.fetchMovieImage(movieReviewState: movieReviewState, movie: movieReviewElement)
+        reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement)
     }
     
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState) {

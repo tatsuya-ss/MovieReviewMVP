@@ -22,38 +22,34 @@ class ReviewMovieOwner: NSObject {
     
     override init() {
         super.init()
-        
         setNib()
         setReviwStars()
         setOverView()
     }
     
     private func setNib() {
-        
         reviewMovieView = UINib(nibName: "ReviewMovie", bundle: nil).instantiate(withOwner: self, options: nil).first as? UIView
-        
     }
     
     private func setReviwStars() {
-        
         reviewStarView.didTouchCosmos = { review in
             self.reviewStarView.text = String(review)
         }
         reviewStarView.settings.fillMode = .half
-
     }
 
     private func setOverView() {
-                
         overviewTextView.isEditable = false
         overviewTextView.isSelectable = false
-
     }
-
+    
+    func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
+        fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
+        configureReviewImfomations(movieReviewState: movieReviewState, movie: movie)
+    }
     
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
     func fetchMovieImage(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
-        
         guard let posperPath = movie.poster_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
@@ -67,32 +63,24 @@ class ReviewMovieOwner: NSObject {
             }
         }
         task.resume()
-        
-        if movie.title == nil || movie.title == "" {
-            titleLabel.text = movie.original_name
-        } else if movie.title != nil {
-            titleLabel.text = movie.title
-        } else {
-            titleLabel.text = "タイトルがありません"
-        }
-        overviewTextView.text = movie.overview
-        releaseDateLabel.text = movie.releaseDay
-        
-        switch movieReviewState {
-        case .beforeStore:
-            print("初期保存しました")
-        case .afterStore:
-            
-            if movie.review == "" {
-                textViewState.empty.configurePlaceholder(reviewTextView)
-            } else {
-                textViewState.notEnpty(movie.review).configurePlaceholder(reviewTextView)
-            }
-            
+    }
+    
+    // MARK: 画像以外の構成を行う処理
+    func configureReviewImfomations(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
+        if case .afterStore = movieReviewState {
+            movie.review == ""
+                ? textViewState.empty.configurePlaceholder(reviewTextView)
+                : textViewState.notEnpty(movie.review).configurePlaceholder(reviewTextView)
             reviewStarView.rating = movie.reviewStars ?? 0
             reviewStarView.text = String(movie.reviewStars ?? 0)
         }
         
+        movie.title == nil || movie.title == ""
+            ? (titleLabel.text = movie.original_name)
+            : (titleLabel.text = movie.title)
+        overviewTextView.text = movie.overview
+        releaseDateLabel.text = movie.releaseDay
     }
-
+    
 }
+
