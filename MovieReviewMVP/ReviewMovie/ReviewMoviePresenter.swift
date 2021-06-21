@@ -44,12 +44,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
-        switch movieReviewState {
-        case .beforeStore:
-            self.view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        case .afterStore:
-            self.view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        }
+        view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
     }
     
     // MARK: どこから画面遷移されたのかをenumで区別
@@ -67,19 +62,12 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         var primaryKeyIsStored = false
 
         switch movieReviewState {
-        case .beforeStore:
-            // プライマリーキーが被っていないかの検証
+        case .beforeStore:  // プライマリーキーが被っていないかの検証
             let movies = model.fetchMovie(sortState: .createdAscend)
             for movie in movies {
-                if primaryKeyIsStored == false {
-                    movie.id == movieReviewElement.id ? (primaryKeyIsStored = true) : (primaryKeyIsStored = false)
-                } else { // trueがあれば処理を終了
-                    break
-                }
+                guard movie.id != movieReviewElement.id else { primaryKeyIsStored = true; break }
             }
-            
-            if primaryKeyIsStored == false {
-                // まだ保存していない場合
+            if primaryKeyIsStored == false {  // まだ保存していない場合
                 movieReviewElement.create_at = date
                 movieReviewElement.reviewStars = reviewScore
                 movieReviewElement.review = review

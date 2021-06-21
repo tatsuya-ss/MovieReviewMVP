@@ -234,6 +234,7 @@ extension ReviewManagementCollectionViewController {
         let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, model: model)
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
+//        navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true, completion: nil)
     }
     

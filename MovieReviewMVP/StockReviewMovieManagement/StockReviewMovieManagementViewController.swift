@@ -51,13 +51,9 @@ class StockReviewMovieManagementViewController: UIViewController {
     
     func setupNavigation() {
         navigationItem.title = "ストック"
+        
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20),
                                                                    NSAttributedString.Key.foregroundColor: UIColor.stringColor]
-        // MARK: navigationBarを半透明
-//        navigationController?.navigationBar.backgroundColor = .black
-//        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-//        navigationController?.navigationBar.alpha = 0.1
-//        navigationController?.navigationBar.isTranslucent = true
 
         // MARK: navigationBarを透明にする
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
