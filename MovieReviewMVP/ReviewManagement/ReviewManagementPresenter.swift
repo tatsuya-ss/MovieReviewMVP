@@ -48,7 +48,8 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func didSelectRowCollectionView(at indexPath: IndexPath) {
-        view.displaySelectMyReview(movieReviewElements[indexPath.row], afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
+        let selectStockMovie = movieReviewElements[indexPath.row]
+        view.displaySelectMyReview(selectStockMovie, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
     }
     
     func returnSortState() -> sortState {

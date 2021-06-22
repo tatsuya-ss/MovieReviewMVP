@@ -32,7 +32,7 @@ class StockReviewMovieManagementViewController: UIViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        let indexPaths: [IndexPath]? = stockCollectionView.indexPathsForSelectedItems
+        let indexPaths = stockCollectionView.indexPathsForSelectedItems
         presenter.changeEditingStateProcess(editing, indexPaths)
     }
     
@@ -50,6 +50,11 @@ class StockReviewMovieManagementViewController: UIViewController {
     }
     
     func setupNavigation() {
+        navigationItem.title = "ストック"
+        
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20),
+                                                                   NSAttributedString.Key.foregroundColor: UIColor.stringColor]
+
         // MARK: navigationBarを透明にする
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -179,6 +184,7 @@ extension StockReviewMovieManagementViewController : UICollectionViewDelegateFlo
             cell.tapCell(state: .selected)
             stockCollectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
         } else {
+            presenter.didSelectRowStockCollectionView(at: indexPath)
             stockCollectionView.deselectItem(at: indexPath, animated: false)
         }
     }
@@ -198,6 +204,7 @@ extension StockReviewMovieManagementViewController : UICollectionViewDelegate {
 
 
 extension StockReviewMovieManagementViewController : StockReviewMovieManagementPresenterOutput {
+    
     func sortReview() {
         if presenter.numberOfStockMovies > 1 {
             for index in 0...presenter.numberOfStockMovies - 1 {
@@ -245,5 +252,13 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
         isEditing = false
     }
     
+    func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
+        let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
+        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
+        reviewMovieVC.inject(presenter: presenter)
+        navigationController?.pushViewController(reviewMovieVC, animated: true)
+    }
+
     
 }

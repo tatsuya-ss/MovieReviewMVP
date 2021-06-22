@@ -110,10 +110,8 @@ private extension SearchMovieViewController {
     func handleRefreshControl() {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            
             self.presenter.fetchMovie(state: .search(.refresh), text: nil)
         })
-        
         tableView.refreshControl?.endRefreshing()
     }
 }
@@ -152,7 +150,6 @@ extension SearchMovieViewController : UISearchBarDelegate {
     
     // MARK: キャンセルボタンが押された時
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
         searchBar.text = nil
         presenter.fetchMovie(state: .upcoming, text: nil)
         searchBar.resignFirstResponder()
@@ -164,9 +161,13 @@ extension SearchMovieViewController : UISearchBarDelegate {
 // MARK: - UITableViewDelegate
 extension SearchMovieViewController : UITableViewDelegate {
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        movieSearchBar.resignFirstResponder()
         presenter.didSelectRow(at: indexPath)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        movieSearchBar.resignFirstResponder()
     }
     
     // MARK: 下部スクロール
@@ -200,7 +201,6 @@ extension SearchMovieViewController : UITableViewDelegate {
             scrollIndicator.startAnimating()
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-                
                 self.presenter.fetchMovie(state: .search(.refresh), text: nil)
                 self.scrollIndicator.stopAnimating()
                 self.scrollIndicator.isHidden = true
