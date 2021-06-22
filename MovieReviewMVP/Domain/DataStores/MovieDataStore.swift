@@ -58,7 +58,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.reviewStars = movie.reviewStars ?? 0.0
         realmMyMovieInfomation.releaseDay = movie.releaseDay ?? ""
         realmMyMovieInfomation.overview = movie.overview ?? ""
-        realmMyMovieInfomation.review = movie.review ?? ""
+        realmMyMovieInfomation.review = movie.review
         realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
@@ -99,7 +99,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.reviewStars = movie.reviewStars ?? 0.0
         realmMyMovieInfomation.releaseDay = movie.releaseDay ?? ""
         realmMyMovieInfomation.overview = movie.overview ?? ""
-        realmMyMovieInfomation.review = movie.review ?? ""
+        realmMyMovieInfomation.review = movie.review
         realmMyMovieInfomation.movieImagePath = movie.poster_path ?? ""
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id

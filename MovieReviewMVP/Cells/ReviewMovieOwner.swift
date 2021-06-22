@@ -43,6 +43,20 @@ class ReviewMovieOwner: NSObject {
         overviewTextView.isSelectable = false
     }
     
+    func editButtonTapped(_ isEditing: Bool) {
+        switch isEditing {
+        case true:  // 編集モード
+            reviewTextView.isEditable = true
+            reviewTextView.isSelectable = true
+            reviewStarView.isUserInteractionEnabled = true
+
+        case false:
+            reviewTextView.isEditable = false
+            reviewTextView.isSelectable = false
+            reviewStarView.isUserInteractionEnabled = false
+        }
+    }
+    
     func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
         fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
         configureReviewImfomations(movieReviewState: movieReviewState, movie: movie)
@@ -68,7 +82,7 @@ class ReviewMovieOwner: NSObject {
     // MARK: 画像以外の構成を行う処理
     func configureReviewImfomations(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
         if case .afterStore = movieReviewState {
-            movie.review == ""
+            movie.review == nil
                 ? textViewState.empty.configurePlaceholder(reviewTextView)
                 : textViewState.notEnpty(movie.review).configurePlaceholder(reviewTextView)
             reviewStarView.rating = movie.reviewStars ?? 0

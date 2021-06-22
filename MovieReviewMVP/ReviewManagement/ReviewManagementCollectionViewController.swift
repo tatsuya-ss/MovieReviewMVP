@@ -375,6 +375,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             trashButton.isHidden = false
             trashButton.isEnabled = false
             stockButton.isHidden = true
+            editButton.title = "解除"
             // trueになった時、一旦全選択解除
             guard let indexPaths = indexPaths else { return }
             for index in indexPaths {
@@ -386,6 +387,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             sortButton.isEnabled = true
             trashButton.isHidden = true
             stockButton.isHidden = false
+            editButton.title = "選択"
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             guard let indexPaths = indexPaths else { return }
             for index in indexPaths {
