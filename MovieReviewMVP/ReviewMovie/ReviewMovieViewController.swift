@@ -176,20 +176,14 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {
         switch primaryKeyIsStored {
         case true:
-            let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
-            storedAlert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+            let storedAlert = UIAlertController.makeStoredAlert()
             self.present(storedAlert, animated: true, completion: nil)
             
         case false:
             switch movieReviewState {
             case .beforeStore:
-                let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
-                storeLocationAlert.addAction(UIAlertAction(title: "後でレビューするに保存", style: .default, handler: { _ in
-                                                            self.presenter.didTapStoreLocationAlert(isStoredAsReview: false)}))
-                storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default, handler: { _ in
-                                                            self.presenter.didTapStoreLocationAlert(isStoredAsReview: true)}))
-                storeLocationAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                self.present(storeLocationAlert, animated: true, completion: nil)
+                let storeLocationAlertController = UIAlertController.makeStoreLocationAlert(presenter: presenter)
+                present(storeLocationAlertController, animated: true, completion: nil)
                 
             case .afterStore(.reviewed):
                 isUpdate = true
@@ -198,19 +192,8 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
                 reviewMovieOwner.editButtonTapped(editing)
 
             case .afterStore(.stock):
-                let storeDateAlert = UIAlertController(title: nil, message: "保存日を選択してください", preferredStyle: .actionSheet)
-                storeDateAlert.addAction(UIAlertAction(title: "追加した日で保存", style: .default, handler: {_ in
-                    // アラートの処理を書く
-                    self.presenter.didTapSelectStoreDateAlert(storeDateState: .stockDate)
-                }))
-                storeDateAlert.addAction(UIAlertAction(title: "今日の日付で保存", style: .default, handler: {_ in
-                    // アラートの処理を書く
-                    self.presenter.didTapSelectStoreDateAlert(storeDateState: .today)
-
-                }))
-                storeDateAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                let storeDateAlert = UIAlertController.makeStoreDateAlert(presenter: presenter)
                 self.present(storeDateAlert, animated: true, completion: nil)
-
             }
         }
 
