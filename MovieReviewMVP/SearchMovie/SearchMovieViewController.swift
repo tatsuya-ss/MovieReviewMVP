@@ -30,17 +30,8 @@ class SearchMovieViewController: UIViewController {
         setup()
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
-        tableView.dataSource = self
-        tableView.delegate = self
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
-    
-//    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
-//        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
-//        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
-//        presenter.didInsertMovieReview(movieUpdateState: movieUpdateState)
-//        
-//    }
     
 }
 
@@ -67,7 +58,8 @@ private extension SearchMovieViewController {
     
     private func setupTableViewController() {
         tableView.register(MovieTableViewCell.nib, forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
-        
+        tableView.dataSource = self
+        tableView.delegate = self
         // MARK: tableViewの高さを設定
         
         if let height = tableViewCellHeight {
@@ -108,7 +100,6 @@ private extension SearchMovieViewController {
 // MARK: - @objc
 @objc extension SearchMovieViewController {
     func handleRefreshControl() {
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
             self.presenter.fetchMovie(state: .search(.refresh), text: nil)
         })
@@ -118,7 +109,6 @@ private extension SearchMovieViewController {
 
 // MARK: - UISearchBarDelegate
 extension SearchMovieViewController : UISearchBarDelegate {
-    
     // MARK: 検索ボタンが押された時
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -126,9 +116,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
     
     // MARK: 入力中に呼ばれる
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-
             if searchBar.text?.isEmpty == false {
                 self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
             }
@@ -138,14 +126,11 @@ extension SearchMovieViewController : UISearchBarDelegate {
     
     // MARK: 入力確定後に呼ばれる
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            
             if searchBar.text?.isEmpty == true {
                 self.presenter.fetchMovie(state: .upcoming, text: nil)
             }
         })
-
     }
     
     // MARK: キャンセルボタンが押された時
@@ -172,12 +157,10 @@ extension SearchMovieViewController : UITableViewDelegate {
     
     // MARK: 下部スクロール
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         let contentSize = scrollView.contentSize.height
         let tableSize = scrollView.frame.size.height
         let canLoadFromBottom = contentSize > tableSize
-        // 何かの位置を指し示す際に、基準となる位置からの差（距離、ズレ、相対位置）を表す値のことをオフセット
-        // Offset
+        // Offset　何かの位置を指し示す際に、基準となる位置からの差（距離、ズレ、相対位置）を表す値のことをオフセット
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = contentSize - tableSize
         let difference = maximumOffset - currentOffset
@@ -221,11 +204,9 @@ extension SearchMovieViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
-        
         cell.resetCell()
 
         let movies = presenter.movie()
-
         if let tableViewHeight = tableViewCellHeight {
             cell.configureCell(movie: movies[indexPath.row], height: tableViewHeight)
         } else {
@@ -241,14 +222,11 @@ extension SearchMovieViewController : UITableViewDataSource {
 extension SearchMovieViewController : SearchMoviePresenterOutput {
 
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
-        
         displayLabel.text = fetchState.displayLabelText
-        
         tableView.reloadData()
     }
     
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
-        
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
         let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
@@ -261,11 +239,6 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
                 
         self.present(nav, animated: true, completion: nil)
 
-    }
-    
-    func insertMovieReivew(movieUpdateState: MovieUpdateState) {
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//        appDelegate.isInsert = true
     }
 
 }

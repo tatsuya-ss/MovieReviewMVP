@@ -12,13 +12,11 @@ protocol SearchMoviePresenterInput {
     func movie() -> [MovieReviewElement]
     func didSelectRow(at indexPath: IndexPath)
     func fetchMovie(state: FetchMovieState, text: String?)
-    func didInsertMovieReview(movieUpdateState: MovieUpdateState)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement])
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState)
-    func insertMovieReivew(movieUpdateState: MovieUpdateState)
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
@@ -47,12 +45,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         view.reviewTheMovie(movie: movies[indexPath.row], movieUpdateState: movieUpdateState)
     }
     
-    func didInsertMovieReview(movieUpdateState: MovieUpdateState) {
-        view.insertMovieReivew(movieUpdateState: movieUpdateState)
-    }
-    
     func fetchMovie(state: FetchMovieState, text: String?) {
-        
         model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
             switch result {
             case let .success(movies):
@@ -80,5 +73,4 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         })
 
     }
-    
 }

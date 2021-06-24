@@ -18,7 +18,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var trashButton: UIButton!
     private var stockButton: UIButton!
     
-    
     let movieUseCase = MovieUseCase()
     
     private(set) var presenter: ReviewManagementPresenterInput!
@@ -33,15 +32,6 @@ class ReviewManagementCollectionViewController: UIViewController {
         presenter.fetchUpdateReviewMovies(.initial)
         isEditing = false
     }
-    
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        super.viewWillAppear(animated)
-    //        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-    //        if appDelegate.isInsert {
-    //            presenter.fetchUpdateReviewMovies(.insert)
-    //            appDelegate.isInsert = false
-    //        }
-    //    }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
