@@ -33,34 +33,34 @@ extension UIAlertController {
     }
     
     class func makeStoredAlert() -> UIAlertController {
-        let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
-        storedAlert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+        let storedAlert = UIAlertController(title: nil, message: .storedAlertMessage, preferredStyle: .alert)
+        storedAlert.addAction(UIAlertAction(title: .storedAlertCancelTitle, style: .cancel, handler: nil))
         
         return storedAlert
     }
     
     class func makeStoreLocationAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
-        storeLocationAlert.addAction(UIAlertAction(title: "後でレビューするに保存", style: .default) { action in
+        let storeLocationAlert = UIAlertController(title: nil, message: .storeLocationAlertMessage, preferredStyle: .actionSheet)
+        storeLocationAlert.addAction(UIAlertAction(title: .storeLocationAlertStockTitle, style: .default) { action in
             presenter.didTapStoreLocationAlert(isStoredAsReview: false)
         })
-        storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default) { action in
+        storeLocationAlert.addAction(UIAlertAction(title: .storeLocationAlertReviewTitle, style: .default) { action in
             presenter.didTapStoreLocationAlert(isStoredAsReview: true)
         })
-        storeLocationAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        storeLocationAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
         
         return storeLocationAlert
     }
     
     class func makeStoreDateAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let storeDateAlert = UIAlertController(title: nil, message: "保存日を選択してください", preferredStyle: .actionSheet)
-        storeDateAlert.addAction(UIAlertAction(title: "追加した日で保存", style: .default) { action in
+        let storeDateAlert = UIAlertController(title: nil, message: .storeDateAlertMessage, preferredStyle: .actionSheet)
+        storeDateAlert.addAction(UIAlertAction(title: .storeDateAlertAddDateTitle, style: .default) { action in
             presenter.didTapSelectStoreDateAlert(storeDateState: .stockDate)
         })
-        storeDateAlert.addAction(UIAlertAction(title: "今日の日付で保存", style: .default) { action in
+        storeDateAlert.addAction(UIAlertAction(title: .storeDateAlertAddTodayTitle, style: .default) { action in
             presenter.didTapSelectStoreDateAlert(storeDateState: .today)
         })
-        storeDateAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        storeDateAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
 
         return storeDateAlert
     }

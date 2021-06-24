@@ -28,7 +28,7 @@ class ReviewMovieOwner: NSObject {
     }
     
     private func setNib() {
-        reviewMovieView = UINib(nibName: "ReviewMovie", bundle: nil).instantiate(withOwner: self, options: nil).first as? UIView
+        reviewMovieView = UINib(nibName: .reviewMovieNibName, bundle: nil).instantiate(withOwner: self, options: nil).first as? UIView
     }
     
     private func setReviwStars() {

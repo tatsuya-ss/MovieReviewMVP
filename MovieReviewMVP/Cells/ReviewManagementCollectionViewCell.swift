@@ -39,7 +39,7 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
         
         reviewView.rating = movieReview.reviewStars ?? 0.0
         reviewView.text = String(movieReview.reviewStars ?? 0.0)
-        checkImageView.image = UIImage(named: "check")
+        checkImageView.image = UIImage(named: .checkImageName)
         checkImageView.isHidden = true
         setupLayout()
         tapCell(state: cellSelectedState)

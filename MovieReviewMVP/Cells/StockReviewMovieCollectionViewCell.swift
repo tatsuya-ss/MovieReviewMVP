@@ -31,7 +31,7 @@ class StockReviewMovieCollectionViewCell: UICollectionViewCell {
             }
         }
         task.resume()
-        checkImageView.image = UIImage(named: "check")
+        checkImageView.image = UIImage(named: .checkImageName)
         checkImageView.isHidden = true
         setupLayout()
         tapCell(state: cellSelectedState)

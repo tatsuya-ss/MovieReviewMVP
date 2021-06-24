@@ -62,11 +62,11 @@ private extension SearchMovieViewController {
     
     private func setupNavigationController() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.title = "検索"
+        navigationItem.title = .searchTitle
     }
     
     private func setupTableViewController() {
-        tableView.register(UINib(nibName: "MovieTableViewCell", bundle: nil), forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
+        tableView.register(MovieTableViewCell.nib, forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
         
         // MARK: tableViewの高さを設定
         
@@ -249,7 +249,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
         
-        let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
         let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
         

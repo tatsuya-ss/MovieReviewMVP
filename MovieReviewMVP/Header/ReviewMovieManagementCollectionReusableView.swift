@@ -16,6 +16,6 @@ class ReviewMovieManagementCollectionReusableView: UICollectionReusableView {
     static let identifier = String(describing: ReviewMovieManagementCollectionReusableView.self)
 
     func configure() {
-        titleLabel.text = "レビュー"
+        titleLabel.text = .reviewTitle
     }
 }

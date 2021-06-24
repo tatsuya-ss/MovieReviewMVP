@@ -60,7 +60,7 @@ private extension ReviewMovieViewController {
         // MARK: ボタンの表示内容を分ける
         switch presenter.returnMovieReviewState() {
         case .beforeStore:
-            saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+            saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
             stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
             stopButton.tintColor = .white
             navigationItem.leftBarButtonItem = stopButton
@@ -73,10 +73,10 @@ private extension ReviewMovieViewController {
 
         case .afterStore(.stock):
             let backButton = UIBarButtonItem()
-            backButton.title = "ストック"
+            backButton.title = .stock
             backButton.tintColor = .stringColor
             self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-            saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+            saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
         }
         
         saveButton.tintColor = .white
@@ -107,7 +107,7 @@ private extension ReviewMovieViewController {
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         switch isUpdate {
         case true:
-            performSegue(withIdentifier: "saveButtonTappedSegue", sender: nil)
+            performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
             isUpdate = false
         case false:
             dismiss(animated: true, completion: nil)
@@ -174,7 +174,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         } else {
             isUpdate = true
             guard let editing = editing else { return }
-            editing ? (saveButton.title = "更新") : (saveButton.title = "編集")
+            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
             reviewMovieOwner.editButtonTapped(editing)
         }
     }
@@ -184,7 +184,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         case .insert:
             dismiss(animated: true, completion: nil)
         case .modificate:
-            performSegue(withIdentifier: "saveButtonTappedSegue", sender: nil)
+            performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
         default:
             break
         }

@@ -50,7 +50,7 @@ class StockReviewMovieManagementViewController: UIViewController {
     }
     
     func setupNavigation() {
-        navigationItem.title = "ストック"
+        navigationItem.title = .stock
         
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20),
                                                                    NSAttributedString.Key.foregroundColor: UIColor.stringColor]
@@ -109,7 +109,7 @@ class StockReviewMovieManagementViewController: UIViewController {
     func setupTrashButton() {
         
         trashButton = UIButton()
-        trashButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        trashButton.setImage(UIImage(systemName: .trashImageSystemName), for: .normal)
         
         trashButton.tintColor = .black
         trashButton.backgroundColor = .baseColor
@@ -136,12 +136,12 @@ class StockReviewMovieManagementViewController: UIViewController {
     }
     
     @objc func trashButtonTapped(_ sender: UIBarButtonItem) {
-        let deleteAlert = UIAlertController(title: nil, message: "選択したレビューを削除しますか？", preferredStyle: .alert)
-        deleteAlert.addAction(UIAlertAction(title: "レビューを削除", style: .destructive, handler: { _ in
+        let deleteAlert = UIAlertController(title: nil, message: .deleteAlertMessage, preferredStyle: .alert)
+        deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { _ in
             guard let reviewSortedIndexs = (self.stockCollectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
             self.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndexs)
         }))
-        deleteAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        deleteAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
 
     }
@@ -253,7 +253,7 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
     }
     
     func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
-        let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
         let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
         reviewMovieVC.inject(presenter: presenter)

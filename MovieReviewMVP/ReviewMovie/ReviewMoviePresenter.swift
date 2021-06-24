@@ -126,7 +126,7 @@ extension ReviewMoviePresenter {
     }
     
     func checkIsChange(reviewScore: Double, review: String?) -> Bool {
-        let reviewText = movieReviewElement.review ?? "レビューを入力してください"
+        let reviewText = movieReviewElement.review ?? .placeholderString
         if reviewScore != movieReviewElement.reviewStars ?? 0.0 || review != reviewText {
             return true
         }
@@ -134,7 +134,7 @@ extension ReviewMoviePresenter {
     }
     
     func checkReview(review: String?) -> String? {
-        if review == "" || review == "レビューを入力してください" {
+        if review == "" || review == .placeholderString {
             return nil
         } else {
             return review

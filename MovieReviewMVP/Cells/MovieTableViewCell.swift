@@ -12,7 +12,9 @@ class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
     
-    static let reuserIdentifier = "MovieCell"
+    static let nib = UINib(nibName: String(describing: MovieTableViewCell.self), bundle: nil)
+
+    static let reuserIdentifier: String = .movieTableCellIdentifier
     
     func resetCell() {
         movieImageView.image = nil
@@ -40,9 +42,9 @@ class MovieTableViewCell: UITableViewCell {
         } else if movie.title != nil {
             titleLabel.text = movie.title
         } else {
-            titleLabel.text = "タイトルがありません"
+            titleLabel.text = .notTitle
         }
-        releaseDateLabel.text = "(\(movie.releaseDay ?? "未定"))"
+        releaseDateLabel.text = "(\(movie.releaseDay ?? ""))"
         movieImageView.layer.cornerRadius = height * 0.03
 
     }

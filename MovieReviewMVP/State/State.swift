@@ -15,9 +15,9 @@ enum FetchMovieState {
     var displayLabelText: String {
         switch self {
         case .search:
-            return "検索結果"
+            return .searchLabelTitle
         case .upcoming:
-            return "近日公開"
+            return .upcomingLabelTitle
         }
     }
 }
@@ -81,31 +81,31 @@ enum sortState {
     var keyPath: String {
         switch self {
         case .createdAscend:
-            return "created_at"
+            return .createdKeyPath
         case .createdDescend:
-            return "created_at"
+            return .createdKeyPath
         case .reviewStarAscend:
-            return "reviewStars"
+            return .reviewStarKeyPath
         case .reviewStarDescend:
-            return "reviewStars"
+            return .reviewStarKeyPath
         }
     }
     
     var title: String {
         switch self {
         case .createdAscend:
-            return "新しい順"
+            return .createdAscendTitle
         case .createdDescend:
-            return "古い順"
+            return .createdDescendTitle
         case .reviewStarAscend:
-            return "高評価順"
+            return .reviewStarAscendTitle
         case .reviewStarDescend:
-            return "低評価順"
+            return .reviewStarDescendTitle
         }
     }
     
     var buttonTitle: String {
-        title + "⋁"
+        title + .sortMark
     }
     // ⌄ ⋁ ▼
 }
@@ -118,7 +118,7 @@ enum textViewState {
     var text: String? {
         switch self {
         case .empty:
-            return "レビューを入力してください"
+            return .placeholderString
         case let .notEnpty(review):
             return review
         }

@@ -21,7 +21,7 @@ class RealmMyMovieInfomation: Object {
     @objc dynamic var isStoredAsReview: Bool = true
     
     override class func primaryKey() -> String? {
-        "id"
+        .id
     }
 }
 
