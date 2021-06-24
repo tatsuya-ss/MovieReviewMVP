@@ -8,6 +8,30 @@
 import UIKit
 
 extension UIAlertController {
+    
+    class func makeAlert(_ primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, presenter: ReviewMoviePresenterInput) -> UIAlertController? {
+        switch primaryKeyIsStored {
+        case true:
+            let storedAlert = makeStoredAlert()
+            return storedAlert
+            
+        case false:
+            switch movieReviewState {
+            case .beforeStore:
+                let storeLocationAlertController = makeStoreLocationAlert(presenter: presenter)
+                return storeLocationAlertController
+                
+            case .afterStore(.reviewed):
+                return nil
+                
+            case .afterStore(.stock):
+                let storeDateAlert = makeStoreDateAlert(presenter: presenter)
+                return storeDateAlert
+            }
+
+        }
+    }
+    
     class func makeStoredAlert() -> UIAlertController {
         let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
         storedAlert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))

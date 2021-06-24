@@ -174,29 +174,15 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     }
 
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {
-        switch primaryKeyIsStored {
-        case true:
-            let storedAlert = UIAlertController.makeStoredAlert()
-            self.present(storedAlert, animated: true, completion: nil)
-            
-        case false:
-            switch movieReviewState {
-            case .beforeStore:
-                let storeLocationAlertController = UIAlertController.makeStoreLocationAlert(presenter: presenter)
-                present(storeLocationAlertController, animated: true, completion: nil)
-                
-            case .afterStore(.reviewed):
-                isUpdate = true
-                guard let editing = editing else { return }
-                editing ? (saveButton.title = "更新") : (saveButton.title = "編集")
-                reviewMovieOwner.editButtonTapped(editing)
-
-            case .afterStore(.stock):
-                let storeDateAlert = UIAlertController.makeStoreDateAlert(presenter: presenter)
-                self.present(storeDateAlert, animated: true, completion: nil)
-            }
+        
+        if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
+            present(alert, animated: true, completion: nil)
+        } else {
+            isUpdate = true
+            guard let editing = editing else { return }
+            editing ? (saveButton.title = "更新") : (saveButton.title = "編集")
+            reviewMovieOwner.editButtonTapped(editing)
         }
-
     }
     
     func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
