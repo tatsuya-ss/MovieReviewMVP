@@ -67,37 +67,31 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
         switch movieReviewState {
         case .beforeStore:  // プライマリーキーが被っていないかの検証
-            let movies = model.fetchMovie(sortState: .createdAscend)
-            for movie in movies {
-                guard movie.id != movieReviewElement.id else { primaryKeyIsStored = true; break }
-            }
+            primaryKeyIsStored = checkPrimaryKey()
             if primaryKeyIsStored == false {  // まだ保存していない場合
                 movieReviewElement.create_at = date
                 movieReviewElement.reviewStars = reviewScore
-                movieReviewElement.review = review
+                movieReviewElement.review = checkReview(review: review)
             }
             
         case .afterStore(.reviewed):
             guard let editing = editing else { return }
             switch editing {
             case false:
-                let reviewText = movieReviewElement.review ?? "レビューを入力してください"
-                if reviewScore != movieReviewElement.reviewStars ?? 0.0
-                    || review != reviewText {
-                    review == "" || review == "レビューを入力してください"
-                        ? (movieReviewElement.review = nil)
-                        : (movieReviewElement.review = review)
+                let isChange = checkIsChange(reviewScore: reviewScore, review: review)
+                if isChange {
+                    movieReviewElement.review = checkReview(review: review)
                     movieReviewElement.reviewStars = reviewScore
                     model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
                 }
-                
+                                
             case true:
                 break
             }
             
         case .afterStore(.stock):
             movieReviewElement.reviewStars = reviewScore
-            movieReviewElement.review = review
+            movieReviewElement.review = checkReview(review: review)
             movieReviewElement.isStoredAsReview = true
         }
         view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState, editing: editing)
@@ -119,6 +113,31 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
-
     
+}
+
+extension ReviewMoviePresenter {
+    func checkPrimaryKey() -> Bool {
+        let movies = model.fetchMovie(sortState: .createdAscend)
+        for movie in movies {
+            guard movie.id != movieReviewElement.id else { return true }
+        }
+        return false
+    }
+    
+    func checkIsChange(reviewScore: Double, review: String?) -> Bool {
+        let reviewText = movieReviewElement.review ?? "レビューを入力してください"
+        if reviewScore != movieReviewElement.reviewStars ?? 0.0 || review != reviewText {
+            return true
+        }
+        return false
+    }
+    
+    func checkReview(review: String?) -> String? {
+        if review == "" || review == "レビューを入力してください" {
+            return nil
+        } else {
+            return review
+        }
+    }
 }

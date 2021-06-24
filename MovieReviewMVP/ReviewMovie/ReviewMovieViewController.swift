@@ -40,8 +40,9 @@ class ReviewMovieViewController: UIViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if case .afterStore(.reviewed) = presenter.returnMovieReviewState() {
-            let review = reviewMovieOwner.reviewTextView.text ?? "レビューを入力してください"
+            let review = reviewMovieOwner.reviewTextView.text
             let reviewStar = Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0
+
             presenter.didTapUpdateButton(editing: editing, date: Date(), reviewScore: reviewStar, review: review)
         }
     }
@@ -95,17 +96,10 @@ private extension ReviewMovieViewController {
 // MARK: - @objc
 private extension ReviewMovieViewController {
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
-        if reviewMovieOwner.reviewTextView.text.isEmpty
-            || reviewMovieOwner.reviewTextView.textColor == textViewState.empty.textColor {
-            presenter.didTapUpdateButton(editing: nil, date: Date(),
-                                       reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
-                                       review: nil)
-
-        } else {
-            presenter.didTapUpdateButton(editing: nil, date: Date(),
-                                       reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
-                                       review: reviewMovieOwner.reviewTextView.text ?? "")
-        }
+        presenter.didTapUpdateButton(editing: nil,
+                                     date: Date(),
+                                     reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                     review: reviewMovieOwner.reviewTextView.text)
 
     }
 
