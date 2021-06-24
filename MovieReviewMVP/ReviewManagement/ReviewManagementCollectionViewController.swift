@@ -18,7 +18,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var trashButton: UIButton!
     private var stockButton: UIButton!
     
-    
     let movieUseCase = MovieUseCase()
     
     private(set) var presenter: ReviewManagementPresenterInput!
@@ -33,15 +32,6 @@ class ReviewManagementCollectionViewController: UIViewController {
         presenter.fetchUpdateReviewMovies(.initial)
         isEditing = false
     }
-    
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        super.viewWillAppear(animated)
-    //        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-    //        if appDelegate.isInsert {
-    //            presenter.fetchUpdateReviewMovies(.insert)
-    //            appDelegate.isInsert = false
-    //        }
-    //    }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
@@ -72,7 +62,7 @@ private extension ReviewManagementCollectionViewController {
     func setupTrashButton() {
         
         trashButton = UIButton()
-        trashButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        trashButton.setImage(UIImage(systemName: .trashImageSystemName), for: .normal)
         
         trashButton.tintColor = .black
         trashButton.backgroundColor = .baseColor
@@ -100,7 +90,7 @@ private extension ReviewManagementCollectionViewController {
     
     func setupStockButton() {
         stockButton = UIButton()
-        stockButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+        stockButton.setImage(UIImage(systemName: .stockButtonImageSystemName), for: .normal)
         
         stockButton.tintColor = .black
         stockButton.backgroundColor = .systemYellow
@@ -135,7 +125,7 @@ private extension ReviewManagementCollectionViewController {
     
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "レビュー"))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: .reviewTitle))
         
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
         editButton = editButtonItem
@@ -217,19 +207,19 @@ private extension ReviewManagementCollectionViewController {
 // MARK: - @objc
 extension ReviewManagementCollectionViewController {
     @objc func trashButtonTapped() {
-        let deleteAlert = UIAlertController(title: nil, message: "選択したレビューを削除しますか？", preferredStyle: .alert)
+        let deleteAlert = UIAlertController(title: nil, message: .deleteAlertMessage, preferredStyle: .alert)
         
-        deleteAlert.addAction(UIAlertAction(title: "レビューを削除", style: .destructive, handler: { _ in
+        deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { _ in
             guard let reviewSortedIndex = (self.collectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
             self.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
         }))
-        deleteAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        deleteAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
     }
     
     @objc func stockButtonTapped() {
         
-        let stockReviewMovieVC = UIStoryboard(name: "StockReviewMovieManagement", bundle: nil).instantiateInitialViewController() as! StockReviewMovieManagementViewController
+        let stockReviewMovieVC = UIStoryboard(name: .StockReviewMovieManagementStoryboardName, bundle: nil).instantiateInitialViewController() as! StockReviewMovieManagementViewController
         let model = StockReviewMovieManagementModel()
         let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, model: model)
         stockReviewMovieVC.inject(presenter: presenter)
@@ -375,7 +365,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             trashButton.isHidden = false
             trashButton.isEnabled = false
             stockButton.isHidden = true
-            editButton.title = "解除"
+            editButton.title = .deselectTitle
             // trueになった時、一旦全選択解除
             guard let indexPaths = indexPaths else { return }
             for index in indexPaths {
@@ -387,7 +377,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             sortButton.isEnabled = true
             trashButton.isHidden = true
             stockButton.isHidden = false
-            editButton.title = "選択"
+            editButton.title = .selectTitle
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
             guard let indexPaths = indexPaths else { return }
             for index in indexPaths {
@@ -401,7 +391,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     // MARK: tapしたレビューを詳細表示
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         
-        let reviewMovieVC = UIStoryboard(name: "ReviewMovie", bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
         let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
         

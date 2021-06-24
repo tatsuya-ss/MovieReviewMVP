@@ -39,9 +39,12 @@ class ReviewMovieViewController: UIViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        let review = reviewMovieOwner.reviewTextView.text ?? "レビューを入力してください"
-        let reviewStar = reviewMovieOwner.reviewStarView.text ?? "0.0"
-        presenter.changeEditingStateProcess(editing, review: review, reviewStar: reviewStar)
+        if case .afterStore(.reviewed) = presenter.returnMovieReviewState() {
+            let review = reviewMovieOwner.reviewTextView.text
+            let reviewStar = Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0
+
+            presenter.didTapUpdateButton(editing: editing, date: Date(), reviewScore: reviewStar, review: review)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -57,26 +60,23 @@ private extension ReviewMovieViewController {
         // MARK: ボタンの表示内容を分ける
         switch presenter.returnMovieReviewState() {
         case .beforeStore:
-            saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+            saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
             stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
             stopButton.tintColor = .white
             navigationItem.leftBarButtonItem = stopButton
 
         case .afterStore(.reviewed):
             saveButton = editButtonItem
-//            isEditing ? (saveButton.title = "更新") : (saveButton.title = "編集")
-//            reviewMovieOwner.editButtonTapped(isEditing)
-
             stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
             stopButton.tintColor = .white
             navigationItem.leftBarButtonItem = stopButton
 
         case .afterStore(.stock):
             let backButton = UIBarButtonItem()
-            backButton.title = "ストック"
+            backButton.title = .stock
             backButton.tintColor = .stringColor
             self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-            saveButton = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveButtonTapped))
+            saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
         }
         
         saveButton.tintColor = .white
@@ -95,20 +95,11 @@ private extension ReviewMovieViewController {
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
-    @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
-        // textViewに入力がない場合とある場合の保存処理
-        // ストックかレビュー済みかとか関係ないやつ
-        if reviewMovieOwner.reviewTextView.text.isEmpty
-            || reviewMovieOwner.reviewTextView.textColor == textViewState.empty.textColor {
-            presenter.didTapSaveButton(date: Date(),
-                                       reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
-                                       review: nil)
-
-        } else {
-            presenter.didTapSaveButton(date: Date(),
-                                       reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
-                                       review: reviewMovieOwner.reviewTextView.text ?? "")
-        }
+    @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
+        presenter.didTapUpdateButton(editing: nil,
+                                     date: Date(),
+                                     reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
+                                     review: reviewMovieOwner.reviewTextView.text)
 
     }
 
@@ -116,7 +107,7 @@ private extension ReviewMovieViewController {
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         switch isUpdate {
         case true:
-            performSegue(withIdentifier: "saveButtonTappedSegue", sender: nil)
+            performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
             isUpdate = false
         case false:
             dismiss(animated: true, completion: nil)
@@ -156,15 +147,11 @@ extension ReviewMovieViewController : UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard let selectedTextRangeStart = textView.selectedTextRange?.start,
               let keyboardHeight = keyboardHeight else { return false }
-        
         let caret = reviewMovieOwner.reviewTextView.caretRect(for: selectedTextRangeStart)
-        
         let keyboardTopBorder = reviewMovieOwner.reviewTextView.bounds.size.height - keyboardHeight
-        
         if caret.origin.y > keyboardTopBorder {
             reviewMovieOwner.reviewTextView.scrollRectToVisible(caret, animated: true)
         }
-        
         return true
     }
     
@@ -179,50 +166,17 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
         reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement)
     }
-    
-    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool) {
-        isEditing ? (saveButton.title = "更新") : (saveButton.title = "編集")
-        reviewMovieOwner.editButtonTapped(editing)
-    }
 
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState) {
-        switch primaryKeyIsStored {
-        case true:
-            let storedAlert = UIAlertController(title: nil, message: "既に保存されているレビューです", preferredStyle: .alert)
-            storedAlert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-            self.present(storedAlert, animated: true, completion: nil)
-            
-        case false:
-            switch movieReviewState {
-            case .beforeStore:
-                let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
-                storeLocationAlert.addAction(UIAlertAction(title: "後でレビューするに保存", style: .default, handler: { _ in
-                                                            self.presenter.didTapStoreLocationAlert(isStoredAsReview: false)}))
-                storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default, handler: { _ in
-                                                            self.presenter.didTapStoreLocationAlert(isStoredAsReview: true)}))
-                storeLocationAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                self.present(storeLocationAlert, animated: true, completion: nil)
-                
-            case .afterStore(.reviewed):
-                isUpdate = true
-                
-            case .afterStore(.stock):
-                let storeDateAlert = UIAlertController(title: nil, message: "保存日を選択してください", preferredStyle: .actionSheet)
-                storeDateAlert.addAction(UIAlertAction(title: "追加した日で保存", style: .default, handler: {_ in
-                    // アラートの処理を書く
-                    self.presenter.didTapSelectStoreDateAlert(storeDateState: .stockDate)
-                }))
-                storeDateAlert.addAction(UIAlertAction(title: "今日の日付で保存", style: .default, handler: {_ in
-                    // アラートの処理を書く
-                    self.presenter.didTapSelectStoreDateAlert(storeDateState: .today)
-
-                }))
-                storeDateAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                self.present(storeDateAlert, animated: true, completion: nil)
-
-            }
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {
+        
+        if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
+            present(alert, animated: true, completion: nil)
+        } else {
+            isUpdate = true
+            guard let editing = editing else { return }
+            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
+            reviewMovieOwner.editButtonTapped(editing)
         }
-
     }
     
     func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
@@ -230,7 +184,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         case .insert:
             dismiss(animated: true, completion: nil)
         case .modificate:
-            performSegue(withIdentifier: "saveButtonTappedSegue", sender: nil)
+            performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
         default:
             break
         }

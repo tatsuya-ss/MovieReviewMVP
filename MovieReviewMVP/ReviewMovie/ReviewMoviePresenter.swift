@@ -9,21 +9,18 @@ import Foundation
 
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
-    func didTapSaveButton(date: Date, reviewScore: Double, review: String?)
-    func didTapUpdateButton(reviewScore: Double, review: String?)
+    func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?)
     func returnMovieReviewState() -> MovieReviewStoreState
     func didTapStoreLocationAlert(isStoredAsReview: Bool)
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
-    func changeEditingStateProcess(_ editing: Bool, review: String, reviewStar: String)
     func returnMovieReviewElement() -> MovieReviewElement
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieInfomation: MovieReviewElement)
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState)
+    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
-    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool)
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
@@ -64,39 +61,42 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         movieReviewElement
     }
     
-    // MARK: 保存ボタンが押された時の処理
-    func didTapSaveButton(date: Date, reviewScore: Double, review: String?) {
-        
+    // MARK: 保存・更新ボタンが押された時の処理
+    func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         var primaryKeyIsStored = false
 
         switch movieReviewState {
         case .beforeStore:  // プライマリーキーが被っていないかの検証
-            let movies = model.fetchMovie(sortState: .createdAscend)
-            for movie in movies {
-                guard movie.id != movieReviewElement.id else { primaryKeyIsStored = true; break }
-            }
+            primaryKeyIsStored = checkPrimaryKey()
             if primaryKeyIsStored == false {  // まだ保存していない場合
                 movieReviewElement.create_at = date
                 movieReviewElement.reviewStars = reviewScore
-                movieReviewElement.review = review
+                movieReviewElement.review = checkReview(review: review)
             }
             
         case .afterStore(.reviewed):
-            movieReviewElement.reviewStars = reviewScore
-            movieReviewElement.review = review
-            // realmのデータ更新
-            model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-
+            guard let editing = editing else { return }
+            switch editing {
+            case false:
+                let isChange = checkIsChange(reviewScore: reviewScore, review: review)
+                if isChange {
+                    movieReviewElement.review = checkReview(review: review)
+                    movieReviewElement.reviewStars = reviewScore
+                    model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+                }
+                                
+            case true:
+                break
+            }
+            
         case .afterStore(.stock):
             movieReviewElement.reviewStars = reviewScore
-            movieReviewElement.review = review
+            movieReviewElement.review = checkReview(review: review)
             movieReviewElement.isStoredAsReview = true
         }
-        
-        view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState)
+        view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState, editing: editing)
     }
-    
-    
+
     func didTapStoreLocationAlert(isStoredAsReview: Bool) {
         movieReviewElement.isStoredAsReview = isStoredAsReview
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
@@ -114,34 +114,30 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
-    func didTapUpdateButton(reviewScore: Double, review: String?) {
-        review == nil || review == "レビューを入力してください"
-            ? (movieReviewElement.review = nil)
-            : (movieReviewElement.review = review)
-        movieReviewElement.reviewStars = reviewScore
-        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        view.displayAfterStoreButtonTapped(false, movieReviewState)
-    }
+}
 
+extension ReviewMoviePresenter {
+    func checkPrimaryKey() -> Bool {
+        let movies = model.fetchMovie(sortState: .createdAscend)
+        for movie in movies {
+            guard movie.id != movieReviewElement.id else { return true }
+        }
+        return false
+    }
     
-    func changeEditingStateProcess(_ editing: Bool, review: String, reviewStar: String) {
-        if case .afterStore(afterStoreState.reviewed) = movieReviewState {
-            switch editing {
-            case true:
-                break
-            case false:
-                let reviewText = movieReviewElement.review ?? "レビューを入力してください"
-                if reviewStar != String(movieReviewElement.reviewStars ?? 0.0)
-                    || review != reviewText {
-                    review == "" || review == "レビューを入力してください"
-                        ? (movieReviewElement.review = nil)
-                        : (movieReviewElement.review = review)
-                    movieReviewElement.reviewStars = Double(reviewStar)
-                    model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-                    view.displayAfterStoreButtonTapped(false, movieReviewState)
-                }
-            }
-            view.changeTheDisplayDependingOnTheEditingState(editing)
+    func checkIsChange(reviewScore: Double, review: String?) -> Bool {
+        let reviewText = movieReviewElement.review ?? .placeholderString
+        if reviewScore != movieReviewElement.reviewStars ?? 0.0 || review != reviewText {
+            return true
+        }
+        return false
+    }
+    
+    func checkReview(review: String?) -> String? {
+        if review == "" || review == .placeholderString {
+            return nil
+        } else {
+            return review
         }
     }
 }
