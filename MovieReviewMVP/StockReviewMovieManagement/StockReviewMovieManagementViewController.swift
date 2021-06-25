@@ -64,7 +64,9 @@ class StockReviewMovieManagementViewController: UIViewController {
         // MARK: 編集ボタン
         editButton = editButtonItem
         // MARK: 並び替えボタン
-        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
+        let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
+        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
+        
         [stopButton, editButton, sortButton].forEach { $0.tintColor = .stringColor }
         navigationItem.rightBarButtonItems = [editButton, sortButton]
 
@@ -73,38 +75,6 @@ class StockReviewMovieManagementViewController: UIViewController {
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
-    func contextMenuActions() -> UIMenu {
-        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.createdDescend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.createdDescend.title)に並び替えました。")
-        })
-        
-        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.createdAscend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.createdAscend.title)に並び替えました。")
-        })
-        
-        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.reviewStarAscend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.reviewStarAscend.title)に並び替えました。")
-        })
-        
-        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.reviewStarDescend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.reviewStarDescend.title)に並び替えました。")
-        })
-        
-        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
-        
-        return menu
-
-    }
-    
     
     func setupTrashButton() {
         
@@ -211,6 +181,9 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
                 stockCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
             }
         }
+        sortButton.title = presenter.returnSortState().buttonTitle
+        print("\(presenter.returnSortState().buttonTitle)に並び替えました。stock")
+        
     }
     
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {

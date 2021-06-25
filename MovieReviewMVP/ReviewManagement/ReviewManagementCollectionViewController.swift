@@ -127,7 +127,8 @@ private extension ReviewManagementCollectionViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: .reviewTitle))
         
-        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: contextMenuActions())
+        let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
+        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
         editButton = editButtonItem
         [sortButton, editButton].forEach { $0?.tintColor = .stringColor }
         
@@ -145,38 +146,6 @@ private extension ReviewManagementCollectionViewController {
         return label
     }
     
-    // MARK: メニュー表示用にUIMenuを返すメソッド
-    func contextMenuActions() -> UIMenu {
-        
-        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.createdDescend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.createdDescend.title)に並び替えました。")
-        })
-        
-        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.createdAscend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.createdAscend.title)に並び替えました。")
-        })
-        
-        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.reviewStarAscend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.reviewStarAscend.title)に並び替えました。")
-        })
-        
-        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { _ in
-            self.presenter.didTapSortButton(.reviewStarDescend)
-            self.sortButton.title = self.presenter.returnSortState().buttonTitle
-            print("\(sortState.reviewStarDescend.title)に並び替えました。")
-        })
-        
-        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
-        
-        return menu
-        
-    }
         
     func setupCollectionView() {
         
@@ -313,6 +282,9 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
                 collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
             }
         }
+        sortButton.title = presenter.returnSortState().buttonTitle
+        print("\(presenter.returnSortState().buttonTitle)に並び替えました。review")
+
     }
     
     
