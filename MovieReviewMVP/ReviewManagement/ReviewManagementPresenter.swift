@@ -92,7 +92,5 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         movieReviewElements = model.sortReview(sortState, isStoredAsReview: true)
         view.sortReview()
     }
-
-
-
+    
 }
