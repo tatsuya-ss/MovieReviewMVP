@@ -292,7 +292,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?) {
         
         switch movieUpdateState {
-        
         case .initial:
             collectionView.reloadData()
             
@@ -304,7 +303,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
             
             
         case .insert:
-            
             if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
                 collectionView.reloadData()
             } else {
