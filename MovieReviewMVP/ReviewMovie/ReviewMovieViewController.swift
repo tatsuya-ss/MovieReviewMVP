@@ -86,6 +86,11 @@ private extension ReviewMovieViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
+        
+        let movieReviewElement = presenter.returnMovieReviewElement()
+        let saveDate = movieReviewElement.create_at
+        let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: saveDate)
+        navigationItem.title = navigationTitle
 
     }
     
