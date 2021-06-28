@@ -110,43 +110,6 @@ enum sortState {
     // ⌄ ⋁ ▼
 }
 
-
-enum textViewState {
-    case empty
-    case notEnpty(String?)
-    
-    var text: String? {
-        switch self {
-        case .empty:
-            return .placeholderString
-        case let .notEnpty(review):
-            return review
-        }
-    }
-    
-    var textColor: UIColor {
-        switch self {
-        case .empty:
-            return .lightGray
-        case .notEnpty:
-            return .white
-        }
-    }
-    
-    func configurePlaceholder(_ textView: UITextView) {
-        switch self {
-        case .empty:
-            textView.text = self.text
-            textView.textColor = self.textColor
-
-        case .notEnpty:
-            textView.text = self.text
-            textView.textColor = self.textColor
-        }
-    }
-
-}
-
 enum storeDateState {
     case stockDate
     case today

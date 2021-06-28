@@ -58,4 +58,8 @@ extension String {
 
     // realm
     static let id = "id"
+    
+    // その他
+    static let japanese = "ja"
+    static let dateError = "未定"
 }

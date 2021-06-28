@@ -14,8 +14,6 @@ class ReviewMovieViewController: UIViewController {
     private var stopButton: UIBarButtonItem!
     private var isUpdate: Bool = false
     private(set) var reviewMovieOwner: ReviewMovieOwner!
-    private var keyboardHeight: CGFloat?
-
         
     private(set) var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
@@ -33,15 +31,14 @@ class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
-        reviewMovieOwner.reviewTextView.delegate = self
         isEditing = false
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if case .afterStore(.reviewed) = presenter.returnMovieReviewState() {
-            let review = reviewMovieOwner.reviewTextView.text
-            let reviewStar = Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0
+            let review = reviewMovieOwner.returnReviewText()
+            let reviewStar = reviewMovieOwner.returnReviewStarScore()
 
             presenter.didTapUpdateButton(editing: editing, date: Date(), reviewScore: reviewStar, review: review)
         }
@@ -51,6 +48,11 @@ class ReviewMovieViewController: UIViewController {
         super.viewDidLayoutSubviews()
         reviewMovieOwner.reviewMovieView.frame = view.frame
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        reviewMovieOwner.reviewTextResignFirstResponder()
+    }
+
 }
 
 // MARK: - setup
@@ -84,22 +86,28 @@ private extension ReviewMovieViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
+        
+        let movieReviewElement = presenter.returnMovieReviewElement()
+        let saveDate = movieReviewElement.create_at
+        let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: saveDate)
+        navigationItem.title = navigationTitle
 
     }
     
     func setupTextView() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
-        textViewState.empty.configurePlaceholder(reviewMovieOwner.reviewTextView)
+        reviewMovieOwner.initReviewTextView()
     }
     
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
+        let reviewScore = reviewMovieOwner.returnReviewStarScore()
         presenter.didTapUpdateButton(editing: nil,
                                      date: Date(),
-                                     reviewScore: Double(reviewMovieOwner.reviewStarView.text!) ?? 0.0,
-                                     review: reviewMovieOwner.reviewTextView.text)
+                                     reviewScore: reviewScore,
+                                     review: reviewMovieOwner.returnReviewText())
 
     }
 
@@ -120,45 +128,15 @@ private extension ReviewMovieViewController {
         
         let keyboardSize = keyboardInfo.cgRectValue.size
         let keyboardHeight = keyboardSize.height
-        self.keyboardHeight = keyboardHeight
+        reviewMovieOwner.keyboardHeight = keyboardHeight
         
-        reviewMovieOwner.reviewTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight - view.safeAreaInsets.bottom, right: 0)
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight - view.safeAreaInsets.bottom, right: 0)
+        reviewMovieOwner.addContentInsets(insets: insets)
 
     }
 
 }
 
-// MARK: - UITextViewDelegate
-extension ReviewMovieViewController : UITextViewDelegate {
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == textViewState.empty.textColor {
-            textViewState.notEnpty(nil).configurePlaceholder(textView)
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textViewState.empty.configurePlaceholder(textView)
-        }
-    }
-
-
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard let selectedTextRangeStart = textView.selectedTextRange?.start,
-              let keyboardHeight = keyboardHeight else { return false }
-        let caret = reviewMovieOwner.reviewTextView.caretRect(for: selectedTextRangeStart)
-        let keyboardTopBorder = reviewMovieOwner.reviewTextView.bounds.size.height - keyboardHeight
-        if caret.origin.y > keyboardTopBorder {
-            reviewMovieOwner.reviewTextView.scrollRectToVisible(caret, animated: true)
-        }
-        return true
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        reviewMovieOwner.reviewTextView.resignFirstResponder()
-    }
-}
 
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
