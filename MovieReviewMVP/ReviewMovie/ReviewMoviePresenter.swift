@@ -31,6 +31,8 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
     
+
+    
     init(movieReviewState: MovieReviewStoreState,
          movieReviewElement: MovieReviewElement,
          movieUpdateState: MovieUpdateState,
@@ -60,6 +62,24 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func returnMovieReviewElement() -> MovieReviewElement {
         movieReviewElement
     }
+
+    func didTapStoreLocationAlert(isStoredAsReview: Bool) {
+        movieReviewElement.isStoredAsReview = isStoredAsReview
+        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        NotificationCenter.default.post(name: .insetReview, object: nil)
+        view.closeReviewMovieView(movieUpdateState: movieUpdateState)
+    }
+    
+    func didTapSelectStoreDateAlert(storeDateState: storeDateState) {
+        switch storeDateState {
+        case .stockDate:
+            break
+        case .today:
+            movieReviewElement.create_at = Date()
+        }
+        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        view.closeReviewMovieView(movieUpdateState: movieUpdateState)
+    }
     
     // MARK: 保存・更新ボタンが押された時の処理
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
@@ -72,6 +92,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 movieReviewElement.create_at = date
                 movieReviewElement.reviewStars = reviewScore
                 movieReviewElement.review = checkReview(review: review)
+                
             }
             
         case .afterStore(.reviewed):
@@ -97,22 +118,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState, editing: editing)
     }
 
-    func didTapStoreLocationAlert(isStoredAsReview: Bool) {
-        movieReviewElement.isStoredAsReview = isStoredAsReview
-        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        view.closeReviewMovieView(movieUpdateState: movieUpdateState)
-    }
-    
-    func didTapSelectStoreDateAlert(storeDateState: storeDateState) {
-        switch storeDateState {
-        case .stockDate:
-            break
-        case .today:
-            movieReviewElement.create_at = Date()
-        }
-        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        view.closeReviewMovieView(movieUpdateState: movieUpdateState)
-    }
     
 }
 
