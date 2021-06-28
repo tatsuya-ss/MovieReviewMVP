@@ -98,10 +98,12 @@ private extension ReviewMovieViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
         reviewMovieOwner.initReviewTextView()
     }
+
     
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
+    
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
         let reviewScore = reviewMovieOwner.returnReviewStarScore()
         presenter.didTapUpdateButton(editing: nil,

@@ -28,7 +28,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        movieUseCase.notification(presenter)
         presenter.fetchUpdateReviewMovies(.initial)
         isEditing = false
     }
@@ -57,10 +56,10 @@ private extension ReviewManagementCollectionViewController {
         setupCollectionView()
         setupTrashButton()
         setupStockButton()
+        setupNotification()
     }
     
     func setupTrashButton() {
-        
         trashButton = UIButton()
         trashButton.setImage(UIImage(systemName: .trashImageSystemName), for: .normal)
         
@@ -148,7 +147,6 @@ private extension ReviewManagementCollectionViewController {
     
         
     func setupCollectionView() {
-        
         colunmFlowLayout = ColumnFlowLayout()
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
         collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
@@ -170,6 +168,13 @@ private extension ReviewManagementCollectionViewController {
     }
     
     
+    func setupNotification() {
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(updateReviewManagementCollectionView),
+                                       name: .insetReview,
+                                       object: nil)
+    }
+
     
 }
 
@@ -187,7 +192,6 @@ extension ReviewManagementCollectionViewController {
     }
     
     @objc func stockButtonTapped() {
-        
         let stockReviewMovieVC = UIStoryboard(name: .StockReviewMovieManagementStoryboardName, bundle: nil).instantiateInitialViewController() as! StockReviewMovieManagementViewController
         let model = StockReviewMovieManagementModel()
         let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, model: model)
@@ -197,6 +201,9 @@ extension ReviewManagementCollectionViewController {
         self.present(navigationController, animated: true, completion: nil)
     }
     
+    @objc func updateReviewManagementCollectionView() {
+        presenter.fetchUpdateReviewMovies(.insert)
+    }
     
 }
 
@@ -249,7 +256,6 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
         let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row)
         if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
@@ -262,7 +268,6 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         if kind == UICollectionView.elementKindSectionHeader,
            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReviewMovieManagementCollectionReusableView.identifier, for: indexPath) as? ReviewMovieManagementCollectionReusableView {
             headerView.configure()
@@ -290,7 +295,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     
     // MARK: 初期化、削除、挿入、修正を行う
     func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?) {
-        
         switch movieUpdateState {
         case .initial:
             collectionView.reloadData()
@@ -327,7 +331,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     
     // MARK: 選択解除を行う
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {
-        
         switch editing {
         case true:
             tabBarController?.tabBar.isHidden = true
@@ -360,7 +363,6 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     
     // MARK: tapしたレビューを詳細表示
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
-        
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
         let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)

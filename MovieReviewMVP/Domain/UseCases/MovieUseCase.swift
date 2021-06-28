@@ -34,10 +34,5 @@ class MovieUseCase {
     func sort(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
         repository.sortMovieReview(sortState, isStoredAsReview: isStoredAsReview)
     }
-    
-    // MARK: 更新通知を受け取る
-    func notification(_ presenter: ReviewManagementPresenterInput) {
-        repository.notification(presenter)
-    }
-    
+        
 }
