@@ -40,9 +40,24 @@ struct TMDBApi {
 struct TMDBPosterURL {
     let posterURL: String
     init(posterPath: String) {
-        self.posterURL = "https://image.tmdb.org/t/p/w185\(posterPath)"
+//        self.posterURL = "https://image.tmdb.org/t/p/w185\(posterPath)"
+        self.posterURL = "https://image.tmdb.org/t/p/w500\(posterPath)"
     }
 }
+
+//|  poster  | backdrop |  still   | profile  |   logo   |
+//| :------: | :------: | :------: | :------: | :------: |
+//| -------- | -------- | -------- |    w45   |    w45   |
+//|    w92   | -------- |    w92   | -------- |    w92   |
+//|   w154   | -------- | -------- | -------- |   w154   |
+//|   w185   | -------- |   w185   |   w185   |   w185   |
+//| -------- |   w300   |   w300   | -------- |   w300   |
+//|   w342   | -------- | -------- | -------- | -------- |
+//|   w500   | -------- | -------- | -------- |   w500   |
+//| -------- | -------- | -------- |   h632   | -------- |
+//|   w780   |   w780   | -------- | -------- | -------- |
+//| -------- |  w1280   | -------- | -------- | -------- |
+//| original | original | original | original | original |
 
 // MARK: - BackdropURL
 struct TMDBBackdropURL {
