@@ -90,7 +90,11 @@ private extension ReviewMovieViewController {
         let movieReviewElement = presenter.returnMovieReviewElement()
         let saveDate = movieReviewElement.create_at
         let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: saveDate)
-        navigationItem.title = navigationTitle
+        let movieReviewState = presenter.returnMovieReviewState()
+        switch movieReviewState {
+        case .afterStore: navigationItem.title = navigationTitle
+        case .beforeStore: break
+        }
 
     }
     

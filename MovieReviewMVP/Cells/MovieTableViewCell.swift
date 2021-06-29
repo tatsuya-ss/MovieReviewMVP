@@ -44,7 +44,12 @@ class MovieTableViewCell: UITableViewCell {
         } else {
             titleLabel.text = .notTitle
         }
-        releaseDateLabel.text = "(\(movie.releaseDay ?? ""))"
+        
+        if let releaseDay = movie.releaseDay {
+            releaseDateLabel.text = "(\(releaseDay))"
+        } else {
+            releaseDateLabel.text = ""
+        }
         movieImageView.layer.cornerRadius = height * 0.03
 
     }
