@@ -87,7 +87,7 @@
                     </constraints>
                 </stackView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-ZI-IRT" userLabel="Review Text View">
-                    <rect key="frame" x="20" y="284" width="374" height="578"/>
+                    <rect key="frame" x="20" y="296" width="374" height="566"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -123,7 +123,7 @@
                 <constraint firstItem="TUf-tF-Y2T" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qqN-oD-hUH"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="top" secondItem="TUf-tF-Y2T" secondAttribute="top" id="sE0-mY-omX"/>
                 <constraint firstItem="PdG-ZI-IRT" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="sva-f6-b5f"/>
-                <constraint firstItem="PdG-ZI-IRT" firstAttribute="top" secondItem="K6c-CB-7ch" secondAttribute="bottom" constant="8" symbolic="YES" id="ueH-xq-mS6"/>
+                <constraint firstItem="PdG-ZI-IRT" firstAttribute="top" secondItem="K6c-CB-7ch" secondAttribute="bottom" constant="20" id="ueH-xq-mS6"/>
             </constraints>
             <point key="canvasLocation" x="140.57971014492756" y="97.767857142857139"/>
         </view>

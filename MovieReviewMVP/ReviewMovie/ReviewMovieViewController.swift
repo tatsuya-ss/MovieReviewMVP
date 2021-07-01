@@ -31,6 +31,7 @@ class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
+//        presenter.fetchMovieDetail()
         isEditing = false
     }
     
@@ -147,8 +148,8 @@ private extension ReviewMovieViewController {
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
-        reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement)
+    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement, credits: Credits) {
+        reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement, credits: credits)
     }
 
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {

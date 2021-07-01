@@ -8,7 +8,7 @@
 import Foundation
 
 // 依存なしで共通で使いたいもの
-
+// MARK: - 検索時
 struct MovieSearchResponses {
     var results: [MovieReviewElement]
     var total_pages: Int
@@ -29,6 +29,35 @@ struct MovieReviewElement {
     var isStoredAsReview: Bool?
 }
 
+// MARK: - 出演者情報
+struct Credits {
+    var cast: [CastDetail]
+    var crew: [CrewDetail]
+}
+
+struct CastDetail {
+    var id: Int?
+    var profile_path: String?
+    var name: String?
+}
+
+struct CrewDetail {
+    var id: Int?
+    var profile_path: String?
+    var job: String?
+    var name: String?
+}
+
+// MARK: - 出演者の漢字の名前
+struct Person {
+    var also_known_as: [String]?
+}
+
+struct CastPersonDetail {
+    var id: Int?
+    var profile_path: String?
+    var also_known_as: Person?
+}
 
 enum SearchError : Error {
     case requestError(Error)
