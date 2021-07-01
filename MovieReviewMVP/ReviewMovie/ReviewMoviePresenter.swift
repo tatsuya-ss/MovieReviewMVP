@@ -15,10 +15,11 @@ protocol ReviewMoviePresenterInput {
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
     func returnMovieReviewElement() -> MovieReviewElement
+//    func fetchMovieDetail()
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieInfomation: MovieReviewElement)
+    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement, credits: Credits)
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
 }
@@ -31,7 +32,8 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
     
-
+//    var castPerson: [CastPersonDetail] = []
+//    var crew: CrewDetail?
     
     init(movieReviewState: MovieReviewStoreState,
          movieReviewElement: MovieReviewElement,
@@ -47,7 +49,22 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
-        view.displayReviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        model.requestMovieDetail(completion: { [weak self] result in
+            switch result {
+            case let .success(credits):
+                // キャストと監督の情報取得できたら
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let state = self?.movieReviewState,
+                          let movie = self?.movieReviewElement else { return }
+                    self?.view.displayReviewMovie(movieReviewState: state, movie, credits: credits)
+                }
+            case let .failure(SearchError.requestError(error)):
+                print(error)
+            case let .failure(error):
+                print(error)
+            }
+        })
     }
     
     // MARK: どこから画面遷移されたのかをenumで区別
@@ -80,6 +97,24 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
+    
+//    func fetchMovieDetail() {
+//        model.requestMovieDetail(completion: { [weak self] result in
+//            switch result {
+//            case let .success(credits):
+//                // キャストと監督の情報取得できたら
+//
+//                DispatchQueue.main.async { [weak self] in
+//                    self?.viewDidLoad()
+//                }
+//            case let .failure(SearchError.requestError(error)):
+//                print(error)
+//            case let .failure(error):
+//                print(error)
+//            }
+//        })
+//    }
+    
     
     // MARK: 保存・更新ボタンが押された時の処理
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {

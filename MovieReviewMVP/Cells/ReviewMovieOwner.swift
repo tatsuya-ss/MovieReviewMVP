@@ -87,9 +87,9 @@ class ReviewMovieOwner: NSObject {
         reviewTextView.textColor = reviewTextIsReviewed.textColor
     }
     
-    func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
+    func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
         fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
-        configureReviewImfomations(movieReviewState: movieReviewState, movie: movie)
+        configureReviewImfomations(movieReviewState: movieReviewState, movie: movie, credits: credits)
     }
     
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
@@ -109,9 +109,16 @@ class ReviewMovieOwner: NSObject {
         task.resume()
     }
     
+//    private func fetchCast(movie: MovieReviewElement) {
+//
+//
+//        crewLabel.text = crew?.job
+//        castLabel.text = cast[0].also_known_as?.also_known_as?[0] ?? "情報なし"
+//    }
+    
     // MARK: 画像以外の構成を行う処理
-    private func configureReviewImfomations(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
-        returnTitleName(movie: movie)
+    private func configureReviewImfomations(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
+        returnTitleName(movie: movie, credits: credits)
         returnReviewTextState(movie: movie)
         makeReleaseDateText(movie: movie)
         overviewTextView.text = movie.overview
@@ -120,14 +127,18 @@ class ReviewMovieOwner: NSObject {
             reviewStarView.text = String(movie.reviewStars ?? 0)
         }
 
+        
     }
     
-    private func returnTitleName(movie: MovieReviewElement) {
+    
+    
+    private func returnTitleName(movie: MovieReviewElement, credits: Credits) {
         if movie.title == nil || movie.title == "" {
             titleLabel.text = movie.original_name
         } else {
             titleLabel.text = movie.title
         }
+        
     }
     
     private func returnReviewTextState(movie: MovieReviewElement) {
