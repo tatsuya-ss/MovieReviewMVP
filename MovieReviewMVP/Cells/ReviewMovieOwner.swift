@@ -17,7 +17,11 @@ class ReviewMovieOwner: NSObject {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var reviewStarView: CosmosView!
     @IBOutlet private weak var reviewTextView: UITextView!
+    @IBOutlet weak var collectionView: UICollectionView!
+     
+    var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
+    var credits: Credits?
 
     var reviewMovieView: UIView!
     
@@ -27,8 +31,11 @@ class ReviewMovieOwner: NSObject {
         setReviwStars()
         setOverView()
         reviewTextView.delegate = self
+        collectionView.dataSource = self
+        setCollectionView()
     }
     
+    // MARK: - setup
     private func setNib() {
         reviewMovieView = UINib(nibName: .reviewMovieNibName, bundle: nil).instantiate(withOwner: self, options: nil).first as? UIView
     }
@@ -45,6 +52,13 @@ class ReviewMovieOwner: NSObject {
         overviewTextView.isSelectable = false
     }
     
+    private func setCollectionView() {
+        crewCastColumnLayout = CrewCastColumnFlowLayout()
+        collectionView.collectionViewLayout = crewCastColumnLayout
+        collectionView.register(CrewCastCollectionViewCell.nib, forCellWithReuseIdentifier: CrewCastCollectionViewCell.identifier)
+    }
+    
+    // MARK: - ViewControllerから呼ばれるメソッド
     func returnReviewStarScore() -> Double {
         Double(reviewStarView.text!) ?? 0.0
     }
@@ -92,6 +106,10 @@ class ReviewMovieOwner: NSObject {
         configureReviewImfomations(movieReviewState: movieReviewState, movie: movie, credits: credits)
     }
     
+}
+
+// MARK: -　configureReviewView()内で使っているメソッド
+extension ReviewMovieOwner {
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
     private func fetchMovieImage(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
         guard let posperPath = movie.poster_path,
@@ -109,29 +127,21 @@ class ReviewMovieOwner: NSObject {
         task.resume()
     }
     
-//    private func fetchCast(movie: MovieReviewElement) {
-//
-//
-//        crewLabel.text = crew?.job
-//        castLabel.text = cast[0].also_known_as?.also_known_as?[0] ?? "情報なし"
-//    }
-    
     // MARK: 画像以外の構成を行う処理
     private func configureReviewImfomations(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
         returnTitleName(movie: movie, credits: credits)
         returnReviewTextState(movie: movie)
         makeReleaseDateText(movie: movie)
         overviewTextView.text = movie.overview
+        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.04
         if case .afterStore = movieReviewState {
             reviewStarView.rating = movie.reviewStars ?? 0
             reviewStarView.text = String(movie.reviewStars ?? 0)
         }
-
-        
+        self.credits = credits
+        collectionView.reloadData()
     }
-    
-    
-    
+// MARK: configureReviewImfomations()内で使うメソッド
     private func returnTitleName(movie: MovieReviewElement, credits: Credits) {
         if movie.title == nil || movie.title == "" {
             titleLabel.text = movie.original_name
@@ -161,7 +171,6 @@ class ReviewMovieOwner: NSObject {
         }
     }
     
-    
 }
 
 extension ReviewMovieOwner : UITextViewDelegate {
@@ -187,5 +196,24 @@ extension ReviewMovieOwner : UITextViewDelegate {
         }
         return true
     }
+    
+}
+
+extension ReviewMovieOwner : UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let credits = credits else { return 0 }
+        return credits.cast.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
+        
+        if let credits = credits {
+            cell.configure(credits: credits.cast[indexPath.row])
+        }
+        
+        return cell
+    }
+    
     
 }

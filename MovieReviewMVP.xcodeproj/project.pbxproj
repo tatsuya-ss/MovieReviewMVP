@@ -12,6 +12,8 @@
 		750B440B2685CF0A00191E17 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B440A2685CF0A00191E17 /* Date.swift */; };
 		750B44612687096F00191E17 /* ReviewTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B44602687096F00191E17 /* ReviewTextView.swift */; };
 		750B44B52689C32D00191E17 /* Notification.Name+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */; };
+		752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */; };
+		752478AB268EF14700347972 /* CrewCastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */; };
 		75359213264E61B9004477B3 /* ReviewMovieOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75359212264E61B9004477B3 /* ReviewMovieOwner.swift */; };
 		755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755D71E0264385F5007C0D77 /* ReviewMovie.xib */; };
 		755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */; };
@@ -85,6 +87,8 @@
 		750B440A2685CF0A00191E17 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		750B44602687096F00191E17 /* ReviewTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTextView.swift; sourceTree = "<group>"; };
 		750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Ext.swift"; sourceTree = "<group>"; };
+		752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCastCollectionViewCell.swift; sourceTree = "<group>"; };
+		752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CrewCastCollectionViewCell.xib; sourceTree = "<group>"; };
 		75359212264E61B9004477B3 /* ReviewMovieOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieOwner.swift; sourceTree = "<group>"; };
 		755D71E0264385F5007C0D77 /* ReviewMovie.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovie.xib; sourceTree = "<group>"; };
 		755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieViewController.swift; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 				75676F1F263A97E300569AF5 /* MovieTableViewCell.swift */,
 				75359212264E61B9004477B3 /* ReviewMovieOwner.swift */,
 				756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */,
+				752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */,
 				75699F23264BC386001904C4 /* Xib */,
 			);
 			path = Cells;
@@ -311,6 +316,7 @@
 				75676F20263A97E300569AF5 /* MovieTableViewCell.xib */,
 				755D71E0264385F5007C0D77 /* ReviewMovie.xib */,
 				756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */,
+				752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */,
 			);
 			path = Xib;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 				75676EE5263A89B500569AF5 /* Assets.xcassets in Resources */,
 				755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */,
 				75699F3D264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib in Resources */,
+				752478AB268EF14700347972 /* CrewCastCollectionViewCell.xib in Resources */,
 				756D8FC926735C490026889B /* ReviewMovieManagementCollectionReusableView.xib in Resources */,
 				756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */,
 				75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */,
@@ -635,6 +642,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */,
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,

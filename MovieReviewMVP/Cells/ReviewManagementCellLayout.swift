@@ -69,3 +69,20 @@ class StockReviewColumnFlowLayout: UICollectionViewFlowLayout {
     }
 }
 
+class CrewCastColumnFlowLayout: UICollectionViewFlowLayout {
+    
+    override func prepare() {
+        
+        guard let cv = collectionView else { return }
+        
+        scrollDirection = .horizontal
+        
+        let cellHeight = cv.bounds.inset(by: cv.layoutMargins).size.height
+                        
+        let cellWidth = cellHeight * 27 / 35
+                
+        
+        self.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        
+    }
+}
