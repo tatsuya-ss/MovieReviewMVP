@@ -48,7 +48,7 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     // MARK: setupLayout
     func setupLayout() {
         movieImageView.layoutIfNeeded()
-        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.03
+        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.04
     }
     
     func tapCell(state: CellSelectedState) {

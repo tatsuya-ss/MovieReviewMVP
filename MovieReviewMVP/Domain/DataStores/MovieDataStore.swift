@@ -26,6 +26,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
         realmMyMovieInfomation.isStoredAsReview = movie.isStoredAsReview ?? true
+        realmMyMovieInfomation.media_type = movie.media_type ?? ""
         
         try! realm.write {
             realm.add(realmMyMovieInfomation.self)
@@ -67,6 +68,7 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
         realmMyMovieInfomation.isStoredAsReview = movie.isStoredAsReview ?? true
+        realmMyMovieInfomation.media_type = movie.media_type ?? ""
 
 
         let realm = try! Realm()
@@ -127,7 +129,8 @@ private extension MovieReviewElement {
                                   review: movieInfomation.review,
                                   create_at: movieInfomation.created_at,
                                   id: movieInfomation.id,
-                                  isStoredAsReview: movieInfomation.isStoredAsReview)
+                                  isStoredAsReview: movieInfomation.isStoredAsReview,
+                                  media_type: movieInfomation.media_type)
     }
     
 }

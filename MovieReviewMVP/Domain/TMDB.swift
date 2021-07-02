@@ -24,6 +24,7 @@ struct MovieInfomation : Codable {
     var overview: String?
     var release_date: String?
     var id: Int
+    var media_type: String?
     
 }
 // MARK: - 出演者情報
@@ -61,11 +62,23 @@ struct TMDBApi {
     
 }
 // MARK: - 詳細情報
+//enum MediaType {
+//    case movie
+//    case tv
+//    var url: String {
+//        switch self {
+//        case .movie: return "movie"
+//        case .tv: return "tv"
+//        }
+//    }
+//}
 struct TMDBDetailURL {
     static let key = MovieReviewMVPKeys().tMDBApiKey
     let detailURL: String
-    init(id: Int) {
-        self.detailURL = "https://api.themoviedb.org/3/movie/\(String(id))/credits?api_key=19c5f8a42705c4e7ec64271c7a4ab0d5&language=ja-JP"
+    let mediaType: String
+    init(id: Int, mediaType: String) {
+        self.mediaType = mediaType
+        self.detailURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=19c5f8a42705c4e7ec64271c7a4ab0d5&language=ja-JP"
     }
 }
 
