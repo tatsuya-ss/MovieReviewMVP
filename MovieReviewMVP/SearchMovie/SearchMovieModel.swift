@@ -59,7 +59,9 @@ final class SearchMovieModel : SearchMovieModelInput {
                     // CodableのmovieInfomation型から共通で使いたいMovieReviewElement型に変換
                     for review in data.results {
                         movieSearchResponses.append(MovieReviewElement(movieInfomation: review))
+                        print(review.media_type)
                     }
+                    
                     completion(.success(movieSearchResponses))
                 }
                 
@@ -83,7 +85,8 @@ private extension MovieReviewElement {
                                   reviewStars: nil,
                                   review: nil,
                                   create_at: nil, id: movieInfomation.id,
-                                  isStoredAsReview: nil)
+                                  isStoredAsReview: nil,
+                                  media_type: movieInfomation.media_type)
     }
 }
 

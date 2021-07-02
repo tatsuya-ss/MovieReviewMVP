@@ -52,7 +52,6 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 switch state {
                 case .search(.initial):
                     self?.movies = movies
-                    
                 case .search(.refresh):
                     self?.movies.append(contentsOf: movies)
                     

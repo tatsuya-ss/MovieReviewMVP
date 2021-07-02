@@ -27,6 +27,7 @@ struct MovieReviewElement {
     var create_at: Date?
     var id: Int
     var isStoredAsReview: Bool?
+    var media_type: String?
 }
 
 // MARK: - 出演者情報

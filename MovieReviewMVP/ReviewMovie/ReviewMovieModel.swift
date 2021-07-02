@@ -25,10 +25,12 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void) {
         guard let movie = movieReviewElement,
-              let encodingUrlString = TMDBDetailURL(id: movie.id).detailURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let encodingUrlString = TMDBDetailURL(id: movie.id, mediaType: movie.media_type ?? "movie").detailURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodeUrl = URL(string: encodingUrlString) else { return }
         let urlRequest = URLRequest(url: encodeUrl)
-        
+        print(movie.id)
+        print(movie.media_type)
+
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             do {
                 if let error = error {
