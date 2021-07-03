@@ -32,9 +32,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
     
-//    var castPerson: [CastPersonDetail] = []
-//    var crew: CrewDetail?
-    
     init(movieReviewState: MovieReviewStoreState,
          movieReviewElement: MovieReviewElement,
          movieUpdateState: MovieUpdateState,
@@ -53,7 +50,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             switch result {
             case let .success(credits):
                 // キャストと監督の情報取得できたら
-                
                 DispatchQueue.main.async { [weak self] in
                     guard let state = self?.movieReviewState,
                           let movie = self?.movieReviewElement else { return }
@@ -83,6 +79,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func didTapStoreLocationAlert(isStoredAsReview: Bool) {
         movieReviewElement.isStoredAsReview = isStoredAsReview
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        print(#function,movieReviewElement)
         NotificationCenter.default.post(name: .insetReview, object: nil)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
@@ -98,28 +95,11 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
-//    func fetchMovieDetail() {
-//        model.requestMovieDetail(completion: { [weak self] result in
-//            switch result {
-//            case let .success(credits):
-//                // キャストと監督の情報取得できたら
-//
-//                DispatchQueue.main.async { [weak self] in
-//                    self?.viewDidLoad()
-//                }
-//            case let .failure(SearchError.requestError(error)):
-//                print(error)
-//            case let .failure(error):
-//                print(error)
-//            }
-//        })
-//    }
-    
     
     // MARK: 保存・更新ボタンが押された時の処理
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         var primaryKeyIsStored = false
-
+        
         switch movieReviewState {
         case .beforeStore:  // プライマリーキーが被っていないかの検証
             primaryKeyIsStored = checkPrimaryKey()
@@ -127,7 +107,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 movieReviewElement.create_at = date
                 movieReviewElement.reviewStars = reviewScore
                 movieReviewElement.review = checkReview(review: review)
-                
             }
             
         case .afterStore(.reviewed):

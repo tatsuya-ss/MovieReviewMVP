@@ -31,7 +31,6 @@ class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
-//        presenter.fetchMovieDetail()
         isEditing = false
     }
     

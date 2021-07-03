@@ -46,6 +46,7 @@ class ReviewMovieOwner: NSObject {
             self.reviewStarView.text = String(review)
         }
         reviewStarView.settings.fillMode = .half
+        reviewStarView.isUserInteractionEnabled = true
     }
 
     private func setOverView() {
@@ -103,6 +104,7 @@ class ReviewMovieOwner: NSObject {
     }
     
     func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
+        print(movie)
         fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
         configureReviewImfomations(movieReviewState: movieReviewState, movie: movie, credits: credits)
     }
