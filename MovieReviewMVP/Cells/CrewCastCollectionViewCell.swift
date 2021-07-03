@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class CrewCastCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var crewCastImageView: UIImageView!
@@ -15,8 +16,8 @@ class CrewCastCollectionViewCell: UICollectionViewCell {
 
     static let identifier = String(describing: CrewCastCollectionViewCell.self)
     
-    func configure(credits: CastDetail) {
-        guard let posterPath = credits.profile_path,
+    func configure(cast: CastDetail) {
+        guard let posterPath = cast.profile_path,
               let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) else { return }
         let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
             guard let imageData = data else { return }
@@ -29,9 +30,7 @@ class CrewCastCollectionViewCell: UICollectionViewCell {
             }
         }
         task.resume()
-        crewCastImageView.layer.cornerRadius = crewCastImageView.bounds.width * 0.04
-        
-
+        crewCastImageView.layer.cornerRadius = crewCastImageView.bounds.width * 0.1
     }
 
 }
