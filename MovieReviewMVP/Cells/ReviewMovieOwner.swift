@@ -18,10 +18,11 @@ class ReviewMovieOwner: NSObject {
     @IBOutlet private weak var reviewStarView: CosmosView!
     @IBOutlet private weak var reviewTextView: UITextView!
     @IBOutlet weak var collectionView: UICollectionView!
-     
+    
     var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
     var credits: Credits?
+
 
     var reviewMovieView: UIView!
     
@@ -173,6 +174,7 @@ extension ReviewMovieOwner {
     
 }
 
+// MARK: - UITextViewDelegate
 extension ReviewMovieOwner : UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == ReviewTextIsEnpty().textColor {
@@ -199,7 +201,9 @@ extension ReviewMovieOwner : UITextViewDelegate {
     
 }
 
+// MARK: - DataSource
 extension ReviewMovieOwner : UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let credits = credits else { return 0 }
         return credits.cast.count
@@ -207,13 +211,11 @@ extension ReviewMovieOwner : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
-        
         if let credits = credits {
-            cell.configure(credits: credits.cast[indexPath.row])
+            cell.configure(cast: credits.cast[indexPath.row])
         }
         
         return cell
     }
-    
-    
 }
+
