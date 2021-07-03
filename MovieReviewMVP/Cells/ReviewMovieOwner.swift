@@ -156,6 +156,7 @@ extension ReviewMovieOwner {
     
     private func returnReviewTextState(movie: MovieReviewElement) {
         if let review = movie.review {
+            print(#function, review)
             let reviewTextIsReviewed = ReviewTextIsReviewed()
             reviewTextView.text = review
             reviewTextView.textColor = reviewTextIsReviewed.textColor

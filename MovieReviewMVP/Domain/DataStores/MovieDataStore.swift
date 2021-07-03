@@ -75,6 +75,7 @@ struct MovieDataStore : MovieReviewRepository {
         
         try! realm.write {
             realm.add(realmMyMovieInfomation, update: .modified)
+            print(#function, realmMyMovieInfomation.review)
         }
 
     }

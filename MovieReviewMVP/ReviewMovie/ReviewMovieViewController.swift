@@ -31,7 +31,6 @@ class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
-        isEditing = false
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -39,7 +38,7 @@ class ReviewMovieViewController: UIViewController {
         if case .afterStore(.reviewed) = presenter.returnMovieReviewState() {
             let review = reviewMovieOwner.returnReviewText()
             let reviewStar = reviewMovieOwner.returnReviewStarScore()
-
+            print(#function, review)
             presenter.didTapUpdateButton(editing: editing, date: Date(), reviewScore: reviewStar, review: review)
         }
     }
@@ -69,6 +68,7 @@ private extension ReviewMovieViewController {
 
         case .afterStore(.reviewed):
             saveButton = editButtonItem
+            saveButton.title = .editButtonTitle
             stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
             stopButton.tintColor = .white
             navigationItem.leftBarButtonItem = stopButton
@@ -148,6 +148,7 @@ private extension ReviewMovieViewController {
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement, credits: Credits) {
+        print(#function, movieReviewElement.review)
         reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement, credits: credits)
     }
 

@@ -28,8 +28,8 @@ final class ReviewMovieModel : ReviewMovieModelInput {
               let encodingUrlString = TMDBDetailURL(id: movie.id, mediaType: movie.media_type ?? "movie").detailURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodeUrl = URL(string: encodingUrlString) else { return }
         let urlRequest = URLRequest(url: encodeUrl)
-        print("movie.id\(movie.id)")
-        print("movie.media_type\(movie.media_type)")
+//        print("movie.id\(movie.id)")
+//        print("movie.media_type\(movie.media_type)")
 
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             do {
