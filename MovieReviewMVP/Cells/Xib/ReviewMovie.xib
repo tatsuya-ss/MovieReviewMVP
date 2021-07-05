@@ -53,42 +53,42 @@
                     <rect key="frame" x="20" y="44" width="145" height="232"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="rwh-PO-286" userLabel="Movie Image View">
-                            <rect key="frame" x="0.0" y="0.0" width="145" height="204"/>
+                            <rect key="frame" x="0.0" y="0.0" width="145" height="232"/>
                         </imageView>
-                        <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Eb-6N-gBj" customClass="CosmosView" customModule="Cosmos">
-                            <rect key="frame" x="0.0" y="212" width="145" height="20"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="rating">
-                                    <real key="value" value="3"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="starSize">
-                                    <real key="value" value="20"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="3.0"/>
-                                <userDefinedRuntimeAttribute type="number" keyPath="textSize">
-                                    <real key="value" value="12"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                    <color key="value" systemColor="systemYellowColor"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
-                                    <color key="value" systemColor="systemYellowColor"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
-                                    <color key="value" systemColor="systemYellowColor"/>
-                                </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
-                                    <real key="value" value="1"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="q0W-fP-KyB" secondAttribute="height" multiplier="1:1.6" id="3dd-jx-hNv"/>
                     </constraints>
                 </stackView>
+                <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Eb-6N-gBj" customClass="CosmosView" customModule="Cosmos">
+                    <rect key="frame" x="20" y="278" width="145" height="20"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="string" keyPath="text" value="3.0"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="textSize">
+                            <real key="value" value="12"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <color key="value" systemColor="systemYellowColor"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                            <color key="value" systemColor="systemYellowColor"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
+                            <color key="value" systemColor="systemYellowColor"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="K6c-CB-7ch" userLabel="Overview Text View">
-                    <rect key="frame" x="173" y="83" width="221" height="132.5"/>
+                    <rect key="frame" x="173" y="83" width="221" height="121"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -101,7 +101,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="U1j-mP-0sM">
-                    <rect key="frame" x="173" y="212" width="221" height="86"/>
+                    <rect key="frame" x="173" y="200.5" width="221" height="97.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Sk3-D7-kaJ">
                         <size key="itemSize" width="128" height="128"/>
@@ -118,6 +118,7 @@
                 <constraint firstItem="q0W-fP-KyB" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.35" id="5I5-eK-CJR"/>
                 <constraint firstItem="TUf-tF-Y2T" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5g1-zn-0kl"/>
                 <constraint firstAttribute="trailing" secondItem="TUf-tF-Y2T" secondAttribute="trailing" id="6hb-Oh-3eF"/>
+                <constraint firstItem="U1j-mP-0sM" firstAttribute="bottom" secondItem="3Eb-6N-gBj" secondAttribute="bottom" id="7C8-u3-NV5"/>
                 <constraint firstItem="q0W-fP-KyB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="8WB-11-IDt"/>
                 <constraint firstItem="U1j-mP-0sM" firstAttribute="top" secondItem="K6c-CB-7ch" secondAttribute="bottom" constant="-3.5" id="8dp-j9-NaA"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="K6c-CB-7ch" secondAttribute="trailing" constant="20" id="Bpi-cm-0lB"/>
@@ -125,16 +126,18 @@
                 <constraint firstItem="B0I-eg-thX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="EGe-Mj-UHG"/>
                 <constraint firstItem="B0I-eg-thX" firstAttribute="leading" secondItem="q0W-fP-KyB" secondAttribute="trailing" constant="8" symbolic="YES" id="GHZ-0P-ckz"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="bottom" secondItem="TUf-tF-Y2T" secondAttribute="bottom" id="Hln-cn-zg2"/>
+                <constraint firstItem="3Eb-6N-gBj" firstAttribute="top" secondItem="q0W-fP-KyB" secondAttribute="bottom" constant="2" id="R7L-r9-heb"/>
                 <constraint firstItem="K6c-CB-7ch" firstAttribute="leading" secondItem="q0W-fP-KyB" secondAttribute="trailing" constant="8" symbolic="YES" id="Rfi-Gw-kzH"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="U1j-mP-0sM" secondAttribute="trailing" constant="20" id="THQ-zp-qa6"/>
                 <constraint firstItem="K6c-CB-7ch" firstAttribute="top" secondItem="B0I-eg-thX" secondAttribute="bottom" constant="2" id="Tbm-9k-tWM"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="trailing" secondItem="TUf-tF-Y2T" secondAttribute="trailing" id="VBJ-Il-bId"/>
-                <constraint firstItem="U1j-mP-0sM" firstAttribute="bottom" secondItem="q0W-fP-KyB" secondAttribute="bottom" constant="22" id="VYl-J8-vpz"/>
                 <constraint firstItem="PdG-ZI-IRT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="XSX-fn-Wze"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="PdG-ZI-IRT" secondAttribute="trailing" constant="20" id="fXa-A6-hHn"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="leading" secondItem="TUf-tF-Y2T" secondAttribute="leading" id="gud-Nf-nnf"/>
                 <constraint firstAttribute="bottom" secondItem="TUf-tF-Y2T" secondAttribute="bottom" id="kCP-wJ-lct"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="B0I-eg-thX" secondAttribute="trailing" constant="20" id="kaz-pI-o1H"/>
+                <constraint firstItem="3Eb-6N-gBj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="ldF-nZ-eM7"/>
+                <constraint firstItem="3Eb-6N-gBj" firstAttribute="width" secondItem="q0W-fP-KyB" secondAttribute="width" id="ns8-hy-UFR"/>
                 <constraint firstItem="TUf-tF-Y2T" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qqN-oD-hUH"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="top" secondItem="TUf-tF-Y2T" secondAttribute="top" id="sE0-mY-omX"/>
                 <constraint firstItem="PdG-ZI-IRT" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="sva-f6-b5f"/>

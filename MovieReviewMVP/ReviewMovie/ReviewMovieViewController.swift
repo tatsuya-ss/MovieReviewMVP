@@ -31,6 +31,8 @@ class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
+        reviewMovieOwner.editButtonTapped(isEditing: isEditing,
+                                          state: presenter.returnMovieReviewState())
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -158,7 +160,8 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
             isUpdate = true
             guard let editing = editing else { return }
             editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
-            reviewMovieOwner.editButtonTapped(editing)
+            reviewMovieOwner.editButtonTapped(isEditing: editing,
+                                              state: movieReviewState)
         }
     }
     
