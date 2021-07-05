@@ -49,6 +49,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func didSelectRowCollectionView(at indexPath: IndexPath) {
         let selectStockMovie = movieReviewElements[indexPath.row]
+        print(#function, selectStockMovie.review)
         view.displaySelectMyReview(selectStockMovie, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
     }
     
@@ -70,6 +71,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func fetchUpdateReviewMovies(_ state: MovieUpdateState) {
         self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
+        print(movieReviewElements[0].review)
         view.updateReview(state, index: nil)
     }
     

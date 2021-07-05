@@ -26,13 +26,13 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
         realmMyMovieInfomation.isStoredAsReview = movie.isStoredAsReview ?? true
-        realmMyMovieInfomation.media_type = movie.media_type ?? ""
+        realmMyMovieInfomation.media_type = movie.media_type
         
         try! realm.write {
             realm.add(realmMyMovieInfomation.self)
         }
         
-        
+        print(#function, realmMyMovieInfomation)
         print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
@@ -68,13 +68,14 @@ struct MovieDataStore : MovieReviewRepository {
         realmMyMovieInfomation.created_at = movie.create_at ?? Date()
         realmMyMovieInfomation.id = movie.id
         realmMyMovieInfomation.isStoredAsReview = movie.isStoredAsReview ?? true
-        realmMyMovieInfomation.media_type = movie.media_type ?? ""
+        realmMyMovieInfomation.media_type = movie.media_type
 
 
         let realm = try! Realm()
         
         try! realm.write {
             realm.add(realmMyMovieInfomation, update: .modified)
+            print(#function, realmMyMovieInfomation.review)
         }
 
     }

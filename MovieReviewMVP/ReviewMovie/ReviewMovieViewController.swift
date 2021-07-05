@@ -31,8 +31,6 @@ class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
-//        presenter.fetchMovieDetail()
-        isEditing = false
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -40,7 +38,7 @@ class ReviewMovieViewController: UIViewController {
         if case .afterStore(.reviewed) = presenter.returnMovieReviewState() {
             let review = reviewMovieOwner.returnReviewText()
             let reviewStar = reviewMovieOwner.returnReviewStarScore()
-
+            print(#function, review)
             presenter.didTapUpdateButton(editing: editing, date: Date(), reviewScore: reviewStar, review: review)
         }
     }
@@ -70,6 +68,7 @@ private extension ReviewMovieViewController {
 
         case .afterStore(.reviewed):
             saveButton = editButtonItem
+            saveButton.title = .editButtonTitle
             stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
             stopButton.tintColor = .white
             navigationItem.leftBarButtonItem = stopButton
@@ -88,15 +87,12 @@ private extension ReviewMovieViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
+        // MARK: NavigationBarのtitleに保存日を表示
         let movieReviewElement = presenter.returnMovieReviewElement()
         let saveDate = movieReviewElement.create_at
-        let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: saveDate)
         let movieReviewState = presenter.returnMovieReviewState()
-        switch movieReviewState {
-        case .afterStore: navigationItem.title = navigationTitle
-        case .beforeStore: break
-        }
-
+        let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: saveDate, state: movieReviewState)
+        navigationItem.title = navigationTitle
     }
     
     func setupTextView() {
@@ -111,10 +107,11 @@ private extension ReviewMovieViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
         let reviewScore = reviewMovieOwner.returnReviewStarScore()
+        let review = reviewMovieOwner.returnReviewText()
         presenter.didTapUpdateButton(editing: nil,
                                      date: Date(),
                                      reviewScore: reviewScore,
-                                     review: reviewMovieOwner.returnReviewText())
+                                     review: review)
 
     }
 
@@ -149,6 +146,7 @@ private extension ReviewMovieViewController {
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement, credits: Credits) {
+        print(#function, movieReviewElement.review)
         reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement, credits: credits)
     }
 

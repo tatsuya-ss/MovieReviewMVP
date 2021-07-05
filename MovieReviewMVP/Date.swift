@@ -19,13 +19,18 @@ struct DateFormat {
         return dateString
     }
     
-    func convertDateToStringForNavigationTitle(date: Date?) -> String {
-        dateFormatter.dateStyle = .long
-        dateFormatter.locale = Locale(identifier: .japanese)
-        
-        guard let date = date else { return .dateError }
-        let dateString = dateFormatter.string(from: date)
-        return dateString
+    func convertDateToStringForNavigationTitle(date: Date?, state: MovieReviewStoreState) -> String? {
+        switch state {
+        case .beforeStore:
+            return nil
+        case .afterStore:
+            dateFormatter.dateStyle = .long
+            dateFormatter.locale = Locale(identifier: .japanese)
+            
+            guard let date = date else { return .dateError }
+            let dateString = dateFormatter.string(from: date)
+            return dateString
+        }
     }
 
     
