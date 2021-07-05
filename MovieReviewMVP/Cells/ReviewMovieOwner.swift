@@ -31,8 +31,8 @@ class ReviewMovieOwner: NSObject {
         setNib()
         setReviwStars()
         setOverView()
-        reviewTextView.delegate = self
-        collectionView.dataSource = self
+        setImageView()
+        setReviewText()
         setCollectionView()
     }
     
@@ -54,7 +54,16 @@ class ReviewMovieOwner: NSObject {
         overviewTextView.isSelectable = false
     }
     
+    private func setImageView() {
+        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.04
+    }
+    
+    private func setReviewText() {
+        reviewTextView.delegate = self
+    }
+    
     private func setCollectionView() {
+        collectionView.dataSource = self
         crewCastColumnLayout = CrewCastColumnFlowLayout()
         collectionView.collectionViewLayout = crewCastColumnLayout
         collectionView.register(CrewCastCollectionViewCell.nib, forCellWithReuseIdentifier: CrewCastCollectionViewCell.identifier)
@@ -105,9 +114,17 @@ class ReviewMovieOwner: NSObject {
     }
     
     func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
-        print(movie)
         fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
-        configureReviewImfomations(movieReviewState: movieReviewState, movie: movie, credits: credits)
+        returnTitleName(movie: movie, credits: credits)
+        returnReviewTextState(movie: movie)
+        makeReleaseDateText(movie: movie)
+        overviewTextView.text = movie.overview
+        if case .afterStore = movieReviewState {
+            reviewStarView.rating = movie.reviewStars ?? 0
+            reviewStarView.text = String(movie.reviewStars ?? 0)
+        }
+        self.credits = credits
+        collectionView.reloadData()
     }
     
 }
@@ -130,22 +147,7 @@ extension ReviewMovieOwner {
         }
         task.resume()
     }
-    
-    // MARK: 画像以外の構成を行う処理
-    private func configureReviewImfomations(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
-        returnTitleName(movie: movie, credits: credits)
-        returnReviewTextState(movie: movie)
-        makeReleaseDateText(movie: movie)
-        overviewTextView.text = movie.overview
-        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.04
-        if case .afterStore = movieReviewState {
-            reviewStarView.rating = movie.reviewStars ?? 0
-            reviewStarView.text = String(movie.reviewStars ?? 0)
-        }
-        self.credits = credits
-        collectionView.reloadData()
-    }
-// MARK: configureReviewImfomations()内で使うメソッド
+// MARK: タイトルを表示
     private func returnTitleName(movie: MovieReviewElement, credits: Credits) {
         if movie.title == nil || movie.title == "" {
             titleLabel.text = movie.original_name
@@ -155,6 +157,7 @@ extension ReviewMovieOwner {
         
     }
     
+    // MARK: レビューを表示
     private func returnReviewTextState(movie: MovieReviewElement) {
         if let review = movie.review {
             print(#function, review)
@@ -168,6 +171,7 @@ extension ReviewMovieOwner {
         }
     }
     
+    // MARK: 公開日ラベルを表示
     private func makeReleaseDateText(movie: MovieReviewElement) {
         if movie.releaseDay == "" || movie.releaseDay == nil {
             releaseDateLabel.text = " 公開日未定"

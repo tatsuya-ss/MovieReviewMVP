@@ -28,8 +28,6 @@ final class ReviewMovieModel : ReviewMovieModelInput {
               let encodingUrlString = TMDBDetailURL(id: movie.id, mediaType: movie.media_type ?? "movie").detailURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let encodeUrl = URL(string: encodingUrlString) else { return }
         let urlRequest = URLRequest(url: encodeUrl)
-//        print("movie.id\(movie.id)")
-//        print("movie.media_type\(movie.media_type)")
 
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             do {
@@ -67,38 +65,6 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         
     }
     
-//    func requestPersonDetail(castDetail: CastDetail, completion: @escaping (Result<Person, SearchError>) -> Void) {
-//        guard let id = castDetail.id,
-//              let encodingUrlString = TMDBPersonURL(id: id).personURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-//              let encodeUrl = URL(string: encodingUrlString) else { return }
-//        let urlRequest = URLRequest(url: encodeUrl)
-//
-//        let task = URLSession.shared.dataTask(with: urlRequest) { (date, response, error) in
-//            do {
-//                if let error = error {
-//                    completion(.failure(.requestError(error)))
-//                }
-//
-//                guard let data = date,
-//                      let response = response as? HTTPURLResponse else {
-//                    completion(.failure(.responseError))
-//                    return
-//                }
-//
-//                if response.statusCode == 200 {
-//                    let data: TMDBPerson = try JSONDecoder().decode(TMDBPerson.self, from: data)
-//
-//                    let personDetail = Person(also_known_as: data.also_known_as)
-//                    completion(.success(personDetail))
-//                }
-//
-//            } catch {
-//                print(error)
-//            }
-//        }
-//        task.resume()
-//    }
-
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement) {
         switch movieReviewState {
         case .beforeStore:

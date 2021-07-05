@@ -71,7 +71,6 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func fetchUpdateReviewMovies(_ state: MovieUpdateState) {
         self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
-        print(movieReviewElements[0].review)
         view.updateReview(state, index: nil)
     }
     
