@@ -27,7 +27,12 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupPresenter()
+        setupNavigation()
+        setupCollectionView()
+        setupTrashButton()
+        setupStockButton()
+        setupNotification()
         presenter.fetchUpdateReviewMovies(.initial)
         isEditing = false
     }
@@ -49,15 +54,6 @@ class ReviewManagementCollectionViewController: UIViewController {
 
 // MARK: - setup
 private extension ReviewManagementCollectionViewController {
-    
-    func setup() {
-        setupPresenter()
-        setupNavigation()
-        setupCollectionView()
-        setupTrashButton()
-        setupStockButton()
-        setupNotification()
-    }
     
     func setupTrashButton() {
         trashButton = UIButton()
@@ -282,7 +278,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
     
     func sortReview() {
-        if presenter.numberOfMovies > 1 {
+        if presenter.numberOfMovies > 1 { // cellの数が0か1の時は、並び替えても意味がないので
             for index in 0...presenter.numberOfMovies - 1 {
                 collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
             }
@@ -364,15 +360,11 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     // MARK: tapしたレビューを詳細表示
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
-        
         let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
-        
         let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
-        
         reviewMovieVC.inject(presenter: presenter)
         
         let navigationController = UINavigationController(rootViewController: reviewMovieVC)
-        
         navigationController.modalPresentationStyle = .fullScreen
         
         self.present(navigationController, animated: true, completion: nil)

@@ -87,12 +87,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     }
     
     func didTapSelectStoreDateAlert(storeDateState: storeDateState) {
-        switch storeDateState {
-        case .stockDate:
-            break
-        case .today:
-            movieReviewElement.create_at = Date()
-        }
+        if case .today = storeDateState { movieReviewElement.create_at = Date() }
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
