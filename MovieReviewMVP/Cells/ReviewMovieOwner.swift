@@ -77,7 +77,8 @@ class ReviewMovieOwner: NSObject {
         reviewTextView.contentInset = insets
     }
     
-    func editButtonTapped(_ isEditing: Bool) {
+    func editButtonTapped(isEditing: Bool, state: MovieReviewStoreState) {
+        guard case .afterStore(.reviewed) = state else { return }
         switch isEditing {
         case true:  // 編集モード
             reviewTextView.isEditable = true
