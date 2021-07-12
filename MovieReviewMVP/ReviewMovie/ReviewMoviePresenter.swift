@@ -78,7 +78,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         movieReviewElement
     }
 
-    func didTapStoreLocationAlert(isStoredAsReview: Bool) {
+    func didTapStoreLocationAlert(isStoredAsReview: Bool) { // 初保存で呼ばれる
         movieReviewElement.isStoredAsReview = isStoredAsReview
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         print(#function,movieReviewElement)

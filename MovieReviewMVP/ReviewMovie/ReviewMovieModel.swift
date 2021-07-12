@@ -22,6 +22,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     }
     
     let movieUseCase = MovieUseCase()
+    let reviewUseCase = ReviewUseCase()
     
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void) {
         guard let movie = movieReviewElement,
@@ -69,6 +70,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         switch movieReviewState {
         case .beforeStore:
             movieUseCase.create(movie)
+            reviewUseCase.save(movie: movie)
         case .afterStore:
             movieUseCase.update(movie)
         }
