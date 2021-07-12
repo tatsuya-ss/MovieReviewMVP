@@ -9,6 +9,7 @@ import Foundation
 
 protocol ReviewManagementModelInput {
     func deleteReviewMovie(_ sortState: sortState, _ id: Int)
+    func delete(movie: MovieReviewElement)
     func sortReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement]
     func fetchReviewMovie(_ sortState: sortState, isStoredAsReview: Bool) -> [MovieReviewElement]
     func fetch(_ sortState: sortState, isStoredAsReview: Bool, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
@@ -20,6 +21,10 @@ class ReviewManagementModel : ReviewManagementModelInput {
 
     func deleteReviewMovie(_ sortState: sortState, _ id: Int) {
         movieUseCase.delete(sortState, id)
+    }
+    
+    func delete(movie: MovieReviewElement) {
+        reviewUseCase.delete(movie: movie)
     }
     
     func sortReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {

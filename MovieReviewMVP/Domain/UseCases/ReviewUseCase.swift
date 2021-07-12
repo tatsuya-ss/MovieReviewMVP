@@ -29,5 +29,9 @@ final class ReviewUseCase {
             }
         }
     }
+    
+    func delete(movie: MovieReviewElement) {
+        repository.delete(movie: movie)
+    }
 
 }

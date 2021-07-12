@@ -56,6 +56,16 @@ final class Firebase : ReviewRepository {
             }
         }
     }
+    
+    func delete(movie: MovieReviewElement) {
+        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("削除しました")
+            }
+        }
+    }
 
 }
 

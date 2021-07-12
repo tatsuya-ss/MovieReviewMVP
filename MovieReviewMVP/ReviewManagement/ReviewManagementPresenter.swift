@@ -92,6 +92,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         
         for indexPath in indexPaths {
             model.deleteReviewMovie(sortStateManagement, movieReviewElements[indexPath.row].id)
+            model.delete(movie: movieReviewElements[indexPath.row])
             movieReviewElements.remove(at: indexPath.row)
             view.updateReview(movieUpdateState, index: indexPath.row)
         }
