@@ -70,8 +70,19 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func fetchUpdateReviewMovies(_ state: MovieUpdateState) {
-        self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
-        view.updateReview(state, index: nil)
+//        self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
+        model.fetch(sortStateManagement, isStoredAsReview: true) { result in
+            switch result {
+            case .success(let reviews):
+                self.movieReviewElements = reviews
+                DispatchQueue.main.async {
+                    self.view.updateReview(state, index: nil)
+                }
+                print(#function,reviews)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     

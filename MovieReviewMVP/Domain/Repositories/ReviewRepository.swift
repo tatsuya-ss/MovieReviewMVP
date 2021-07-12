@@ -9,4 +9,5 @@ import Foundation
 
 protocol ReviewRepository {
     func save(movie: MovieReviewElement)
+    func fetch(sortState: sortState, isStoredAsReview: Bool?, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
 }

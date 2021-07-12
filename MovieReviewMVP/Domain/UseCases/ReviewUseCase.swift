@@ -18,5 +18,16 @@ final class ReviewUseCase {
         repository.save(movie: movie)
     }
 
+    func fetch(sortState: sortState, isStoredAsReview: Bool?, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        repository.fetch(sortState: sortState,
+                         isStoredAsReview: isStoredAsReview) { result in
+            switch result {
+            case .success(let reviews):
+                completion(.success(reviews))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 
 }

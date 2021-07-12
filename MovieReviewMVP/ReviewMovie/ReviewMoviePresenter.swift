@@ -54,7 +54,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 DispatchQueue.main.async { [weak self] in
                     guard let state = self?.movieReviewState,
                           let movie = self?.movieReviewElement else { return }
-                    print(movie.review) // review: Optional("Kkkkkkkkkkkk"),
+//                    print(movie.review) // review: Optional("Kkkkkkkkkkkk"),
                     self?.view.displayReviewMovie(movieReviewState: state, movie, credits: credits)
                 }
             case let .failure(SearchError.requestError(error)):
