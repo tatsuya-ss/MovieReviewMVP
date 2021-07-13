@@ -8,23 +8,40 @@
 import Foundation
 
 protocol StockReviewMovieManagementModelInput {
-    func fetchStockMovies(sortState: sortState) -> [MovieReviewElement]
-    func sortReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement]
-    func deleteReviewMovie(_ sortState: sortState, _ id: Int)
+    func delete(movie: MovieReviewElement)
+    func fetch(isStoredAsReview: Bool, sortState: sortState,  completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
 }
 
 final class StockReviewMovieManagementModel : StockReviewMovieManagementModelInput {
-    let movieUseCase = MovieUseCase()
+//    let movieUseCase = MovieUseCase()
+    let reviewUseCase = ReviewUseCase()
     
-    func fetchStockMovies(sortState: sortState) -> [MovieReviewElement] {
-        movieUseCase.fetch(sortState, isStoredAsReview: false)
+    func fetch(isStoredAsReview: Bool, sortState: sortState,  completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        reviewUseCase.fetch(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
+            switch result {
+            case .success(let reviews):
+                completion(.success(reviews))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
     }
     
-    func sortReview(_ sortState: sortState, isStoredAsReview: Bool?) -> [MovieReviewElement] {
-        movieUseCase.sort(sortState, isStoredAsReview: isStoredAsReview)
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        reviewUseCase.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
+            switch result {
+            case .success(let reviews):
+                completion(.success(reviews))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
-    func deleteReviewMovie(_ sortState: sortState, _ id: Int) {
-        movieUseCase.delete(sortState, id)
+
+    func delete(movie: MovieReviewElement) {
+        reviewUseCase.delete(movie: movie)
     }
 }
