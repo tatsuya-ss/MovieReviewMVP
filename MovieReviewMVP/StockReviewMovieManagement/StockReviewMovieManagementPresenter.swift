@@ -64,7 +64,6 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
                 print(error)
             }
         }
-//        movieReviewStockElements = model.fetchStockMovies(sortState: sortStateManagement)
     }
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
@@ -81,7 +80,6 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
             }
         }
 
-//        movieReviewStockElements = model.sortReview(sortState, isStoredAsReview: false)
         view.sortReview()
     }
     

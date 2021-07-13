@@ -70,7 +70,6 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {
-//        self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
         model.fetch(isStoredAsReview: true, sortState: sortStateManagement) { result in
             switch result {
             case .success(let reviews):
@@ -91,7 +90,6 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         print("削除時のsortStateManagement → \(sortStateManagement)")
         
         for indexPath in indexPaths {
-//            model.deleteReviewMovie(sortStateManagement, movieReviewElements[indexPath.row].id)
             model.delete(movie: movieReviewElements[indexPath.row])
             movieReviewElements.remove(at: indexPath.row)
             view.updateReview(movieUpdateState, index: indexPath.row)
@@ -102,7 +100,6 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         sortStateManagement = sortState
-//        movieReviewElements = model.sortReview(sortState, isStoredAsReview: true)
         model.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
             switch result {
             case .success(let reviews):

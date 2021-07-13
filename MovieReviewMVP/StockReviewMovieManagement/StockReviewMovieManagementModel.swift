@@ -14,7 +14,6 @@ protocol StockReviewMovieManagementModelInput {
 }
 
 final class StockReviewMovieManagementModel : StockReviewMovieManagementModelInput {
-//    let movieUseCase = MovieUseCase()
     let reviewUseCase = ReviewUseCase()
     
     func fetch(isStoredAsReview: Bool, sortState: sortState,  completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {

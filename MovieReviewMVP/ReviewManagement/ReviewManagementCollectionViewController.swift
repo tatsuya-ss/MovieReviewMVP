@@ -18,7 +18,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var trashButton: UIButton!
     private var stockButton: UIButton!
     
-//    let movieUseCase = MovieUseCase()
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {

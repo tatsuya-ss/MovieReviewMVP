@@ -11,7 +11,6 @@ protocol ReviewMovieModelInput {
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement)
     func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void)
-//    func requestPersonDetail(castDetail: CastDetail, completion: @escaping (Result<Person, SearchError>) -> Void)
 }
 
 final class ReviewMovieModel : ReviewMovieModelInput {
@@ -21,7 +20,6 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         self.movieReviewElement = movie
     }
     
-//    let movieUseCase = MovieUseCase()
     let reviewUseCase = ReviewUseCase()
     
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void) {
@@ -69,11 +67,9 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement) {
         switch movieReviewState {
         case .beforeStore:
-//            movieUseCase.create(movie)
             reviewUseCase.save(movie: movie)
         case .afterStore:
             reviewUseCase.update(movie: movie)
-//            movieUseCase.update(movie)
         }
         
     }
@@ -87,7 +83,6 @@ final class ReviewMovieModel : ReviewMovieModelInput {
                 completion(.failure(error))
             }
         }
-//        movieUseCase.fetch(sortState, isStoredAsReview: nil)
     }
 }
 
