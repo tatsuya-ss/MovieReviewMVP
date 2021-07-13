@@ -9,7 +9,7 @@ import Foundation
 
 protocol ReviewMovieModelInput {
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement)
-    func fetchMovie(sortState: sortState) -> [MovieReviewElement]
+    func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void)
 //    func requestPersonDetail(castDetail: CastDetail, completion: @escaping (Result<Person, SearchError>) -> Void)
 }
@@ -21,7 +21,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         self.movieReviewElement = movie
     }
     
-    let movieUseCase = MovieUseCase()
+//    let movieUseCase = MovieUseCase()
     let reviewUseCase = ReviewUseCase()
     
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void) {
@@ -69,16 +69,25 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement) {
         switch movieReviewState {
         case .beforeStore:
-            movieUseCase.create(movie)
+//            movieUseCase.create(movie)
             reviewUseCase.save(movie: movie)
         case .afterStore:
-            movieUseCase.update(movie)
+            reviewUseCase.update(movie: movie)
+//            movieUseCase.update(movie)
         }
         
     }
     
-    func fetchMovie(sortState: sortState) -> [MovieReviewElement] {
-        movieUseCase.fetch(sortState, isStoredAsReview: nil)
+    func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        reviewUseCase.fetch(isStoredAsReview: nil, sortState: sortState) { result in
+            switch result {
+            case .success(let reviews):
+                completion(.success(reviews))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+//        movieUseCase.fetch(sortState, isStoredAsReview: nil)
     }
 }
 

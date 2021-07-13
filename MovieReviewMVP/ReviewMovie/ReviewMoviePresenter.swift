@@ -98,12 +98,23 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         var primaryKeyIsStored = false
         
         switch movieReviewState {
-        case .beforeStore:  // プライマリーキーが被っていないかの検証
-            primaryKeyIsStored = checkPrimaryKey()
-            if primaryKeyIsStored == false {  // まだ保存していない場合
-                movieReviewElement.create_at = date
-                movieReviewElement.reviewStars = reviewScore
-                movieReviewElement.review = checkReview(review: review)
+        case .beforeStore:
+            movieReviewElement.create_at = date
+            movieReviewElement.reviewStars = reviewScore
+            movieReviewElement.review = checkReview(review: review)
+            // プライマリーキーが被っていないかの検証
+            model.fetchMovie(sortState: .createdAscend) { result in
+                switch result {
+                case .success(let reviews):
+                    for review in reviews {
+                        guard review.id != self.movieReviewElement.id else {
+                            primaryKeyIsStored = true
+                            return
+                        }
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             }
             
         case .afterStore(.reviewed):
@@ -134,14 +145,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 }
 
 extension ReviewMoviePresenter {
-    func checkPrimaryKey() -> Bool {
-        let movies = model.fetchMovie(sortState: .createdAscend)
-        for movie in movies {
-            guard movie.id != movieReviewElement.id else { return true }
-        }
-        return false
-    }
-    
     func checkIsChange(reviewScore: Double, review: String?) -> Bool {
         let reviewText = movieReviewElement.review ?? .placeholderString
         if reviewScore != movieReviewElement.reviewStars ?? 0.0 || review != reviewText {

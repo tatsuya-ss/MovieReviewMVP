@@ -12,9 +12,9 @@ protocol ReviewManagementPresenterInput {
     func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func fetchUpdateReviewMovies(_ state: MovieUpdateState)
+    func fetchUpdateReviewMovies(state: MovieUpdateState)
     func didSelectRowCollectionView(at indexPath: IndexPath)
-    func didTapSortButton(_ sortState: sortState)
+    func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func returnSortState() -> sortState
     func returnMovieReview() -> [MovieReviewElement]
 }
@@ -69,9 +69,9 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         view.changeTheDisplayDependingOnTheEditingState(editing, indexPaths)
     }
     
-    func fetchUpdateReviewMovies(_ state: MovieUpdateState) {
+    func fetchUpdateReviewMovies(state: MovieUpdateState) {
 //        self.movieReviewElements = model.fetchReviewMovie(sortStateManagement, isStoredAsReview: true)
-        model.fetch(sortStateManagement, isStoredAsReview: true) { result in
+        model.fetch(isStoredAsReview: true, sortState: sortStateManagement) { result in
             switch result {
             case .success(let reviews):
                 self.movieReviewElements = reviews
@@ -91,7 +91,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         print("削除時のsortStateManagement → \(sortStateManagement)")
         
         for indexPath in indexPaths {
-            model.deleteReviewMovie(sortStateManagement, movieReviewElements[indexPath.row].id)
+//            model.deleteReviewMovie(sortStateManagement, movieReviewElements[indexPath.row].id)
             model.delete(movie: movieReviewElements[indexPath.row])
             movieReviewElements.remove(at: indexPath.row)
             view.updateReview(movieUpdateState, index: indexPath.row)
@@ -100,10 +100,20 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
 
     
-    func didTapSortButton(_ sortState: sortState) {
+    func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         sortStateManagement = sortState
-        movieReviewElements = model.sortReview(sortState, isStoredAsReview: true)
-        view.sortReview()
+//        movieReviewElements = model.sortReview(sortState, isStoredAsReview: true)
+        model.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
+            switch result {
+            case .success(let reviews):
+                self.movieReviewElements = reviews
+                DispatchQueue.main.async {
+                    self.view.sortReview()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
 }

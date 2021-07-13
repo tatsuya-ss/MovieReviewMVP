@@ -41,9 +41,9 @@ struct MovieDataStore : MovieReviewRepository {
         let realm = try! Realm()
         var fetchedMovies: Results<RealmMyMovieInfomation>
         if let isStoredAsReview = isStoredAsReview {
-            fetchedMovies = realm.objects(RealmMyMovieInfomation.self).filter("isStoredAsReview = \(isStoredAsReview)").sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+            fetchedMovies = realm.objects(RealmMyMovieInfomation.self).filter("isStoredAsReview = \(isStoredAsReview)").sorted(byKeyPath: sortState.keyPath, ascending: sortState.Descending)
         } else {
-            fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+            fetchedMovies = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.Descending)
         }
         
         var movieReviewElements: [MovieReviewElement] = []
@@ -98,9 +98,9 @@ struct MovieDataStore : MovieReviewRepository {
 
         
         if let isStoredAsReview = isStoredAsReview {
-            sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).filter("isStoredAsReview = \(isStoredAsReview)").sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+            sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).filter("isStoredAsReview = \(isStoredAsReview)").sorted(byKeyPath: sortState.keyPath, ascending: sortState.Descending)
         } else {
-            sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.ascending)
+            sortedStoreDate = realm.objects(RealmMyMovieInfomation.self).sorted(byKeyPath: sortState.keyPath, ascending: sortState.Descending)
         }
     
         var movieReviewElements: [MovieReviewElement] = []

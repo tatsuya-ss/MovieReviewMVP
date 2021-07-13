@@ -43,10 +43,47 @@ final class Firebase : ReviewRepository {
         }
     }
     
-    func fetch(sortState: sortState, isStoredAsReview: Bool?, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
-        collectionReference.getDocuments { querySnapshot, error in
+    func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        if let isStoredAsReview = isStoredAsReview {
+            collectionReference
+                .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
+                .order(by: "create_at", descending: sortState.Descending)
+                .getDocuments { querySnapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    self.movieReviews.removeAll()
+                    for document in querySnapshot!.documents {
+                        self.movieReviews.append(MovieReviewElement(document: document))
+                    }
+                    completion(.success(self.movieReviews))
+                }
+            }
+        } else {
+            collectionReference
+                .order(by: "create_at", descending: sortState.Descending)
+                .getDocuments { querySnapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    self.movieReviews.removeAll()
+                    for document in querySnapshot!.documents {
+                        self.movieReviews.append(MovieReviewElement(document: document))
+                    }
+                    completion(.success(self.movieReviews))
+                }
+            }
+        }
+
+    }
+    
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        collectionReference
+            .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
+            .order(by: sortState.keyPath, descending: sortState.Descending)
+            .getDocuments { querySnapshot, error in
             if let error = error {
-                completion(.failure(error))
+                print(error.localizedDescription)
             } else {
                 self.movieReviews.removeAll()
                 for document in querySnapshot!.documents {
@@ -56,6 +93,7 @@ final class Firebase : ReviewRepository {
             }
         }
     }
+
     
     func delete(movie: MovieReviewElement) {
         collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
@@ -66,6 +104,30 @@ final class Firebase : ReviewRepository {
             }
         }
     }
+    
+    func update(movie: MovieReviewElement) {
+        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
+            "title": movie.title ?? "",
+            "poster_path": movie.poster_path ?? "",
+            "original_name": movie.original_name ?? "",
+            "backdrop_path": movie.backdrop_path ?? "",
+            "overview": movie.overview ?? "",
+            "releaseDay": movie.releaseDay ?? "",
+            "reviewStars": movie.reviewStars ?? 0.0,
+            "review": movie.review,
+            "create_at": Timestamp(date:movie.create_at ?? Date()),
+            "id": movie.id,
+            "isStoredAsReview": movie.isStoredAsReview ?? true,
+            "media_type": movie.media_type
+        ]) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("update!")
+            }
+        }
+    }
+    
 
 }
 
