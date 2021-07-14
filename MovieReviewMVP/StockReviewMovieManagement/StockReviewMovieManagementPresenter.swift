@@ -68,18 +68,25 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         sortStateManagement = sortState
-        model.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
-            switch result {
-            case .success(let reviews):
-                self.movieReviewStockElements = reviews
-                DispatchQueue.main.async {
-                    self.view.sortReview()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
+        switch sortState {
+        case .createdAscend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.create_at ?? Date() > reviewB.create_at ?? Date()
+            }
+        case .createdDescend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.create_at ?? Date() < reviewB.create_at ?? Date()
+            }
+        case .reviewStarAscend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.reviewStars ?? 0.0 > reviewB.reviewStars ?? 0.0
+            }
+        case .reviewStarDescend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.reviewStars ?? 0.0 < reviewB.reviewStars ?? 0.0
             }
         }
-
+        
         view.sortReview()
     }
     
