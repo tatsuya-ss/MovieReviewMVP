@@ -8,6 +8,7 @@
 import Foundation
 
 protocol ReviewMovieModelInput {
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void)
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement)
     func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void)
@@ -62,6 +63,12 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         }
         task.resume()
         
+    }
+    
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
+        reviewUseCase.checkSaved(movie: movie) { result in
+            completion(result)
+        }
     }
     
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement) {

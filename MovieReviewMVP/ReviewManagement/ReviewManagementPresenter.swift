@@ -121,20 +121,6 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         }
         
         view.sortReview()
-        
-        
-        
-//        model.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
-//            switch result {
-//            case .success(let reviews):
-//                self.movieReviewElements = reviews
-//                DispatchQueue.main.async {
-//                    self.view.sortReview()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
     }
     
 }

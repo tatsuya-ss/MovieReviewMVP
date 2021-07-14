@@ -14,6 +14,12 @@ final class ReviewUseCase {
         self.repository = repository
     }
     
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
+        repository.checkSaved(movie: movie) { result in
+            completion(result)
+        }
+    }
+    
     func save(movie: MovieReviewElement) {
         repository.save(movie: movie)
     }

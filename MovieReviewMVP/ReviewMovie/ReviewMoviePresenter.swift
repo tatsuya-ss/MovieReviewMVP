@@ -95,25 +95,18 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     
     // MARK: 保存・更新ボタンが押された時の処理
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
-        var primaryKeyIsStored = false
-        
         switch movieReviewState {
         case .beforeStore:
             movieReviewElement.create_at = date
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = checkReview(review: review)
             // プライマリーキーが被っていないかの検証
-            model.fetchMovie(sortState: .createdAscend) { result in
+            model.checkSaved(movie: movieReviewElement) { result in
                 switch result {
-                case .success(let reviews):
-                    for review in reviews {
-                        guard review.id != self.movieReviewElement.id else {
-                            primaryKeyIsStored = true
-                            return
-                        }
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
+                case true:
+                    self.view.displayAfterStoreButtonTapped(true, self.movieReviewState, editing: editing)
+                case false:
+                    self.view.displayAfterStoreButtonTapped(false, self.movieReviewState, editing: editing)
                 }
             }
             
@@ -128,7 +121,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                     model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
                     print(#function, movieReviewElement)
                 }
-                                
+                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             case true:
                 break
             }
@@ -137,8 +130,8 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = checkReview(review: review)
             movieReviewElement.isStoredAsReview = true
+            view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
         }
-        view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState, editing: editing)
     }
 
     

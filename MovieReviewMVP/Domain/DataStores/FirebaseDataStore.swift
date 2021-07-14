@@ -13,34 +13,44 @@ import FirebaseFirestoreSwift
 
 
 final class Firebase : ReviewRepository {
+    
     let db = Firestore.firestore()
     
     let collectionReference = Firestore.firestore().collection("movieReview")
     var movieReviews = [MovieReviewElement]()
     
-    func save(movie: MovieReviewElement) {
-        let dataToSave: [String: Any] = [
-            "title": movie.title ?? "",
-            "poster_path": movie.poster_path ?? "",
-            "original_name": movie.original_name ?? "",
-            "backdrop_path": movie.backdrop_path ?? "",
-            "overview": movie.overview ?? "",
-            "releaseDay": movie.releaseDay ?? "",
-            "reviewStars": movie.reviewStars ?? 0.0,
-            "review": movie.review,
-            "create_at": Timestamp(date: movie.create_at ?? Date()),
-            "id": movie.id,
-            "isStoredAsReview": movie.isStoredAsReview ?? true,
-            "media_type": movie.media_type
-        ]
-        
-        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Data has been saved!")
-            }
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
+        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").getDocument { documentSnapshot, error in
+            guard let documentSnapshot = documentSnapshot,
+                  documentSnapshot.exists else { completion(false) ; return }
+            completion(true)
         }
+        
+    }
+    
+    func save(movie: MovieReviewElement) {
+            let dataToSave: [String: Any] = [
+                "title": movie.title ?? "",
+                "poster_path": movie.poster_path ?? "",
+                "original_name": movie.original_name ?? "",
+                "backdrop_path": movie.backdrop_path ?? "",
+                "overview": movie.overview ?? "",
+                "releaseDay": movie.releaseDay ?? "",
+                "reviewStars": movie.reviewStars ?? 0.0,
+                "review": movie.review,
+                "create_at": Timestamp(date: movie.create_at ?? Date()),
+                "id": movie.id,
+                "isStoredAsReview": movie.isStoredAsReview ?? true,
+                "media_type": movie.media_type
+            ]
+            
+            self.collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
+                if let error = error {
+                    print(error.localizedDescription)
+                } else {
+                    print("Data has been saved!")
+                }
+            }
     }
     
     func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
