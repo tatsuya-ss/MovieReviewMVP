@@ -123,7 +123,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 }
                 view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             case true:
-                break
+                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             }
             
         case .afterStore(.stock):
