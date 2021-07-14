@@ -28,7 +28,7 @@ final class Firebase : ReviewRepository {
             "releaseDay": movie.releaseDay ?? "",
             "reviewStars": movie.reviewStars ?? 0.0,
             "review": movie.review,
-            "create_at": Timestamp(date:movie.create_at ?? Date()),
+            "create_at": Timestamp(date: movie.create_at ?? Date()),
             "id": movie.id,
             "isStoredAsReview": movie.isStoredAsReview ?? true,
             "media_type": movie.media_type
@@ -115,7 +115,7 @@ final class Firebase : ReviewRepository {
             "releaseDay": movie.releaseDay ?? "",
             "reviewStars": movie.reviewStars ?? 0.0,
             "review": movie.review,
-            "create_at": Timestamp(date:movie.create_at ?? Date()),
+//            "create_at": movie.create_at ?? Date(),
             "id": movie.id,
             "isStoredAsReview": movie.isStoredAsReview ?? true,
             "media_type": movie.media_type
@@ -134,6 +134,7 @@ final class Firebase : ReviewRepository {
 private extension MovieReviewElement {
     init(document: QueryDocumentSnapshot) {
         let data = document.data()
+        let timestamp = data["create_at"] as? Timestamp
         self = MovieReviewElement(title: data["title"] as? String ?? "",
                                   poster_path: data["poster_path"] as? String ?? "",
                                   original_name: data["original_name"] as? String ?? "",
@@ -142,7 +143,7 @@ private extension MovieReviewElement {
                                   releaseDay: data["releaseDay"] as? String ?? "",
                                   reviewStars: data["reviewStars"] as? Double ?? 0.0,
                                   review: data["review"] as? String ?? "",
-                                  create_at: data["create_at"] as? Date,
+                                  create_at: timestamp?.dateValue(),
                                   id: data["id"] as? Int ?? 0,
                                   isStoredAsReview: data["isStoredAsReview"] as? Bool,
                                   media_type: data["media_type"] as? String)
