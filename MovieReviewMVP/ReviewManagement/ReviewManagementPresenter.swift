@@ -70,7 +70,8 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {
-        model.fetch(isStoredAsReview: true, sortState: sortStateManagement) { result in
+        print(sortStateManagement)
+        model.sort(isStoredAsReview: true, sortState: sortStateManagement) { result in
             switch result {
             case .success(let reviews):
                 self.movieReviewElements = reviews
