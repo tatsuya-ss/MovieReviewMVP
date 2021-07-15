@@ -26,14 +26,16 @@ final class ReviewUseCase {
 
     func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
         repository.fetch(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
-            switch result {
-            case .success(let reviews):
-                completion(.success(reviews))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            completion(result)
         }
     }
+    
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        repository.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
+            completion(result)
+        }
+    }
+
     
     func delete(movie: MovieReviewElement) {
         repository.delete(movie: movie)
@@ -43,14 +45,4 @@ final class ReviewUseCase {
         repository.update(movie: movie)
     }
     
-    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
-        repository.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
-            switch result {
-            case .success(let reviews):
-                completion(.success(reviews))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
 }

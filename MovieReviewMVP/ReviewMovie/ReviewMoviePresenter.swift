@@ -100,6 +100,8 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             movieReviewElement.create_at = date
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = checkReview(review: review)
+            
+            
             // プライマリーキーが被っていないかの検証
             model.checkSaved(movie: movieReviewElement) { result in
                 switch result {

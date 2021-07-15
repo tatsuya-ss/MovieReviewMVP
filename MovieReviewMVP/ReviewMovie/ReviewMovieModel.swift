@@ -82,12 +82,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
     
     func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
         reviewUseCase.fetch(isStoredAsReview: nil, sortState: sortState) { result in
-            switch result {
-            case .success(let reviews):
-                completion(.success(reviews))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            completion(result)
         }
     }
 }

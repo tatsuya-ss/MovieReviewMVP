@@ -22,24 +22,14 @@ class ReviewManagementModel : ReviewManagementModelInput {
     
     func fetch(isStoredAsReview: Bool, sortState: sortState,  completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
         reviewUseCase.fetch(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
-            switch result {
-            case .success(let reviews):
-                completion(.success(reviews))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            completion(result)
         }
         
     }
     
     func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
         reviewUseCase.sort(isStoredAsReview: isStoredAsReview, sortState: sortState) { result in
-            switch result {
-            case .success(let reviews):
-                completion(.success(reviews))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            completion(result)
         }
     }
     
