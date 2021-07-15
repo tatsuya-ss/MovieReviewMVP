@@ -12,6 +12,12 @@
 		750B440B2685CF0A00191E17 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B440A2685CF0A00191E17 /* Date.swift */; };
 		750B44612687096F00191E17 /* ReviewTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B44602687096F00191E17 /* ReviewTextView.swift */; };
 		750B44B52689C32D00191E17 /* Notification.Name+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */; };
+		7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
+		7518C0D6269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
+		7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
+		7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */; };
+		7518C0DB269C2AE000C27C1C /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */; };
+		7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */; };
 		752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */; };
 		752478AB268EF14700347972 /* CrewCastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */; };
 		75359213264E61B9004477B3 /* ReviewMovieOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75359212264E61B9004477B3 /* ReviewMovieOwner.swift */; };
@@ -36,8 +42,6 @@
 		75676F2B263AA0B900569AF5 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F2A263AA0B900569AF5 /* Movie.swift */; };
 		75676F33263AA2FA00569AF5 /* TMDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F32263AA2FA00569AF5 /* TMDB.swift */; };
 		75699F10264BAAAA001904C4 /* ReviewMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */; };
-		75699F2E264BC696001904C4 /* MovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F2D264BC696001904C4 /* MovieDataStore.swift */; };
-		75699F33264BC6EB001904C4 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F32264BC6EB001904C4 /* MovieRepository.swift */; };
 		75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */; };
 		75699F3D264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */; };
 		75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F47264BD307001904C4 /* ReviewManagementCollectionViewController.swift */; };
@@ -53,7 +57,6 @@
 		756D8FC826735C490026889B /* ReviewMovieManagementCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */; };
 		756D8FC926735C490026889B /* ReviewMovieManagementCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
-		756DFCB5264D0DFA00C6AF07 /* MovieUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCB4264D0DFA00C6AF07 /* MovieUseCase.swift */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
 		756E4EAE26468334009AA060 /* MovieDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E4EAD26468334009AA060 /* MovieDatabase.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
@@ -87,6 +90,10 @@
 		750B440A2685CF0A00191E17 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		750B44602687096F00191E17 /* ReviewTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTextView.swift; sourceTree = "<group>"; };
 		750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Ext.swift"; sourceTree = "<group>"; };
+		7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDataStore.swift; sourceTree = "<group>"; };
+		7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
+		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCastCollectionViewCell.swift; sourceTree = "<group>"; };
 		752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CrewCastCollectionViewCell.xib; sourceTree = "<group>"; };
 		75359212264E61B9004477B3 /* ReviewMovieOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieOwner.swift; sourceTree = "<group>"; };
@@ -117,8 +124,6 @@
 		75676F2A263AA0B900569AF5 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		75676F32263AA2FA00569AF5 /* TMDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDB.swift; sourceTree = "<group>"; };
 		75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewMovie.storyboard; sourceTree = "<group>"; };
-		75699F2D264BC696001904C4 /* MovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDataStore.swift; sourceTree = "<group>"; };
-		75699F32264BC6EB001904C4 /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
 		75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewCell.swift; sourceTree = "<group>"; };
 		75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewManagementCollectionViewCell.xib; sourceTree = "<group>"; };
 		75699F47264BD307001904C4 /* ReviewManagementCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewController.swift; sourceTree = "<group>"; };
@@ -134,7 +139,6 @@
 		756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieManagementCollectionReusableView.swift; sourceTree = "<group>"; };
 		756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovieManagementCollectionReusableView.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
-		756DFCB4264D0DFA00C6AF07 /* MovieUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieUseCase.swift; sourceTree = "<group>"; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		756E4EAD26468334009AA060 /* MovieDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDatabase.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 				75676EE4263A89B500569AF5 /* Assets.xcassets */,
 				75676EE6263A89B500569AF5 /* LaunchScreen.storyboard */,
 				75676EE9263A89B500569AF5 /* Info.plist */,
+				7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */,
 				7569BAC8267B40B20058D495 /* Extension */,
 				756DFCB9264D5B5500C6AF07 /* State */,
 				75676F29263AA0A200569AF5 /* Domain */,
@@ -356,7 +361,7 @@
 		756DFCB1264D0D9F00C6AF07 /* DataStores */ = {
 			isa = PBXGroup;
 			children = (
-				75699F2D264BC696001904C4 /* MovieDataStore.swift */,
+				7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */,
 			);
 			path = DataStores;
 			sourceTree = "<group>";
@@ -364,7 +369,7 @@
 		756DFCB2264D0DB100C6AF07 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				756DFCB4264D0DFA00C6AF07 /* MovieUseCase.swift */,
+				7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -372,7 +377,7 @@
 		756DFCB3264D0DBD00C6AF07 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				75699F32264BC6EB001904C4 /* MovieRepository.swift */,
+				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -503,6 +508,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
 				756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */,
 				75676EE8263A89B500569AF5 /* LaunchScreen.storyboard in Resources */,
 				7569BAA92679EFEA0058D495 /* StockReviewMovieManagement.storyboard in Resources */,
@@ -522,6 +528,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7518C0D6269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +536,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,21 +652,20 @@
 			files = (
 				752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */,
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
+				7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,
 				750B440B2685CF0A00191E17 /* Date.swift in Sources */,
-				75699F33264BC6EB001904C4 /* MovieRepository.swift in Sources */,
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,
 				75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */,
-				756DFCB5264D0DFA00C6AF07 /* MovieUseCase.swift in Sources */,
+				7518C0DB269C2AE000C27C1C /* ReviewUseCase.swift in Sources */,
 				75676EDC263A89B400569AF5 /* AppDelegate.swift in Sources */,
 				75676F21263A97E300569AF5 /* MovieTableViewCell.swift in Sources */,
 				75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */,
 				75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */,
 				756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */,
 				75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */,
-				75699F2E264BC696001904C4 /* MovieDataStore.swift in Sources */,
 				750B44B52689C32D00191E17 /* Notification.Name+Ext.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
 				756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */,
@@ -677,6 +684,7 @@
 				7569BABB2679F0610058D495 /* StockReviewMovieManagementModel.swift in Sources */,
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
+				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

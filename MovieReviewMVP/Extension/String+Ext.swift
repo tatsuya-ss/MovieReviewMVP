@@ -22,7 +22,7 @@ extension String {
     static let placeholderString = "レビューを入力してください"
     
     // sort
-    static let createdKeyPath = "created_at"
+    static let createdKeyPath = "create_at"
     static let reviewStarKeyPath = "reviewStars"
     static let createdAscendTitle = "新しい順"
     static let createdDescendTitle = "古い順"

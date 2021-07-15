@@ -12,7 +12,7 @@ protocol StockReviewMovieManagementPresenterInput {
     func returnStockMovieForCell(forRow row: Int) -> MovieReviewElement
     func fetchStockMovies()
     func returnSortState() -> sortState
-    func didTapSortButton(_ sortState: sortState)
+    func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
     func didSelectRowStockCollectionView(at indexPath: IndexPath)
@@ -52,12 +52,41 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     }
     
     func fetchStockMovies() {
-        movieReviewStockElements = model.fetchStockMovies(sortState: sortStateManagement)
+        model.fetch(isStoredAsReview: false, sortState: sortStateManagement) { result in
+            switch result {
+            case .success(let reviews):
+                self.movieReviewStockElements = reviews
+                DispatchQueue.main.async {
+                    self.view.updateStockCollectionView(movieUpdateState: .initial, indexPath: nil)
+                }
+                print(#function,reviews)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
-    func didTapSortButton(_ sortState: sortState) {
+    func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         sortStateManagement = sortState
-        movieReviewStockElements = model.sortReview(sortState, isStoredAsReview: false)
+        switch sortState {
+        case .createdAscend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.create_at ?? Date() > reviewB.create_at ?? Date()
+            }
+        case .createdDescend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.create_at ?? Date() < reviewB.create_at ?? Date()
+            }
+        case .reviewStarAscend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.reviewStars ?? 0.0 > reviewB.reviewStars ?? 0.0
+            }
+        case .reviewStarDescend:
+            movieReviewStockElements.sort { reviewA, reviewB in
+                reviewA.reviewStars ?? 0.0 < reviewB.reviewStars ?? 0.0
+            }
+        }
+        
         view.sortReview()
     }
     
@@ -67,7 +96,7 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            model.deleteReviewMovie(sortStateManagement, movieReviewStockElements[indexPath.row].id)
+            model.delete(movie: movieReviewStockElements[indexPath.row])
             movieReviewStockElements.remove(at: indexPath.row)
             view.updateStockCollectionView(movieUpdateState: movieUpdateState, indexPath: indexPath)
         }

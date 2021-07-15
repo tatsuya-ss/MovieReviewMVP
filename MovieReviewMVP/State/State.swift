@@ -65,18 +65,19 @@ enum sortState {
     case reviewStarAscend
     case reviewStarDescend
         
-    var ascending: Bool {
+    var Descending: Bool {
         switch self {
         case .createdAscend:
-            return false
+            return true
         case .createdDescend:
-            return true
-        case .reviewStarAscend:
             return false
-        case .reviewStarDescend:
+        case .reviewStarAscend:
             return true
+        case .reviewStarDescend:
+            return false
         }
     }
+    
     
     var keyPath: String {
         switch self {

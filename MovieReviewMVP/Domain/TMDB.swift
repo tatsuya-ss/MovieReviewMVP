@@ -78,7 +78,7 @@ struct TMDBDetailURL {
     let mediaType: String
     init(id: Int, mediaType: String) {
         self.mediaType = mediaType
-        self.detailURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=19c5f8a42705c4e7ec64271c7a4ab0d5&language=ja-JP"
+        self.detailURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDBDetailURL.key)&language=ja-JP"
     }
 }
 
@@ -86,7 +86,7 @@ struct TMDBPersonURL {
     static let key = MovieReviewMVPKeys().tMDBApiKey
     let personURL: String
     init(id: Int) {
-        self.personURL = "https://api.themoviedb.org/3/person/\(String(id))?api_key=19c5f8a42705c4e7ec64271c7a4ab0d5&language=ja-JP"
+        self.personURL = "https://api.themoviedb.org/3/person/\(String(id))?api_key=\(TMDBPersonURL.key)&language=ja-JP"
     }
 }
 

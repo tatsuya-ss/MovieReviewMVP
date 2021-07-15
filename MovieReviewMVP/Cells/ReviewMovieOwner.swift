@@ -159,7 +159,7 @@ extension ReviewMovieOwner {
     
     // MARK: レビューを表示
     private func returnReviewTextState(movie: MovieReviewElement) {
-        if let review = movie.review {
+        if let review = movie.review, !review.isEmpty {
             print(#function, review)
             let reviewTextIsReviewed = ReviewTextIsReviewed()
             reviewTextView.text = review
