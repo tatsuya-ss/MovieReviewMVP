@@ -54,7 +54,6 @@ final class ReviewMovieModel : ReviewMovieModelInput {
                     }
 
                     let credits: Credits = Credits(cast: castDetail, crew: crewDetail)
-                    print(credits)
                     completion(.success(credits))
                 }
             } catch {
