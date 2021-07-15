@@ -32,37 +32,33 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     private weak var view: ReviewManagementPresenterOutput!
     private var model: ReviewManagementModelInput
     private var movieUpdateState: MovieUpdateState = .modificate
-    
+    let review = Review()
+
     init(view: ReviewManagementPresenterOutput, model: ReviewManagementModelInput) {
         self.view = view
         self.model = model
     }
     
-    private(set) var movieReviewElements: [MovieReviewElement] = []
-
-    private var sortStateManagement: sortState = .createdDescend
-    
-    
     var numberOfMovies: Int {
-        return movieReviewElements.count
+        let reviewCount = review.returnNumberOfReviews()
+        return reviewCount
     }
     
     func didSelectRowCollectionView(at indexPath: IndexPath) {
-        let selectStockMovie = movieReviewElements[indexPath.row]
-        print(#function, selectStockMovie.review)
+        let selectStockMovie = review.returnSelectedReview(indexPath: indexPath)
         view.displaySelectMyReview(selectStockMovie, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
     }
     
     func returnSortState() -> sortState {
-        sortStateManagement
+        review.returnSortState()
     }
     
     func returnMovieReview() -> [MovieReviewElement] {
-        movieReviewElements
+        review.returnReviews()
     }
     
     func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement {
-        movieReviewElements[row]
+        review.returnReviewForCell(forRow: row)
     }
     
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
@@ -70,11 +66,11 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {
-        print(sortStateManagement)
-        model.sort(isStoredAsReview: true, sortState: sortStateManagement) { result in
+        let sortState = review.returnSortState()
+        model.sort(isStoredAsReview: true, sortState: sortState) { result in
             switch result {
             case .success(let reviews):
-                self.movieReviewElements = reviews
+                self.review.fetchReviews(reviews: reviews)
                 DispatchQueue.main.async {
                     self.view.updateReview(state, index: nil)
                 }
@@ -85,41 +81,19 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         }
     }
     
-    
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
         // trashが押されたら最初に呼ばれる
-        print("削除時のsortStateManagement → \(sortStateManagement)")
-        
         for indexPath in indexPaths {
-            model.delete(movie: movieReviewElements[indexPath.row])
-            movieReviewElements.remove(at: indexPath.row)
+            let selectedReview = review.returnSelectedReview(indexPath: indexPath)
+            model.delete(movie: selectedReview)
+            review.deleteReview(row: indexPath.row)
             view.updateReview(movieUpdateState, index: indexPath.row)
         }
-
     }
 
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
-        sortStateManagement = sortState
-        switch sortState {
-        case .createdAscend:
-            movieReviewElements.sort { reviewA, reviewB in
-                reviewA.create_at ?? Date() > reviewB.create_at ?? Date()
-            }
-        case .createdDescend:
-            movieReviewElements.sort { reviewA, reviewB in
-                reviewA.create_at ?? Date() < reviewB.create_at ?? Date()
-            }
-        case .reviewStarAscend:
-            movieReviewElements.sort { reviewA, reviewB in
-                reviewA.reviewStars ?? 0.0 > reviewB.reviewStars ?? 0.0
-            }
-        case .reviewStarDescend:
-            movieReviewElements.sort { reviewA, reviewB in
-                reviewA.reviewStars ?? 0.0 < reviewB.reviewStars ?? 0.0
-            }
-        }
-        
+        review.sortReviews(sortState: sortState)
         view.sortReview()
     }
     
