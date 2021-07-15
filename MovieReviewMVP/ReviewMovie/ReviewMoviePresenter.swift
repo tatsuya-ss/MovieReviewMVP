@@ -54,7 +54,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 DispatchQueue.main.async { [weak self] in
                     guard let state = self?.movieReviewState,
                           let movie = self?.movieReviewElement else { return }
-                    print(movie.review) // review: Optional("Kkkkkkkkkkkk"),
+//                    print(movie.review) // review: Optional("Kkkkkkkkkkkk"),
                     self?.view.displayReviewMovie(movieReviewState: state, movie, credits: credits)
                 }
             case let .failure(SearchError.requestError(error)):
@@ -78,7 +78,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         movieReviewElement
     }
 
-    func didTapStoreLocationAlert(isStoredAsReview: Bool) {
+    func didTapStoreLocationAlert(isStoredAsReview: Bool) { // 初保存で呼ばれる
         movieReviewElement.isStoredAsReview = isStoredAsReview
         model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
         print(#function,movieReviewElement)
@@ -95,15 +95,21 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     
     // MARK: 保存・更新ボタンが押された時の処理
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
-        var primaryKeyIsStored = false
-        
         switch movieReviewState {
-        case .beforeStore:  // プライマリーキーが被っていないかの検証
-            primaryKeyIsStored = checkPrimaryKey()
-            if primaryKeyIsStored == false {  // まだ保存していない場合
-                movieReviewElement.create_at = date
-                movieReviewElement.reviewStars = reviewScore
-                movieReviewElement.review = checkReview(review: review)
+        case .beforeStore:
+            movieReviewElement.create_at = date
+            movieReviewElement.reviewStars = reviewScore
+            movieReviewElement.review = checkReview(review: review)
+            
+            
+            // プライマリーキーが被っていないかの検証
+            model.checkSaved(movie: movieReviewElement) { result in
+                switch result {
+                case true:
+                    self.view.displayAfterStoreButtonTapped(true, self.movieReviewState, editing: editing)
+                case false:
+                    self.view.displayAfterStoreButtonTapped(false, self.movieReviewState, editing: editing)
+                }
             }
             
         case .afterStore(.reviewed):
@@ -117,31 +123,23 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                     model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
                     print(#function, movieReviewElement)
                 }
-                                
+                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             case true:
-                break
+                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             }
             
         case .afterStore(.stock):
             movieReviewElement.reviewStars = reviewScore
             movieReviewElement.review = checkReview(review: review)
             movieReviewElement.isStoredAsReview = true
+            view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
         }
-        view.displayAfterStoreButtonTapped(primaryKeyIsStored, movieReviewState, editing: editing)
     }
 
     
 }
 
 extension ReviewMoviePresenter {
-    func checkPrimaryKey() -> Bool {
-        let movies = model.fetchMovie(sortState: .createdAscend)
-        for movie in movies {
-            guard movie.id != movieReviewElement.id else { return true }
-        }
-        return false
-    }
-    
     func checkIsChange(reviewScore: Double, review: String?) -> Bool {
         let reviewText = movieReviewElement.review ?? .placeholderString
         if reviewScore != movieReviewElement.reviewStars ?? 0.0 || review != reviewText {

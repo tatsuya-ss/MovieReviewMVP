@@ -210,7 +210,7 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
     func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?) {
         switch movieUpdateState {
         case .initial:
-            break
+            stockCollectionView.reloadData()
         case .delete:
             guard let indexPath = indexPath else { return }
             stockCollectionView.performBatchUpdates {

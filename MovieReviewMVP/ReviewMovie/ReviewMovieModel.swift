@@ -8,10 +8,10 @@
 import Foundation
 
 protocol ReviewMovieModelInput {
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void)
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement)
-    func fetchMovie(sortState: sortState) -> [MovieReviewElement]
+    func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void)
-//    func requestPersonDetail(castDetail: CastDetail, completion: @escaping (Result<Person, SearchError>) -> Void)
 }
 
 final class ReviewMovieModel : ReviewMovieModelInput {
@@ -21,7 +21,7 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         self.movieReviewElement = movie
     }
     
-    let movieUseCase = MovieUseCase()
+    let reviewUseCase = ReviewUseCase()
     
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void) {
         guard let movie = movieReviewElement,
@@ -54,7 +54,6 @@ final class ReviewMovieModel : ReviewMovieModelInput {
                     }
 
                     let credits: Credits = Credits(cast: castDetail, crew: crewDetail)
-                    print(credits)
                     completion(.success(credits))
                 }
             } catch {
@@ -65,18 +64,26 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         
     }
     
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
+        reviewUseCase.checkSaved(movie: movie) { result in
+            completion(result)
+        }
+    }
+    
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement) {
         switch movieReviewState {
         case .beforeStore:
-            movieUseCase.create(movie)
+            reviewUseCase.save(movie: movie)
         case .afterStore:
-            movieUseCase.update(movie)
+            reviewUseCase.update(movie: movie)
         }
         
     }
     
-    func fetchMovie(sortState: sortState) -> [MovieReviewElement] {
-        movieUseCase.fetch(sortState, isStoredAsReview: nil)
+    func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        reviewUseCase.fetch(isStoredAsReview: nil, sortState: sortState) { result in
+            completion(result)
+        }
     }
 }
 

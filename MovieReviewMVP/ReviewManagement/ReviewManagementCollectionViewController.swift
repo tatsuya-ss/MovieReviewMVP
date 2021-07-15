@@ -18,7 +18,6 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var trashButton: UIButton!
     private var stockButton: UIButton!
     
-    let movieUseCase = MovieUseCase()
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -33,7 +32,7 @@ class ReviewManagementCollectionViewController: UIViewController {
         setupTrashButton()
         setupStockButton()
         setupNotification()
-        presenter.fetchUpdateReviewMovies(.initial)
+        presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
     }
     
@@ -47,7 +46,7 @@ class ReviewManagementCollectionViewController: UIViewController {
     @IBAction func saveButtonTappedSegue(segue: UIStoryboardSegue) {
         guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
         let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
-        presenter.fetchUpdateReviewMovies(movieUpdateState)
+        presenter.fetchUpdateReviewMovies(state: movieUpdateState)
     }
     
 }
@@ -198,7 +197,7 @@ extension ReviewManagementCollectionViewController {
     }
     
     @objc func updateReviewManagementCollectionView() {
-        presenter.fetchUpdateReviewMovies(.insert)
+        presenter.fetchUpdateReviewMovies(state: .insert)
     }
     
 }
