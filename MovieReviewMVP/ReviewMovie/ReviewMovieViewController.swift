@@ -90,7 +90,7 @@ private extension ReviewMovieViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         
         // MARK: NavigationBarのtitleに保存日を表示
-        let movieReviewElement = presenter.returnMovieReviewElement()
+        guard let movieReviewElement = presenter.returnMovieReviewElement() else { return }
         let saveDate = movieReviewElement.create_at
         let movieReviewState = presenter.returnMovieReviewState()
         let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: saveDate, state: movieReviewState)
@@ -156,10 +156,15 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         
         if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
             present(alert, animated: true, completion: nil)
-        } else {
-            isUpdate = true
+        } else {  // .afterStore(.reviewed)の時
             guard let editing = editing else { return }
-            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
+            if editing {
+                saveButton.title = .updateButtonTitle
+            } else {
+                saveButton.title = .editButtonTitle
+                isUpdate = true
+            }
+//            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
             reviewMovieOwner.editButtonTapped(isEditing: editing,
                                               state: movieReviewState)
         }
