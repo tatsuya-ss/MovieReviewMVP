@@ -23,10 +23,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     private weak var view: SearchMoviePresenterOutput!
     private var model: SearchMovieModelInput
-    private(set) var movies: [MovieReviewElement] = []
-    private(set) var stockMovies: [MovieReviewElement] = []
-    private var movieUpdateState: MovieUpdateState = .insert
-
+    private let reviewManagement = ReviewManagement()
     
     init(view: SearchMoviePresenterOutput, model: SearchMovieModelInput) {
         self.view = view
@@ -34,33 +31,32 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     var numberOfMovies: Int {
-        movies.count
+        reviewManagement.returnNumberOfReviews()
     }
     
     func movie() -> [MovieReviewElement] {
-        movies
+        reviewManagement.returnReviews()
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        view.reviewTheMovie(movie: movies[indexPath.row], movieUpdateState: movieUpdateState)
+        let selectResult = reviewManagement.returnSelectedReview(indexPath: indexPath)
+        view.reviewTheMovie(movie: selectResult, movieUpdateState: .insert)
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
         model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
             switch result {
-            case let .success(movies):
+            case let .success(result):
                 switch state {
                 case .search(.initial):
-                    self?.movies = movies
+                    self?.reviewManagement.fetchReviews(result: result)
                 case .search(.refresh):
-                    self?.movies.append(contentsOf: movies)
-                    
+                    self?.reviewManagement.searchRefresh(result: result)
                 case .upcoming:
-                    self?.movies = movies
+                    self?.reviewManagement.fetchReviews(result: result)
                 }
-                
                 DispatchQueue.main.async {
-                    self?.view.update(state, movies)
+                    self?.view.update(state, result)
                 }
                 
             case let .failure(SearchError.requestError(error)):

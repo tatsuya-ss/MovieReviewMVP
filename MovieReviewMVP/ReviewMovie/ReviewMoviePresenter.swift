@@ -14,8 +14,7 @@ protocol ReviewMoviePresenterInput {
     func didTapStoreLocationAlert(isStoredAsReview: Bool)
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
-    func returnMovieReviewElement() -> MovieReviewElement
-//    func fetchMovieDetail()
+    func returnMovieReviewElement() -> MovieReviewElement?
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
@@ -27,8 +26,9 @@ protocol ReviewMoviePresenterOutput : AnyObject {
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     
     private var movieReviewState: MovieReviewStoreState
-    private var movieReviewElement: MovieReviewElement
     private var movieUpdateState: MovieUpdateState
+    private let selectedReview: SelectedReview
+
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
     
@@ -37,8 +37,8 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
          movieUpdateState: MovieUpdateState,
          view: ReviewMoviePresenterOutput,
          model: ReviewMovieModelInput) {
+        selectedReview = SelectedReview(review: movieReviewElement)
         self.movieReviewState = movieReviewState
-        self.movieReviewElement = movieReviewElement
         self.movieUpdateState = movieUpdateState
         self.view = view
         self.model = model
@@ -46,15 +46,13 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
-        print(#function, movieReviewElement)
         model.requestMovieDetail(completion: { [weak self] result in
             switch result {
             case let .success(credits):
                 // キャストと監督の情報取得できたら
                 DispatchQueue.main.async { [weak self] in
                     guard let state = self?.movieReviewState,
-                          let movie = self?.movieReviewElement else { return }
-//                    print(movie.review) // review: Optional("Kkkkkkkkkkkk"),
+                          let movie = self?.selectedReview.returnReview() else { return }
                     self?.view.displayReviewMovie(movieReviewState: state, movie, credits: credits)
                 }
             case let .failure(SearchError.requestError(error)):
@@ -74,21 +72,24 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         movieUpdateState
     }
     
-    func returnMovieReviewElement() -> MovieReviewElement {
-        movieReviewElement
+    func returnMovieReviewElement() -> MovieReviewElement? {
+        selectedReview.returnReview()
     }
 
     func didTapStoreLocationAlert(isStoredAsReview: Bool) { // 初保存で呼ばれる
-        movieReviewElement.isStoredAsReview = isStoredAsReview
-        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-        print(#function,movieReviewElement)
+        selectedReview.update(isSavedAsReview: isStoredAsReview)
+        let reviewElement = selectedReview.returnReview()
+        model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
         NotificationCenter.default.post(name: .insetReview, object: nil)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
     func didTapSelectStoreDateAlert(storeDateState: storeDateState) {
-        if case .today = storeDateState { movieReviewElement.create_at = Date() }
-        model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
+        if case .today = storeDateState {
+            selectedReview.update(saveDate: Date())
+        }
+        let reviewElement = selectedReview.returnReview()
+        model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
@@ -97,17 +98,14 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         switch movieReviewState {
         case .beforeStore:
-            movieReviewElement.create_at = date
-            movieReviewElement.reviewStars = reviewScore
-            movieReviewElement.review = checkReview(review: review)
-            
-            
             // プライマリーキーが被っていないかの検証
-            model.checkSaved(movie: movieReviewElement) { result in
+            let selectedReview = selectedReview.returnReview()
+            model.checkSaved(movie: selectedReview) { result in
                 switch result {
                 case true:
                     self.view.displayAfterStoreButtonTapped(true, self.movieReviewState, editing: editing)
                 case false:
+                    self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
                     self.view.displayAfterStoreButtonTapped(false, self.movieReviewState, editing: editing)
                 }
             }
@@ -116,43 +114,24 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             guard let editing = editing else { return }
             switch editing {
             case false:
-                let isChange = checkIsChange(reviewScore: reviewScore, review: review)
-                if isChange {
-                    movieReviewElement.review = checkReview(review: review)
-                    movieReviewElement.reviewStars = reviewScore
-                    model.reviewMovie(movieReviewState: movieReviewState, movieReviewElement)
-                    print(#function, movieReviewElement)
+                let isChanged = selectedReview.checkIsChanged(reviewScore: reviewScore, review: review ?? "")
+                if isChanged {
+                    selectedReview.update(score: reviewScore, review: review)
+                    let selectedReview = selectedReview.returnReview()
+                    model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
+                    view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
                 }
-                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             case true:
                 view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             }
             
         case .afterStore(.stock):
-            movieReviewElement.reviewStars = reviewScore
-            movieReviewElement.review = checkReview(review: review)
-            movieReviewElement.isStoredAsReview = true
+            selectedReview.update(isSavedAsReview: true, score: reviewScore, review: review)
+            let selectedReview = selectedReview.returnReview()
+            model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
             view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
         }
     }
 
     
-}
-
-extension ReviewMoviePresenter {
-    func checkIsChange(reviewScore: Double, review: String?) -> Bool {
-        let reviewText = movieReviewElement.review ?? .placeholderString
-        if reviewScore != movieReviewElement.reviewStars ?? 0.0 || review != reviewText {
-            return true
-        }
-        return false
-    }
-    
-    func checkReview(review: String?) -> String? {
-        if review == "" || review == .placeholderString {
-            return nil
-        } else {
-            return review
-        }
-    }
 }
