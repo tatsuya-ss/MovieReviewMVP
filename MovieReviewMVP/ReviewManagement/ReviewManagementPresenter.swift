@@ -32,7 +32,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     private weak var view: ReviewManagementPresenterOutput!
     private var model: ReviewManagementModelInput
     private var movieUpdateState: MovieUpdateState = .modificate
-    let review = Review()
+    private let reviewManagement = ReviewManagement()
 
     init(view: ReviewManagementPresenterOutput, model: ReviewManagementModelInput) {
         self.view = view
@@ -40,25 +40,25 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     var numberOfMovies: Int {
-        let reviewCount = review.returnNumberOfReviews()
+        let reviewCount = reviewManagement.returnNumberOfReviews()
         return reviewCount
     }
     
     func didSelectRowCollectionView(at indexPath: IndexPath) {
-        let selectStockMovie = review.returnSelectedReview(indexPath: indexPath)
+        let selectStockMovie = reviewManagement.returnSelectedReview(indexPath: indexPath)
         view.displaySelectMyReview(selectStockMovie, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
     }
     
     func returnSortState() -> sortState {
-        review.returnSortState()
+        reviewManagement.returnSortState()
     }
     
     func returnMovieReview() -> [MovieReviewElement] {
-        review.returnReviews()
+        reviewManagement.returnReviews()
     }
     
     func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement {
-        review.returnReviewForCell(forRow: row)
+        reviewManagement.returnReviewForCell(forRow: row)
     }
     
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
@@ -66,11 +66,11 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {
-        let sortState = review.returnSortState()
+        let sortState = reviewManagement.returnSortState()
         model.sort(isStoredAsReview: true, sortState: sortState) { result in
             switch result {
             case .success(let reviews):
-                self.review.fetchReviews(reviews: reviews)
+                self.reviewManagement.fetchReviews(result: reviews)
                 DispatchQueue.main.async {
                     self.view.updateReview(state, index: nil)
                 }
@@ -84,16 +84,16 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
         // trashが押されたら最初に呼ばれる
         for indexPath in indexPaths {
-            let selectedReview = review.returnSelectedReview(indexPath: indexPath)
+            let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
             model.delete(movie: selectedReview)
-            review.deleteReview(row: indexPath.row)
+            reviewManagement.deleteReview(row: indexPath.row)
             view.updateReview(movieUpdateState, index: indexPath.row)
         }
     }
 
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
-        review.sortReviews(sortState: sortState)
+        reviewManagement.sortReviews(sortState: sortState)
         view.sortReview()
     }
     
