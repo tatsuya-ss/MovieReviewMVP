@@ -30,9 +30,7 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     
     private weak var view: StockReviewMovieManagementPresenterOutput!
     private var model: StockReviewMovieManagementModelInput
-    private(set) var movieReviewStockElements: [MovieReviewElement] = []
-    private var sortStateManagement: sortState = .createdDescend
-    let review = Review()
+    private let reviewManagement = ReviewManagement()
     
     init(view: StockReviewMovieManagementPresenterOutput, model: StockReviewMovieManagementModelInput) {
         self.view = view
@@ -40,20 +38,20 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     }
     
     func returnSortState() -> sortState {
-        review.returnSortState()
+        reviewManagement.returnSortState()
     }
 
     var numberOfStockMovies: Int {
-        let reviewCount = review.returnNumberOfReviews()
+        let reviewCount = reviewManagement.returnNumberOfReviews()
         return reviewCount
     }
     
     func returnStockMovieForCell(forRow row: Int) -> MovieReviewElement {
-        review.returnReviewForCell(forRow: row)
+        reviewManagement.returnReviewForCell(forRow: row)
     }
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
-        review.sortReviews(sortState: sortState)
+        reviewManagement.sortReviews(sortState: sortState)
         view.sortReview()
     }
     
@@ -62,24 +60,25 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     }
     
     func didSelectRowStockCollectionView(at indexPath: IndexPath) {
-        let selectStockMovie = review.returnSelectedReview(indexPath: indexPath)
+        let selectStockMovie = reviewManagement.returnSelectedReview(indexPath: indexPath)
         view.displayReviewMovieView(selectStockMovie, afterStoreState: .stock, movieUpdateState: .modificate)
     }
     
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            let selectedReview = review.returnSelectedReview(indexPath: indexPath)
+            let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
             model.delete(movie: selectedReview)
-            review.deleteReview(row: indexPath.row)
+            reviewManagement.deleteReview(row: indexPath.row)
             view.updateStockCollectionView(movieUpdateState: movieUpdateState, indexPath: indexPath)
         }
     }
 
     func fetchStockMovies() {
-        model.fetch(isStoredAsReview: false, sortState: sortStateManagement) { result in
+        let sortState = reviewManagement.returnSortState()
+        model.fetch(isStoredAsReview: false, sortState: sortState) { result in
             switch result {
             case .success(let reviews):
-                self.review.fetchReviews(reviews: reviews)
+                self.reviewManagement.fetchReviews(result: reviews)
                 DispatchQueue.main.async {
                     self.view.updateStockCollectionView(movieUpdateState: .initial, indexPath: nil)
                 }
