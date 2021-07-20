@@ -7,12 +7,11 @@ target 'MovieReviewMVP' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
+pod 'FirebaseUI'
 pod 'Firebase/Analytics'
 pod 'Firebase/Firestore'
 # Optionally, include the Swift extensions if you're using Swift.
-pod 'FirebaseFirestoreSwift'
-
-pod 'RealmSwift'
+pod 'FirebaseFirestoreSwift', '~> 7.3-beta'
 
 pod 'Cosmos', '~> 23.0' 
 

@@ -418,6 +418,7 @@
 				75676ED5263A89B400569AF5 /* Frameworks */,
 				75676ED6263A89B400569AF5 /* Resources */,
 				7DA8BB29FB8149EC410442F2 /* [CP] Embed Pods Frameworks */,
+				D77EFBD3619C34C3327E4FEC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -456,6 +457,7 @@
 				75676EF6263A89B600569AF5 /* Frameworks */,
 				75676EF7263A89B600569AF5 /* Resources */,
 				8680D79FBCB1B1EEA3331EDF /* [CP] Embed Pods Frameworks */,
+				A379568145DEF1F1BEAB773C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -583,6 +585,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP-MovieReviewMVPUITests/Pods-MovieReviewMVP-MovieReviewMVPUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A379568145DEF1F1BEAB773C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP-MovieReviewMVPUITests/Pods-MovieReviewMVP-MovieReviewMVPUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP-MovieReviewMVPUITests/Pods-MovieReviewMVP-MovieReviewMVPUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP-MovieReviewMVPUITests/Pods-MovieReviewMVP-MovieReviewMVPUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C2D4F4E083C134FE6FB6E7FA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -625,6 +644,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D77EFBD3619C34C3327E4FEC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP/Pods-MovieReviewMVP-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP/Pods-MovieReviewMVP-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MovieReviewMVP/Pods-MovieReviewMVP-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F2BC23BE329E598D54F7F0BF /* [CP] Check Pods Manifest.lock */ = {
