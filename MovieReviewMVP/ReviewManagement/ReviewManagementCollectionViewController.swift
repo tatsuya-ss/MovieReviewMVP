@@ -383,7 +383,8 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
     private func auth() {
         if let authUI = FUIAuth.defaultAuthUI() {
             authUI.providers = [
-                FUIOAuth.appleAuthProvider()
+                FUIOAuth.appleAuthProvider(),
+                FUIGoogleAuth(authUI: authUI)
             ]
             authUI.delegate = self
             
