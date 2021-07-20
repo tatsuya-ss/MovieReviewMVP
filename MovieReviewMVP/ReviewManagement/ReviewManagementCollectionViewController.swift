@@ -8,6 +8,7 @@
 
 
 import UIKit
+import FirebaseUI
 
 class ReviewManagementCollectionViewController: UIViewController {
     
@@ -32,6 +33,12 @@ class ReviewManagementCollectionViewController: UIViewController {
         setupTrashButton()
         setupStockButton()
         setupNotification()
+        if Auth.auth().currentUser != nil {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            UserDefaults.standard.set(uid, forKey: "userId")
+        } else {
+            auth()
+        }
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
     }
@@ -370,4 +377,25 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
     
     
+}
+
+extension ReviewManagementCollectionViewController : FUIAuthDelegate {
+    private func auth() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            authUI.providers = [
+                FUIOAuth.appleAuthProvider()
+            ]
+            authUI.delegate = self
+            
+            let authViewController = authUI.authViewController()
+            self.present(authViewController, animated: true)
+        }
+    }
+    
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        if let user = authDataResult?.user {
+            print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
+        }
+    }
+
 }

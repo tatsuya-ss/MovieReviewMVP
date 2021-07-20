@@ -11,6 +11,12 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+struct UserDefault {
+    func getUserId() -> String? {
+        UserDefaults.standard.string(forKey: "userId")
+    }
+}
+
 
 final class Firebase : ReviewRepository {
     
@@ -29,6 +35,7 @@ final class Firebase : ReviewRepository {
     }
     
     func save(movie: MovieReviewElement) {
+        guard let uid = UserDefault().getUserId() else { return }
             let dataToSave: [String: Any] = [
                 "title": movie.title ?? "",
                 "poster_path": movie.poster_path ?? "",
@@ -44,7 +51,7 @@ final class Firebase : ReviewRepository {
                 "media_type": movie.media_type
             ]
             
-            self.collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
                 if let error = error {
                     print(error.localizedDescription)
                 } else {
@@ -54,8 +61,9 @@ final class Firebase : ReviewRepository {
     }
     
     func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        guard let uid = UserDefault().getUserId() else { return }
         if let isStoredAsReview = isStoredAsReview {
-            collectionReference
+            db.collection("users").document(uid).collection("reviews")
                 .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
                 .order(by: "create_at", descending: sortState.Descending)
                 .getDocuments { querySnapshot, error in
@@ -70,7 +78,7 @@ final class Firebase : ReviewRepository {
                 }
             }
         } else {
-            collectionReference
+            db.collection("users").document(uid).collection("reviews")
                 .order(by: "create_at", descending: sortState.Descending)
                 .getDocuments { querySnapshot, error in
                 if let error = error {
@@ -88,7 +96,8 @@ final class Firebase : ReviewRepository {
     }
     
     func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
-        collectionReference
+        guard let uid = UserDefault().getUserId() else { return }
+        db.collection("users").document(uid).collection("reviews")
             .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
             .order(by: sortState.keyPath, descending: sortState.Descending)
             .getDocuments { querySnapshot, error in
@@ -106,7 +115,8 @@ final class Firebase : ReviewRepository {
 
     
     func delete(movie: MovieReviewElement) {
-        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
+        guard let uid = UserDefault().getUserId() else { return }
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
@@ -116,7 +126,8 @@ final class Firebase : ReviewRepository {
     }
     
     func update(movie: MovieReviewElement) {
-        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
+        guard let uid = UserDefault().getUserId() else { return }
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
             "title": movie.title ?? "",
             "poster_path": movie.poster_path ?? "",
             "original_name": movie.original_name ?? "",
