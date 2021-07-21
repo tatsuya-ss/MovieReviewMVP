@@ -17,6 +17,7 @@ class SettingManagementViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPresenter()
+        setupNavigation()
     }
     
 
@@ -28,6 +29,21 @@ extension SettingManagementViewController {
         let settingManagementModel = SettingManagementModel()
         let settingManagementPresenter = SettingManagementPresenter(view: self, model: settingManagementModel)
         inject(presenter: settingManagementPresenter)
+    }
+    
+    private func setupNavigation() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: "設定"))
+        
+        func setNavigationTitleLeft(title: String) -> UILabel {
+            let label = UILabel()
+            label.textColor = UIColor.white
+            label.text = title
+            label.font = UIFont.boldSystemFont(ofSize: 26)
+            
+            return label
+        }
+
     }
 }
 
