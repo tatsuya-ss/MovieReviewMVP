@@ -27,18 +27,19 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPresenter()
-        setupNavigation()
-        setupCollectionView()
-        setupTrashButton()
-        setupStockButton()
-        setupNotification()
         if Auth.auth().currentUser != nil {
             guard let uid = Auth.auth().currentUser?.uid else { return }
             UserDefaults.standard.set(uid, forKey: "userId")
         } else {
             auth()
         }
+
+        setupPresenter()
+        setupNavigation()
+        setupCollectionView()
+        setupTrashButton()
+        setupStockButton()
+        setupNotification()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
     }
