@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+protocol SettingManagementModelInput {
+    
+}
+
+final class SettingManagementModel : SettingManagementModelInput {
+    
+}

@@ -6,3 +6,24 @@
 //
 
 import Foundation
+
+
+protocol SettingManagementPresenterInput {
+    
+}
+
+protocol SettingManagementPresenterOutput: AnyObject {
+    
+}
+
+final class SettingManagementPresenter : SettingManagementPresenterInput {
+    
+    private weak var view: SettingManagementPresenterOutput!
+    private var model: SettingManagementModelInput
+    
+    init(view: SettingManagementPresenterOutput, model: SettingManagementModelInput) {
+        self.view = view
+        self.model = model
+    }
+    
+}

@@ -8,22 +8,29 @@
 import UIKit
 
 class SettingManagementViewController: UIViewController {
+    
+    private var presenter: SettingManagementPresenterInput!
+    func inject(presenter: SettingManagementPresenterInput) {
+        self.presenter = presenter
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupPresenter()
     }
     
 
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+extension SettingManagementViewController {
+    
+    func setupPresenter() {
+        let settingManagementModel = SettingManagementModel()
+        let settingManagementPresenter = SettingManagementPresenter(view: self, model: settingManagementModel)
+        inject(presenter: settingManagementPresenter)
     }
-    */
+}
 
+extension SettingManagementViewController : SettingManagementPresenterOutput {
+    
 }
