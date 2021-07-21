@@ -27,13 +27,7 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if Auth.auth().currentUser != nil {
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            UserDefaults.standard.set(uid, forKey: "userId")
-        } else {
-            auth()
-        }
-
+        setupLogin()
         setupPresenter()
         setupNavigation()
         setupCollectionView()
@@ -61,6 +55,15 @@ class ReviewManagementCollectionViewController: UIViewController {
 
 // MARK: - setup
 private extension ReviewManagementCollectionViewController {
+    
+    func setupLogin() {
+        if Auth.auth().currentUser != nil {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            UserDefaults.standard.set(uid, forKey: "userId")
+        } else {
+            auth()
+        }
+    }
     
     func setupTrashButton() {
         trashButton = UIButton()
