@@ -60,7 +60,6 @@
 		756D8FC926735C490026889B /* ReviewMovieManagementCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
-		756E4EAE26468334009AA060 /* MovieDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756E4EAD26468334009AA060 /* MovieDatabase.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		8E2A557D1AF49C807E7A8C6B /* Pods_MovieReviewMVPTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295042AF8F23A7316C15563 /* Pods_MovieReviewMVPTests.framework */; };
 		D500AA2732A15AA87E1E1F45 /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */; };
@@ -144,7 +143,6 @@
 		756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovieManagementCollectionReusableView.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
-		756E4EAD26468334009AA060 /* MovieDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDatabase.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVP_MovieReviewMVPUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		851DF11BBDD60E59E84AD1BF /* Pods-MovieReviewMVPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviewMVPTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieReviewMVPTests/Pods-MovieReviewMVPTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -298,7 +296,6 @@
 			children = (
 				75676F32263AA2FA00569AF5 /* TMDB.swift */,
 				75676F2A263AA0B900569AF5 /* Movie.swift */,
-				756E4EAD26468334009AA060 /* MovieDatabase.swift */,
 				756DFCB3264D0DBD00C6AF07 /* Repositories */,
 				756DFCB2264D0DB100C6AF07 /* UseCases */,
 				756DFCB1264D0D9F00C6AF07 /* DataStores */,
@@ -716,7 +713,6 @@
 				756620E32647B14F00D211EC /* ReviewManagementPresenter.swift in Sources */,
 				756AD28D268469A500BF5D6A /* String+Ext.swift in Sources */,
 				75359213264E61B9004477B3 /* ReviewMovieOwner.swift in Sources */,
-				756E4EAE26468334009AA060 /* MovieDatabase.swift in Sources */,
 				75676F33263AA2FA00569AF5 /* TMDB.swift in Sources */,
 				75676F15263A954000569AF5 /* SearchMovieModel.swift in Sources */,
 				75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */,
