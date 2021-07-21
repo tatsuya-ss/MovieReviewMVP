@@ -11,16 +11,31 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+struct UserError: Error {
+    var errorMessage: String {
+        return "ユーザーIDがありません"
+    }
+}
+
+struct UserDefault {
+    func getUserId() -> String {
+        guard let uid = UserDefaults.standard.string(forKey: "userId") else { fatalError(UserError().errorMessage) }
+        return uid
+    }
+}
+
 
 final class Firebase : ReviewRepository {
     
     let db = Firestore.firestore()
+    let userDefault = UserDefault()
     
     let collectionReference = Firestore.firestore().collection("movieReview")
     var movieReviews = [MovieReviewElement]()
     
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
-        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").getDocument { documentSnapshot, error in
+        let uid = userDefault.getUserId()
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").getDocument { documentSnapshot, error in
             guard let documentSnapshot = documentSnapshot,
                   documentSnapshot.exists else { completion(false) ; return }
             completion(true)
@@ -29,6 +44,7 @@ final class Firebase : ReviewRepository {
     }
     
     func save(movie: MovieReviewElement) {
+        let uid = userDefault.getUserId()
             let dataToSave: [String: Any] = [
                 "title": movie.title ?? "",
                 "poster_path": movie.poster_path ?? "",
@@ -44,7 +60,7 @@ final class Firebase : ReviewRepository {
                 "media_type": movie.media_type
             ]
             
-            self.collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
                 if let error = error {
                     print(error.localizedDescription)
                 } else {
@@ -54,8 +70,9 @@ final class Firebase : ReviewRepository {
     }
     
     func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+        let uid = userDefault.getUserId()
         if let isStoredAsReview = isStoredAsReview {
-            collectionReference
+            db.collection("users").document(uid).collection("reviews")
                 .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
                 .order(by: "create_at", descending: sortState.Descending)
                 .getDocuments { querySnapshot, error in
@@ -70,7 +87,7 @@ final class Firebase : ReviewRepository {
                 }
             }
         } else {
-            collectionReference
+            db.collection("users").document(uid).collection("reviews")
                 .order(by: "create_at", descending: sortState.Descending)
                 .getDocuments { querySnapshot, error in
                 if let error = error {
@@ -88,7 +105,8 @@ final class Firebase : ReviewRepository {
     }
     
     func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
-        collectionReference
+        let uid = userDefault.getUserId()
+        db.collection("users").document(uid).collection("reviews")
             .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
             .order(by: sortState.keyPath, descending: sortState.Descending)
             .getDocuments { querySnapshot, error in
@@ -106,7 +124,8 @@ final class Firebase : ReviewRepository {
 
     
     func delete(movie: MovieReviewElement) {
-        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
+        let uid = userDefault.getUserId()
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
@@ -116,7 +135,8 @@ final class Firebase : ReviewRepository {
     }
     
     func update(movie: MovieReviewElement) {
-        collectionReference.document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
+        let uid = userDefault.getUserId()
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
             "title": movie.title ?? "",
             "poster_path": movie.poster_path ?? "",
             "original_name": movie.original_name ?? "",
