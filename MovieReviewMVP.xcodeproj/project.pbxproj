@@ -60,6 +60,7 @@
 		756D8FC926735C490026889B /* ReviewMovieManagementCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
+		75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		8E2A557D1AF49C807E7A8C6B /* Pods_MovieReviewMVPTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295042AF8F23A7316C15563 /* Pods_MovieReviewMVPTests.framework */; };
 		D500AA2732A15AA87E1E1F45 /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */; };
@@ -143,6 +144,7 @@
 		756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovieManagementCollectionReusableView.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingManagement.storyboard; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVP_MovieReviewMVPUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		851DF11BBDD60E59E84AD1BF /* Pods-MovieReviewMVPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviewMVPTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieReviewMVPTests/Pods-MovieReviewMVPTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				75676F29263AA0A200569AF5 /* Domain */,
 				75699F1F264BC363001904C4 /* Cells */,
 				756D8FC526735C0C0026889B /* Header */,
+				75834ADD26A80A35004AC09C /* SettingManagement */,
 				7569BAA42679EE930058D495 /* StockReviewMovieManagement */,
 				756620D72647AF8700D211EC /* ReviewManagement */,
 				75676F0E263A94BB00569AF5 /* SearchMovie */,
@@ -393,6 +396,14 @@
 			path = State;
 			sourceTree = "<group>";
 		};
+		75834ADD26A80A35004AC09C /* SettingManagement */ = {
+			isa = PBXGroup;
+			children = (
+				75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */,
+			);
+			path = SettingManagement;
+			sourceTree = "<group>";
+		};
 		CC4A8A90E34E8A4D47CE6F82 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,6 +526,7 @@
 			files = (
 				7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
 				756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */,
+				75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */,
 				75676EE8263A89B500569AF5 /* LaunchScreen.storyboard in Resources */,
 				7569BAA92679EFEA0058D495 /* StockReviewMovieManagement.storyboard in Resources */,
 				75676EE5263A89B500569AF5 /* Assets.xcassets in Resources */,

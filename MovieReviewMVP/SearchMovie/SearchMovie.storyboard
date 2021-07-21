@@ -74,6 +74,7 @@
                     <connections>
                         <segue destination="t3Y-Hi-AeX" kind="relationship" relationship="viewControllers" id="EEj-YU-q2P"/>
                         <segue destination="XsA-oV-lAE" kind="relationship" relationship="viewControllers" id="34N-ej-yQl"/>
+                        <segue destination="qIP-Ec-pn7" kind="relationship" relationship="viewControllers" id="cHb-3U-95A"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ugj-eN-D9M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -111,6 +112,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ke-ru-tzk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2386" y="365"/>
+        </scene>
+        <!--SettingManagement-->
+        <scene sceneID="kmk-yZ-qZ2">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SettingManagement" id="qIP-Ec-pn7" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="PN1-cA-gas"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c8K-JC-rCw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2793" y="-1229"/>
         </scene>
     </scenes>
     <resources>
