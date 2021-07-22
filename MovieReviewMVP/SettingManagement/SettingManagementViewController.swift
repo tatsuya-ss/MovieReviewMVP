@@ -7,7 +7,8 @@
 
 import UIKit
 
-class SettingManagementViewController: UIViewController {
+final class SettingManagementViewController: UIViewController {
+    @IBOutlet private weak var SettingManagementTableView: UITableView!
     
     private var presenter: SettingManagementPresenterInput!
     func inject(presenter: SettingManagementPresenterInput) {
