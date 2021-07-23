@@ -45,4 +45,7 @@ final class ReviewUseCase {
         repository.update(movie: movie)
     }
     
+    func returnProfileInfomations() -> (String?, URL?) {
+        repository.returnProfileInfomations()
+    }
 }

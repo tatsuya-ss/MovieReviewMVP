@@ -10,6 +10,7 @@ import Foundation
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseUI
 
 struct UserError: Error {
     var errorMessage: String {
@@ -158,6 +159,12 @@ final class Firebase : ReviewRepository {
         }
     }
     
+    func returnProfileInfomations() -> (String?, URL?) {
+        guard let user = Auth.auth().currentUser else { return (nil, nil) }
+            let name = user.displayName
+            let photoURL = user.photoURL
+        return (name, photoURL)
+    }
 
 }
 

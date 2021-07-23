@@ -11,6 +11,7 @@ import Foundation
 protocol SettingManagementPresenterInput {
     var numberOfTitles: Int { get }
     func returnCellTitle(indexPath: IndexPath) -> String
+    func returnProfileInfomations() -> (String?, URL?)
 }
 
 protocol SettingManagementPresenterOutput: AnyObject {
@@ -39,4 +40,7 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
         cellTitles[indexPath.row]
     }
     
+    func returnProfileInfomations() -> (String?, URL?) {
+        model.returnProfileInfomations()
+    }
 }

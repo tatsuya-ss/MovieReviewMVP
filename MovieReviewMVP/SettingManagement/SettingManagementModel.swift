@@ -8,9 +8,14 @@
 import Foundation
 
 protocol SettingManagementModelInput {
-    
+    func returnProfileInfomations() -> (String?, URL?)
 }
 
 final class SettingManagementModel : SettingManagementModelInput {
     
+    let reviewUseCase = ReviewUseCase()
+    
+    func returnProfileInfomations() -> (String?, URL?) {
+        reviewUseCase.returnProfileInfomations()
+    }
 }

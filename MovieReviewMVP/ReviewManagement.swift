@@ -32,7 +32,6 @@ final class ReviewManagement {
         reviews = result
     }
     
-    
     func deleteReview(row: Int) {
         reviews.remove(at: row)
     }

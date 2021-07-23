@@ -103,7 +103,8 @@ extension SettingManagementViewController : UITableViewDataSource {
 extension SettingManagementViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = SettingManagementTableView.dequeueReusableHeaderFooterView(withIdentifier: SettingManagementHeaderView.identifier) as! SettingManagementHeaderView
-        header.configure(name: "坂本")
+        let userInfomations = presenter.returnProfileInfomations()
+        header.configure(userInfomation: userInfomations)
         return header
     }
     
