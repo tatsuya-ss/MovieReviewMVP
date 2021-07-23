@@ -8,16 +8,19 @@
 import UIKit
 
 class SettingManagementTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    @IBOutlet private weak var titleLabel: UILabel!
     
+    static let nib = UINib(nibName: String(describing: SettingManagementTableViewCell.self), bundle: nil)
+    
+    static let identifier = String(describing: SettingManagementTableViewCell.self)
+    
+    func configure(title: String) {
+        titleLabel.text = title
+        let disclosureImage = UIImage(named: "ic_navigate_next")!.withRenderingMode(.alwaysTemplate)
+        let disclosureView = UIImageView(image: disclosureImage)
+        disclosureView.tintColor = .white
+        accessoryView = disclosureView
+    }
+
+
 }
