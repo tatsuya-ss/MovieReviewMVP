@@ -25,6 +25,8 @@
 		75359213264E61B9004477B3 /* ReviewMovieOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75359212264E61B9004477B3 /* ReviewMovieOwner.swift */; };
 		753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753B2A3D26AA29F800EACFBD /* SettingManagementTableViewCell.swift */; };
 		753B2A4026AA29F800EACFBD /* SettingManagementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 753B2A3E26AA29F800EACFBD /* SettingManagementTableViewCell.xib */; };
+		753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */; };
+		753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */; };
 		755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755D71E0264385F5007C0D77 /* ReviewMovie.xib */; };
 		755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */; };
 		75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75636BE5263B994F00281DB1 /* SearchMovie.storyboard */; };
@@ -108,6 +110,8 @@
 		75359212264E61B9004477B3 /* ReviewMovieOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieOwner.swift; sourceTree = "<group>"; };
 		753B2A3D26AA29F800EACFBD /* SettingManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementTableViewCell.swift; sourceTree = "<group>"; };
 		753B2A3E26AA29F800EACFBD /* SettingManagementTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingManagementTableViewCell.xib; sourceTree = "<group>"; };
+		753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementHeaderView.swift; sourceTree = "<group>"; };
+		753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingManagementHeaderView.xib; sourceTree = "<group>"; };
 		755D71E0264385F5007C0D77 /* ReviewMovie.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovie.xib; sourceTree = "<group>"; };
 		755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieViewController.swift; sourceTree = "<group>"; };
 		75636BE5263B994F00281DB1 /* SearchMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchMovie.storyboard; sourceTree = "<group>"; };
@@ -209,6 +213,8 @@
 			children = (
 				753B2A3D26AA29F800EACFBD /* SettingManagementTableViewCell.swift */,
 				753B2A3E26AA29F800EACFBD /* SettingManagementTableViewCell.xib */,
+				753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */,
+				753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -547,6 +553,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */,
 				7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
 				756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */,
 				75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */,
@@ -727,6 +734,7 @@
 			files = (
 				752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */,
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
+				753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */,
 				7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,

@@ -9,12 +9,18 @@ import UIKit
 
 class SettingManagementHeaderView: UITableViewHeaderFooterView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    @IBOutlet private weak var profileImageView: UIImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
+    
+    static let nib = UINib(nibName: String(describing: SettingManagementHeaderView.self), bundle: nil)
+    
+    static let identifier = String(describing: SettingManagementHeaderView.self)
+
+    static let height: CGFloat = 44
+    
+    func configure(name: String) {
+        nameLabel.text = name
+        nameLabel.tintColor = .white
     }
-    */
 
 }

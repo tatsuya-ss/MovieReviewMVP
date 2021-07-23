@@ -21,8 +21,6 @@ final class SettingManagementViewController: UIViewController {
         setupNavigation()
         setupTableView()
     }
-    
-
 }
 
 extension SettingManagementViewController {
@@ -49,13 +47,26 @@ extension SettingManagementViewController {
     
     private func setupTableView() {
         SettingManagementTableView.dataSource = self
-        SettingManagementTableView.register(SettingManagementTableViewCell.nib, forCellReuseIdentifier: SettingManagementTableViewCell.identifier)
-        makeFotter()
+        SettingManagementTableView.delegate = self
+        
+        SettingManagementTableView.register(SettingManagementTableViewCell.nib,
+                                            forCellReuseIdentifier: SettingManagementTableViewCell.identifier)
+        SettingManagementTableView.register(SettingManagementHeaderView.nib,
+                                            forHeaderFooterViewReuseIdentifier: SettingManagementHeaderView.identifier)
+        
+        makeFooter()
     }
 }
 
 extension SettingManagementViewController {
-    private func makeFotter() {
+    private func makeHeader() {
+        let headerView = UIView()
+        headerView.backgroundColor = .black
+        headerView.frame.size.height = 100
+        self.SettingManagementTableView.tableHeaderView = headerView
+    }
+    
+    private func makeFooter() {
         let footerView = UIView()
         footerView.backgroundColor = .black
         footerView.frame.size.height = 100
@@ -69,8 +80,9 @@ extension SettingManagementViewController {
         [label.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
          label.centerXAnchor.constraint(equalTo: footerView.centerXAnchor)]
             .forEach { $0.isActive = true }
-        
     }
+    
+    
 }
 
 extension SettingManagementViewController : UITableViewDataSource {
@@ -86,6 +98,15 @@ extension SettingManagementViewController : UITableViewDataSource {
         
         return cell
     }
+}
+
+extension SettingManagementViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = SettingManagementTableView.dequeueReusableHeaderFooterView(withIdentifier: SettingManagementHeaderView.identifier) as! SettingManagementHeaderView
+        header.configure(name: "坂本")
+        return header
+    }
+    
 }
 
 extension SettingManagementViewController : SettingManagementPresenterOutput {
