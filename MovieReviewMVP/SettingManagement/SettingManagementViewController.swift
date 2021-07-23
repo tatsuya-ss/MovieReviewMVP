@@ -59,13 +59,6 @@ extension SettingManagementViewController {
 }
 
 extension SettingManagementViewController {
-    private func makeHeader() {
-        let headerView = UIView()
-        headerView.backgroundColor = .black
-        headerView.frame.size.height = 100
-        self.SettingManagementTableView.tableHeaderView = headerView
-    }
-    
     private func makeFooter() {
         let footerView = UIView()
         footerView.backgroundColor = .black
@@ -106,6 +99,10 @@ extension SettingManagementViewController : UITableViewDelegate {
         let userInfomations = presenter.returnProfileInfomations()
         header.configure(userInfomation: userInfomations)
         return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        SettingManagementTableView.bounds.height / 5
     }
     
 }
