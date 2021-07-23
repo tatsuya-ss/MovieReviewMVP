@@ -19,6 +19,7 @@ final class SettingManagementViewController: UIViewController {
         super.viewDidLoad()
         setupPresenter()
         setupNavigation()
+        setupTableView()
     }
     
 
@@ -44,7 +45,46 @@ extension SettingManagementViewController {
             
             return label
         }
+    }
+    
+    private func setupTableView() {
+        SettingManagementTableView.dataSource = self
+        SettingManagementTableView.register(SettingManagementTableViewCell.nib, forCellReuseIdentifier: SettingManagementTableViewCell.identifier)
+        makeFotter()
+    }
+}
 
+extension SettingManagementViewController {
+    private func makeFotter() {
+        let footerView = UIView()
+        footerView.backgroundColor = .black
+        footerView.frame.size.height = 100
+        self.SettingManagementTableView.tableFooterView = footerView
+        
+        let label = UILabel()
+        footerView.addSubview(label)
+        label.text = "バージョン1.0"
+        label.textColor = .lightGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        [label.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
+         label.centerXAnchor.constraint(equalTo: footerView.centerXAnchor)]
+            .forEach { $0.isActive = true }
+        
+    }
+}
+
+extension SettingManagementViewController : UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        presenter.numberOfTitles
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = SettingManagementTableView.dequeueReusableCell(withIdentifier: SettingManagementTableViewCell.identifier, for: indexPath) as! SettingManagementTableViewCell
+        
+        let title = presenter.returnCellTitle(indexPath: indexPath)
+        cell.configure(title: title)
+        
+        return cell
     }
 }
 
