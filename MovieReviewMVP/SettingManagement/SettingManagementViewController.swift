@@ -97,12 +97,17 @@ extension SettingManagementViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = SettingManagementTableView.dequeueReusableHeaderFooterView(withIdentifier: SettingManagementHeaderView.identifier) as! SettingManagementHeaderView
         let userInfomations = presenter.returnProfileInfomations()
-        header.configure(userInfomation: userInfomations)
+        let height = SettingManagementTableView.bounds.height / 6
+        header.configure(userInfomation: userInfomations, height: height)
         return header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        SettingManagementTableView.bounds.height / 5
+        SettingManagementTableView.bounds.height / 6
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = .black
     }
     
 }

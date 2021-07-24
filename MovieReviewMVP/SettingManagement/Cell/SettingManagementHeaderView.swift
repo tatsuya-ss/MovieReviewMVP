@@ -15,15 +15,15 @@ class SettingManagementHeaderView: UITableViewHeaderFooterView {
     static let nib = UINib(nibName: String(describing: SettingManagementHeaderView.self), bundle: nil)
     
     static let identifier = String(describing: SettingManagementHeaderView.self)
-
-    static let height: CGFloat = 44
     
-    func configure(userInfomation: (String?, URL?)) {
+    func configure(userInfomation: (String?, URL?), height: CGFloat) {
         guard let name = userInfomation.0,
               let url = userInfomation.1 else { return }
         nameLabel.text = name
         nameLabel.tintColor = .white
         fetchProfileImage(url: url)
+        let imageHeight = height * 0.7
+        profileImageView.layer.cornerRadius = imageHeight * 0.5
     }
 }
 
