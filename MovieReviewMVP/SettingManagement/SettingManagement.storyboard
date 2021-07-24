@@ -39,11 +39,11 @@
             </objects>
             <point key="canvasLocation" x="3702.898550724638" y="-1229.4642857142856"/>
         </scene>
-        <!--Item-->
+        <!--設定-->
         <scene sceneID="RcS-q1-oIc">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDC-jB-Xpl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="dES-Ii-fPU"/>
+                    <tabBarItem key="tabBarItem" title="設定" image="gearshape" catalog="system" id="dES-Ii-fPU"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bKs-HB-jOs">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -59,4 +59,7 @@
             <point key="canvasLocation" x="2792.753623188406" y="-1229.4642857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="gearshape" catalog="system" width="128" height="121"/>
+    </resources>
 </document>

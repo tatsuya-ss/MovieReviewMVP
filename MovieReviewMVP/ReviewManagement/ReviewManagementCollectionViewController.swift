@@ -34,6 +34,7 @@ class ReviewManagementCollectionViewController: UIViewController {
         setupTrashButton()
         setupStockButton()
         setupNotification()
+        setupTabBarController()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
     }
@@ -139,6 +140,10 @@ private extension ReviewManagementCollectionViewController {
         
         navigationItem.rightBarButtonItems = [editButton, sortButton]
         
+    }
+    
+    private func setupTabBarController() {
+        tabBarController?.tabBar.tintColor = .baseColor
     }
     
     
