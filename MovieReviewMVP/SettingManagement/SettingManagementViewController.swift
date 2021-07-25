@@ -125,4 +125,9 @@ extension SettingManagementViewController : SettingManagementPresenterOutput {
         
     }
     
+    func displayTMDbAttributionView(indexPath: IndexPath, title: String) {
+        let tmdbAttributionVC = UIStoryboard(name: "TMDbAttribution", bundle: nil).instantiateInitialViewController() as! TMDbAttributionViewController
+        navigationController?.pushViewController(tmdbAttributionVC, animated: true)
+    }
+    
 }

@@ -17,6 +17,7 @@ protocol SettingManagementPresenterInput {
 
 protocol SettingManagementPresenterOutput: AnyObject {
     func displayDetailSettingView(indexPath: IndexPath, title: String)
+    func displayTMDbAttributionView(indexPath: IndexPath, title: String)
 }
 
 final class SettingManagementPresenter : SettingManagementPresenterInput {
@@ -26,7 +27,6 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     
     let cellTitles = [
         "アカウント情報",
-        "操作方法",
         "TMDBについて"
     ]
     
@@ -46,6 +46,13 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     }
     
     func didSelectCell(didSelectRowAt indexPath: IndexPath) {
-        view.displayDetailSettingView(indexPath: indexPath, title: cellTitles[indexPath.row])
+        switch indexPath.row {
+        case 0:
+            view.displayDetailSettingView(indexPath: indexPath, title: cellTitles[indexPath.row])
+        case 1:
+            view.displayTMDbAttributionView(indexPath: indexPath, title: cellTitles[indexPath.row])
+        default:
+            break
+        }
     }
 }
