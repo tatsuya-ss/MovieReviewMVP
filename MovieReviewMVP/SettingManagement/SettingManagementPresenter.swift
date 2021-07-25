@@ -24,7 +24,7 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     private var model: SettingManagementModelInput
     
     let cellTitles = [
-        "プロフィール変更",
+        "アカウント情報",
         "操作方法",
         "TMDBについて"
     ]

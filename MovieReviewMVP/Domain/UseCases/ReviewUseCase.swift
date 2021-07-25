@@ -48,4 +48,8 @@ final class ReviewUseCase {
     func returnProfileInfomations() -> (String?, URL?) {
         repository.returnProfileInfomations()
     }
+    
+    func logout() {
+        repository.logout()
+    }
 }

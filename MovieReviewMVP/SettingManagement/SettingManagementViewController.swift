@@ -21,6 +21,7 @@ final class SettingManagementViewController: UIViewController {
         setupNavigation()
         setupTableView()
     }
+    
 }
 
 extension SettingManagementViewController {

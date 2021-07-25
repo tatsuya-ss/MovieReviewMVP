@@ -30,7 +30,9 @@
                             <constraint firstItem="Xef-JP-GBX" firstAttribute="leading" secondItem="3Cj-T8-aPw" secondAttribute="leading" id="iTw-Fl-Q8N"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="YrQ-eq-Ugx"/>
+                    <navigationItem key="navigationItem" id="YrQ-eq-Ugx">
+                        <barButtonItem key="rightBarButtonItem" title="ログアウト" id="zbE-Ea-1K0"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="SettingManagementTableView" destination="Xef-JP-GBX" id="e5E-Hf-ug3"/>
                     </connections>

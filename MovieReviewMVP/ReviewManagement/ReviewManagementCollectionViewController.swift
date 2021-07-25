@@ -406,6 +406,7 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         if let user = authDataResult?.user {
             print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
+            presenter.fetchUpdateReviewMovies(state: .initial)
         }
     }
 
