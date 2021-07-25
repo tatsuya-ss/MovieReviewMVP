@@ -12,10 +12,11 @@ protocol SettingManagementPresenterInput {
     var numberOfTitles: Int { get }
     func returnCellTitle(indexPath: IndexPath) -> String
     func returnProfileInfomations() -> (String?, URL?)
+    func didSelectCell(didSelectRowAt indexPath: IndexPath)
 }
 
 protocol SettingManagementPresenterOutput: AnyObject {
-    
+    func displayDetailSettingView(indexPath: IndexPath, title: String)
 }
 
 final class SettingManagementPresenter : SettingManagementPresenterInput {
@@ -42,5 +43,9 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     
     func returnProfileInfomations() -> (String?, URL?) {
         model.returnProfileInfomations()
+    }
+    
+    func didSelectCell(didSelectRowAt indexPath: IndexPath) {
+        view.displayDetailSettingView(indexPath: indexPath, title: cellTitles[indexPath.row])
     }
 }

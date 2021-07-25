@@ -95,6 +95,7 @@ extension SettingManagementViewController : UITableViewDataSource {
 }
 
 extension SettingManagementViewController : UITableViewDelegate {
+    // MARK: headerの処理
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = SettingManagementTableView.dequeueReusableHeaderFooterView(withIdentifier: SettingManagementHeaderView.identifier) as! SettingManagementHeaderView
         let userInfomations = presenter.returnProfileInfomations()
@@ -111,8 +112,17 @@ extension SettingManagementViewController : UITableViewDelegate {
         view.tintColor = .black
     }
     
+    // MARK: cellの処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didSelectCell(didSelectRowAt: indexPath)
+    }
 }
 
 extension SettingManagementViewController : SettingManagementPresenterOutput {
+    func displayDetailSettingView(indexPath: IndexPath, title: String) {
+        let detailedSettingVC = UIStoryboard(name: "DetailedSetting", bundle: nil).instantiateInitialViewController() as! DetailedSettingViewController
+        navigationController?.pushViewController(detailedSettingVC, animated: true)
+        
+    }
     
 }
