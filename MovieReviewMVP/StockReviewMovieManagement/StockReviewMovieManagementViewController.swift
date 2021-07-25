@@ -63,6 +63,7 @@ class StockReviewMovieManagementViewController: UIViewController {
         navigationItem.leftBarButtonItem = stopButton
         // MARK: 編集ボタン
         editButton = editButtonItem
+        editButton.title = .selectTitle
         // MARK: 並び替えボタン
         let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
@@ -191,6 +192,7 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
         case true:
             sortButton.isEnabled = false
             trashButton.isHidden = false
+            editButton.title = .deselectTitle
             guard let indexPaths = indexPaths else { return }
             for index in indexPaths {
                 stockCollectionView.deselectItem(at: index, animated: true)
@@ -199,6 +201,7 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
         case false:
             sortButton.isEnabled = true
             trashButton.isHidden = true
+            editButton.title = .selectTitle
             guard let indexPaths = indexPaths else { return }
             for index in indexPaths {
                 stockCollectionView.deselectItem(at: index, animated: true)
