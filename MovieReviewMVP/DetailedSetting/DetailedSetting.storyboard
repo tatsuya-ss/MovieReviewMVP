@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lDC-jB-Xpl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="L5p-hx-vhY">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -8,42 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Setting Management View Controller-->
-        <scene sceneID="7zu-o0-U79">
-            <objects>
-                <viewController id="wmb-Gr-uI5" customClass="SettingManagementViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="fls-0s-1Dx">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Xef-JP-GBX">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <sections/>
-                            </tableView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="3Cj-T8-aPw"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="Xef-JP-GBX" firstAttribute="top" secondItem="3Cj-T8-aPw" secondAttribute="top" id="FAA-qf-qZq"/>
-                            <constraint firstItem="Xef-JP-GBX" firstAttribute="trailing" secondItem="3Cj-T8-aPw" secondAttribute="trailing" id="GhF-Se-Rzk"/>
-                            <constraint firstAttribute="bottom" secondItem="Xef-JP-GBX" secondAttribute="bottom" id="NjJ-IK-9px"/>
-                            <constraint firstItem="Xef-JP-GBX" firstAttribute="leading" secondItem="3Cj-T8-aPw" secondAttribute="leading" id="iTw-Fl-Q8N"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="YrQ-eq-Ugx"/>
-                    <connections>
-                        <outlet property="SettingManagementTableView" destination="Xef-JP-GBX" id="e5E-Hf-ug3"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="L73-FK-wRJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3702.898550724638" y="-1229.4642857142856"/>
-        </scene>
-        <!--View Controller-->
+        <!--Detailed Setting View Controller-->
         <scene sceneID="j1I-Dd-eWq">
             <objects>
-                <viewController id="L5p-hx-vhY" sceneMemberID="viewController">
+                <viewController id="L5p-hx-vhY" customClass="DetailedSettingViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wkm-AH-rgc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -56,28 +24,8 @@
             </objects>
             <point key="canvasLocation" x="4633" y="-1229"/>
         </scene>
-        <!--設定-->
-        <scene sceneID="RcS-q1-oIc">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDC-jB-Xpl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="設定" image="gearshape" catalog="system" id="dES-Ii-fPU"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bKs-HB-jOs">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="wmb-Gr-uI5" kind="relationship" relationship="rootViewController" id="NrQ-Si-kdD"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vWt-7Z-nA2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2792.753623188406" y="-1229.4642857142856"/>
-        </scene>
     </scenes>
     <resources>
-        <image name="gearshape" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

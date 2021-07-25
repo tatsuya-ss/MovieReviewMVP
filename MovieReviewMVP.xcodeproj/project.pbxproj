@@ -68,6 +68,8 @@
 		75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE026A80D74004AC09C /* SettingManagementViewController.swift */; };
 		75834AE326A80D93004AC09C /* SettingManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE226A80D93004AC09C /* SettingManagementPresenter.swift */; };
 		75834AE526A80DA8004AC09C /* SettingManagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE426A80DA8004AC09C /* SettingManagementModel.swift */; };
+		758B059526AD129300DFA33A /* DetailedSetting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758B059426AD129300DFA33A /* DetailedSetting.storyboard */; };
+		758B059726AD12C100DFA33A /* DetailedSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		8E2A557D1AF49C807E7A8C6B /* Pods_MovieReviewMVPTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295042AF8F23A7316C15563 /* Pods_MovieReviewMVPTests.framework */; };
 		D500AA2732A15AA87E1E1F45 /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */; };
@@ -159,6 +161,8 @@
 		75834AE026A80D74004AC09C /* SettingManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementViewController.swift; sourceTree = "<group>"; };
 		75834AE226A80D93004AC09C /* SettingManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementPresenter.swift; sourceTree = "<group>"; };
 		75834AE426A80DA8004AC09C /* SettingManagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementModel.swift; sourceTree = "<group>"; };
+		758B059426AD129300DFA33A /* DetailedSetting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DetailedSetting.storyboard; sourceTree = "<group>"; };
+		758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingViewController.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVP_MovieReviewMVPUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		851DF11BBDD60E59E84AD1BF /* Pods-MovieReviewMVPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviewMVPTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieReviewMVPTests/Pods-MovieReviewMVPTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -281,6 +285,7 @@
 				75676F29263AA0A200569AF5 /* Domain */,
 				75699F1F264BC363001904C4 /* Cells */,
 				756D8FC526735C0C0026889B /* Header */,
+				758B059326AD11ED00DFA33A /* DetailedSetting */,
 				75834ADD26A80A35004AC09C /* SettingManagement */,
 				7569BAA42679EE930058D495 /* StockReviewMovieManagement */,
 				756620D72647AF8700D211EC /* ReviewManagement */,
@@ -433,6 +438,15 @@
 			path = SettingManagement;
 			sourceTree = "<group>";
 		};
+		758B059326AD11ED00DFA33A /* DetailedSetting */ = {
+			isa = PBXGroup;
+			children = (
+				758B059426AD129300DFA33A /* DetailedSetting.storyboard */,
+				758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */,
+			);
+			path = DetailedSetting;
+			sourceTree = "<group>";
+		};
 		CC4A8A90E34E8A4D47CE6F82 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -557,6 +571,7 @@
 				7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
 				756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */,
 				75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */,
+				758B059526AD129300DFA33A /* DetailedSetting.storyboard in Resources */,
 				75676EE8263A89B500569AF5 /* LaunchScreen.storyboard in Resources */,
 				7569BAA92679EFEA0058D495 /* StockReviewMovieManagement.storyboard in Resources */,
 				75676EE5263A89B500569AF5 /* Assets.xcassets in Resources */,
@@ -739,6 +754,7 @@
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,
 				750B440B2685CF0A00191E17 /* Date.swift in Sources */,
+				758B059726AD12C100DFA33A /* DetailedSettingViewController.swift in Sources */,
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,
 				75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */,
