@@ -8,7 +8,8 @@
 import UIKit
 
 class DetailedSettingViewController: UIViewController {
-
+    @IBOutlet weak var userDetailsTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
