@@ -9,12 +9,14 @@ import UIKit
 
 class DetailedSettingHeaderView: UITableViewHeaderFooterView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    @IBOutlet weak var itemLabel: UILabel!
+    
+    static let nib = UINib(nibName: String(describing: DetailedSettingHeaderView.self), bundle: nil)
+    
+    static let identifier = String(describing: DetailedSettingHeaderView.self)
+
+    func configure(item: String) {
+        itemLabel.text = item
     }
-    */
 
 }

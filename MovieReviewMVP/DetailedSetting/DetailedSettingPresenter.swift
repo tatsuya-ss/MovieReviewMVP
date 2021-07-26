@@ -15,6 +15,7 @@ struct UserInfoMation {
 protocol DetailedSettingPresenterInput {
     var numberOfSections: Int { get }
     func returnUserInfomations() -> [[UserInfoMation]]
+    func returnHeaderItems() -> [String]
 }
 
 protocol DetailedSettingPresenterOutput : AnyObject {
@@ -26,6 +27,11 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     var userInfomations = [
         [UserInfoMation(item: "メールアドレス", infomation: nil)],
         [UserInfoMation(item: "ログアウト", infomation: nil)]
+    ]
+    
+    var headerItems = [
+        "ユーザー情報",
+        "ログアウト"
     ]
     
     private weak var view: DetailedSettingPresenterOutput!
@@ -43,5 +49,8 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
         return userInfomations
     }
     
+    func returnHeaderItems() -> [String] {
+        headerItems
+    }
     
 }

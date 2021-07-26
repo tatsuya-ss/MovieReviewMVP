@@ -33,7 +33,9 @@ extension DetailedSettingViewController {
     
     private func setupTableView() {
         userDetailsTableView.dataSource = self
+        userDetailsTableView.delegate = self
         userDetailsTableView.register(DetailedSettingTableViewCell.nib, forCellReuseIdentifier: DetailedSettingTableViewCell.identifier)
+        userDetailsTableView.register(DetailedSettingHeaderView.nib, forHeaderFooterViewReuseIdentifier: DetailedSettingHeaderView.identifier)
     }
 }
 
@@ -56,8 +58,24 @@ extension DetailedSettingViewController : UITableViewDataSource {
         
         return cell
     }
+}
+
+extension DetailedSettingViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = userDetailsTableView.dequeueReusableHeaderFooterView(withIdentifier: DetailedSettingHeaderView.identifier) as! DetailedSettingHeaderView
+        let headerItems = presenter.returnHeaderItems()
+        header.configure(item: headerItems[section])
+        
+        return header
+    }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        30
+    }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = .baseColor
+    }
 }
 
 extension DetailedSettingViewController : DetailedSettingPresenterOutput {
