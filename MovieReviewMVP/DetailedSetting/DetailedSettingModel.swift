@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+protocol DetailedSettingModelInput {
+    
+}
+
+final class DetailedSettingModel : DetailedSettingModelInput {
+    
+}

@@ -7,24 +7,30 @@
 
 import UIKit
 
-class DetailedSettingViewController: UIViewController {
+final class DetailedSettingViewController: UIViewController {
     @IBOutlet weak var userDetailsTableView: UITableView!
+    
+    private var presenter: DetailedSettingPresenterInput!
+    func inject(presenter: DetailedSettingPresenterInput) {
+        self.presenter = presenter
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupPresenter()
     }
+
+}
+
+extension DetailedSettingViewController {
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupPresenter() {
+        let detailedSettingModel = DetailedSettingModel()
+        let detailedSettingPresenter = DetailedSettingPresenter(view: self, model: detailedSettingModel)
+        inject(presenter: detailedSettingPresenter)
     }
-    */
+}
 
+extension DetailedSettingViewController : DetailedSettingPresenterOutput {
+    
 }
