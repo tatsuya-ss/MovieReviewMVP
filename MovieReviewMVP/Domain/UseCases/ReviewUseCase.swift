@@ -56,4 +56,8 @@ final class ReviewUseCase {
     func returnCurrentUserEmail() -> String? {
         repository.returnCurrentUserEmail()
     }
+    
+    func returnloginStatus() -> Bool {
+        repository.returnloginStatus()
+    }
 }

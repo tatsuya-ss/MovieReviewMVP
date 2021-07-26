@@ -17,5 +17,5 @@ protocol ReviewRepository {
     func returnProfileInfomations() -> (String?, URL?)
     func logout()
     func returnCurrentUserEmail() -> String?
-    
+    func returnloginStatus() -> Bool
 }

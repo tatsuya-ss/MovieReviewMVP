@@ -175,6 +175,11 @@ final class Firebase : ReviewRepository {
             print(error)
         }
     }
+    
+    func returnloginStatus() -> Bool {
+        guard let _ = Auth.auth().currentUser else { return false }
+        return true
+    }
 
 }
 
