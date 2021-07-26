@@ -72,6 +72,8 @@
 		758B059726AD12C100DFA33A /* DetailedSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */; };
 		758B059A26AD4DA100DFA33A /* TMDbAttribution.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758B059926AD4DA100DFA33A /* TMDbAttribution.storyboard */; };
 		758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059B26AD4DBD00DFA33A /* TMDbAttributionViewController.swift */; };
+		758B059E26AE3B7C00DFA33A /* DetailedSettingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059D26AE3B7C00DFA33A /* DetailedSettingPresenter.swift */; };
+		758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059F26AE3B8A00DFA33A /* DetailedSettingModel.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		8E2A557D1AF49C807E7A8C6B /* Pods_MovieReviewMVPTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295042AF8F23A7316C15563 /* Pods_MovieReviewMVPTests.framework */; };
 		D500AA2732A15AA87E1E1F45 /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */; };
@@ -167,6 +169,8 @@
 		758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingViewController.swift; sourceTree = "<group>"; };
 		758B059926AD4DA100DFA33A /* TMDbAttribution.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TMDbAttribution.storyboard; sourceTree = "<group>"; };
 		758B059B26AD4DBD00DFA33A /* TMDbAttributionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbAttributionViewController.swift; sourceTree = "<group>"; };
+		758B059D26AE3B7C00DFA33A /* DetailedSettingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingPresenter.swift; sourceTree = "<group>"; };
+		758B059F26AE3B8A00DFA33A /* DetailedSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingModel.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		8237B98DE823A8A0753B238B /* Pods_MovieReviewMVP_MovieReviewMVPUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVP_MovieReviewMVPUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		851DF11BBDD60E59E84AD1BF /* Pods-MovieReviewMVPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviewMVPTests.debug.xcconfig"; path = "Target Support Files/Pods-MovieReviewMVPTests/Pods-MovieReviewMVPTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -447,6 +451,8 @@
 			isa = PBXGroup;
 			children = (
 				758B059426AD129300DFA33A /* DetailedSetting.storyboard */,
+				758B059F26AE3B8A00DFA33A /* DetailedSettingModel.swift */,
+				758B059D26AE3B7C00DFA33A /* DetailedSettingPresenter.swift */,
 				758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */,
 			);
 			path = DetailedSetting;
@@ -785,6 +791,7 @@
 				756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */,
 				75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */,
 				750B44B52689C32D00191E17 /* Notification.Name+Ext.swift in Sources */,
+				758B059E26AE3B7C00DFA33A /* DetailedSettingPresenter.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
 				753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */,
 				756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */,
@@ -805,6 +812,7 @@
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
 				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
+				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
