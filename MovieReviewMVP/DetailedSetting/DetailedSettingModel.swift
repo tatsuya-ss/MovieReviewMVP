@@ -8,9 +8,14 @@
 import Foundation
 
 protocol DetailedSettingModelInput {
-    
+    func fetchUserInfomations() -> String?
 }
 
 final class DetailedSettingModel : DetailedSettingModelInput {
     
+    let useCase = ReviewUseCase()
+    
+    func fetchUserInfomations() -> String? {
+        useCase.returnCurrentUserEmail()
+    }
 }

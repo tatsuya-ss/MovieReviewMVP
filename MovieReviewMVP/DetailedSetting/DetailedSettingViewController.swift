@@ -18,6 +18,7 @@ final class DetailedSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPresenter()
+        setupTableView()
     }
 
 }
@@ -29,6 +30,34 @@ extension DetailedSettingViewController {
         let detailedSettingPresenter = DetailedSettingPresenter(view: self, model: detailedSettingModel)
         inject(presenter: detailedSettingPresenter)
     }
+    
+    private func setupTableView() {
+        userDetailsTableView.dataSource = self
+        userDetailsTableView.register(DetailedSettingTableViewCell.nib, forCellReuseIdentifier: DetailedSettingTableViewCell.identifier)
+    }
+}
+
+extension DetailedSettingViewController : UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        presenter.numberOfSections
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let userInfomations = presenter.returnUserInfomations()
+        return userInfomations[section].count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = userDetailsTableView.dequeueReusableCell(withIdentifier: DetailedSettingTableViewCell.identifier, for: indexPath) as! DetailedSettingTableViewCell
+        let userInfomations = presenter.returnUserInfomations()
+        let userInfomation = userInfomations[indexPath.section][indexPath.row]
+        cell.configure(item: userInfomation.item,
+                       infomation: userInfomation.infomation)
+        
+        return cell
+    }
+    
+    
 }
 
 extension DetailedSettingViewController : DetailedSettingPresenterOutput {

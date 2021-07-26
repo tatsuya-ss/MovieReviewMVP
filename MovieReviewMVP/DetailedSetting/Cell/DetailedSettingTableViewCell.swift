@@ -9,15 +9,14 @@ import UIKit
 
 class DetailedSettingTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    static let nib = UINib(nibName: String(describing: DetailedSettingTableViewCell.self), bundle: nil)
     
+    static let identifier = String(describing: DetailedSettingTableViewCell.self)
+    
+    func configure(item: String, infomation: String?) {
+        textLabel?.text = item
+        detailTextLabel?.text = infomation
+    }
+
+
 }
