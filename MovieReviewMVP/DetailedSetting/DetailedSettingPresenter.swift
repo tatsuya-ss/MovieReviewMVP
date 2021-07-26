@@ -22,6 +22,7 @@ protocol DetailedSettingPresenterInput {
 
 protocol DetailedSettingPresenterOutput : AnyObject {
     func displayLogoutAlert()
+    func didLogout()
 }
 
 final class DetailedSettingPresenter : DetailedSettingPresenterInput {
@@ -38,6 +39,7 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     
     private weak var view: DetailedSettingPresenterOutput!
     private var model: DetailedSettingModelInput
+    private let notificationCenter = NotificationCenter()
     init(view: DetailedSettingPresenterOutput, model: DetailedSettingModelInput) {
         self.view = view
         self.model = model
@@ -63,5 +65,8 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     
     func logout() {
         model.logout()
+        view.didLogout()
+        NotificationCenter.default.post(name: .logout, object: nil)
+//        notificationCenter.post(name: .logout, object: nil)
     }
 }

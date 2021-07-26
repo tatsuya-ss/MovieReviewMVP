@@ -44,6 +44,10 @@ final class ReviewManagement {
         reviews.append(contentsOf: result)
     }
     
+    func logout() {
+        reviews.removeAll()
+    }
+    
     func sortReviews(sortState: sortState) {
         sortStateManagement = sortState
         switch sortState {

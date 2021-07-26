@@ -13,11 +13,13 @@ protocol SettingManagementPresenterInput {
     func returnCellTitle(indexPath: IndexPath) -> String
     func returnProfileInfomations() -> (String?, URL?)
     func didSelectCell(didSelectRowAt indexPath: IndexPath)
+    func logout()
 }
 
 protocol SettingManagementPresenterOutput: AnyObject {
     func displayDetailSettingView(indexPath: IndexPath, title: String)
     func displayTMDbAttributionView(indexPath: IndexPath, title: String)
+    func didLogout()
 }
 
 final class SettingManagementPresenter : SettingManagementPresenterInput {
@@ -43,6 +45,10 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     
     func returnProfileInfomations() -> (String?, URL?) {
         model.returnProfileInfomations()
+    }
+    
+    func logout() {
+        view.didLogout()
     }
     
     func didSelectCell(didSelectRowAt indexPath: IndexPath) {

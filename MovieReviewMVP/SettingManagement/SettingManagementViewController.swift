@@ -20,6 +20,7 @@ final class SettingManagementViewController: UIViewController {
         setupPresenter()
         setupNavigation()
         setupTableView()
+        setupNotification()
     }
     
 }
@@ -56,6 +57,19 @@ extension SettingManagementViewController {
                                             forHeaderFooterViewReuseIdentifier: SettingManagementHeaderView.identifier)
         
         makeFooter()
+    }
+    
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(logout),
+                                               name: .logout,
+                                               object: nil)
+    }
+}
+
+extension SettingManagementViewController {
+    @objc func logout() {
+        presenter.logout()
     }
 }
 
@@ -130,4 +144,7 @@ extension SettingManagementViewController : SettingManagementPresenterOutput {
         navigationController?.pushViewController(tmdbAttributionVC, animated: true)
     }
     
+    func didLogout() {
+        SettingManagementTableView.reloadData()
+    }
 }

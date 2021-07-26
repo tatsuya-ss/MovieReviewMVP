@@ -75,7 +75,7 @@ extension DetailedSettingViewController : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        view.tintColor = .baseColor
+        view.tintColor = .systemGray
     }
     
     // MARK: cellの処理
@@ -91,5 +91,7 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
         }
     }
     
-    
+    func didLogout() {
+        userDetailsTableView.reloadData()
+    }
 }

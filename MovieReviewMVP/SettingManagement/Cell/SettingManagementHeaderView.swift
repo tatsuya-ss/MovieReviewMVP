@@ -18,7 +18,10 @@ class SettingManagementHeaderView: UITableViewHeaderFooterView {
     
     func configure(userInfomation: (String?, URL?), height: CGFloat) {
         guard let name = userInfomation.0,
-              let url = userInfomation.1 else { return }
+              let url = userInfomation.1 else {
+            profileImageView.image = UIImage(named: "user_icon")
+            nameLabel.text = "ログアウト中"
+            return }
         nameLabel.text = name
         nameLabel.tintColor = .white
         fetchProfileImage(url: url)

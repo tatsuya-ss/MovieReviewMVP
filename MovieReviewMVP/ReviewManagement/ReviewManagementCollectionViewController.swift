@@ -182,8 +182,12 @@ private extension ReviewManagementCollectionViewController {
     func setupNotification() {
         NotificationCenter.default.addObserver(self,
                                        selector: #selector(updateReviewManagementCollectionView),
-                                       name: .insetReview,
+                                       name: .insertReview,
                                        object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(logout),
+                                               name: .logout,
+                                               object: nil)
     }
 
     
@@ -214,6 +218,10 @@ extension ReviewManagementCollectionViewController {
     
     @objc func updateReviewManagementCollectionView() {
         presenter.fetchUpdateReviewMovies(state: .insert)
+    }
+    
+    @objc func logout() {
+        presenter.didLogout()
     }
     
 }
