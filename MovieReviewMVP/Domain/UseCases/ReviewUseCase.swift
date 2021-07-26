@@ -52,4 +52,8 @@ final class ReviewUseCase {
     func logout() {
         repository.logout()
     }
+    
+    func returnCurrentUserEmail() -> String? {
+        repository.returnCurrentUserEmail()
+    }
 }

@@ -166,6 +166,11 @@ final class Firebase : ReviewRepository {
         return (name, photoURL)
     }
     
+    func returnCurrentUserEmail() -> String? {
+        guard let user = Auth.auth().currentUser else { return nil }
+        return user.email
+    }
+    
     func logout() {
         do {
             try Auth.auth().signOut()
