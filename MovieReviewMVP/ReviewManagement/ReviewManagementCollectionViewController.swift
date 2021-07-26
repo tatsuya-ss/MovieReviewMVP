@@ -60,7 +60,7 @@ private extension ReviewManagementCollectionViewController {
     func setupLogin() {
         if Auth.auth().currentUser != nil {
             guard let uid = Auth.auth().currentUser?.uid else { return }
-            UserDefaults.standard.set(uid, forKey: "userId")
+            print("\(uid)でログインしています")
         } else {
             auth()
         }
