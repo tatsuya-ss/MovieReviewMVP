@@ -16,10 +16,12 @@ protocol DetailedSettingPresenterInput {
     var numberOfSections: Int { get }
     func returnUserInfomations() -> [[UserInfoMation]]
     func returnHeaderItems() -> [String]
+    func didSelectRow(indexPath: IndexPath)
+    func logout()
 }
 
 protocol DetailedSettingPresenterOutput : AnyObject {
-    
+    func displayLogoutAlert()
 }
 
 final class DetailedSettingPresenter : DetailedSettingPresenterInput {
@@ -53,4 +55,13 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
         headerItems
     }
     
+    func didSelectRow(indexPath: IndexPath) {
+        if indexPath == [1, 0] {
+            view.displayLogoutAlert()
+        }
+    }
+    
+    func logout() {
+        model.logout()
+    }
 }

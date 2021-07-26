@@ -9,6 +9,7 @@ import Foundation
 
 protocol DetailedSettingModelInput {
     func fetchUserInfomations() -> String?
+    func logout()
 }
 
 final class DetailedSettingModel : DetailedSettingModelInput {
@@ -17,5 +18,9 @@ final class DetailedSettingModel : DetailedSettingModelInput {
     
     func fetchUserInfomations() -> String? {
         useCase.returnCurrentUserEmail()
+    }
+    
+    func logout() {
+        useCase.logout()
     }
 }

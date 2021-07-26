@@ -28,10 +28,26 @@ extension UIAlertController {
                 let storeDateAlert = makeStoreDateAlert(presenter: presenter)
                 return storeDateAlert
             }
-
         }
     }
     
+    class func makeLogoutAlert(presenter: DetailedSettingPresenterInput) -> UIAlertController? {
+        let logoutAlert = UIAlertController(title: "ログアウト",
+                                            message: "ログアウトしますか？",
+                                            preferredStyle: .alert)
+        logoutAlert.addAction(UIAlertAction(title: "キャンセル",
+                                            style: .cancel,
+                                            handler: nil))
+        logoutAlert.addAction(UIAlertAction(title: "ログアウト",
+                                            style: .destructive,
+                                            handler: { _ in
+                                                presenter.logout()
+                                            }))
+        return logoutAlert
+    }
+}
+
+extension UIAlertController {
     class func makeStoredAlert() -> UIAlertController {
         let storedAlert = UIAlertController(title: nil, message: .storedAlertMessage, preferredStyle: .alert)
         storedAlert.addAction(UIAlertAction(title: .storedAlertCancelTitle, style: .cancel, handler: nil))
@@ -64,4 +80,5 @@ extension UIAlertController {
 
         return storeDateAlert
     }
+
 }

@@ -61,6 +61,7 @@ extension DetailedSettingViewController : UITableViewDataSource {
 }
 
 extension DetailedSettingViewController : UITableViewDelegate {
+    // MARK: headerの処理
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = userDetailsTableView.dequeueReusableHeaderFooterView(withIdentifier: DetailedSettingHeaderView.identifier) as! DetailedSettingHeaderView
         let headerItems = presenter.returnHeaderItems()
@@ -76,8 +77,19 @@ extension DetailedSettingViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = .baseColor
     }
+    
+    // MARK: cellの処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didSelectRow(indexPath: indexPath)
+    }
 }
 
 extension DetailedSettingViewController : DetailedSettingPresenterOutput {
+    func displayLogoutAlert() {
+        if let logoutAlert = UIAlertController.makeLogoutAlert(presenter: presenter) {
+            present(logoutAlert, animated: true, completion: nil)
+        }
+    }
+    
     
 }
