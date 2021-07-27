@@ -173,7 +173,6 @@ private extension ReviewManagementCollectionViewController {
         ].forEach { $0.isActive = true}
         collectionView.allowsMultipleSelection = true
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
-        collectionView.register(ReviewMovieManagementCollectionReusableView.nib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReviewMovieManagementCollectionReusableView.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         
