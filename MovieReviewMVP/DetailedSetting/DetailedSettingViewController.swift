@@ -20,6 +20,7 @@ final class DetailedSettingViewController: UIViewController {
         super.viewDidLoad()
         setupPresenter()
         setupTableView()
+        setupNavigation()
     }
 
 }
@@ -37,6 +38,13 @@ extension DetailedSettingViewController {
         userDetailsTableView.delegate = self
         userDetailsTableView.register(DetailedSettingTableViewCell.nib, forCellReuseIdentifier: DetailedSettingTableViewCell.identifier)
         userDetailsTableView.register(DetailedSettingHeaderView.nib, forHeaderFooterViewReuseIdentifier: DetailedSettingHeaderView.identifier)
+    }
+    
+    private func setupNavigation() {
+        let backButton = UIBarButtonItem()
+        backButton.title = .setting
+        backButton.tintColor = .stringColor
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
 }
 
