@@ -147,9 +147,12 @@ private extension ReviewMovieViewController {
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement, credits: Credits) {
-        print(#function, movieReviewElement.review)
-        reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement, credits: credits)
+    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
+        reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement)
+    }
+    
+    func displayCastImage(credits: Credits) {
+        reviewMovieOwner.configureCastsCollectionView(credits: credits)
     }
 
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {

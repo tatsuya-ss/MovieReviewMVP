@@ -113,9 +113,9 @@ class ReviewMovieOwner: NSObject {
         reviewTextView.textColor = reviewTextIsReviewed.textColor
     }
     
-    func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement, credits: Credits) {
+    func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
         fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
-        returnTitleName(movie: movie, credits: credits)
+        returnTitleName(movie: movie)
         returnReviewTextState(movie: movie)
         makeReleaseDateText(movie: movie)
         overviewTextView.text = movie.overview
@@ -123,6 +123,9 @@ class ReviewMovieOwner: NSObject {
             reviewStarView.rating = movie.reviewStars ?? 0
             reviewStarView.text = String(movie.reviewStars ?? 0)
         }
+    }
+    
+    func configureCastsCollectionView(credits: Credits) {
         self.credits = credits
         collectionView.reloadData()
     }
@@ -151,7 +154,7 @@ extension ReviewMovieOwner {
         }
     }
 // MARK: タイトルを表示
-    private func returnTitleName(movie: MovieReviewElement, credits: Credits) {
+    private func returnTitleName(movie: MovieReviewElement) {
         if movie.title == nil || movie.title == "" {
             titleLabel.text = movie.original_name
         } else {
