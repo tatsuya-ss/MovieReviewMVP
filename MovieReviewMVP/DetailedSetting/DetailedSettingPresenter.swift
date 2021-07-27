@@ -36,6 +36,7 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
         "ユーザー情報",
         "ログイン"
     ]
+    let userLoginState = UserLoginState()
     
     private weak var view: DetailedSettingPresenterOutput!
     private var model: DetailedSettingModelInput
@@ -52,10 +53,8 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
         userInfomations[0][0].infomation = email
         
         let isLogin = model.returnloginStatus()
-        switch isLogin {
-        case true: userInfomations[1][0].item = "ログアウトする"
-        case false: userInfomations[1][0].item = "ログインする"
-        }
+        let loginItem = userLoginState.checkIsLogin(isLogin: isLogin)
+        userInfomations[1][0].item = loginItem
         return userInfomations
     }
     
