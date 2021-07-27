@@ -60,8 +60,6 @@
 		756AD28D268469A500BF5D6A /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AD28C268469A500BF5D6A /* String+Ext.swift */; };
 		756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */; };
 		756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */; };
-		756D8FC826735C490026889B /* ReviewMovieManagementCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */; };
-		756D8FC926735C490026889B /* ReviewMovieManagementCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
 		75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */; };
@@ -162,8 +160,6 @@
 		756AD28C268469A500BF5D6A /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
-		756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieManagementCollectionReusableView.swift; sourceTree = "<group>"; };
-		756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovieManagementCollectionReusableView.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingManagement.storyboard; sourceTree = "<group>"; };
@@ -303,7 +299,6 @@
 				756DFCB9264D5B5500C6AF07 /* State */,
 				75676F29263AA0A200569AF5 /* Domain */,
 				75699F1F264BC363001904C4 /* Cells */,
-				756D8FC526735C0C0026889B /* Header */,
 				758B059326AD11ED00DFA33A /* DetailedSetting */,
 				758B059826AD4D5000DFA33A /* TMDbAttribution */,
 				75834ADD26A80A35004AC09C /* SettingManagement */,
@@ -403,15 +398,6 @@
 				750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		756D8FC526735C0C0026889B /* Header */ = {
-			isa = PBXGroup;
-			children = (
-				756D8FC626735C490026889B /* ReviewMovieManagementCollectionReusableView.swift */,
-				756D8FC726735C490026889B /* ReviewMovieManagementCollectionReusableView.xib */,
-			);
-			path = Header;
 			sourceTree = "<group>";
 		};
 		756DFCB1264D0D9F00C6AF07 /* DataStores */ = {
@@ -631,7 +617,6 @@
 				755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */,
 				75699F3D264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib in Resources */,
 				752478AB268EF14700347972 /* CrewCastCollectionViewCell.xib in Resources */,
-				756D8FC926735C490026889B /* ReviewMovieManagementCollectionReusableView.xib in Resources */,
 				756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */,
 				75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */,
 				758B05AA26AE507B00DFA33A /* DetailedSettingHeaderView.xib in Resources */,
@@ -840,7 +825,6 @@
 				750B44612687096F00191E17 /* ReviewTextView.swift in Sources */,
 				75676EDE263A89B400569AF5 /* SceneDelegate.swift in Sources */,
 				7518C16826A01E3100C27C1C /* ReviewManagement.swift in Sources */,
-				756D8FC826735C490026889B /* ReviewMovieManagementCollectionReusableView.swift in Sources */,
 				75834AE526A80DA8004AC09C /* SettingManagementModel.swift in Sources */,
 				75676F10263A953100569AF5 /* SearchMoviePresenter.swift in Sources */,
 				7569BABB2679F0610058D495 /* StockReviewMovieManagementModel.swift in Sources */,
