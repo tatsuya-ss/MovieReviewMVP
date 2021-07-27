@@ -127,8 +127,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             
         case .afterStore(.stock):
             selectedReview.update(isSavedAsReview: true, score: reviewScore, review: review)
-            let selectedReview = selectedReview.returnReview()
-            model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
             view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
         }
     }
