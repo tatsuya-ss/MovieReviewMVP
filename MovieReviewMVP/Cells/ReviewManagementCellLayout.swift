@@ -25,8 +25,6 @@ class ColumnFlowLayout: UICollectionViewFlowLayout {
         let cellHeight = (cellWidth * 28 / 19) + 2 + 16
         
         self.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        
-        headerReferenceSize = CGSize(width: cv.bounds.width, height: 30)
     }
 }
 
