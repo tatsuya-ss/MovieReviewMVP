@@ -45,4 +45,19 @@ final class ReviewUseCase {
         repository.update(movie: movie)
     }
     
+    func returnProfileInfomations() -> (String?, URL?) {
+        repository.returnProfileInfomations()
+    }
+    
+    func logout() {
+        repository.logout()
+    }
+    
+    func returnCurrentUserEmail() -> String? {
+        repository.returnCurrentUserEmail()
+    }
+    
+    func returnloginStatus() -> Bool {
+        repository.returnloginStatus()
+    }
 }

@@ -8,5 +8,7 @@
 import Foundation
 
 extension Notification.Name {
-    static let insetReview = Notification.Name("insetReview")
+    static let insertReview = Notification.Name("insertReview")
+    static let logout = Notification.Name("logout")
+    static let login = Notification.Name("login")
 }

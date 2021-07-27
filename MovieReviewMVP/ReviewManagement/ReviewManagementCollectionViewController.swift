@@ -27,19 +27,14 @@ class ReviewManagementCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if Auth.auth().currentUser != nil {
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            UserDefaults.standard.set(uid, forKey: "userId")
-        } else {
-            auth()
-        }
-
+        setupLogin()
         setupPresenter()
         setupNavigation()
         setupCollectionView()
         setupTrashButton()
         setupStockButton()
         setupNotification()
+        setupTabBarController()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
     }
@@ -61,6 +56,15 @@ class ReviewManagementCollectionViewController: UIViewController {
 
 // MARK: - setup
 private extension ReviewManagementCollectionViewController {
+    
+    func setupLogin() {
+        if Auth.auth().currentUser != nil {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            print("\(uid)でログインしています")
+        } else {
+            auth()
+        }
+    }
     
     func setupTrashButton() {
         trashButton = UIButton()
@@ -138,6 +142,10 @@ private extension ReviewManagementCollectionViewController {
         
     }
     
+    private func setupTabBarController() {
+        tabBarController?.tabBar.tintColor = .baseColor
+    }
+    
     
     func setNavigationTitleLeft(title: String) -> UILabel {
         let label = UILabel()
@@ -174,8 +182,16 @@ private extension ReviewManagementCollectionViewController {
     func setupNotification() {
         NotificationCenter.default.addObserver(self,
                                        selector: #selector(updateReviewManagementCollectionView),
-                                       name: .insetReview,
+                                       name: .insertReview,
                                        object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(logout),
+                                               name: .logout,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(login),
+                                               name: .login,
+                                               object: nil)
     }
 
     
@@ -206,6 +222,14 @@ extension ReviewManagementCollectionViewController {
     
     @objc func updateReviewManagementCollectionView() {
         presenter.fetchUpdateReviewMovies(state: .insert)
+    }
+    
+    @objc func logout() {
+        presenter.didLogout()
+    }
+    
+    @objc func login() {
+        presenter.fetchUpdateReviewMovies(state: .initial)
     }
     
 }
@@ -398,6 +422,7 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         if let user = authDataResult?.user {
             print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
+            presenter.fetchUpdateReviewMovies(state: .initial)
         }
     }
 

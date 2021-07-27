@@ -17,6 +17,7 @@ protocol ReviewManagementPresenterInput {
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func returnSortState() -> sortState
     func returnMovieReview() -> [MovieReviewElement]
+    func didLogout()
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
@@ -95,6 +96,11 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         reviewManagement.sortReviews(sortState: sortState)
         view.sortReview()
+    }
+    
+    func didLogout() {
+        reviewManagement.logout()
+        view.updateReview(.initial, index: nil)
     }
     
 }

@@ -32,7 +32,6 @@ final class ReviewManagement {
         reviews = result
     }
     
-    
     func deleteReview(row: Int) {
         reviews.remove(at: row)
     }
@@ -43,6 +42,10 @@ final class ReviewManagement {
     
     func searchRefresh(result: [MovieReviewElement]) {
         reviews.append(contentsOf: result)
+    }
+    
+    func logout() {
+        reviews.removeAll()
     }
     
     func sortReviews(sortState: sortState) {

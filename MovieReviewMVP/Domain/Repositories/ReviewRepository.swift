@@ -14,4 +14,8 @@ protocol ReviewRepository {
     func delete(movie: MovieReviewElement)
     func update(movie: MovieReviewElement)
     func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
+    func returnProfileInfomations() -> (String?, URL?)
+    func logout()
+    func returnCurrentUserEmail() -> String?
+    func returnloginStatus() -> Bool
 }

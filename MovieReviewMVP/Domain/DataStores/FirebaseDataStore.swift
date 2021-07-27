@@ -10,6 +10,7 @@ import Foundation
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseUI
 
 struct UserError: Error {
     var errorMessage: String {
@@ -17,24 +18,16 @@ struct UserError: Error {
     }
 }
 
-struct UserDefault {
-    func getUserId() -> String {
-        guard let uid = UserDefaults.standard.string(forKey: "userId") else { fatalError(UserError().errorMessage) }
-        return uid
-    }
-}
-
-
 final class Firebase : ReviewRepository {
     
     let db = Firestore.firestore()
-    let userDefault = UserDefault()
     
     let collectionReference = Firestore.firestore().collection("movieReview")
     var movieReviews = [MovieReviewElement]()
     
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
-        let uid = userDefault.getUserId()
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").getDocument { documentSnapshot, error in
             guard let documentSnapshot = documentSnapshot,
                   documentSnapshot.exists else { completion(false) ; return }
@@ -44,7 +37,8 @@ final class Firebase : ReviewRepository {
     }
     
     func save(movie: MovieReviewElement) {
-        let uid = userDefault.getUserId()
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
             let dataToSave: [String: Any] = [
                 "title": movie.title ?? "",
                 "poster_path": movie.poster_path ?? "",
@@ -70,7 +64,8 @@ final class Firebase : ReviewRepository {
     }
     
     func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
-        let uid = userDefault.getUserId()
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
         if let isStoredAsReview = isStoredAsReview {
             db.collection("users").document(uid).collection("reviews")
                 .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
@@ -105,7 +100,8 @@ final class Firebase : ReviewRepository {
     }
     
     func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
-        let uid = userDefault.getUserId()
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
         db.collection("users").document(uid).collection("reviews")
             .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
             .order(by: sortState.keyPath, descending: sortState.Descending)
@@ -124,7 +120,8 @@ final class Firebase : ReviewRepository {
 
     
     func delete(movie: MovieReviewElement) {
-        let uid = userDefault.getUserId()
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
             if let error = error {
                 print(error.localizedDescription)
@@ -135,7 +132,8 @@ final class Firebase : ReviewRepository {
     }
     
     func update(movie: MovieReviewElement) {
-        let uid = userDefault.getUserId()
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
             "title": movie.title ?? "",
             "poster_path": movie.poster_path ?? "",
@@ -158,6 +156,32 @@ final class Firebase : ReviewRepository {
         }
     }
     
+    // MARK: FirebaseAuth
+    
+    func returnProfileInfomations() -> (String?, URL?) {
+        guard let user = Auth.auth().currentUser else { return (nil, nil) }
+            let name = user.displayName
+            let photoURL = user.photoURL
+        return (name, photoURL)
+    }
+    
+    func returnCurrentUserEmail() -> String? {
+        guard let user = Auth.auth().currentUser else { return nil }
+        return user.email
+    }
+    
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func returnloginStatus() -> Bool {
+        guard let _ = Auth.auth().currentUser else { return false }
+        return true
+    }
 
 }
 

@@ -18,6 +18,7 @@ extension String {
     static let searchLabelTitle = "検索結果"
     static let upcomingLabelTitle = "近日公開"
     static let searchTitle = "検索"
+    static let setting = "設定"
     static let stock = "ストック"
     static let placeholderString = "レビューを入力してください"
     
