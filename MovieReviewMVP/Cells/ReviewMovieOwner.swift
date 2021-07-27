@@ -133,19 +133,22 @@ class ReviewMovieOwner: NSObject {
 extension ReviewMovieOwner {
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
     private func fetchMovieImage(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
-        guard let posperPath = movie.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
-        let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-            guard let imageData = data else { return }
-            DispatchQueue.global().async { [weak self] in
-                guard let image = UIImage(data: imageData) else { return }
-                DispatchQueue.main.async {
-                    self?.movieImageView.image = image
-                    self?.backgroundImageView.image = image
+        if let posperPath = movie.poster_path,
+              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) {
+            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
+                guard let imageData = data else { return }
+                DispatchQueue.global().async { [weak self] in
+                    guard let image = UIImage(data: imageData) else { return }
+                    DispatchQueue.main.async {
+                        self?.movieImageView.image = image
+                        self?.backgroundImageView.image = image
+                    }
                 }
             }
+            task.resume()
+        } else {
+            movieImageView.image = UIImage(named: "no_image")
         }
-        task.resume()
     }
 // MARK: タイトルを表示
     private func returnTitleName(movie: MovieReviewElement, credits: Credits) {
