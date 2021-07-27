@@ -58,7 +58,7 @@ final class ReviewManagement {
         case .reviewStarAscend:
             reviews.sort { $0.reviewStars ?? 0.0 > $1.reviewStars ?? 0.0 }
         case .reviewStarDescend:
-            reviews.sort { $0.reviewStars ?? 0.0 > $1.reviewStars ?? 0.0 }
+            reviews.sort { $0.reviewStars ?? 0.0 < $1.reviewStars ?? 0.0 }
         }
     }
     
