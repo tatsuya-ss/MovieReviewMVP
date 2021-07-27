@@ -18,7 +18,8 @@ protocol ReviewMoviePresenterInput {
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement, credits: Credits)
+    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement)
+    func displayCastImage(credits: Credits)
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
 }
@@ -46,14 +47,15 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
+        let review = selectedReview.returnReview()
+        view.displayReviewMovie(movieReviewState: movieReviewState, review)
+        
         model.requestMovieDetail(completion: { [weak self] result in
             switch result {
             case let .success(credits):
                 // キャストと監督の情報取得できたら
                 DispatchQueue.main.async { [weak self] in
-                    guard let state = self?.movieReviewState,
-                          let movie = self?.selectedReview.returnReview() else { return }
-                    self?.view.displayReviewMovie(movieReviewState: state, movie, credits: credits)
+                    self?.view.displayCastImage(credits: credits)
                 }
             case let .failure(SearchError.requestError(error)):
                 print(error)
@@ -127,8 +129,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             
         case .afterStore(.stock):
             selectedReview.update(isSavedAsReview: true, score: reviewScore, review: review)
-            let selectedReview = selectedReview.returnReview()
-            model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
             view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
         }
     }

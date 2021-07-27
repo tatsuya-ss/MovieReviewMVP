@@ -131,7 +131,7 @@ private extension ReviewManagementCollectionViewController {
     
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: .reviewTitle))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
         
         let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
@@ -145,17 +145,6 @@ private extension ReviewManagementCollectionViewController {
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
     }
-    
-    
-    func setNavigationTitleLeft(title: String) -> UILabel {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.text = title
-        label.font = UIFont.boldSystemFont(ofSize: 26)
-        
-        return label
-    }
-    
         
     func setupCollectionView() {
         colunmFlowLayout = ColumnFlowLayout()
@@ -165,6 +154,7 @@ private extension ReviewManagementCollectionViewController {
         collectionView.alwaysBounceVertical = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
+
         [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
          collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
          collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
@@ -172,7 +162,6 @@ private extension ReviewManagementCollectionViewController {
         ].forEach { $0.isActive = true}
         collectionView.allowsMultipleSelection = true
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
-        collectionView.register(ReviewMovieManagementCollectionReusableView.nib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReviewMovieManagementCollectionReusableView.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -294,15 +283,6 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader,
-           let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ReviewMovieManagementCollectionReusableView.identifier, for: indexPath) as? ReviewMovieManagementCollectionReusableView {
-            headerView.configure()
-            return headerView
-        }
-        
-        return UICollectionReusableView()
-    }
 }
 
 // MARK: - ReviewManagementPresenterOutput

@@ -23,19 +23,22 @@ class MovieTableViewCell: UITableViewCell {
     
     func configureCell(movie: MovieReviewElement, height: CGFloat) {
         
-        guard let posperPath = movie.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) else { return }
-        let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-            guard let imageData = data else { return }
-            
-            DispatchQueue.global().async { [weak self] in
-                guard let image = UIImage(data: imageData) else { return }
-                DispatchQueue.main.async {
-                    self?.movieImageView.image = image
+        if let posperPath = movie.poster_path,
+              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) {
+            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
+                guard let imageData = data else { return }
+                
+                DispatchQueue.global().async { [weak self] in
+                    guard let image = UIImage(data: imageData) else { return }
+                    DispatchQueue.main.async {
+                        self?.movieImageView.image = image
+                    }
                 }
             }
+            task.resume()
+        } else {
+            movieImageView.image = UIImage(named: "no_image")
         }
-        task.resume()
         
         if movie.title == nil || movie.title == "" {
             titleLabel.text = movie.original_name

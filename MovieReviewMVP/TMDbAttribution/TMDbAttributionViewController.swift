@@ -7,16 +7,23 @@
 
 import UIKit
 
-class TMDbAttributionViewController: UIViewController {
+final class TMDbAttributionViewController: UIViewController {
     @IBOutlet weak var logoImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         logoImageView.image = UIImage(named: "tmdb_logo")
-
-        // Do any additional setup after loading the view.
+        setupNavigation()
     }
 
 }
 
-//"本製品はTMDbAPIを使用していますが、TMDbによって保証または認定されているものではありません。"
+extension TMDbAttributionViewController {
+    private func setupNavigation() {
+        let backButton = UIBarButtonItem()
+        backButton.title = .setting
+        backButton.tintColor = .stringColor
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
+    }
+
+}

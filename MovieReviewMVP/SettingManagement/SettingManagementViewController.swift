@@ -35,16 +35,7 @@ extension SettingManagementViewController {
     
     private func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: .setting))
-        
-        func setNavigationTitleLeft(title: String) -> UILabel {
-            let label = UILabel()
-            label.textColor = UIColor.white
-            label.text = title
-            label.font = UIFont.boldSystemFont(ofSize: 26)
-            
-            return label
-        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .setting))
     }
     
     private func setupTableView() {
