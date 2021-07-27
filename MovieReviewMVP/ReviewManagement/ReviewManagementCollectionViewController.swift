@@ -131,7 +131,7 @@ private extension ReviewManagementCollectionViewController {
     
     func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: setNavigationTitleLeft(title: .reviewTitle))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
         
         let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
         sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
@@ -145,17 +145,6 @@ private extension ReviewManagementCollectionViewController {
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
     }
-    
-    
-    func setNavigationTitleLeft(title: String) -> UILabel {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.text = title
-        label.font = UIFont.boldSystemFont(ofSize: 26)
-        
-        return label
-    }
-    
         
     func setupCollectionView() {
         colunmFlowLayout = ColumnFlowLayout()

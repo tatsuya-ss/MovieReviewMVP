@@ -53,7 +53,7 @@ private extension SearchMovieViewController {
     
     private func setupNavigationController() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationItem.title = .searchTitle
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .searchTitle))
     }
     
     private func setupTableViewController() {
