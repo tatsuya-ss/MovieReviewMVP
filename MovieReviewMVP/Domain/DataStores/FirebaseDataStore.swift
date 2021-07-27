@@ -156,6 +156,8 @@ final class Firebase : ReviewRepository {
         }
     }
     
+    // MARK: FirebaseAuth
+    
     func returnProfileInfomations() -> (String?, URL?) {
         guard let user = Auth.auth().currentUser else { return (nil, nil) }
             let name = user.displayName

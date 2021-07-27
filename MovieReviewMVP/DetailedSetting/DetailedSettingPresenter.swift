@@ -23,6 +23,7 @@ protocol DetailedSettingPresenterInput {
 protocol DetailedSettingPresenterOutput : AnyObject {
     func displayLogoutAlert()
     func didLogout()
+    func displayLoginView()
 }
 
 final class DetailedSettingPresenter : DetailedSettingPresenterInput {
@@ -64,7 +65,11 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     
     func didSelectRow(indexPath: IndexPath) {
         if indexPath == [1, 0] {
-            view.displayLogoutAlert()
+            let isLogin = userLoginState.returnLoginState()
+            switch isLogin {
+            case true: view.displayLogoutAlert()
+            case false: view.displayLoginView()
+            }
         }
     }
     

@@ -188,6 +188,10 @@ private extension ReviewManagementCollectionViewController {
                                                selector: #selector(logout),
                                                name: .logout,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(login),
+                                               name: .login,
+                                               object: nil)
     }
 
     
@@ -222,6 +226,10 @@ extension ReviewManagementCollectionViewController {
     
     @objc func logout() {
         presenter.didLogout()
+    }
+    
+    @objc func login() {
+        presenter.fetchUpdateReviewMovies(state: .initial)
     }
     
 }

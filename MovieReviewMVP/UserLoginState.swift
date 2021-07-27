@@ -8,7 +8,11 @@
 import Foundation
 
 final class UserLoginState {
-    var isLogin = false
+    private var isLogin = false
+    
+    func returnLoginState() -> Bool {
+        isLogin
+    }
     
     func checkIsLogin(isLogin: Bool) -> String {
         self.isLogin = isLogin

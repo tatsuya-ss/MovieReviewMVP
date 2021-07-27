@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseUI
 
 final class DetailedSettingViewController: UIViewController {
     @IBOutlet weak var userDetailsTableView: UITableView!
@@ -84,11 +85,39 @@ extension DetailedSettingViewController : UITableViewDelegate {
     }
 }
 
+extension DetailedSettingViewController : FUIAuthDelegate {
+    private func auth() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            authUI.providers = [
+                FUIOAuth.appleAuthProvider(),
+                FUIGoogleAuth(authUI: authUI),
+                FUIOAuth.twitterAuthProvider()
+            ]
+            authUI.delegate = self
+            
+            let authViewController = authUI.authViewController()
+            self.present(authViewController, animated: true)
+        }
+    }
+    
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        if let user = authDataResult?.user {
+            print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
+            userDetailsTableView.reloadData()
+            NotificationCenter.default.post(name: .login, object: nil)
+        }
+    }
+}
+
 extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     func displayLogoutAlert() {
         if let logoutAlert = UIAlertController.makeLogoutAlert(presenter: presenter) {
             present(logoutAlert, animated: true, completion: nil)
         }
+    }
+    
+    func displayLoginView() {
+        auth()
     }
     
     func didLogout() {
