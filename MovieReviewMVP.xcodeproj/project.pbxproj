@@ -20,6 +20,8 @@
 		7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */; };
 		7518C16826A01E3100C27C1C /* ReviewManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16726A01E3100C27C1C /* ReviewManagement.swift */; };
 		7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16926A17DED00C27C1C /* SelectedReview.swift */; };
+		751A53A726B158DD003B78E9 /* GADBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751A53A626B158DD003B78E9 /* GADBannerView.swift */; };
+		751A53A926B158F9003B78E9 /* GADBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 751A53A826B158F9003B78E9 /* GADBannerView.xib */; };
 		752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */; };
 		752478AB268EF14700347972 /* CrewCastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */; };
 		75359213264E61B9004477B3 /* ReviewMovieOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75359212264E61B9004477B3 /* ReviewMovieOwner.swift */; };
@@ -115,6 +117,8 @@
 		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		7518C16726A01E3100C27C1C /* ReviewManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagement.swift; sourceTree = "<group>"; };
 		7518C16926A17DED00C27C1C /* SelectedReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedReview.swift; sourceTree = "<group>"; };
+		751A53A626B158DD003B78E9 /* GADBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GADBannerView.swift; sourceTree = "<group>"; };
+		751A53A826B158F9003B78E9 /* GADBannerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GADBannerView.xib; sourceTree = "<group>"; };
 		752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCastCollectionViewCell.swift; sourceTree = "<group>"; };
 		752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CrewCastCollectionViewCell.xib; sourceTree = "<group>"; };
 		75359212264E61B9004477B3 /* ReviewMovieOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieOwner.swift; sourceTree = "<group>"; };
@@ -238,6 +242,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		751A53A526B15880003B78E9 /* GADBannerView */ = {
+			isa = PBXGroup;
+			children = (
+				751A53A626B158DD003B78E9 /* GADBannerView.swift */,
+				751A53A826B158F9003B78E9 /* GADBannerView.xib */,
+			);
+			path = GADBannerView;
+			sourceTree = "<group>";
+		};
 		753B2A3C26AA298200EACFBD /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +309,7 @@
 		75676EDA263A89B400569AF5 /* MovieReviewMVP */ = {
 			isa = PBXGroup;
 			children = (
+				751A53A526B15880003B78E9 /* GADBannerView */,
 				758B05AB26AF72FE00DFA33A /* UserLoginState.swift */,
 				7518C16726A01E3100C27C1C /* ReviewManagement.swift */,
 				7518C16926A17DED00C27C1C /* SelectedReview.swift */,
@@ -614,6 +628,7 @@
 				75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */,
 				758B059526AD129300DFA33A /* DetailedSetting.storyboard in Resources */,
 				75676EE8263A89B500569AF5 /* LaunchScreen.storyboard in Resources */,
+				751A53A926B158F9003B78E9 /* GADBannerView.xib in Resources */,
 				7569BAA92679EFEA0058D495 /* StockReviewMovieManagement.storyboard in Resources */,
 				758B05A526AE459E00DFA33A /* DetailedSettingTableViewCell.xib in Resources */,
 				75676EE5263A89B500569AF5 /* Assets.xcassets in Resources */,
@@ -808,6 +823,7 @@
 				75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */,
 				75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */,
 				75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */,
+				751A53A726B158DD003B78E9 /* GADBannerView.swift in Sources */,
 				758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */,
 				756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */,
 				75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */,
