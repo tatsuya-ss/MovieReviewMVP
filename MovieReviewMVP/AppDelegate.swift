@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let db = Firestore.firestore()
         print(db)
 
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
         return true
     }
 
