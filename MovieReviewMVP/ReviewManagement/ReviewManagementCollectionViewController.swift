@@ -9,6 +9,7 @@
 
 import UIKit
 import FirebaseUI
+import GoogleMobileAds
 
 class ReviewManagementCollectionViewController: UIViewController {
     
@@ -18,7 +19,9 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var editButton: UIBarButtonItem!
     private var trashButton: UIButton!
     private var stockButton: UIButton!
-    
+        
+    var bannerView: GADBannerView!
+
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -37,6 +40,7 @@ class ReviewManagementCollectionViewController: UIViewController {
         setupTabBarController()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
+        setupBanner()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -56,6 +60,16 @@ class ReviewManagementCollectionViewController: UIViewController {
 
 // MARK: - setup
 private extension ReviewManagementCollectionViewController {
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+//         bannerView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+        ].forEach { $0.isActive = true }
+    }
     
     func setupLogin() {
         if Auth.auth().currentUser != nil {
@@ -183,7 +197,18 @@ private extension ReviewManagementCollectionViewController {
                                                object: nil)
     }
 
-    
+    private func setupBanner() {
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+
+        addBannerViewToView(bannerView)
+
+        bannerView.delegate = self
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"  // テスト用ID
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+    }
+
 }
 
 // MARK: - @objc
@@ -406,4 +431,34 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
         }
     }
 
+}
+
+extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
+    }
 }
