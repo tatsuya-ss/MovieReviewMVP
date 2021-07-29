@@ -12,12 +12,12 @@
 		</dict>
 	</array>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>お客様の興味関心に合わせた広告を表示するために利用します</string>
-    <key>AdUnitIDs</key>
-    <dict>
-        <key>banner</key>
-        <string>$(BANNER_ID)</string>
-    </dict>
+	<string>許可するとお客様に無関係な広告が表示されにくくなります。</string>
+	<key>AdUnitIDs</key>
+	<dict>
+		<key>banner</key>
+		<string>$(BANNER_ID)</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
