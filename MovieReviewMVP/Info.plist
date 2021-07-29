@@ -4,13 +4,20 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3889534374234643~9612743206</string>
-    <key>SKAdNetworkItems</key>
-      <array>
-        <dict>
-          <key>SKAdNetworkIdentifier</key>
-          <string>cstr6suwn9.skadnetwork</string>
-        </dict>
-      </array>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>お客様の興味関心に合わせた広告を表示するために利用します</string>
+    <key>AdUnitIDs</key>
+    <dict>
+        <key>banner</key>
+        <string>$(BANNER_ID)</string>
+    </dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
