@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import GoogleMobileAds
+import AppTrackingTransparency
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let db = Firestore.firestore()
         print(db)
 
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                GADMobileAds.sharedInstance().start(completionHandler: nil)
+            }
+        } else {
+            GADMobileAds.sharedInstance().start(completionHandler: nil)
+        }
         
         return true
     }
