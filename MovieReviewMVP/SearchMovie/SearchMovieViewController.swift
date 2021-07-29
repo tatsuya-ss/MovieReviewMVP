@@ -13,7 +13,8 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
     var bannerView: GADBannerView!
-
+    @IBOutlet weak var tableViewBottomAnchor: NSLayoutConstraint!
+    
     var scrollIndicator: UIActivityIndicatorView!
     var isLoadingMore = false
 
@@ -270,8 +271,8 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
 
 extension SearchMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-        let bannerHeight = 50
-        tableView.contentInset.bottom = CGFloat(bannerHeight)
+        let bannerHeight = CGFloat(50)
+        tableViewBottomAnchor.constant = -bannerHeight
 
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {

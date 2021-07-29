@@ -56,6 +56,7 @@
                         <outlet property="displayLabel" destination="mdR-U8-AD1" id="5Ve-G0-zai"/>
                         <outlet property="movieSearchBar" destination="ZbQ-Q1-UzC" id="d2g-5M-Muh"/>
                         <outlet property="tableView" destination="Ss0-Jn-OVT" id="k3l-gk-GMM"/>
+                        <outlet property="tableViewBottomAnchor" destination="2Mj-rS-CPN" id="4BM-9A-YVs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDf-vD-iyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
