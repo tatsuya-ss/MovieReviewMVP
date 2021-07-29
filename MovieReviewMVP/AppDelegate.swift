@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let db = Firestore.firestore()
         print(db)
 
-        
+        // iOS14以降の場合、トラッキングのアラートを表示する
         if #available(iOS 14, *) {
             ATTrackingManager.requestTrackingAuthorization { status in
                 GADMobileAds.sharedInstance().start(completionHandler: nil)
