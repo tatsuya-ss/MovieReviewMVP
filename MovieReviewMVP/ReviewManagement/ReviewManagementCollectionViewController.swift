@@ -199,7 +199,8 @@ private extension ReviewManagementCollectionViewController {
         bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"  // テスト用ID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
-        GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+        let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+        bannerView.adSize = adSize
     }
     
     private func addBannerViewToView(_ bannerView: GADBannerView) {
