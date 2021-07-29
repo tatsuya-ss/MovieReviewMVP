@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class SearchMovieViewController: UIViewController {
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
-    
+    var bannerView: GADBannerView!
+
     var scrollIndicator: UIActivityIndicatorView!
     var isLoadingMore = false
 
@@ -44,6 +46,7 @@ private extension SearchMovieViewController {
         setupTableViewController()
         setupPresenter()
         setupIndicator()
+        setupBanner()
     }
     
     
@@ -88,12 +91,34 @@ private extension SearchMovieViewController {
         
     }
     
-    
     private func setupPresenter() {
         let searchMovieModel = SearchMovieModel()
         let searchMoviePresenter = SearchMoviePresenter(view: self, model: searchMovieModel)
         self.inject(presenter: searchMoviePresenter)
     }
+    
+    private func setupBanner() {
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+
+        addBannerViewToView(bannerView)
+
+        bannerView.delegate = self
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"  // テスト用ID
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+    }
+
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+
 }
 
 
@@ -239,6 +264,40 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
                 
         self.present(nav, animated: true, completion: nil)
 
+    }
+
+}
+
+extension SearchMovieViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        let bannerHeight = 50
+        tableView.contentInset.bottom = CGFloat(bannerHeight)
+
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
     }
 
 }
