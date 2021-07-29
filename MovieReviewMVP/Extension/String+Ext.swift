@@ -57,8 +57,8 @@ extension String {
     static let storeDateAlertAddDateTitle = "追加した日で保存"
     static let storeDateAlertAddTodayTitle = "今日の日付で保存"
 
-    // realm
-    static let id = "id"
+    // Google Admob
+    static let testAdUnitId = "ca-app-pub-3940256099942544/2934735716"
     
     // その他
     static let japanese = "ja"
