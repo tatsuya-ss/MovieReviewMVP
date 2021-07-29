@@ -51,7 +51,7 @@ extension String {
     static let storedAlertMessage = "既に保存されているレビューです"
     static let storedAlertCancelTitle = "閉じる"
     static let storeLocationAlertMessage = "保存先を選択してください"
-    static let storeLocationAlertStockTitle = "後でレビューするに保存"
+    static let storeLocationAlertStockTitle = "ストックに保存"
     static let storeLocationAlertReviewTitle = "レビューリストに保存"
     static let storeDateAlertMessage = "保存日を選択してください"
     static let storeDateAlertAddDateTitle = "追加した日で保存"
