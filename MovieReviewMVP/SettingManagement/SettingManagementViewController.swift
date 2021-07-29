@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 final class SettingManagementViewController: UIViewController {
     @IBOutlet private weak var SettingManagementTableView: UITableView!
-    
+    private var bannerView: GADBannerView!
+
     private var presenter: SettingManagementPresenterInput!
     func inject(presenter: SettingManagementPresenterInput) {
         self.presenter = presenter
@@ -21,6 +23,7 @@ final class SettingManagementViewController: UIViewController {
         setupNavigation()
         setupTableView()
         setupNotification()
+        setupBanner()
     }
     
 }
@@ -56,6 +59,29 @@ extension SettingManagementViewController {
                                                name: .logout,
                                                object: nil)
     }
+    
+    private func setupBanner() {
+        bannerView = GADBannerView(adSize: kGADAdSizeLargeBanner)
+
+        addBannerViewToView(bannerView)
+
+        bannerView.delegate = self
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"  // テスト用ID
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+    }
+    
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+
 }
 
 extension SettingManagementViewController {
@@ -138,4 +164,35 @@ extension SettingManagementViewController : SettingManagementPresenterOutput {
     func didLogout() {
         SettingManagementTableView.reloadData()
     }
+}
+
+extension SettingManagementViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
+    }
+
 }
