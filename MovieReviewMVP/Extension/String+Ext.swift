@@ -59,6 +59,7 @@ extension String {
 
     // Google Admob
     static let testAdUnitId = "ca-app-pub-3940256099942544/2934735716"
+    static let AdUnitId = "ca-app-pub-3889534374234643/2516620302"
     
     // その他
     static let japanese = "ja"
