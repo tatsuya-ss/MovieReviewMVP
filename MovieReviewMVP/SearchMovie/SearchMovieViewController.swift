@@ -104,11 +104,22 @@ private extension SearchMovieViewController {
         addBannerViewToView(bannerView)
 
         bannerView.delegate = self
-        bannerView.adUnitID = .testAdUnitId  // テスト用ID
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
-        bannerView.adSize = adSize
+        
+        if let id = adUnitID(key: "banner") {
+            bannerView.adUnitID = id
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+            bannerView.adSize = adSize
+        }
+        
+        func adUnitID(key: String) -> String? {
+            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
+                return nil
+            }
+            return adUnitIDs[key]
+        }
+
     }
 
     func addBannerViewToView(_ bannerView: GADBannerView) {
