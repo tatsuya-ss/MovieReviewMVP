@@ -104,7 +104,7 @@ private extension SearchMovieViewController {
         addBannerViewToView(bannerView)
 
         bannerView.delegate = self
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"  // テスト用ID
+        bannerView.adUnitID = .testAdUnitId  // テスト用ID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
         let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
