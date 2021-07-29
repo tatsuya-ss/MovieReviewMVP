@@ -22,6 +22,8 @@ class ReviewManagementCollectionViewController: UIViewController {
         
     var bannerView: GADBannerView!
 
+    var trashButtonBottomAnchor: NSLayoutConstraint!
+    var stockButtonBottomAnchor: NSLayoutConstraint!
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -66,9 +68,8 @@ private extension ReviewManagementCollectionViewController {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
          bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-//         bannerView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
-        ].forEach { $0.isActive = true }
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
     }
     
     func setupLogin() {
@@ -91,12 +92,12 @@ private extension ReviewManagementCollectionViewController {
         collectionView.addSubview(trashButton)
         
         let buttonWidth: CGFloat = 55
-        
+        trashButtonBottomAnchor = trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-         trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+         trashButtonBottomAnchor,
          trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-         trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)
-        ].forEach { $0.isActive = true }
+         trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)]
+            .forEach { $0.isActive = true }
         
         trashButton.layer.cornerRadius = buttonWidth / 2
         
@@ -120,11 +121,12 @@ private extension ReviewManagementCollectionViewController {
         
         let buttonWidth: CGFloat = 55
         
+        stockButtonBottomAnchor = stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         [stockButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-         stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+         stockButtonBottomAnchor,
          stockButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-         stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)
-        ].forEach { $0.isActive = true }
+         stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)]
+            .forEach { $0.isActive = true }
         
         stockButton.layer.cornerRadius = buttonWidth / 2
         
@@ -172,8 +174,8 @@ private extension ReviewManagementCollectionViewController {
         [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
          collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
          collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        ].forEach { $0.isActive = true}
+         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)]
+            .forEach { $0.isActive = true}
         collectionView.allowsMultipleSelection = true
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
         collectionView.dataSource = self
@@ -435,6 +437,12 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
 
 extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        let bannerHeight = 50
+        [trashButtonBottomAnchor, stockButtonBottomAnchor].forEach { $0?.isActive = false }
+        [trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(-10 - bannerHeight)),
+         stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(-10 - bannerHeight))]
+            .forEach { $0.isActive = true }
+
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {
           bannerView.alpha = 1
