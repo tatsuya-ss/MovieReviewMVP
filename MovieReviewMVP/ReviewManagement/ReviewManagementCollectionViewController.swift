@@ -20,10 +20,10 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var trashButton: UIButton!
     private var stockButton: UIButton!
         
-    var bannerView: GADBannerView!
+    private var bannerView: GADBannerView!
 
-    var trashButtonBottomAnchor: NSLayoutConstraint!
-    var stockButtonBottomAnchor: NSLayoutConstraint!
+    private var trashButtonBottomAnchor: NSLayoutConstraint!
+    private var stockButtonBottomAnchor: NSLayoutConstraint!
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -62,15 +62,6 @@ class ReviewManagementCollectionViewController: UIViewController {
 
 // MARK: - setup
 private extension ReviewManagementCollectionViewController {
-    func addBannerViewToView(_ bannerView: GADBannerView) {
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bannerView)
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
-        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
-            .forEach { $0.isActive = true }
-    }
     
     func setupLogin() {
         if Auth.auth().currentUser != nil {
@@ -209,6 +200,16 @@ private extension ReviewManagementCollectionViewController {
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
         GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+    }
+    
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
     }
 
 }
