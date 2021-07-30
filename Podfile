@@ -8,10 +8,10 @@ target 'MovieReviewMVP' do
   use_frameworks!
 
 pod 'FirebaseUI'
-pod 'Firebase/Analytics'
+pod 'GoogleAnalytics'
 pod 'Firebase/Firestore'
-# Optionally, include the Swift extensions if you're using Swift.
 pod 'FirebaseFirestoreSwift', '~> 7.3-beta'
+pod 'Google-Mobile-Ads-SDK'
 
 pod 'Cosmos', '~> 23.0' 
 

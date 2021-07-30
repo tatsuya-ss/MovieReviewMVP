@@ -51,14 +51,15 @@ extension String {
     static let storedAlertMessage = "既に保存されているレビューです"
     static let storedAlertCancelTitle = "閉じる"
     static let storeLocationAlertMessage = "保存先を選択してください"
-    static let storeLocationAlertStockTitle = "後でレビューするに保存"
+    static let storeLocationAlertStockTitle = "ストックに保存"
     static let storeLocationAlertReviewTitle = "レビューリストに保存"
     static let storeDateAlertMessage = "保存日を選択してください"
     static let storeDateAlertAddDateTitle = "追加した日で保存"
     static let storeDateAlertAddTodayTitle = "今日の日付で保存"
 
-    // realm
-    static let id = "id"
+    // Google Admob
+    static let testAdUnitId = "ca-app-pub-3940256099942544/2934735716"
+    static let AdUnitId = "ca-app-pub-3889534374234643/2516620302"
     
     // その他
     static let japanese = "ja"

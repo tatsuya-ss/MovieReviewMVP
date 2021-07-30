@@ -7,6 +7,7 @@
 
 import UIKit
 import Cosmos
+import GoogleMobileAds
 
 class ReviewMovieViewController: UIViewController {
 
@@ -14,6 +15,7 @@ class ReviewMovieViewController: UIViewController {
     private var stopButton: UIBarButtonItem!
     private var isUpdate: Bool = false
     private(set) var reviewMovieOwner: ReviewMovieOwner!
+    private var bannerView: GADBannerView!
         
     private(set) var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
@@ -33,6 +35,7 @@ class ReviewMovieViewController: UIViewController {
         presenter.viewDidLoad()
         reviewMovieOwner.editButtonTapped(isEditing: isEditing,
                                           state: presenter.returnMovieReviewState())
+        setupBanner()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -102,7 +105,40 @@ private extension ReviewMovieViewController {
         reviewMovieOwner.initReviewTextView()
     }
 
+    private func setupBanner() {
+        let bannerSize = kGADAdSizeBanner
+        bannerView = GADBannerView(adSize: bannerSize)
+
+        addBannerViewToView(bannerView)
+
+        bannerView.delegate = self
+        
+        if let id = adUnitID(key: "banner") {
+            bannerView.adUnitID = id
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: bannerSize.size.height))
+            bannerView.adSize = adSize
+        }
+        
+        func adUnitID(key: String) -> String? {
+            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
+                return nil
+            }
+            return adUnitIDs[key]
+        }
+    }
     
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+
 }
 // MARK: - @objc
 private extension ReviewMovieViewController {
@@ -185,3 +221,33 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     }
 }
 
+extension ReviewMovieViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
+    }
+
+}

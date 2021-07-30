@@ -9,6 +9,7 @@
 
 import UIKit
 import FirebaseUI
+import GoogleMobileAds
 
 class ReviewManagementCollectionViewController: UIViewController {
     
@@ -18,7 +19,13 @@ class ReviewManagementCollectionViewController: UIViewController {
     private var editButton: UIBarButtonItem!
     private var trashButton: UIButton!
     private var stockButton: UIButton!
-    
+        
+    private var bannerView: GADBannerView!
+    private let buttonConstant = CGFloat(-15)
+
+    private var trashButtonBottomAnchor: NSLayoutConstraint!
+    private var stockButtonBottomAnchor: NSLayoutConstraint!
+    private var collectionViewBottomAnchor: NSLayoutConstraint!
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -37,6 +44,7 @@ class ReviewManagementCollectionViewController: UIViewController {
         setupTabBarController()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
+        setupBanner()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -77,12 +85,12 @@ private extension ReviewManagementCollectionViewController {
         collectionView.addSubview(trashButton)
         
         let buttonWidth: CGFloat = 55
-        
-        [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-         trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+        trashButtonBottomAnchor = trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
+        [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
+         trashButtonBottomAnchor,
          trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-         trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)
-        ].forEach { $0.isActive = true }
+         trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)]
+            .forEach { $0.isActive = true }
         
         trashButton.layer.cornerRadius = buttonWidth / 2
         
@@ -106,11 +114,12 @@ private extension ReviewManagementCollectionViewController {
         
         let buttonWidth: CGFloat = 55
         
-        [stockButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-         stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+        stockButtonBottomAnchor = stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
+        [stockButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
+         stockButtonBottomAnchor,
          stockButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-         stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)
-        ].forEach { $0.isActive = true }
+         stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)]
+            .forEach { $0.isActive = true }
         
         stockButton.layer.cornerRadius = buttonWidth / 2
         
@@ -155,11 +164,12 @@ private extension ReviewManagementCollectionViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
 
+        collectionViewBottomAnchor = collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+         collectionViewBottomAnchor,
          collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        ].forEach { $0.isActive = true}
+         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)]
+            .forEach { $0.isActive = true}
         collectionView.allowsMultipleSelection = true
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
         collectionView.dataSource = self
@@ -183,7 +193,40 @@ private extension ReviewManagementCollectionViewController {
                                                object: nil)
     }
 
+    private func setupBanner() {
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+
+        addBannerViewToView(bannerView)
+
+        bannerView.delegate = self
+        
+        if let id = adUnitID(key: "banner") {
+            bannerView.adUnitID = id
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+            bannerView.adSize = adSize
+        }
+        
+        func adUnitID(key: String) -> String? {
+            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
+                return nil
+            }
+            return adUnitIDs[key]
+        }
+
+    }
     
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+
 }
 
 // MARK: - @objc
@@ -205,7 +248,6 @@ extension ReviewManagementCollectionViewController {
         let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, model: model)
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
-//        navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true, completion: nil)
     }
     
@@ -406,4 +448,39 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
         }
     }
 
+}
+
+extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        let bannerHeight = CGFloat(50)
+        collectionViewBottomAnchor.constant = -bannerHeight
+        [trashButtonBottomAnchor,
+         stockButtonBottomAnchor]
+            .forEach { $0?.constant = -bannerHeight + buttonConstant }
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
+    }
 }

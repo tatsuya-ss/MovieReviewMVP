@@ -75,12 +75,12 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
 
     func fetchStockMovies() {
         let sortState = reviewManagement.returnSortState()
-        model.fetch(isStoredAsReview: false, sortState: sortState) { result in
+        model.fetch(isStoredAsReview: false, sortState: sortState) { [weak self] result in
             switch result {
             case .success(let reviews):
-                self.reviewManagement.fetchReviews(result: reviews)
+                self?.reviewManagement.fetchReviews(result: reviews)
                 DispatchQueue.main.async {
-                    self.view.updateStockCollectionView(movieUpdateState: .initial, indexPath: nil)
+                    self?.view.updateStockCollectionView(movieUpdateState: .initial, indexPath: nil)
                 }
                 print(#function,reviews)
             case .failure(let error):
