@@ -143,7 +143,7 @@ final class Firebase : ReviewRepository {
             "releaseDay": movie.releaseDay ?? "",
             "reviewStars": movie.reviewStars ?? 0.0,
             "review": movie.review,
-//            "create_at": movie.create_at ?? Date(),
+            "create_at": movie.create_at ?? Date(),
             "id": movie.id,
             "isStoredAsReview": movie.isStoredAsReview ?? true,
             "media_type": movie.media_type
