@@ -221,11 +221,11 @@ extension SearchMovieViewController : UITableViewDelegate {
             scrollIndicator.isHidden = false
             scrollIndicator.startAnimating()
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-                self.presenter.fetchMovie(state: .search(.refresh), text: nil)
-                self.scrollIndicator.stopAnimating()
-                self.scrollIndicator.isHidden = true
-                self.isLoadingMore = false
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) { [weak self] in
+                self?.presenter.fetchMovie(state: .search(.refresh), text: nil)
+                self?.scrollIndicator.stopAnimating()
+                self?.scrollIndicator.isHidden = true
+                self?.isLoadingMore = false
             }
         }
         
