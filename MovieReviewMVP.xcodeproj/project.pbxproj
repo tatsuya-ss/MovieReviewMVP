@@ -148,6 +148,7 @@
 		75676F20263A97E300569AF5 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
 		75676F2A263AA0B900569AF5 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		75676F32263AA2FA00569AF5 /* TMDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDB.swift; sourceTree = "<group>"; };
+		7567D58926B3F9EF006DA25A /* MovieReviewMVP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MovieReviewMVP.entitlements; sourceTree = "<group>"; };
 		75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewMovie.storyboard; sourceTree = "<group>"; };
 		75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewCell.swift; sourceTree = "<group>"; };
 		75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewManagementCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -296,6 +297,7 @@
 		75676EDA263A89B400569AF5 /* MovieReviewMVP */ = {
 			isa = PBXGroup;
 			children = (
+				7567D58926B3F9EF006DA25A /* MovieReviewMVP.entitlements */,
 				758B05AB26AF72FE00DFA33A /* UserLoginState.swift */,
 				7518C16726A01E3100C27C1C /* ReviewManagement.swift */,
 				7518C16926A17DED00C27C1C /* SelectedReview.swift */,
@@ -1006,6 +1008,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BANNER_ID = "ca-app-pub-3940256099942544/2934735716";
+				CODE_SIGN_ENTITLEMENTS = MovieReviewMVP/MovieReviewMVP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N53995CJPD;
 				GADApplicationIdentifier = "ca-app-pub-3940256099942544~1458002511";
@@ -1028,6 +1031,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BANNER_ID = "ca-app-pub-3889534374234643/2516620302";
+				CODE_SIGN_ENTITLEMENTS = MovieReviewMVP/MovieReviewMVP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N53995CJPD;
 				GADApplicationIdentifier = "ca-app-pub-3889534374234643~9612743206";
