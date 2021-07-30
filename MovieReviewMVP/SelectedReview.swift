@@ -18,6 +18,12 @@ final class SelectedReview {
         print(#function, selectedReview)
         return selectedReview
     }
+    
+    func checkTitle() {
+        if selectedReview.title == nil || selectedReview.title?.isEmpty == true {
+            selectedReview.title = selectedReview.original_name
+        }
+    }
 
     func checkIsChanged(reviewScore: Double, review: String) -> Bool {
         var compareReview = review

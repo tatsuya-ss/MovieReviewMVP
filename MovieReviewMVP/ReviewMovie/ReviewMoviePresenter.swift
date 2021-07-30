@@ -80,6 +80,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     func didTapStoreLocationAlert(isStoredAsReview: Bool) { // 初保存で呼ばれる
         selectedReview.update(isSavedAsReview: isStoredAsReview)
+        selectedReview.checkTitle()
         let reviewElement = selectedReview.returnReview()
         model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
         NotificationCenter.default.post(name: .insertReview, object: nil)
