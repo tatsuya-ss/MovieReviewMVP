@@ -13,7 +13,7 @@ protocol SettingManagementPresenterInput {
     func returnCellTitle(indexPath: IndexPath) -> String
     func returnProfileInfomations() -> (String?, URL?)
     func didSelectCell(didSelectRowAt indexPath: IndexPath)
-    func logout()
+    func refresh()
 }
 
 protocol SettingManagementPresenterOutput: AnyObject {
@@ -47,7 +47,7 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
         model.returnProfileInfomations()
     }
     
-    func logout() {
+    func refresh() {
         view.didLogout()
     }
     
