@@ -17,14 +17,20 @@ class SettingManagementHeaderView: UITableViewHeaderFooterView {
     static let identifier = String(describing: SettingManagementHeaderView.self)
     
     func configure(userInfomation: (String?, URL?), height: CGFloat) {
-        guard let name = userInfomation.0,
-              let url = userInfomation.1 else {
-            profileImageView.image = UIImage(named: "user_icon")
+        if let name = userInfomation.0 {
+            nameLabel.text = name
+            nameLabel.tintColor = .white
+        } else {
             nameLabel.text = "ログアウト中"
-            return }
-        nameLabel.text = name
-        nameLabel.tintColor = .white
-        fetchProfileImage(url: url)
+            nameLabel.tintColor = .systemGray
+        }
+        
+        if let url = userInfomation.1 {
+            fetchProfileImage(url: url)
+        } else {
+            profileImageView.image = UIImage(named: "user_icon")
+        }
+        
         let imageHeight = height * 0.7
         profileImageView.layer.cornerRadius = imageHeight * 0.5
     }
