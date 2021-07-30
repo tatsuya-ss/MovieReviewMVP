@@ -103,6 +103,9 @@ class StockReviewMovieManagementViewController: UIViewController {
         trashButton.layer.shadowOpacity = 0.7
         trashButton.layer.shadowRadius = 10
         
+        trashButton.layer.shouldRasterize = true
+        trashButton.layer.rasterizationScale = UIScreen.main.scale
+        
         trashButton.isHidden = true
     }
     
