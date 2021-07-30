@@ -100,16 +100,11 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         switch movieReviewState {
         case .beforeStore:
-            // プライマリーキーが被っていないかの検証
+            // 同じものが保存されていないか検証
             let selectedReview = selectedReview.returnReview()
             model.checkSaved(movie: selectedReview) { result in
-                switch result {
-                case true:
-                    self.view.displayAfterStoreButtonTapped(true, self.movieReviewState, editing: editing)
-                case false:
-                    self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
-                    self.view.displayAfterStoreButtonTapped(false, self.movieReviewState, editing: editing)
-                }
+                self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
+                self.view.displayAfterStoreButtonTapped(result, self.movieReviewState, editing: editing)
             }
             
         case .afterStore(.reviewed):
@@ -121,8 +116,9 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                     selectedReview.update(score: reviewScore, review: review)
                     let selectedReview = selectedReview.returnReview()
                     model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
-                    view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
                 }
+                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
+
             case true:
                 view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
             }
