@@ -87,7 +87,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
-    func didTapSelectStoreDateAlert(storeDateState: storeDateState) {
+    func didTapSelectStoreDateAlert(storeDateState: storeDateState) { // ストック画面からレビュー画面に変更する
         if case .today = storeDateState {
             selectedReview.update(saveDate: Date())
         }
