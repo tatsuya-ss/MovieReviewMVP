@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReviewMovieOwner" customModule="MovieReviewMVP" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundImageView" destination="TUf-tF-Y2T" id="8sM-Bz-h6Y"/>
+                <outlet property="blackFilterView" destination="EQv-Rn-B1u" id="nvL-KC-Cbg"/>
                 <outlet property="collectionView" destination="U1j-mP-0sM" id="sRN-5z-8jj"/>
                 <outlet property="movieImageView" destination="rwh-PO-286" id="EqQ-VA-MMT"/>
                 <outlet property="overviewTextView" destination="K6c-CB-7ch" id="7R8-z3-MU8"/>
@@ -28,7 +29,7 @@
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TUf-tF-Y2T" userLabel="Background Image View">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                 </imageView>
-                <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EQv-Rn-B1u" userLabel="Black Filter View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EQv-Rn-B1u" userLabel="Black Filter View">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>

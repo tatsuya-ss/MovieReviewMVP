@@ -83,22 +83,28 @@ private extension ReviewManagementCollectionViewController {
         trashButton.translatesAutoresizingMaskIntoConstraints = false
         trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
         collectionView.addSubview(trashButton)
-        
         let buttonWidth: CGFloat = 55
+
         trashButtonBottomAnchor = trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
         [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
          trashButtonBottomAnchor,
          trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
          trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)]
             .forEach { $0.isActive = true }
-        
+
         trashButton.layer.cornerRadius = buttonWidth / 2
         
-        trashButton.layer.shadowColor = UIColor.black.cgColor
-        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-        trashButton.layer.shadowOpacity = 0.7
-        trashButton.layer.shadowRadius = 10
-        
+//        // 影をつける設定
+//        trashButton.layer.shadowColor = UIColor.black.cgColor
+//        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+//        trashButton.layer.shadowOpacity = 0.7
+//        trashButton.layer.shadowRadius = 10
+//
+//        // 紫色の警告(レンダリングの最適化を行ってくださいみたいな)が出るため、以下の２行で対応
+//        // https://stackoverflow.com/questions/64277067/how-to-fix-optimization-opportunities
+//        trashButton.layer.shouldRasterize = true
+//        trashButton.layer.rasterizationScale = UIScreen.main.scale
+
         trashButton.isHidden = true
     }
     
@@ -122,12 +128,16 @@ private extension ReviewManagementCollectionViewController {
             .forEach { $0.isActive = true }
         
         stockButton.layer.cornerRadius = buttonWidth / 2
-        
-        stockButton.layer.shadowColor = UIColor.black.cgColor
-        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-        stockButton.layer.shadowOpacity = 0.7
-        stockButton.layer.shadowRadius = 10
-        
+
+//        stockButton.clipsToBounds = false
+//        stockButton.layer.shadowColor = UIColor.black.cgColor
+//        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+//        stockButton.layer.shadowOpacity = 0.7
+//        stockButton.layer.shadowRadius = 10
+//
+//        stockButton.layer.shouldRasterize = true
+//        stockButton.layer.rasterizationScale = UIScreen.main.scale
+
         stockButton.isHidden = false
         
     }

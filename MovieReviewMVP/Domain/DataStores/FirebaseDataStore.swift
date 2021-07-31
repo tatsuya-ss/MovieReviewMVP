@@ -28,7 +28,7 @@ final class Firebase : ReviewRepository {
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").getDocument { documentSnapshot, error in
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").getDocument { documentSnapshot, error in
             guard let documentSnapshot = documentSnapshot,
                   documentSnapshot.exists else { completion(false) ; return }
             completion(true)
@@ -54,7 +54,7 @@ final class Firebase : ReviewRepository {
                 "media_type": movie.media_type
             ]
             
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").setData(dataToSave) { error in
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").setData(dataToSave) { error in
                 if let error = error {
                     print(error.localizedDescription)
                 } else {
@@ -122,7 +122,7 @@ final class Firebase : ReviewRepository {
     func delete(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").delete() { error in
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").delete() { error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
@@ -134,7 +134,7 @@ final class Firebase : ReviewRepository {
     func update(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.media_type ?? "no_media_type")").updateData([
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").updateData([
             "title": movie.title ?? "",
             "poster_path": movie.poster_path ?? "",
             "original_name": movie.original_name ?? "",
@@ -143,7 +143,7 @@ final class Firebase : ReviewRepository {
             "releaseDay": movie.releaseDay ?? "",
             "reviewStars": movie.reviewStars ?? 0.0,
             "review": movie.review,
-//            "create_at": movie.create_at ?? Date(),
+            "create_at": movie.create_at ?? Date(),
             "id": movie.id,
             "isStoredAsReview": movie.isStoredAsReview ?? true,
             "media_type": movie.media_type

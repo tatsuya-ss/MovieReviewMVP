@@ -55,9 +55,14 @@ extension SettingManagementViewController {
     
     private func setupNotification() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(logout),
+                                               selector: #selector(refresh),
                                                name: .logout,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(refresh),
+                                               name: .login,
+                                               object: nil)
+
     }
     
     private func setupBanner() {
@@ -98,8 +103,8 @@ extension SettingManagementViewController {
 }
 
 extension SettingManagementViewController {
-    @objc func logout() {
-        presenter.logout()
+    @objc func refresh() {
+        presenter.refresh()
     }
 }
 

@@ -18,6 +18,7 @@ class ReviewMovieOwner: NSObject {
     @IBOutlet private weak var reviewStarView: CosmosView!
     @IBOutlet private weak var reviewTextView: UITextView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var blackFilterView: UIView!
     
     var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
@@ -34,6 +35,7 @@ class ReviewMovieOwner: NSObject {
         setImageView()
         setReviewText()
         setCollectionView()
+        setupBlackFilter()
     }
     
     // MARK: - setup
@@ -67,6 +69,10 @@ class ReviewMovieOwner: NSObject {
         crewCastColumnLayout = CrewCastColumnFlowLayout()
         collectionView.collectionViewLayout = crewCastColumnLayout
         collectionView.register(CrewCastCollectionViewCell.nib, forCellWithReuseIdentifier: CrewCastCollectionViewCell.identifier)
+    }
+    
+    private func setupBlackFilter() {
+        blackFilterView.alpha = 0.7
     }
     
     // MARK: - ViewControllerから呼ばれるメソッド
