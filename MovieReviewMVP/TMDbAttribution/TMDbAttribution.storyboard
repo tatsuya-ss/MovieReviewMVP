@@ -22,10 +22,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PRh-nl-OSy">
-                                <rect key="frame" x="344" y="121" width="50" height="50"/>
+                                <rect key="frame" x="354" y="121" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="PRh-nl-OSy" secondAttribute="height" multiplier="1:1" id="ICC-Br-Plr"/>
-                                    <constraint firstAttribute="height" constant="50" id="P9L-zE-R2E"/>
+                                    <constraint firstAttribute="height" constant="40" id="P9L-zE-R2E"/>
                                 </constraints>
                             </imageView>
                         </subviews>
