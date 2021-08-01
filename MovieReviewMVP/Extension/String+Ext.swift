@@ -35,6 +35,8 @@ extension String {
     static let trashImageSystemName = "trash"
     static let stockButtonImageSystemName = "square.and.pencil"
     static let checkImageName = "check"
+    static let trashImage = "trash_image"
+    static let stockImage = "stock_image"
     
     // identifier
     static let segueIdentifierForSave = "saveButtonTappedSegue"

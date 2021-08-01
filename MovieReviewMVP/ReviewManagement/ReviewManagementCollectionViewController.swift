@@ -76,7 +76,8 @@ private extension ReviewManagementCollectionViewController {
     
     func setupTrashButton() {
         trashButton = UIButton()
-        trashButton.setImage(UIImage(systemName: .trashImageSystemName), for: .normal)
+        trashButton.setImage(UIImage(named: .trashImage), for: .normal)
+        trashButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         
         trashButton.tintColor = .black
         trashButton.backgroundColor = .baseColor
@@ -110,8 +111,8 @@ private extension ReviewManagementCollectionViewController {
     
     func setupStockButton() {
         stockButton = UIButton()
-        stockButton.setImage(UIImage(systemName: .stockButtonImageSystemName), for: .normal)
-        
+        stockButton.setImage(UIImage(named: .stockImage), for: .normal)
+        stockButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         stockButton.tintColor = .black
         stockButton.backgroundColor = .systemYellow
         stockButton.translatesAutoresizingMaskIntoConstraints = false
@@ -456,11 +457,18 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
 extension ReviewManagementCollectionViewController : FUIAuthDelegate {
     private func auth() {
         if let authUI = FUIAuth.defaultAuthUI() {
-            authUI.providers = [
-                FUIOAuth.appleAuthProvider(),
-                FUIGoogleAuth(authUI: authUI),
-                FUIOAuth.twitterAuthProvider()
-            ]
+            if #available(iOS 13.0, *) {
+                authUI.providers = [
+                    FUIOAuth.appleAuthProvider(),
+                    FUIGoogleAuth(authUI: authUI),
+                    FUIOAuth.twitterAuthProvider()
+                ]
+            } else {
+                authUI.providers = [
+                    FUIGoogleAuth(authUI: authUI),
+                    FUIOAuth.twitterAuthProvider()
+                ]
+            }
             authUI.delegate = self
             
             let authViewController = authUI.authViewController()

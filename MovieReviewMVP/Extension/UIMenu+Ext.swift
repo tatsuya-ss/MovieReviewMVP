@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 extension UIMenu {
     class func makeSortMenuForReview(presenter: ReviewManagementPresenterInput) -> UIMenu {
         let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
