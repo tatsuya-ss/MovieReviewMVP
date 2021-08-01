@@ -61,6 +61,9 @@ extension String {
     static let testAdUnitId = "ca-app-pub-3940256099942544/2934735716"
     static let AdUnitId = "ca-app-pub-3889534374234643/2516620302"
     
+    // バージョン
+    static let version = "バージョン1.0.0"
+    
     // その他
     static let japanese = "ja"
     static let dateError = "未定"
