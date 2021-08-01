@@ -66,7 +66,14 @@ class StockReviewMovieManagementViewController: UIViewController {
         editButton.title = .selectTitle
         // MARK: 並び替えボタン
         let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
-        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
+        if #available(iOS 14.0, *) {
+            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
+        } else {
+            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(sortButtonTapped))
+        }
         
         [stopButton, editButton, sortButton].forEach { $0.tintColor = .stringColor }
         navigationItem.rightBarButtonItems = [editButton, sortButton]
@@ -118,6 +125,10 @@ class StockReviewMovieManagementViewController: UIViewController {
         deleteAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
 
+    }
+
+    @objc private func sortButtonTapped() {
+        presenter.didTapSortButtoniOS13()
     }
 
 }
@@ -239,5 +250,9 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
         navigationController?.pushViewController(reviewMovieVC, animated: true)
     }
 
-    
+    func displaySortAction() {
+        let sortAlert = UIAlertController.makeSortAlertForStockReview(presenter: presenter)
+        present(sortAlert, animated: true, completion: nil)
+
+    }
 }

@@ -15,6 +15,7 @@ protocol ReviewManagementPresenterInput {
     func fetchUpdateReviewMovies(state: MovieUpdateState)
     func didSelectRowCollectionView(at indexPath: IndexPath)
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
+    func didTapSortButtoniOS13()
     func returnSortState() -> sortState
     func returnMovieReview() -> [MovieReviewElement]
     func didLogout()
@@ -25,6 +26,7 @@ protocol ReviewManagementPresenterOutput: AnyObject {
     func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?)
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
+    func displaySortAction()
 }
 
 
@@ -96,6 +98,10 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         reviewManagement.sortReviews(sortState: sortState)
         view.sortReview()
+    }
+    
+    func didTapSortButtoniOS13() {
+        view.displaySortAction()
     }
     
     func didLogout() {

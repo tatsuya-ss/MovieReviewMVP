@@ -16,6 +16,7 @@ protocol StockReviewMovieManagementPresenterInput {
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
     func didSelectRowStockCollectionView(at indexPath: IndexPath)
+    func didTapSortButtoniOS13()
 }
 
 protocol StockReviewMovieManagementPresenterOutput : AnyObject {
@@ -23,6 +24,7 @@ protocol StockReviewMovieManagementPresenterOutput : AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
     func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
+    func displaySortAction()
 }
 
 
@@ -53,6 +55,10 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         reviewManagement.sortReviews(sortState: sortState)
         view.sortReview()
+    }
+    
+    func didTapSortButtoniOS13() {
+        view.displaySortAction()
     }
     
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {

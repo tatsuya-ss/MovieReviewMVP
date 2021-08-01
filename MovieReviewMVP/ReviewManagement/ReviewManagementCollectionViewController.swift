@@ -152,8 +152,18 @@ private extension ReviewManagementCollectionViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
         
-        let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
-        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
+        if #available(iOS 14.0, *) {
+            let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
+            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
+                                         image: nil,
+                                         primaryAction: nil,
+                                         menu: sortMenu)
+        } else {
+            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(sortButtonTapped))
+        }
         editButton = editButtonItem
         [sortButton, editButton].forEach { $0?.tintColor = .stringColor }
         
@@ -259,6 +269,10 @@ extension ReviewManagementCollectionViewController {
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
         self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc private func sortButtonTapped() {
+        presenter.didTapSortButtoniOS13()
     }
     
     @objc func updateReviewManagementCollectionView() {
@@ -433,7 +447,10 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         self.present(navigationController, animated: true, completion: nil)
     }
     
-    
+    func displaySortAction() {
+        let sortAlert = UIAlertController.makeSortAlertForReviewManagement(presenter: presenter)
+        present(sortAlert, animated: true, completion: nil)
+    }
 }
 
 extension ReviewManagementCollectionViewController : FUIAuthDelegate {
