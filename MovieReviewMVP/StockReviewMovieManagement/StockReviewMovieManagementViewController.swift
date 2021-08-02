@@ -65,8 +65,8 @@ class StockReviewMovieManagementViewController: UIViewController {
         editButton = editButtonItem
         editButton.title = .selectTitle
         // MARK: 並び替えボタン
-        let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
         if #available(iOS 14.0, *) {
+            let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
             sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
         } else {
             sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
@@ -87,8 +87,9 @@ class StockReviewMovieManagementViewController: UIViewController {
     func setupTrashButton() {
         
         trashButton = UIButton()
-        trashButton.setImage(UIImage(systemName: .trashImageSystemName), for: .normal)
-        
+        trashButton.setImage(UIImage(named: .trashImage), for: .normal)
+        trashButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+
         trashButton.tintColor = .black
         trashButton.backgroundColor = .baseColor
         trashButton.translatesAutoresizingMaskIntoConstraints = false
