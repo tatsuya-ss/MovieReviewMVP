@@ -586,10 +586,10 @@
 			};
 			buildConfigurationList = 75676ED3263A89B400569AF5 /* Build configuration list for PBXProject "MovieReviewMVP" */;
 			compatibilityVersion = "Xcode 9.3";
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				ja,
 				Base,
 			);
 			mainGroup = 75676ECF263A89B400569AF5;
