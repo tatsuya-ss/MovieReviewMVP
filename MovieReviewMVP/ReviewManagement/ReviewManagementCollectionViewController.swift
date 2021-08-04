@@ -38,13 +38,13 @@ class ReviewManagementCollectionViewController: UIViewController {
         setupPresenter()
         setupNavigation()
         setupCollectionView()
+        setupBanner()
         setupTrashButton()
         setupStockButton()
         setupNotification()
         setupTabBarController()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
-        setupBanner()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -270,6 +270,7 @@ extension ReviewManagementCollectionViewController {
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
         self.present(navigationController, animated: true, completion: nil)
+        print("ストックボタンが押されました。", #function)
     }
     
     @objc private func sortButtonTapped() {
@@ -500,6 +501,7 @@ extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
     }
 
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+        bannerView.isHidden = true
       print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
     }
 
