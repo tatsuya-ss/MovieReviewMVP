@@ -488,6 +488,7 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
 
 extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.isHidden = false
         let bannerHeight = CGFloat(50)
         collectionViewBottomAnchor.constant = -bannerHeight
         [trashButtonBottomAnchor,
@@ -502,7 +503,7 @@ extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
 
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
         bannerView.isHidden = true
-      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
     }
 
     func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
