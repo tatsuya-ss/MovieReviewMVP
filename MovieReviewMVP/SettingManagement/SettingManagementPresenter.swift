@@ -29,7 +29,7 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     
     let cellTitles = [
         "アカウント情報",
-        "TMDBについて"
+        "TMDbについて"
     ]
     
     init(view: SettingManagementPresenterOutput, model: SettingManagementModelInput) {
