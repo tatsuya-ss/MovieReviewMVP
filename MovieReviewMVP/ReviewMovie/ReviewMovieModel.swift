@@ -12,6 +12,7 @@ protocol ReviewMovieModelInput {
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement)
     func fetchMovie(sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
     func requestMovieDetail(completion: @escaping (Result<Credits, SearchError>) -> Void)
+    func checkLoginState() -> Bool
 }
 
 final class ReviewMovieModel : ReviewMovieModelInput {
@@ -68,6 +69,10 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         reviewUseCase.checkSaved(movie: movie) { result in
             completion(result)
         }
+    }
+    
+    func checkLoginState() -> Bool {
+        reviewUseCase.returnloginStatus()
     }
     
     func reviewMovie(movieReviewState: MovieReviewStoreState, _ movie: MovieReviewElement) {

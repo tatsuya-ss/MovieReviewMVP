@@ -15,6 +15,9 @@ protocol ReviewMoviePresenterInput {
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
     func returnMovieReviewElement() -> MovieReviewElement?
+    var isLogin: Bool { get }
+    func didTapSaveButtonWhenLoggingOut()
+    func didSelectLogin()
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
@@ -22,6 +25,8 @@ protocol ReviewMoviePresenterOutput : AnyObject {
     func displayCastImage(credits: Credits)
     func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
+    func displayLoggingOutAlert()
+    func displayLoginView()
 }
 
 final class ReviewMoviePresenter : ReviewMoviePresenterInput {
@@ -65,6 +70,10 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         })
     }
     
+    var isLogin: Bool {
+        model.checkLoginState()
+    }
+    
     // MARK: どこから画面遷移されたのかをenumで区別
     func returnMovieReviewState() -> MovieReviewStoreState {
         movieReviewState
@@ -77,7 +86,14 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func returnMovieReviewElement() -> MovieReviewElement? {
         selectedReview.returnReview()
     }
+    
+    func didTapSaveButtonWhenLoggingOut() {
+        view.displayLoggingOutAlert()
+    }
 
+    func didSelectLogin() {
+        view.displayLoginView()
+    }
     func didTapStoreLocationAlert(isStoredAsReview: Bool) { // 初保存で呼ばれる
         selectedReview.update(isSavedAsReview: isStoredAsReview)
         selectedReview.checkTitle()

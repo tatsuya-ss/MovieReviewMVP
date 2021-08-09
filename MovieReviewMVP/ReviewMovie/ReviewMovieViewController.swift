@@ -7,6 +7,7 @@
 
 import UIKit
 import Cosmos
+import FirebaseUI
 import GoogleMobileAds
 
 class ReviewMovieViewController: UIViewController {
@@ -146,10 +147,15 @@ private extension ReviewMovieViewController {
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
         let reviewScore = reviewMovieOwner.returnReviewStarScore()
         let review = reviewMovieOwner.returnReviewText()
-        presenter.didTapUpdateButton(editing: nil,
-                                     date: Date(),
-                                     reviewScore: reviewScore,
-                                     review: review)
+        let isLogin = presenter.isLogin
+        if isLogin {
+            presenter.didTapUpdateButton(editing: nil,
+                                         date: Date(),
+                                         reviewScore: reviewScore,
+                                         review: review)
+        } else {
+            presenter.didTapSaveButtonWhenLoggingOut()
+        }
 
     }
 
@@ -217,6 +223,41 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
             performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
         default:
             break
+        }
+    }
+    
+    func displayLoggingOutAlert() {
+        let loginAlert = UIAlertController.makeLoginAlert(presenter: presenter)
+        present(loginAlert, animated: true, completion: nil)
+    }
+    
+    func displayLoginView() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            if #available(iOS 13.0, *) {
+                authUI.providers = [
+                    FUIOAuth.appleAuthProvider(),
+                    FUIGoogleAuth(authUI: authUI),
+                    FUIOAuth.twitterAuthProvider()
+                ]
+            } else {
+                authUI.providers = [
+                    FUIGoogleAuth(authUI: authUI),
+                    FUIOAuth.twitterAuthProvider()
+                ]
+            }
+            authUI.delegate = self
+            
+            let authViewController = authUI.authViewController()
+            self.present(authViewController, animated: true)
+        }
+    }
+}
+
+extension ReviewMovieViewController: FUIAuthDelegate {
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        if let user = authDataResult?.user {
+            print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
+            NotificationCenter.default.post(name: .login, object: nil)
         }
     }
 }
