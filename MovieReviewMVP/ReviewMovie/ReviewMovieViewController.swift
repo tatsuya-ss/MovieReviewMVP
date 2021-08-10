@@ -197,7 +197,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         reviewMovieOwner.configureCastsCollectionView(credits: credits)
     }
 
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {
+    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool) {
         
         if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
             present(alert, animated: true, completion: nil)
@@ -207,7 +207,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
                 saveButton.title = .updateButtonTitle
             } else {
                 saveButton.title = .editButtonTitle
-                isUpdate = true
+                self.isUpdate = isUpdate
             }
 //            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
             reviewMovieOwner.editButtonTapped(isEditing: editing,
