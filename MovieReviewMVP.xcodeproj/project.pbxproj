@@ -62,6 +62,7 @@
 		756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
+		758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */; };
 		75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */; };
 		75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE026A80D74004AC09C /* SettingManagementViewController.swift */; };
 		75834AE326A80D93004AC09C /* SettingManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE226A80D93004AC09C /* SettingManagementPresenter.swift */; };
@@ -164,6 +165,7 @@
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingManagement.storyboard; sourceTree = "<group>"; };
 		75834AE026A80D74004AC09C /* SettingManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementViewController.swift; sourceTree = "<group>"; };
 		75834AE226A80D93004AC09C /* SettingManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementPresenter.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				750B43FF2685A1A400191E17 /* UIMenu+Ext.swift */,
 				750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */,
 				758B05AD26AFA12D00DFA33A /* UIView+Ext.swift */,
+				758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -818,6 +821,7 @@
 				758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
 				753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */,
+				758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */,
 				756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */,
 				750B44002685A1A400191E17 /* UIMenu+Ext.swift in Sources */,
 				756620E32647B14F00D211EC /* ReviewManagementPresenter.swift in Sources */,

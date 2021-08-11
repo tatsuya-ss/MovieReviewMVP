@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleMobileAds
+import StoreKit
 
 class SearchMovieViewController: UIViewController {
     @IBOutlet weak var movieSearchBar: UISearchBar!
@@ -34,6 +35,10 @@ class SearchMovieViewController: UIViewController {
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
         presenter.fetchMovie(state: .upcoming, text: nil)
+    }
+    
+    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
+        presenter.didSaveReview()
     }
     
 }
@@ -276,7 +281,16 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         let nav = UINavigationController(rootViewController: reviewMovieVC)
                 
         self.present(nav, animated: true, completion: nil)
-
+    }
+    
+    func displayStoreReviewController() {
+        if #available(iOS 14.0, *) {
+            if let windowScene = UIApplication.shared.windows.first?.windowScene {
+                SKStoreReviewController.requestReview(in: windowScene)
+            }
+        } else {
+            SKStoreReviewController.requestReview()
+        }
     }
 
 }

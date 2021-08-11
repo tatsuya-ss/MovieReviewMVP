@@ -90,6 +90,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         let reviewElement = selectedReview.returnReview()
         model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
         NotificationCenter.default.post(name: .insertReview, object: nil)
+        UserDefaults.standard.saveNumberOfSaves()
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     

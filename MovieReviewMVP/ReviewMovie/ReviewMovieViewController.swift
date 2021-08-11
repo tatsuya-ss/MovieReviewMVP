@@ -211,7 +211,8 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
         switch movieUpdateState {
         case .insert:
-            dismiss(animated: true, completion: nil)
+            performSegue(withIdentifier: "saveButtonTappedForInsertSegue", sender: nil)
+//            dismiss(animated: true, completion: nil)
         case .modificate:
             performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
         default:

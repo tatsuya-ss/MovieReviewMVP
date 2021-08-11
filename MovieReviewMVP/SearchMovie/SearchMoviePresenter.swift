@@ -11,12 +11,14 @@ protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
     func returnReview() -> [MovieReviewElement]
     func didSelectRow(at indexPath: IndexPath)
+    func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement])
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState)
+    func displayStoreReviewController()
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
@@ -41,6 +43,14 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     func didSelectRow(at indexPath: IndexPath) {
         let selectResult = reviewManagement.returnSelectedReview(indexPath: indexPath)
         view.reviewTheMovie(movie: selectResult, movieUpdateState: .insert)
+    }
+    
+    func didSaveReview() {
+        let saveCount = UserDefaults.standard.loadNumberOfSaves()
+        print(saveCount)
+        if saveCount % 10 == 0 {
+            view.displayStoreReviewController()
+        }
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
