@@ -12,7 +12,7 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
-    var bannerView: GADBannerView!
+    private var bannerView: GADBannerView!
     @IBOutlet weak var tableViewBottomAnchor: NSLayoutConstraint!
     
     var scrollIndicator: UIActivityIndicatorView!
@@ -244,7 +244,7 @@ extension SearchMovieViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
         cell.resetCell()
 
-        let movies = presenter.movie()
+        let movies = presenter.returnReview()
         if let tableViewHeight = tableViewCellHeight {
             cell.configureCell(movie: movies[indexPath.row], height: tableViewHeight)
         } else {

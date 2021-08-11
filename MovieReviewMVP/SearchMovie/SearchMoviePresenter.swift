@@ -9,7 +9,7 @@ import Foundation
 
 protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
-    func movie() -> [MovieReviewElement]
+    func returnReview() -> [MovieReviewElement]
     func didSelectRow(at indexPath: IndexPath)
     func fetchMovie(state: FetchMovieState, text: String?)
 }
@@ -34,7 +34,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         reviewManagement.returnNumberOfReviews()
     }
     
-    func movie() -> [MovieReviewElement] {
+    func returnReview() -> [MovieReviewElement] {
         reviewManagement.returnReviews()
     }
     
