@@ -15,8 +15,6 @@ protocol ReviewMoviePresenterInput {
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
     func returnMovieReviewElement() -> MovieReviewElement?
-    var isLogin: Bool { get }
-    func didTapSaveButtonWhenLoggingOut()
     func didSelectLogin()
 }
 
@@ -69,11 +67,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             }
         })
     }
-    
-    var isLogin: Bool {
-        model.checkLoginState()
-    }
-    
+        
     // MARK: どこから画面遷移されたのかをenumで区別
     func returnMovieReviewState() -> MovieReviewStoreState {
         movieReviewState
@@ -85,10 +79,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     
     func returnMovieReviewElement() -> MovieReviewElement? {
         selectedReview.returnReview()
-    }
-    
-    func didTapSaveButtonWhenLoggingOut() {
-        view.displayLoggingOutAlert()
     }
 
     func didSelectLogin() {
@@ -117,11 +107,16 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         switch movieReviewState {
         case .beforeStore:
-            // 同じものが保存されていないか検証
-            let selectedReview = selectedReview.returnReview()
-            model.checkSaved(movie: selectedReview) { result in
-                self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
-                self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing, isUpdate: true)
+            let isLogin = model.checkLoginState()
+            if isLogin {
+                // 同じものが保存されていないか検証
+                let selectedReview = selectedReview.returnReview()
+                model.checkSaved(movie: selectedReview) { result in
+                    self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
+                    self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing, isUpdate: true)
+                }
+            } else {
+                view.displayLoggingOutAlert()
             }
             
         case .afterStore(.reviewed):

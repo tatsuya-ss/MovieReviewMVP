@@ -147,16 +147,10 @@ private extension ReviewMovieViewController {
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
         let reviewScore = reviewMovieOwner.returnReviewStarScore()
         let review = reviewMovieOwner.returnReviewText()
-        let isLogin = presenter.isLogin
-        if isLogin {
             presenter.didTapUpdateButton(editing: nil,
                                          date: Date(),
                                          reviewScore: reviewScore,
                                          review: review)
-        } else {
-            presenter.didTapSaveButtonWhenLoggingOut()
-        }
-
     }
 
     
@@ -209,7 +203,6 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
                 saveButton.title = .editButtonTitle
                 self.isUpdate = isUpdate
             }
-//            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
             reviewMovieOwner.editButtonTapped(isEditing: editing,
                                               state: movieReviewState)
         }
@@ -253,6 +246,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     }
 }
 
+// MARK: - FUIAuthDelegate
 extension ReviewMovieViewController: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         if let user = authDataResult?.user {
@@ -262,6 +256,7 @@ extension ReviewMovieViewController: FUIAuthDelegate {
     }
 }
 
+// MARK: - GADBannerViewDelegate
 extension ReviewMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.alpha = 0
