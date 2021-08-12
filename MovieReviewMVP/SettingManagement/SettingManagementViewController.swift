@@ -117,7 +117,8 @@ extension SettingManagementViewController {
         
         let label = UILabel()
         footerView.addSubview(label)
-        label.text = .version
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        label.text = .version + version
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
         [label.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
