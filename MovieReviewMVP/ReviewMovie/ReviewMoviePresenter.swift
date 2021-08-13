@@ -15,15 +15,13 @@ protocol ReviewMoviePresenterInput {
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
     func returnMovieUpdateState() -> MovieUpdateState
     func returnMovieReviewElement() -> MovieReviewElement?
-    var isLogin: Bool { get }
-    func didTapSaveButtonWhenLoggingOut()
     func didSelectLogin()
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement)
     func displayCastImage(credits: Credits)
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?)
+    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
     func displayLoggingOutAlert()
     func displayLoginView()
@@ -69,11 +67,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             }
         })
     }
-    
-    var isLogin: Bool {
-        model.checkLoginState()
-    }
-    
+        
     // MARK: どこから画面遷移されたのかをenumで区別
     func returnMovieReviewState() -> MovieReviewStoreState {
         movieReviewState
@@ -86,10 +80,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func returnMovieReviewElement() -> MovieReviewElement? {
         selectedReview.returnReview()
     }
-    
-    func didTapSaveButtonWhenLoggingOut() {
-        view.displayLoggingOutAlert()
-    }
 
     func didSelectLogin() {
         view.displayLoginView()
@@ -100,6 +90,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         let reviewElement = selectedReview.returnReview()
         model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
         NotificationCenter.default.post(name: .insertReview, object: nil)
+        UserDefaults.standard.saveNumberOfSaves()
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
@@ -117,32 +108,37 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         switch movieReviewState {
         case .beforeStore:
-            // 同じものが保存されていないか検証
-            let selectedReview = selectedReview.returnReview()
-            model.checkSaved(movie: selectedReview) { result in
-                self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
-                self.view.displayAfterStoreButtonTapped(result, self.movieReviewState, editing: editing)
+            let isLogin = model.checkLoginState()
+            if isLogin {
+                // 同じものが保存されていないか検証
+                let selectedReview = selectedReview.returnReview()
+                model.checkSaved(movie: selectedReview) { result in
+                    self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
+                    self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing, isUpdate: true)
+                }
+            } else {
+                view.displayLoggingOutAlert()
             }
             
         case .afterStore(.reviewed):
             guard let editing = editing else { return }
             switch editing {
             case false:
-                let isChanged = selectedReview.checkIsChanged(reviewScore: reviewScore, review: review ?? "")
-                if isChanged {
+                let isUpdate = selectedReview.checkIsChanged(reviewScore: reviewScore, review: review ?? "")
+                if isUpdate {
                     selectedReview.update(score: reviewScore, review: review)
                     let selectedReview = selectedReview.returnReview()
                     model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
                 }
-                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
+                view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: isUpdate)
 
             case true:
-                view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
+                view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: true)
             }
             
         case .afterStore(.stock):
             selectedReview.update(isSavedAsReview: true, score: reviewScore, review: review)
-            view.displayAfterStoreButtonTapped(false, movieReviewState, editing: editing)
+            view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: true)
         }
     }
 

@@ -147,16 +147,10 @@ private extension ReviewMovieViewController {
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
         let reviewScore = reviewMovieOwner.returnReviewStarScore()
         let review = reviewMovieOwner.returnReviewText()
-        let isLogin = presenter.isLogin
-        if isLogin {
             presenter.didTapUpdateButton(editing: nil,
                                          date: Date(),
                                          reviewScore: reviewScore,
                                          review: review)
-        } else {
-            presenter.didTapSaveButtonWhenLoggingOut()
-        }
-
     }
 
     
@@ -197,7 +191,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         reviewMovieOwner.configureCastsCollectionView(credits: credits)
     }
 
-    func displayAfterStoreButtonTapped(_ primaryKeyIsStored: Bool, _ movieReviewState: MovieReviewStoreState, editing: Bool?) {
+    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool) {
         
         if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
             present(alert, animated: true, completion: nil)
@@ -207,9 +201,8 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
                 saveButton.title = .updateButtonTitle
             } else {
                 saveButton.title = .editButtonTitle
-                isUpdate = true
+                self.isUpdate = isUpdate
             }
-//            editing ? (saveButton.title = .updateButtonTitle) : (saveButton.title = .editButtonTitle)
             reviewMovieOwner.editButtonTapped(isEditing: editing,
                                               state: movieReviewState)
         }
@@ -218,7 +211,8 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
         switch movieUpdateState {
         case .insert:
-            dismiss(animated: true, completion: nil)
+            performSegue(withIdentifier: "saveButtonTappedForInsertSegue", sender: nil)
+//            dismiss(animated: true, completion: nil)
         case .modificate:
             performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
         default:
@@ -253,6 +247,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     }
 }
 
+// MARK: - FUIAuthDelegate
 extension ReviewMovieViewController: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         if let user = authDataResult?.user {
@@ -262,6 +257,7 @@ extension ReviewMovieViewController: FUIAuthDelegate {
     }
 }
 
+// MARK: - GADBannerViewDelegate
 extension ReviewMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.alpha = 0

@@ -10,15 +10,15 @@ import Foundation
 protocol ReviewManagementPresenterInput {
     var numberOfMovies: Int { get }
     func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement
+    func returnSortState() -> sortState
+    func returnMovieReview() -> [MovieReviewElement]
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
-    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func fetchUpdateReviewMovies(state: MovieUpdateState)
     func didSelectRowCollectionView(at indexPath: IndexPath)
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func didTapSortButtoniOS13()
-    func returnSortState() -> sortState
-    func returnMovieReview() -> [MovieReviewElement]
     func didLogout()
+    func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func fetchUpdateReviewMovies(state: MovieUpdateState)
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {

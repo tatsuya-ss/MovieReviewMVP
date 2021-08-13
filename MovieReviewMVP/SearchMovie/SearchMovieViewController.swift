@@ -7,12 +7,13 @@
 
 import UIKit
 import GoogleMobileAds
+import StoreKit
 
 class SearchMovieViewController: UIViewController {
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
-    var bannerView: GADBannerView!
+    private var bannerView: GADBannerView!
     @IBOutlet weak var tableViewBottomAnchor: NSLayoutConstraint!
     
     var scrollIndicator: UIActivityIndicatorView!
@@ -34,6 +35,10 @@ class SearchMovieViewController: UIViewController {
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
         presenter.fetchMovie(state: .upcoming, text: nil)
+    }
+    
+    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
+        presenter.didSaveReview()
     }
     
 }
@@ -244,7 +249,7 @@ extension SearchMovieViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
         cell.resetCell()
 
-        let movies = presenter.movie()
+        let movies = presenter.returnReview()
         if let tableViewHeight = tableViewCellHeight {
             cell.configureCell(movie: movies[indexPath.row], height: tableViewHeight)
         } else {
@@ -276,7 +281,16 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         let nav = UINavigationController(rootViewController: reviewMovieVC)
                 
         self.present(nav, animated: true, completion: nil)
-
+    }
+    
+    func displayStoreReviewController() {
+        if #available(iOS 14.0, *) {
+            if let windowScene = UIApplication.shared.windows.first?.windowScene {
+                SKStoreReviewController.requestReview(in: windowScene)
+            }
+        } else {
+            SKStoreReviewController.requestReview()
+        }
     }
 
 }
