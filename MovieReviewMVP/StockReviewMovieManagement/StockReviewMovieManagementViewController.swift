@@ -253,6 +253,10 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
 
     func displaySortAction() {
         let sortAlert = UIAlertController.makeSortAlertForStockReview(presenter: presenter)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            sortAlert.popoverPresentationController?.sourceView = self.view
+            sortAlert.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.maxX - 100, y: view.safeAreaInsets.top, width: 0, height: 0)
+        }
         present(sortAlert, animated: true, completion: nil)
 
     }
