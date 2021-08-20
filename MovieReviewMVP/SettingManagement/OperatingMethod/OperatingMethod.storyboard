@@ -18,7 +18,7 @@
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DKo-gr-Hkc">
                                 <rect key="frame" x="20" y="44" width="374" height="818"/>
-                                <mutableString key="text">検索からレビューの流れ
+                                <string key="text">検索からレビューの流れ
 ・検索タブから映画・ドラマ・アニメを検索することができます。
 ・レビューしたい作品を選択したら、星をスライドさせて１〜５段階の評価を設定し、レビューを入力します。
 ・保存の際に、レビューするかストックするかを選択してレビュー保存完了です。
@@ -39,7 +39,7 @@
 ・作品の詳細が表示されたら、画面右上にある編集ボタンをタップします。
 ・評価やレビューの編集を行います。
 ・編集が完了したら、画面右上の更新ボタンをタップします。
-・更新が完了しますので、画面左上の✖︎ボタンからレビュータブに戻ることができます。</mutableString>
+・更新が完了しますので、画面左上の✖︎ボタンからレビュータブに戻ることができます。</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
