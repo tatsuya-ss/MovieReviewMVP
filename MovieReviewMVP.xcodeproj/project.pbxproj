@@ -63,6 +63,8 @@
 		756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
+		7570118326CDF5F300716E93 /* OperatingMethod.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7570118226CDF5F300716E93 /* OperatingMethod.storyboard */; };
+		7570118526CDF60F00716E93 /* OperatingMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7570118426CDF60F00716E93 /* OperatingMethodViewController.swift */; };
 		758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */; };
 		75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */; };
 		75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE026A80D74004AC09C /* SettingManagementViewController.swift */; };
@@ -165,6 +167,8 @@
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		7570118226CDF5F300716E93 /* OperatingMethod.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = OperatingMethod.storyboard; sourceTree = "<group>"; };
+		7570118426CDF60F00716E93 /* OperatingMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingMethodViewController.swift; sourceTree = "<group>"; };
 		758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingManagement.storyboard; sourceTree = "<group>"; };
 		75834AE026A80D74004AC09C /* SettingManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementViewController.swift; sourceTree = "<group>"; };
@@ -450,9 +454,19 @@
 			path = State;
 			sourceTree = "<group>";
 		};
+		7570118126CDF5CC00716E93 /* OperatingMethod */ = {
+			isa = PBXGroup;
+			children = (
+				7570118226CDF5F300716E93 /* OperatingMethod.storyboard */,
+				7570118426CDF60F00716E93 /* OperatingMethodViewController.swift */,
+			);
+			path = OperatingMethod;
+			sourceTree = "<group>";
+		};
 		75834ADD26A80A35004AC09C /* SettingManagement */ = {
 			isa = PBXGroup;
 			children = (
+				7570118126CDF5CC00716E93 /* OperatingMethod */,
 				75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */,
 				75834AE426A80DA8004AC09C /* SettingManagementModel.swift */,
 				75834AE226A80D93004AC09C /* SettingManagementPresenter.swift */,
@@ -615,6 +629,7 @@
 				753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */,
 				758B059A26AD4DA100DFA33A /* TMDbAttribution.storyboard in Resources */,
 				7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
+				7570118326CDF5F300716E93 /* OperatingMethod.storyboard in Resources */,
 				756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */,
 				75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */,
 				758B059526AD129300DFA33A /* DetailedSetting.storyboard in Resources */,
@@ -813,6 +828,7 @@
 				75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */,
 				75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */,
 				75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */,
+				7570118526CDF60F00716E93 /* OperatingMethodViewController.swift in Sources */,
 				758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */,
 				756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */,
 				75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */,

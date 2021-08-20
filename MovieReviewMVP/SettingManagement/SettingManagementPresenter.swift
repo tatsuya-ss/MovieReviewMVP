@@ -19,6 +19,7 @@ protocol SettingManagementPresenterInput {
 protocol SettingManagementPresenterOutput: AnyObject {
     func displayDetailSettingView(indexPath: IndexPath, title: String)
     func displayTMDbAttributionView(indexPath: IndexPath, title: String)
+    func displayOperatingMethodView(indexPath: IndexPath, title: String)
     func didLogout()
 }
 
@@ -29,7 +30,8 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
     
     let cellTitles = [
         "アカウント情報",
-        "TMDbについて"
+        "TMDbについて",
+        "操作方法"
     ]
     
     init(view: SettingManagementPresenterOutput, model: SettingManagementModelInput) {
@@ -57,6 +59,8 @@ final class SettingManagementPresenter : SettingManagementPresenterInput {
             view.displayDetailSettingView(indexPath: indexPath, title: cellTitles[indexPath.row])
         case 1:
             view.displayTMDbAttributionView(indexPath: indexPath, title: cellTitles[indexPath.row])
+        case 2:
+            view.displayOperatingMethodView(indexPath: indexPath, title: cellTitles[indexPath.row])
         default:
             break
         }
