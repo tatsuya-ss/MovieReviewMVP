@@ -8,9 +8,9 @@
 import UIKit
 
 
-class CrewCastCollectionViewCell: UICollectionViewCell {
+final class CrewCastCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var crewCastImageView: UIImageView!
+    @IBOutlet private weak var crewCastImageView: UIImageView!
     
     static let nib = UINib(nibName: String(describing: CrewCastCollectionViewCell.self), bundle: nil)
 
@@ -31,6 +31,10 @@ class CrewCastCollectionViewCell: UICollectionViewCell {
         }
         task.resume()
         crewCastImageView.layer.cornerRadius = crewCastImageView.bounds.width * 0.1
+    }
+    
+    func resetImage() {
+        crewCastImageView.image = nil
     }
 
 }

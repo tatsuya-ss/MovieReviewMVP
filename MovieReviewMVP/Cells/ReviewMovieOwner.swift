@@ -231,6 +231,7 @@ extension ReviewMovieOwner : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
+        cell.resetImage()
         if let credits = credits {
             cell.configure(cast: credits.cast[indexPath.row])
         }
