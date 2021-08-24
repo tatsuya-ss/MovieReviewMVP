@@ -25,19 +25,23 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
     // MARK: configure
     func configure(movieReview: MovieReviewElement, cellSelectedState: CellSelectedState) {
         
-        guard let posterPath = movieReview.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) else { return }
-        let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-            guard let imageData = data else { return }
+        if let posterPath = movieReview.poster_path,
+           !posterPath.isEmpty,
+           let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) {
+            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
+                guard let imageData = data else { return }
 
-            DispatchQueue.global().async { [weak self] in
-                guard let image = UIImage(data: imageData) else { return }
-                DispatchQueue.main.async {
-                    self?.movieImageView.image = image
+                DispatchQueue.global().async { [weak self] in
+                    guard let image = UIImage(data: imageData) else { return }
+                    DispatchQueue.main.async {
+                        self?.movieImageView.image = image
+                    }
                 }
             }
+            task.resume()
+        } else {
+            movieImageView.image = UIImage(named: "no_image")
         }
-        task.resume()
         
         reviewView.rating = movieReview.reviewStars ?? 0.0
         reviewView.text = String(movieReview.reviewStars ?? 0.0)
