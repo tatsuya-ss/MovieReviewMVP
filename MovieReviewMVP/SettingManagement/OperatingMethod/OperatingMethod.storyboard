@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Operating Method View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="OperatingMethodViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DKo-gr-Hkc">
+                                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                                <string key="text">検索からレビューの流れ
+・検索タブから映画・ドラマ・アニメを検索することができます。
+・レビューしたい作品を選択したら、星をスライドさせて１〜５段階の評価を設定し、レビューを入力します。
+・保存の際に、レビューするかストックするかを選択してレビュー保存完了です。
+
+レビューするを選択した場合
+・レビュータブにレビューした作品が追加されます。
+
+ストックするを選択した場合
+・レビュータブの画面右下にある黄色い丸ボタンにストックが保存されていますので、そこからストックを確認できます。
+
+ストックした作品をレビューする際
+・ストック欄から作品を選択しレビューを入力します。
+・保存ボタンを押すと、ストックした日付か今の日付かを選択します。
+・日付の選択が終わると、レビュータブに作品が追加されます。
+
+レビューした作品を編集したい場合
+・レビュータブから編集したい作品を選択します。
+・作品の詳細が表示されたら、画面右上にある編集ボタンをタップします。
+・評価やレビューの編集を行います。
+・編集が完了したら、画面右上の更新ボタンをタップします。
+・更新が完了しますので、画面左上の✖︎ボタンからレビュータブに戻ることができます。</string>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="DKo-gr-Hkc" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="0qy-et-G3I"/>
+                            <constraint firstItem="DKo-gr-Hkc" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="B1D-Qr-Nqq"/>
+                            <constraint firstItem="DKo-gr-Hkc" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="FUl-uz-wv8"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="DKo-gr-Hkc" secondAttribute="trailing" constant="20" id="sDf-d7-6gR"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140.57971014492756" y="80.357142857142847"/>
+        </scene>
+    </scenes>
+</document>

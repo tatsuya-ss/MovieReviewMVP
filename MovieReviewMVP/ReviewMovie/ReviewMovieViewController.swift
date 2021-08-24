@@ -194,6 +194,10 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool) {
         
         if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                alert.popoverPresentationController?.sourceView = self.view
+                alert.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.maxX - 40, y: view.safeAreaInsets.top, width: 0, height: 0)
+            }
             present(alert, animated: true, completion: nil)
         } else {  // .afterStore(.reviewed)の時
             guard let editing = editing else { return }

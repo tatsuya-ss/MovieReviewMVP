@@ -180,6 +180,11 @@ extension SettingManagementViewController : SettingManagementPresenterOutput {
         navigationController?.pushViewController(tmdbAttributionVC, animated: true)
     }
     
+    func displayOperatingMethodView(indexPath: IndexPath, title: String) {
+        let operatingMethodVC = OperatingMethodViewController.instantiate()
+        navigationController?.pushViewController(operatingMethodVC, animated: true)
+    }
+    
     func didLogout() {
         SettingManagementTableView.reloadData()
     }

@@ -35,16 +35,16 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0I-eg-thX" userLabel="Title Stack View">
-                    <rect key="frame" x="173" y="44" width="221" height="37"/>
+                    <rect key="frame" x="168" y="44" width="226" height="37"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nM3-Rt-ckA" userLabel="Title Label">
-                            <rect key="frame" x="0.0" y="0.0" width="221" height="21.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="226" height="21.5"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPg-nb-bHI" userLabel="Release DayLabel">
-                            <rect key="frame" x="0.0" y="22.5" width="221" height="14.5"/>
+                            <rect key="frame" x="0.0" y="22.5" width="226" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -52,10 +52,10 @@
                     </subviews>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="q0W-fP-KyB" userLabel="Movie Star Stack View">
-                    <rect key="frame" x="20" y="44" width="145" height="232"/>
+                    <rect key="frame" x="20" y="44" width="140" height="224"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="rwh-PO-286" userLabel="Movie Image View">
-                            <rect key="frame" x="0.0" y="0.0" width="145" height="232"/>
+                            <rect key="frame" x="0.0" y="0.0" width="140" height="224"/>
                         </imageView>
                     </subviews>
                     <constraints>
@@ -63,7 +63,7 @@
                     </constraints>
                 </stackView>
                 <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Eb-6N-gBj" customClass="CosmosView" customModule="Cosmos">
-                    <rect key="frame" x="20" y="278" width="145" height="20"/>
+                    <rect key="frame" x="20" y="270" width="140" height="20"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="rating">
                             <real key="value" value="3"/>
@@ -90,19 +90,19 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="K6c-CB-7ch" userLabel="Overview Text View">
-                    <rect key="frame" x="173" y="83" width="221" height="121"/>
+                    <rect key="frame" x="168" y="83" width="226" height="116.5"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-ZI-IRT" userLabel="Review Text View">
-                    <rect key="frame" x="20" y="318" width="374" height="544"/>
+                    <rect key="frame" x="20" y="310" width="374" height="552"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="U1j-mP-0sM">
-                    <rect key="frame" x="173" y="200.5" width="221" height="97.5"/>
+                    <rect key="frame" x="168" y="196" width="226" height="94"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Sk3-D7-kaJ">
                         <size key="itemSize" width="128" height="128"/>
@@ -116,7 +116,6 @@
             <constraints>
                 <constraint firstItem="PdG-ZI-IRT" firstAttribute="top" secondItem="U1j-mP-0sM" secondAttribute="bottom" constant="20" id="2nS-fR-HHc"/>
                 <constraint firstItem="U1j-mP-0sM" firstAttribute="height" secondItem="rwh-PO-286" secondAttribute="height" multiplier="0.42" id="4j6-3q-yf5"/>
-                <constraint firstItem="q0W-fP-KyB" firstAttribute="width" secondItem="vUN-kp-3ea" secondAttribute="width" multiplier="0.35" id="5I5-eK-CJR"/>
                 <constraint firstItem="TUf-tF-Y2T" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5g1-zn-0kl"/>
                 <constraint firstAttribute="trailing" secondItem="TUf-tF-Y2T" secondAttribute="trailing" id="6hb-Oh-3eF"/>
                 <constraint firstItem="U1j-mP-0sM" firstAttribute="bottom" secondItem="3Eb-6N-gBj" secondAttribute="bottom" id="7C8-u3-NV5"/>
@@ -133,6 +132,7 @@
                 <constraint firstItem="K6c-CB-7ch" firstAttribute="top" secondItem="B0I-eg-thX" secondAttribute="bottom" constant="2" id="Tbm-9k-tWM"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="trailing" secondItem="TUf-tF-Y2T" secondAttribute="trailing" id="VBJ-Il-bId"/>
                 <constraint firstItem="PdG-ZI-IRT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="XSX-fn-Wze"/>
+                <constraint firstItem="rwh-PO-286" firstAttribute="height" secondItem="EQv-Rn-B1u" secondAttribute="height" multiplier="0.25" id="bYA-F8-RjI"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="PdG-ZI-IRT" secondAttribute="trailing" constant="20" id="fXa-A6-hHn"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="leading" secondItem="TUf-tF-Y2T" secondAttribute="leading" id="gud-Nf-nnf"/>
                 <constraint firstAttribute="bottom" secondItem="TUf-tF-Y2T" secondAttribute="bottom" id="kCP-wJ-lct"/>

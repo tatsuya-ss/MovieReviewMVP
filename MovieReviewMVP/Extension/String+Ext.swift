@@ -56,7 +56,7 @@ extension String {
     static let storeLocationAlertStockTitle = "ストックに保存"
     static let storeLocationAlertReviewTitle = "レビューリストに保存"
     static let storeDateAlertMessage = "保存日を選択してください"
-    static let storeDateAlertAddDateTitle = "追加した日で保存"
+    static let storeDateAlertAddDateTitle = "追加した日付で保存"
     static let storeDateAlertAddTodayTitle = "今日の日付で保存"
 
     // Google Admob
