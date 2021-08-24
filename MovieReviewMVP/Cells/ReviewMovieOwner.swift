@@ -143,7 +143,8 @@ extension ReviewMovieOwner {
     // MARK: URLから画像を取得し、映画情報をViewに反映する処理
     private func fetchMovieImage(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
         if let posperPath = movie.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) {
+           !posperPath.isEmpty,
+           let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) {
             let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
                 guard let imageData = data else { return }
                 DispatchQueue.global().async { [weak self] in
@@ -156,6 +157,7 @@ extension ReviewMovieOwner {
             }
             task.resume()
         } else {
+            backgroundImageView.backgroundColor = .black
             movieImageView.image = UIImage(named: "no_image")
         }
     }
@@ -231,6 +233,7 @@ extension ReviewMovieOwner : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
+        cell.resetImage()
         if let credits = credits {
             cell.configure(cast: credits.cast[indexPath.row])
         }
