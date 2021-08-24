@@ -15,22 +15,26 @@ class StockReviewMovieCollectionViewCell: UICollectionViewCell {
     static let nib = UINib(nibName: String(describing: StockReviewMovieCollectionViewCell.self), bundle: nil)
     
     static let identifier = String(describing: StockReviewMovieCollectionViewCell.self)
-
+    
     func configure(movieReview: MovieReviewElement, cellSelectedState: CellSelectedState) {
         
-        guard let posterPath = movieReview.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) else { return }
-        let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-            guard let imageData = data else { return }
-
-            DispatchQueue.global().async { [weak self] in
-                guard let image = UIImage(data: imageData) else { return }
-                DispatchQueue.main.async {
-                    self?.movieImageView.image = image
+        if let posterPath = movieReview.poster_path,
+           !posterPath.isEmpty,
+           let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) {
+            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
+                guard let imageData = data else { return }
+                
+                DispatchQueue.global().async { [weak self] in
+                    guard let image = UIImage(data: imageData) else { return }
+                    DispatchQueue.main.async {
+                        self?.movieImageView.image = image
+                    }
                 }
             }
+            task.resume()
+        } else {
+            movieImageView.image = UIImage(named: "no_image")
         }
-        task.resume()
         checkImageView.image = UIImage(named: .checkImageName)
         checkImageView.isHidden = true
         setupLayout()
