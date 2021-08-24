@@ -10,15 +10,17 @@ import Cosmos
 
 class ReviewManagementCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var reviewView: CosmosView!
-    @IBOutlet weak var checkImageView: UIImageView!
+    @IBOutlet private weak var movieImageView: UIImageView!
+    @IBOutlet private weak var reviewView: CosmosView!
+    @IBOutlet private weak var checkImageView: UIImageView!
     
     static let nib = UINib(nibName: String(describing: ReviewManagementCollectionViewCell.self), bundle: nil)
 
     static let identifier = String(describing: ReviewManagementCollectionViewCell.self)
     
-    
+    func resetMovieImage() {
+        movieImageView.image = nil
+    }
     
     // MARK: configure
     func configure(movieReview: MovieReviewElement, cellSelectedState: CellSelectedState) {

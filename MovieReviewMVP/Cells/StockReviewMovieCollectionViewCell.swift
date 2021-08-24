@@ -9,8 +9,8 @@ import UIKit
 
 class StockReviewMovieCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var checkImageView: UIImageView!
+    @IBOutlet private weak var movieImageView: UIImageView!
+    @IBOutlet private weak var checkImageView: UIImageView!
     
     static let nib = UINib(nibName: String(describing: StockReviewMovieCollectionViewCell.self), bundle: nil)
     
@@ -35,6 +35,10 @@ class StockReviewMovieCollectionViewCell: UICollectionViewCell {
         checkImageView.isHidden = true
         setupLayout()
         tapCell(state: cellSelectedState)
+    }
+    
+    func resetImage() {
+        movieImageView.image = nil
     }
 
     // MARK: setupLayout
