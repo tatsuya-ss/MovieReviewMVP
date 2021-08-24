@@ -141,6 +141,7 @@ extension StockReviewMovieManagementViewController : UICollectionViewDataSource 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = stockCollectionView.dequeueReusableCell(withReuseIdentifier: StockReviewMovieCollectionViewCell.identifier, for: indexPath) as! StockReviewMovieCollectionViewCell
+        cell.resetImage()
         let stockMovieReview = presenter.returnStockMovieForCell(forRow: indexPath.row)
         if stockCollectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
             cell.configure(movieReview: stockMovieReview, cellSelectedState: .selected)
