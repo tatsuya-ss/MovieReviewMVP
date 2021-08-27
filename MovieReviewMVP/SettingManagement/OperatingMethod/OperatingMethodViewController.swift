@@ -7,11 +7,14 @@
 
 import UIKit
 
-class OperatingMethodViewController: UIViewController {
-
+final class OperatingMethodViewController: UIViewController {
+    
+    @IBOutlet private weak var operatingMethodTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigation()
+        setupTextView()
     }
     
     static func instantiate() -> OperatingMethodViewController {
@@ -27,6 +30,11 @@ extension OperatingMethodViewController {
         backButton.title = .setting
         backButton.tintColor = .stringColor
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
+    }
+    
+    private func setupTextView() {
+        operatingMethodTextView.isEditable = false
+        operatingMethodTextView.isSelectable = false
     }
 
 }
