@@ -1,25 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="c5Z-UV-FMJ">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17122"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="s0d-6b-0kx">
+        <!--Instructions View Controller-->
+        <scene sceneID="7oC-R9-0CT">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                <pageViewController storyboardIdentifier="InstructionsViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="c5Z-UV-FMJ" customClass="InstructionsViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="25B-ok-egx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-142" y="57"/>
+        </scene>
+        <!--Search Instruction View Controller-->
+        <scene sceneID="6GZ-fZ-f8W">
+            <objects>
+                <viewController storyboardIdentifier="SearchInstructionViewController" id="GBh-IY-Mzf" customClass="SearchInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LfQ-ah-9cV">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L9T-dS-Uda">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="f9G-CI-ZaQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="f9G-CI-ZaQ" firstAttribute="trailing" secondItem="L9T-dS-Uda" secondAttribute="trailing" id="Ufg-we-uqL"/>
+                            <constraint firstItem="f9G-CI-ZaQ" firstAttribute="bottom" secondItem="L9T-dS-Uda" secondAttribute="bottom" id="cEC-hM-yYM"/>
+                            <constraint firstItem="L9T-dS-Uda" firstAttribute="top" secondItem="f9G-CI-ZaQ" secondAttribute="top" id="n5X-hM-poK"/>
+                            <constraint firstItem="L9T-dS-Uda" firstAttribute="leading" secondItem="f9G-CI-ZaQ" secondAttribute="leading" id="qdR-yy-hul"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="L9T-dS-Uda" id="JtR-2z-9qL"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SSY-cP-MlP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="688" y="57"/>
+        </scene>
+        <!--Review Instruction View Controller-->
+        <scene sceneID="Mfs-BH-Jq3">
+            <objects>
+                <viewController storyboardIdentifier="ReviewInstructionViewController" id="SQu-f1-Eyj" customClass="ReviewInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uzp-b3-EWt">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u4p-fR-ZSj">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="zW5-fZ-iQ9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="zW5-fZ-iQ9" firstAttribute="trailing" secondItem="u4p-fR-ZSj" secondAttribute="trailing" id="9FG-at-x9I"/>
+                            <constraint firstItem="u4p-fR-ZSj" firstAttribute="top" secondItem="zW5-fZ-iQ9" secondAttribute="top" id="UMQ-ja-nc6"/>
+                            <constraint firstItem="u4p-fR-ZSj" firstAttribute="leading" secondItem="uzp-b3-EWt" secondAttribute="leading" id="cdu-vj-hHE"/>
+                            <constraint firstItem="zW5-fZ-iQ9" firstAttribute="bottom" secondItem="u4p-fR-ZSj" secondAttribute="bottom" id="lhM-UP-OgI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="u4p-fR-ZSj" id="FWP-qo-jPT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xYO-UZ-plw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1386" y="57"/>
+        </scene>
+        <!--Review Management Instruction View Controller-->
+        <scene sceneID="Z0P-Js-BDr">
+            <objects>
+                <viewController storyboardIdentifier="ReviewManagementInstructionViewController" id="MBd-xB-Zxp" customClass="ReviewManagementInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bwH-08-PCu">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L3M-xs-NfT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IlZ-Th-GTv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="IlZ-Th-GTv" firstAttribute="trailing" secondItem="L3M-xs-NfT" secondAttribute="trailing" id="DP8-CP-Owc"/>
+                            <constraint firstItem="L3M-xs-NfT" firstAttribute="leading" secondItem="IlZ-Th-GTv" secondAttribute="leading" id="LQr-G1-Cbw"/>
+                            <constraint firstItem="L3M-xs-NfT" firstAttribute="top" secondItem="IlZ-Th-GTv" secondAttribute="top" id="mvU-pa-lB9"/>
+                            <constraint firstItem="IlZ-Th-GTv" firstAttribute="bottom" secondItem="L3M-xs-NfT" secondAttribute="bottom" id="tKm-xg-bwo"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="L3M-xs-NfT" id="EIu-uV-ew0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aQc-9x-sqS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2046" y="57"/>
+        </scene>
+        <!--Stock Instruction View Controller-->
+        <scene sceneID="HLp-he-5FW">
+            <objects>
+                <viewController storyboardIdentifier="StockInstructionViewController" id="D2T-VD-nzN" customClass="StockInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b8T-5z-nuo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cCP-cn-yLD">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aIH-gI-hfW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="aIH-gI-hfW" firstAttribute="bottom" secondItem="cCP-cn-yLD" secondAttribute="bottom" id="2SJ-eE-316"/>
+                            <constraint firstItem="cCP-cn-yLD" firstAttribute="leading" secondItem="aIH-gI-hfW" secondAttribute="leading" id="PHI-Jt-35G"/>
+                            <constraint firstItem="aIH-gI-hfW" firstAttribute="trailing" secondItem="cCP-cn-yLD" secondAttribute="trailing" id="QQl-tM-LMG"/>
+                            <constraint firstItem="cCP-cn-yLD" firstAttribute="top" secondItem="aIH-gI-hfW" secondAttribute="top" id="Wnc-CB-mUS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="cCP-cn-yLD" id="BIj-pP-9sX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2XS-SU-KzA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2720" y="57"/>
         </scene>
     </scenes>
     <resources>
