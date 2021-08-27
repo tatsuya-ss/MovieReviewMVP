@@ -30,6 +30,12 @@
 		753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */; };
 		755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755D71E0264385F5007C0D77 /* ReviewMovie.xib */; };
 		755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */; };
+		755E9AFC26D88CCA00A17709 /* Instructions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755E9AFB26D88CCA00A17709 /* Instructions.storyboard */; };
+		755E9AFE26D88CE400A17709 /* InstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9AFD26D88CE400A17709 /* InstructionsViewController.swift */; };
+		755E9B0026D88E6B00A17709 /* SearchInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9AFF26D88E6B00A17709 /* SearchInstructionViewController.swift */; };
+		755E9B0226D88E9400A17709 /* ReviewInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0126D88E9400A17709 /* ReviewInstructionViewController.swift */; };
+		755E9B0426D88EA500A17709 /* StockInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0326D88EA500A17709 /* StockInstructionViewController.swift */; };
+		755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */; };
 		75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75636BE5263B994F00281DB1 /* SearchMovie.storyboard */; };
 		75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */; };
 		75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */; };
@@ -127,6 +133,12 @@
 		753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingManagementHeaderView.xib; sourceTree = "<group>"; };
 		755D71E0264385F5007C0D77 /* ReviewMovie.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovie.xib; sourceTree = "<group>"; };
 		755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieViewController.swift; sourceTree = "<group>"; };
+		755E9AFB26D88CCA00A17709 /* Instructions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Instructions.storyboard; sourceTree = "<group>"; };
+		755E9AFD26D88CE400A17709 /* InstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsViewController.swift; sourceTree = "<group>"; };
+		755E9AFF26D88E6B00A17709 /* SearchInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInstructionViewController.swift; sourceTree = "<group>"; };
+		755E9B0126D88E9400A17709 /* ReviewInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewInstructionViewController.swift; sourceTree = "<group>"; };
+		755E9B0326D88EA500A17709 /* StockInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockInstructionViewController.swift; sourceTree = "<group>"; };
+		755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementInstructionViewController.swift; sourceTree = "<group>"; };
 		75636BE5263B994F00281DB1 /* SearchMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchMovie.storyboard; sourceTree = "<group>"; };
 		75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieModel.swift; sourceTree = "<group>"; };
 		75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMoviePresenter.swift; sourceTree = "<group>"; };
@@ -254,6 +266,19 @@
 				753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		755E9AFA26D88CA400A17709 /* Instructions */ = {
+			isa = PBXGroup;
+			children = (
+				755E9AFB26D88CCA00A17709 /* Instructions.storyboard */,
+				755E9AFD26D88CE400A17709 /* InstructionsViewController.swift */,
+				755E9AFF26D88E6B00A17709 /* SearchInstructionViewController.swift */,
+				755E9B0126D88E9400A17709 /* ReviewInstructionViewController.swift */,
+				755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */,
+				755E9B0326D88EA500A17709 /* StockInstructionViewController.swift */,
+			);
+			path = Instructions;
 			sourceTree = "<group>";
 		};
 		75636BED263C004400281DB1 /* ReviewMovie */ = {
@@ -466,6 +491,7 @@
 		75834ADD26A80A35004AC09C /* SettingManagement */ = {
 			isa = PBXGroup;
 			children = (
+				755E9AFA26D88CA400A17709 /* Instructions */,
 				7570118126CDF5CC00716E93 /* OperatingMethod */,
 				75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */,
 				75834AE426A80DA8004AC09C /* SettingManagementModel.swift */,
@@ -642,6 +668,7 @@
 				752478AB268EF14700347972 /* CrewCastCollectionViewCell.xib in Resources */,
 				756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */,
 				75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */,
+				755E9AFC26D88CCA00A17709 /* Instructions.storyboard in Resources */,
 				758B05AA26AE507B00DFA33A /* DetailedSettingHeaderView.xib in Resources */,
 				753B2A4026AA29F800EACFBD /* SettingManagementTableViewCell.xib in Resources */,
 				75676F22263A97E300569AF5 /* MovieTableViewCell.xib in Resources */,
@@ -813,9 +840,12 @@
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
 				753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */,
 				7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */,
+				755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,
+				755E9B0226D88E9400A17709 /* ReviewInstructionViewController.swift in Sources */,
 				750B440B2685CF0A00191E17 /* Date.swift in Sources */,
+				755E9B0026D88E6B00A17709 /* SearchInstructionViewController.swift in Sources */,
 				758B059726AD12C100DFA33A /* DetailedSettingViewController.swift in Sources */,
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,
@@ -827,6 +857,7 @@
 				75676F21263A97E300569AF5 /* MovieTableViewCell.swift in Sources */,
 				75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */,
 				75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */,
+				755E9AFE26D88CE400A17709 /* InstructionsViewController.swift in Sources */,
 				75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */,
 				7570118526CDF60F00716E93 /* OperatingMethodViewController.swift in Sources */,
 				758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */,
@@ -846,6 +877,7 @@
 				758B05AE26AFA12D00DFA33A /* UIView+Ext.swift in Sources */,
 				75676F33263AA2FA00569AF5 /* TMDB.swift in Sources */,
 				75676F15263A954000569AF5 /* SearchMovieModel.swift in Sources */,
+				755E9B0426D88EA500A17709 /* StockInstructionViewController.swift in Sources */,
 				75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */,
 				758B05A426AE459E00DFA33A /* DetailedSettingTableViewCell.swift in Sources */,
 				750B44612687096F00191E17 /* ReviewTextView.swift in Sources */,
