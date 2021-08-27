@@ -26,6 +26,13 @@ final class SettingManagementViewController: UIViewController {
         setupBanner()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let indexPathForSelectedRow = SettingManagementTableView.indexPathForSelectedRow {
+            SettingManagementTableView.deselectRow(at: indexPathForSelectedRow, animated: true)
+        }
+    }
+    
 }
 
 extension SettingManagementViewController {
