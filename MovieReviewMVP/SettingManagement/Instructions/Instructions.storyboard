@@ -25,7 +25,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L9T-dS-Uda">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="L9T-dS-Uda">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </imageView>
                         </subviews>
@@ -54,7 +54,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u4p-fR-ZSj">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reviewInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="u4p-fR-ZSj">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </imageView>
                         </subviews>
@@ -83,7 +83,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L3M-xs-NfT">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reviewManagementInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="L3M-xs-NfT">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </imageView>
                         </subviews>
@@ -112,7 +112,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cCP-cn-yLD">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="cCP-cn-yLD">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </imageView>
                         </subviews>
@@ -133,8 +133,42 @@
             </objects>
             <point key="canvasLocation" x="2720" y="57"/>
         </scene>
+        <!--Edit Review Instruction View Controller-->
+        <scene sceneID="41g-hk-2Xh">
+            <objects>
+                <viewController storyboardIdentifier="EditReviewInstructionViewController" id="76S-9l-hCc" customClass="EditReviewInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="u99-Lw-mje">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="editReviewInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="pWU-ZN-t02">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="LEu-qd-blT"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="pWU-ZN-t02" firstAttribute="leading" secondItem="LEu-qd-blT" secondAttribute="leading" id="4uP-yo-bFg"/>
+                            <constraint firstItem="LEu-qd-blT" firstAttribute="bottom" secondItem="pWU-ZN-t02" secondAttribute="bottom" id="8Xz-tw-CgH"/>
+                            <constraint firstItem="pWU-ZN-t02" firstAttribute="top" secondItem="LEu-qd-blT" secondAttribute="top" id="YPr-4x-6Ku"/>
+                            <constraint firstItem="LEu-qd-blT" firstAttribute="trailing" secondItem="pWU-ZN-t02" secondAttribute="trailing" id="fKa-NW-GxP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="pWU-ZN-t02" id="wxw-S9-Gt5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fdm-ue-h9d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3397" y="57"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="editReviewInstruction" width="1170" height="2532"/>
+        <image name="reviewInstruction" width="1170" height="2532"/>
+        <image name="reviewManagementInstruction" width="1170" height="2532"/>
+        <image name="searchInstruction" width="1170" height="2532"/>
+        <image name="stockInstruction" width="1170" height="2532"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
