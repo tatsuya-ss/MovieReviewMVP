@@ -36,6 +36,7 @@
 		755E9B0226D88E9400A17709 /* ReviewInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0126D88E9400A17709 /* ReviewInstructionViewController.swift */; };
 		755E9B0426D88EA500A17709 /* StockInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0326D88EA500A17709 /* StockInstructionViewController.swift */; };
 		755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */; };
+		755E9B1026D9D44300A17709 /* EditReviewInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0F26D9D44300A17709 /* EditReviewInstructionViewController.swift */; };
 		75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75636BE5263B994F00281DB1 /* SearchMovie.storyboard */; };
 		75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */; };
 		75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */; };
@@ -139,6 +140,7 @@
 		755E9B0126D88E9400A17709 /* ReviewInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewInstructionViewController.swift; sourceTree = "<group>"; };
 		755E9B0326D88EA500A17709 /* StockInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockInstructionViewController.swift; sourceTree = "<group>"; };
 		755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementInstructionViewController.swift; sourceTree = "<group>"; };
+		755E9B0F26D9D44300A17709 /* EditReviewInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReviewInstructionViewController.swift; sourceTree = "<group>"; };
 		75636BE5263B994F00281DB1 /* SearchMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchMovie.storyboard; sourceTree = "<group>"; };
 		75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieModel.swift; sourceTree = "<group>"; };
 		75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMoviePresenter.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				755E9B0126D88E9400A17709 /* ReviewInstructionViewController.swift */,
 				755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */,
 				755E9B0326D88EA500A17709 /* StockInstructionViewController.swift */,
+				755E9B0F26D9D44300A17709 /* EditReviewInstructionViewController.swift */,
 			);
 			path = Instructions;
 			sourceTree = "<group>";
@@ -865,6 +868,7 @@
 				75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */,
 				750B44B52689C32D00191E17 /* Notification.Name+Ext.swift in Sources */,
 				758B059E26AE3B7C00DFA33A /* DetailedSettingPresenter.swift in Sources */,
+				755E9B1026D9D44300A17709 /* EditReviewInstructionViewController.swift in Sources */,
 				758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
 				753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */,
