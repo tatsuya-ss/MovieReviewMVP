@@ -188,8 +188,9 @@ extension SettingManagementViewController : SettingManagementPresenterOutput {
     }
     
     func displayOperatingMethodView(indexPath: IndexPath, title: String) {
-        let operatingMethodVC = OperatingMethodViewController.instantiate()
-        navigationController?.pushViewController(operatingMethodVC, animated: true)
+        let InstructionsVC = InstructionsViewController.instantiate()
+        modalPresentationStyle = .fullScreen
+        present(InstructionsVC, animated: true, completion: nil)
     }
     
     func didLogout() {

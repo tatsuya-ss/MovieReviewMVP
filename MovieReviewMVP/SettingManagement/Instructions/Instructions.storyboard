@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZUX-OP-vWS">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--操作方法-->
+        <scene sceneID="7oC-R9-0CT">
+            <objects>
+                <pageViewController storyboardIdentifier="InstructionsViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="c5Z-UV-FMJ" customClass="InstructionsViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="操作方法" id="hfL-FC-8Lu">
+                        <barButtonItem key="rightBarButtonItem" systemItem="stop" id="xsW-qb-cL9">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="stopButtonDidTapped:" destination="c5Z-UV-FMJ" id="ZjM-fE-hCk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="25B-ok-egx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2588.4057971014495" y="56.919642857142854"/>
+        </scene>
+        <!--Search Instruction View Controller-->
+        <scene sceneID="6GZ-fZ-f8W">
+            <objects>
+                <viewController storyboardIdentifier="SearchInstructionViewController" id="GBh-IY-Mzf" customClass="SearchInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LfQ-ah-9cV">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="L9T-dS-Uda">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="f9G-CI-ZaQ"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="f9G-CI-ZaQ" firstAttribute="trailing" secondItem="L9T-dS-Uda" secondAttribute="trailing" id="Ufg-we-uqL"/>
+                            <constraint firstAttribute="bottom" secondItem="L9T-dS-Uda" secondAttribute="bottom" id="cEC-hM-yYM"/>
+                            <constraint firstItem="L9T-dS-Uda" firstAttribute="top" secondItem="f9G-CI-ZaQ" secondAttribute="top" id="n5X-hM-poK"/>
+                            <constraint firstItem="L9T-dS-Uda" firstAttribute="leading" secondItem="f9G-CI-ZaQ" secondAttribute="leading" id="qdR-yy-hul"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="L9T-dS-Uda" id="JtR-2z-9qL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SSY-cP-MlP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3417.3913043478265" y="56.919642857142854"/>
+        </scene>
+        <!--Review Instruction View Controller-->
+        <scene sceneID="Mfs-BH-Jq3">
+            <objects>
+                <viewController storyboardIdentifier="ReviewInstructionViewController" id="SQu-f1-Eyj" customClass="ReviewInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uzp-b3-EWt">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reviewInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="u4p-fR-ZSj">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="zW5-fZ-iQ9"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="zW5-fZ-iQ9" firstAttribute="trailing" secondItem="u4p-fR-ZSj" secondAttribute="trailing" id="9FG-at-x9I"/>
+                            <constraint firstItem="u4p-fR-ZSj" firstAttribute="top" secondItem="zW5-fZ-iQ9" secondAttribute="top" id="UMQ-ja-nc6"/>
+                            <constraint firstItem="u4p-fR-ZSj" firstAttribute="leading" secondItem="uzp-b3-EWt" secondAttribute="leading" id="cdu-vj-hHE"/>
+                            <constraint firstAttribute="bottom" secondItem="u4p-fR-ZSj" secondAttribute="bottom" id="lhM-UP-OgI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="u4p-fR-ZSj" id="FWP-qo-jPT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xYO-UZ-plw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4115.9420289855079" y="56.919642857142854"/>
+        </scene>
+        <!--Review Management Instruction View Controller-->
+        <scene sceneID="Z0P-Js-BDr">
+            <objects>
+                <viewController storyboardIdentifier="ReviewManagementInstructionViewController" id="MBd-xB-Zxp" customClass="ReviewManagementInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bwH-08-PCu">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reviewManagementInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="L3M-xs-NfT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IlZ-Th-GTv"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="IlZ-Th-GTv" firstAttribute="trailing" secondItem="L3M-xs-NfT" secondAttribute="trailing" id="DP8-CP-Owc"/>
+                            <constraint firstItem="L3M-xs-NfT" firstAttribute="leading" secondItem="IlZ-Th-GTv" secondAttribute="leading" id="LQr-G1-Cbw"/>
+                            <constraint firstItem="L3M-xs-NfT" firstAttribute="top" secondItem="IlZ-Th-GTv" secondAttribute="top" id="mvU-pa-lB9"/>
+                            <constraint firstAttribute="bottom" secondItem="L3M-xs-NfT" secondAttribute="bottom" id="tKm-xg-bwo"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="L3M-xs-NfT" id="EIu-uV-ew0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aQc-9x-sqS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4773.913043478261" y="56.919642857142854"/>
+        </scene>
+        <!--Stock Instruction View Controller-->
+        <scene sceneID="HLp-he-5FW">
+            <objects>
+                <viewController storyboardIdentifier="StockInstructionViewController" id="D2T-VD-nzN" customClass="StockInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b8T-5z-nuo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="cCP-cn-yLD">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aIH-gI-hfW"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="cCP-cn-yLD" secondAttribute="bottom" id="2SJ-eE-316"/>
+                            <constraint firstItem="cCP-cn-yLD" firstAttribute="leading" secondItem="aIH-gI-hfW" secondAttribute="leading" id="PHI-Jt-35G"/>
+                            <constraint firstItem="aIH-gI-hfW" firstAttribute="trailing" secondItem="cCP-cn-yLD" secondAttribute="trailing" id="QQl-tM-LMG"/>
+                            <constraint firstItem="cCP-cn-yLD" firstAttribute="top" secondItem="aIH-gI-hfW" secondAttribute="top" id="Wnc-CB-mUS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="cCP-cn-yLD" id="BIj-pP-9sX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2XS-SU-KzA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5449.275362318841" y="56.919642857142854"/>
+        </scene>
+        <!--Edit Review Instruction View Controller-->
+        <scene sceneID="41g-hk-2Xh">
+            <objects>
+                <viewController storyboardIdentifier="EditReviewInstructionViewController" id="76S-9l-hCc" customClass="EditReviewInstructionViewController" customModule="MovieReviewMVP" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="u99-Lw-mje">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="editReviewInstruction" translatesAutoresizingMaskIntoConstraints="NO" id="pWU-ZN-t02">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="LEu-qd-blT"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="pWU-ZN-t02" firstAttribute="leading" secondItem="LEu-qd-blT" secondAttribute="leading" id="4uP-yo-bFg"/>
+                            <constraint firstAttribute="bottom" secondItem="pWU-ZN-t02" secondAttribute="bottom" id="8Xz-tw-CgH"/>
+                            <constraint firstItem="pWU-ZN-t02" firstAttribute="top" secondItem="LEu-qd-blT" secondAttribute="top" id="YPr-4x-6Ku"/>
+                            <constraint firstItem="LEu-qd-blT" firstAttribute="trailing" secondItem="pWU-ZN-t02" secondAttribute="trailing" id="fKa-NW-GxP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="instructionImageView" destination="pWU-ZN-t02" id="wxw-S9-Gt5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fdm-ue-h9d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6126.0869565217399" y="56.919642857142854"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eZx-Th-HC6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZUX-OP-vWS" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Kpf-PX-r0K">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="c5Z-UV-FMJ" kind="relationship" relationship="rootViewController" id="y8E-1p-TLx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JEg-Ca-Afq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1678.2608695652175" y="56.919642857142854"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="editReviewInstruction" width="1170" height="2000"/>
+        <image name="reviewInstruction" width="1170" height="2000"/>
+        <image name="reviewManagementInstruction" width="1170" height="2000"/>
+        <image name="searchInstruction" width="1170" height="2000"/>
+        <image name="stockInstruction" width="1170" height="2000"/>
+    </resources>
+</document>
