@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,28 +11,65 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CrewCastCollectionViewCell" customModule="MovieReviewMVP" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="188" height="268"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="188" height="268"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Ri-w2-f9Z">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="188" height="268"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vsQ-9F-Srl" customClass="GradientView" customModule="MovieReviewMVP" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="161" width="188" height="107"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iHX-cm-eSZ">
+                                <rect key="frame" x="72" y="95" width="44.5" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="iHX-cm-eSZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vsQ-9F-Srl" secondAttribute="leading" id="WZ0-ac-m3S"/>
+                            <constraint firstAttribute="bottom" secondItem="iHX-cm-eSZ" secondAttribute="bottom" id="j77-ep-tbr"/>
+                            <constraint firstItem="iHX-cm-eSZ" firstAttribute="centerX" secondItem="vsQ-9F-Srl" secondAttribute="centerX" id="sHb-Wo-mhm"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="Color1">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="Color2">
+                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="point" keyPath="Position1">
+                                <point key="value" x="0.5" y="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="point" keyPath="Position2">
+                                <point key="value" x="0.5" y="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstItem="3Ri-w2-f9Z" firstAttribute="trailing" secondItem="vsQ-9F-Srl" secondAttribute="trailing" id="4PJ-6v-tFb"/>
+                <constraint firstItem="vsQ-9F-Srl" firstAttribute="height" secondItem="3Ri-w2-f9Z" secondAttribute="height" multiplier="0.4" id="B5d-R1-HjW"/>
                 <constraint firstItem="3Ri-w2-f9Z" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="GHG-NT-4Lc"/>
+                <constraint firstItem="3Ri-w2-f9Z" firstAttribute="bottom" secondItem="vsQ-9F-Srl" secondAttribute="bottom" id="PLU-Ap-EOY"/>
                 <constraint firstAttribute="bottom" secondItem="3Ri-w2-f9Z" secondAttribute="bottom" id="eQ7-3P-VDw"/>
                 <constraint firstItem="3Ri-w2-f9Z" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="lao-mv-p9O"/>
+                <constraint firstItem="vsQ-9F-Srl" firstAttribute="leading" secondItem="3Ri-w2-f9Z" secondAttribute="leading" id="qZE-jK-j2t"/>
                 <constraint firstAttribute="trailing" secondItem="3Ri-w2-f9Z" secondAttribute="trailing" id="uEL-AQ-aqg"/>
             </constraints>
+            <size key="customSize" width="188" height="268"/>
             <connections>
+                <outlet property="blackView" destination="vsQ-9F-Srl" id="FXA-mh-pOH"/>
                 <outlet property="crewCastImageView" destination="3Ri-w2-f9Z" id="lvn-iV-xlQ"/>
+                <outlet property="nameLabel" destination="iHX-cm-eSZ" id="T5a-1p-ANs"/>
             </connections>
-            <point key="canvasLocation" x="140.57971014492756" y="126.5625"/>
+            <point key="canvasLocation" x="213.04347826086959" y="198.88392857142856"/>
         </collectionViewCell>
     </objects>
 </document>
