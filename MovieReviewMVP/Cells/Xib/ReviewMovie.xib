@@ -63,13 +63,16 @@
                     </constraints>
                 </stackView>
                 <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Eb-6N-gBj" customClass="CosmosView" customModule="Cosmos">
-                    <rect key="frame" x="20" y="270" width="140" height="20"/>
+                    <rect key="frame" x="20" y="273" width="140" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="rhF-vD-NGy"/>
+                    </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="rating">
                             <real key="value" value="3"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="starSize">
-                            <real key="value" value="20"/>
+                            <real key="value" value="18"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="string" keyPath="text" value="3.0"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="textSize">
@@ -90,19 +93,19 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="K6c-CB-7ch" userLabel="Overview Text View">
-                    <rect key="frame" x="168" y="83" width="226" height="116.5"/>
+                    <rect key="frame" x="168" y="83" width="226" height="106.5"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-ZI-IRT" userLabel="Review Text View">
-                    <rect key="frame" x="20" y="310" width="374" height="552"/>
+                    <rect key="frame" x="20" y="318" width="374" height="544"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="U1j-mP-0sM">
-                    <rect key="frame" x="168" y="196" width="226" height="94"/>
+                    <rect key="frame" x="168" y="186" width="226" height="112"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Sk3-D7-kaJ">
                         <size key="itemSize" width="128" height="128"/>
@@ -115,10 +118,10 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="PdG-ZI-IRT" firstAttribute="top" secondItem="U1j-mP-0sM" secondAttribute="bottom" constant="20" id="2nS-fR-HHc"/>
-                <constraint firstItem="U1j-mP-0sM" firstAttribute="height" secondItem="rwh-PO-286" secondAttribute="height" multiplier="0.42" id="4j6-3q-yf5"/>
+                <constraint firstItem="U1j-mP-0sM" firstAttribute="height" secondItem="rwh-PO-286" secondAttribute="height" multiplier="0.5" id="4j6-3q-yf5"/>
                 <constraint firstItem="TUf-tF-Y2T" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5g1-zn-0kl"/>
                 <constraint firstAttribute="trailing" secondItem="TUf-tF-Y2T" secondAttribute="trailing" id="6hb-Oh-3eF"/>
-                <constraint firstItem="U1j-mP-0sM" firstAttribute="bottom" secondItem="3Eb-6N-gBj" secondAttribute="bottom" id="7C8-u3-NV5"/>
+                <constraint firstItem="U1j-mP-0sM" firstAttribute="bottom" secondItem="q0W-fP-KyB" secondAttribute="bottom" constant="30" id="7C8-u3-NV5"/>
                 <constraint firstItem="q0W-fP-KyB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="8WB-11-IDt"/>
                 <constraint firstItem="U1j-mP-0sM" firstAttribute="top" secondItem="K6c-CB-7ch" secondAttribute="bottom" constant="-3.5" id="8dp-j9-NaA"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="K6c-CB-7ch" secondAttribute="trailing" constant="20" id="Bpi-cm-0lB"/>
@@ -126,7 +129,7 @@
                 <constraint firstItem="B0I-eg-thX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="EGe-Mj-UHG"/>
                 <constraint firstItem="B0I-eg-thX" firstAttribute="leading" secondItem="q0W-fP-KyB" secondAttribute="trailing" constant="8" symbolic="YES" id="GHZ-0P-ckz"/>
                 <constraint firstItem="EQv-Rn-B1u" firstAttribute="bottom" secondItem="TUf-tF-Y2T" secondAttribute="bottom" id="Hln-cn-zg2"/>
-                <constraint firstItem="3Eb-6N-gBj" firstAttribute="top" secondItem="q0W-fP-KyB" secondAttribute="bottom" constant="2" id="R7L-r9-heb"/>
+                <constraint firstItem="3Eb-6N-gBj" firstAttribute="top" secondItem="q0W-fP-KyB" secondAttribute="bottom" constant="5" id="R7L-r9-heb"/>
                 <constraint firstItem="K6c-CB-7ch" firstAttribute="leading" secondItem="q0W-fP-KyB" secondAttribute="trailing" constant="8" symbolic="YES" id="Rfi-Gw-kzH"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="U1j-mP-0sM" secondAttribute="trailing" constant="20" id="THQ-zp-qa6"/>
                 <constraint firstItem="K6c-CB-7ch" firstAttribute="top" secondItem="B0I-eg-thX" secondAttribute="bottom" constant="2" id="Tbm-9k-tWM"/>
@@ -147,11 +150,6 @@
             <point key="canvasLocation" x="140.57971014492756" y="97.767857142857139"/>
         </view>
     </objects>
-    <designables>
-        <designable name="3Eb-6N-gBj">
-            <size key="intrinsicContentSize" width="126.765625" height="20"/>
-        </designable>
-    </designables>
     <resources>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
