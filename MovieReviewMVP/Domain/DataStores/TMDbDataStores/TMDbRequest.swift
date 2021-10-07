@@ -47,4 +47,12 @@ struct TMDbAPI {
         }
     }
     
+    // MARK: 近日公開
+    struct UpcomingRequest {
+        var upcomingURL: URL? {
+            let urlString = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
+            return URL(string: urlString)
+        }
+    }
+    
 }

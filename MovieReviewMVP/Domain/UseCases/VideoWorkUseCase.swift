@@ -10,6 +10,7 @@ import Foundation
 protocol VideoWorkUseCaseProtocol {
     func fetchVideoWorks(fetchState: FetchMovieState, query: String,
                          completion: @escaping ResultHandler<[MovieReviewElement]>)
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
 }
 
 final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
@@ -25,4 +26,9 @@ final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
                                    query: query,
                                    completion: completion)
     }
+    
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>) {
+        repository.fetchUpcomingVideoWorks(completion: completion)
+    }
+    
 }

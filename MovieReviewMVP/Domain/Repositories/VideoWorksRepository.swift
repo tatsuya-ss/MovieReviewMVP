@@ -10,6 +10,7 @@ import Foundation
 protocol VideoWorksRepositoryProtocol {
     func fetchVideoWorks(fetchState: FetchMovieState, query: String,
                          completion: @escaping ResultHandler<[MovieReviewElement]>)
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
 }
 
 final class VideoWorksRepository: VideoWorksRepositoryProtocol {
@@ -29,6 +30,19 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
                 let videoWorks = tmdbVideoWorks.results.map { MovieReviewElement(data: $0) }
                 completion(.success(videoWorks))
             case.failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>) {
+        dataStore.fetchUpcomingVideoWorks { result in
+            switch result {
+            case .success(let tmdbVideoWorks):
+                let videoWorks = tmdbVideoWorks.results
+                    .map { MovieReviewElement(data: $0) }
+                completion(.success(videoWorks))
+            case .failure(let error):
                 completion(.failure(error))
             }
         }

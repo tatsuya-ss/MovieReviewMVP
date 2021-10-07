@@ -55,32 +55,35 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
-        guard let query = text,
-              !query.isEmpty else { return }
-        useCase.fetchVideoWorks(fetchState: state,
-                                query: query,
-                                completion: { [weak self] result in
-            switch result {
-            case let .success(result):
-                switch state {
-                case .search(.initial):
+        switch state {
+        case .search:
+            guard let query = text,
+                  !query.isEmpty else { return }
+            useCase.fetchVideoWorks(fetchState: state,
+                                    query: query) { [weak self] result in
+                switch result {
+                case .success(let result):
                     self?.reviewManagement.fetchReviews(result: result)
-                case .search(.refresh):
-                    self?.reviewManagement.searchRefresh(result: result)
-                case .upcoming:
-                    self?.reviewManagement.fetchReviews(result: result)
+                    DispatchQueue.main.async {
+                        self?.view.update(state, result)
+                    }
+                case .failure(let error):
+                    print(error)
                 }
-                DispatchQueue.main.async {
-                    self?.view.update(state, result)
-                }
-                
-            case let .failure(SearchError.requestError(error)):
-                print(error)
-                
-            case let .failure(error):
-                print(error)
             }
-        })
-
+        case .upcoming:
+            useCase.fetchUpcomingVideoWorks { [weak self] result in
+                switch result {
+                case .success(let result):
+                    self?.reviewManagement.fetchReviews(result: result)
+                    DispatchQueue.main.async {
+                        self?.view.update(state, result)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
+    
 }
