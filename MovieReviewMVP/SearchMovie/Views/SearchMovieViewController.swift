@@ -98,8 +98,13 @@ private extension SearchMovieViewController {
     }
     
     private func setupPresenter() {
-        let searchMovieModel = SearchMovieModel()
-        let searchMoviePresenter = SearchMoviePresenter(view: self, model: searchMovieModel)
+        let videoWorkUseCase = VideoWorkUseCase(repository:
+                                                    VideoWorksRepository(dataStore:
+                                                                            TMDbDataStore()
+                                                                        ))
+        let searchMoviePresenter =
+        SearchMoviePresenter(view: self,
+                             useCase: videoWorkUseCase)
         self.inject(presenter: searchMoviePresenter)
     }
     

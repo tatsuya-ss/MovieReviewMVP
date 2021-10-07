@@ -24,12 +24,13 @@ protocol SearchMoviePresenterOutput : AnyObject {
 final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     private weak var view: SearchMoviePresenterOutput!
-    private var model: SearchMovieModelInput
+    private var useCase: VideoWorkUseCaseProtocol
     private let reviewManagement = ReviewManagement()
     
-    init(view: SearchMoviePresenterOutput, model: SearchMovieModelInput) {
+    init(view: SearchMoviePresenterOutput,
+         useCase: VideoWorkUseCaseProtocol) {
         self.view = view
-        self.model = model
+        self.useCase = useCase
     }
     
     var numberOfMovies: Int {
@@ -54,7 +55,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
-        model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
+        guard let query = text,
+              !query.isEmpty else { return }
+        useCase.fetchVideoWorks(fetchState: state,
+                                query: query,
+                                completion: { [weak self] result in
             switch result {
             case let .success(result):
                 switch state {
