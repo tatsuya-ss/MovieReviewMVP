@@ -24,12 +24,15 @@ protocol SearchMoviePresenterOutput : AnyObject {
 final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     private weak var view: SearchMoviePresenterOutput!
-    private var model: SearchMovieModelInput
+    private var useCase: VideoWorkUseCaseProtocol
     private let reviewManagement = ReviewManagement()
+    private var page = 1
+    private var cachedQuery: String?
     
-    init(view: SearchMoviePresenterOutput, model: SearchMovieModelInput) {
+    init(view: SearchMoviePresenterOutput,
+         useCase: VideoWorkUseCaseProtocol) {
         self.view = view
-        self.model = model
+        self.useCase = useCase
     }
     
     var numberOfMovies: Int {
@@ -54,28 +57,54 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
-        model.fetchMovie(fetchState: state, query: text, completion: { [weak self] result in
-            switch result {
-            case let .success(result):
-                switch state {
-                case .search(.initial):
+        switch state {
+        case .search(.initial):
+            guard let query = text,
+                  !query.isEmpty else { return }
+            cachedQuery = query
+            page = 1
+            useCase.fetchVideoWorks(page: page,
+                                    query: query) { [weak self] result in
+                switch result {
+                case .success(let result):
                     self?.reviewManagement.fetchReviews(result: result)
-                case .search(.refresh):
-                    self?.reviewManagement.searchRefresh(result: result)
-                case .upcoming:
-                    self?.reviewManagement.fetchReviews(result: result)
+                    DispatchQueue.main.async {
+                        self?.view.update(state, result)
+                    }
+                case .failure(let error):
+                    print(error)
                 }
-                DispatchQueue.main.async {
-                    self?.view.update(state, result)
-                }
-                
-            case let .failure(SearchError.requestError(error)):
-                print(error)
-                
-            case let .failure(error):
-                print(error)
             }
-        })
+            
+        case .search(.refresh):
+            guard let query = cachedQuery else { return }
+            page += 1
+            useCase.fetchVideoWorks(page: page,
+                                    query: query) { [weak self] result in
+                switch result {
+                case .success(let result):
+                    self?.reviewManagement.searchRefresh(result: result)
+                    DispatchQueue.main.async {
+                        self?.view.update(state, result)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
 
+        case .upcoming:
+            useCase.fetchUpcomingVideoWorks { [weak self] result in
+                switch result {
+                case .success(let result):
+                    self?.reviewManagement.fetchReviews(result: result)
+                    DispatchQueue.main.async {
+                        self?.view.update(state, result)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
+    
 }

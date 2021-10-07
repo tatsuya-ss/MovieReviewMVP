@@ -98,8 +98,13 @@ private extension SearchMovieViewController {
     }
     
     private func setupPresenter() {
-        let searchMovieModel = SearchMovieModel()
-        let searchMoviePresenter = SearchMoviePresenter(view: self, model: searchMovieModel)
+        let videoWorkUseCase = VideoWorkUseCase(repository:
+                                                    VideoWorksRepository(dataStore:
+                                                                            TMDbDataStore()
+                                                                        ))
+        let searchMoviePresenter =
+        SearchMoviePresenter(view: self,
+                             useCase: videoWorkUseCase)
         self.inject(presenter: searchMoviePresenter)
     }
     
@@ -271,15 +276,15 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
-        
+
         let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
-        
+
         let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore, movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
-        
+
         reviewMovieVC.inject(presenter: presenter)
-        
+
         let nav = UINavigationController(rootViewController: reviewMovieVC)
-                
+
         self.present(nav, animated: true, completion: nil)
     }
     
