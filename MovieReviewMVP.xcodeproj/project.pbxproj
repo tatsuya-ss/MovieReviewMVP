@@ -92,6 +92,7 @@
 		75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC661F270E87140001F464 /* TMDbDataStore.swift */; };
 		75EC6622270E87560001F464 /* TMDBSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6621270E87560001F464 /* TMDBSearchResponses.swift */; };
 		75EC6624270E8A440001F464 /* TMDbRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6623270E8A440001F464 /* TMDbRequest.swift */; };
+		75EC6626270E90E00001F464 /* VideoWorksRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */; };
 		E6FAEA019AE6714C84BCDFDA /* Pods_MovieReviewMVP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E807F7A5A1FE35BFE3006E /* Pods_MovieReviewMVP.framework */; };
 /* End PBXBuildFile section */
 
@@ -205,6 +206,7 @@
 		75EC661F270E87140001F464 /* TMDbDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbDataStore.swift; sourceTree = "<group>"; };
 		75EC6621270E87560001F464 /* TMDBSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBSearchResponses.swift; sourceTree = "<group>"; };
 		75EC6623270E8A440001F464 /* TMDbRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbRequest.swift; sourceTree = "<group>"; };
+		75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWorksRepository.swift; sourceTree = "<group>"; };
 		84C36157DE6D00C027771D5C /* Pods-MovieReviewMVP-MovieReviewMVPUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieReviewMVP-MovieReviewMVPUITests.release.xcconfig"; path = "Target Support Files/Pods-MovieReviewMVP-MovieReviewMVPUITests/Pods-MovieReviewMVP-MovieReviewMVPUITests.release.xcconfig"; sourceTree = "<group>"; };
 		891AC919EC9E75AE2CFD0298 /* Pods_MovieReviewMVPTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVPTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E807F7A5A1FE35BFE3006E /* Pods_MovieReviewMVP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieReviewMVP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -440,6 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
+				75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -874,6 +877,7 @@
 				7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */,
 				755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
+				75EC6626270E90E00001F464 /* VideoWorksRepository.swift in Sources */,
 				75676EE0263A89B400569AF5 /* SearchMovieViewController.swift in Sources */,
 				755E9B0226D88E9400A17709 /* ReviewInstructionViewController.swift in Sources */,
 				75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */,
