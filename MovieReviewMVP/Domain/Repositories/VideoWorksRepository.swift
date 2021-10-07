@@ -8,7 +8,7 @@
 import Foundation
 
 protocol VideoWorksRepositoryProtocol {
-    func fetchVideoWorks(fetchState: FetchMovieState, query: String,
+    func fetchVideoWorks(page: Int, query: String,
                          completion: @escaping ResultHandler<[MovieReviewElement]>)
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
 }
@@ -20,10 +20,10 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
         self.dataStore = dataStore
     }
     
-    func fetchVideoWorks(fetchState: FetchMovieState,
+    func fetchVideoWorks(page: Int,
                          query: String,
                          completion: @escaping ResultHandler<[MovieReviewElement]>) {
-        dataStore.fetchVideoWorks(fetchState: fetchState,
+        dataStore.fetchVideoWorks(page: page,
                                   query: query) { result in
             switch result {
             case .success(let tmdbVideoWorks):

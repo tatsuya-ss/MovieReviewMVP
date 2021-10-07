@@ -16,17 +16,17 @@ enum TMDbSearchError: Error {
 typealias ResultHandler<T> = (Result<T, Error>) -> Void
 
 protocol TMDbDataStoreProtocol {
-    func fetchVideoWorks(fetchState: FetchMovieState, query: String,
+    func fetchVideoWorks(page: Int, query: String,
                     completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<TMDbSearchResponses>)
 }
 
 final class TMDbDataStore: TMDbDataStoreProtocol {
 
-    func fetchVideoWorks(fetchState: FetchMovieState, query: String,
+    func fetchVideoWorks(page: Int, query: String,
                     completion: @escaping ResultHandler<TMDbSearchResponses>) {
         guard let url = TMDbAPI.SearchRequest(query: query,
-                                              page: "1").returnSearchURL()
+                                              page: page).returnSearchURL()
         else {
             completion(.failure(TMDbSearchError.urlError))
             return

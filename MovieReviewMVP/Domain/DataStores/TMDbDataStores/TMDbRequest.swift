@@ -14,7 +14,7 @@ struct TMDbAPI {
     
     struct SearchRequest {
         let query: String
-        let page: String
+        let page: Int
         
         func returnSearchURL() -> URL? {
             let urlString = "https://api.themoviedb.org/3/search/multi?api_key=\(TMDbAPI.key)&language=ja-JP&page=\(page)&query=\(query)"

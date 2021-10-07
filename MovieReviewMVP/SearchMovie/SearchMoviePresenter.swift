@@ -26,6 +26,8 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private weak var view: SearchMoviePresenterOutput!
     private var useCase: VideoWorkUseCaseProtocol
     private let reviewManagement = ReviewManagement()
+    private var page = 1
+    private var cachedQuery: String?
     
     init(view: SearchMoviePresenterOutput,
          useCase: VideoWorkUseCaseProtocol) {
@@ -56,10 +58,12 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     func fetchMovie(state: FetchMovieState, text: String?) {
         switch state {
-        case .search:
+        case .search(.initial):
             guard let query = text,
                   !query.isEmpty else { return }
-            useCase.fetchVideoWorks(fetchState: state,
+            cachedQuery = query
+            page = 1
+            useCase.fetchVideoWorks(page: page,
                                     query: query) { [weak self] result in
                 switch result {
                 case .success(let result):
@@ -71,6 +75,23 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                     print(error)
                 }
             }
+            
+        case .search(.refresh):
+            guard let query = cachedQuery else { return }
+            page += 1
+            useCase.fetchVideoWorks(page: page,
+                                    query: query) { [weak self] result in
+                switch result {
+                case .success(let result):
+                    self?.reviewManagement.searchRefresh(result: result)
+                    DispatchQueue.main.async {
+                        self?.view.update(state, result)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+
         case .upcoming:
             useCase.fetchUpcomingVideoWorks { [weak self] result in
                 switch result {
