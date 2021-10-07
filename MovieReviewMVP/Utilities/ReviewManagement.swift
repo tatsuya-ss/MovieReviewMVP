@@ -8,7 +8,7 @@
 import Foundation
 
 final class ReviewManagement {
-    private var reviews: [MovieReviewElement] = []
+    private var videoWorks: [MovieReviewElement] = []
     private var sortStateManagement: sortState = .createdDescend
     
     func returnSortState() -> sortState {
@@ -16,49 +16,49 @@ final class ReviewManagement {
     }
     
     func returnNumberOfReviews() -> Int {
-        reviews.count
+        videoWorks.count
     }
     
     func returnReviews() -> [MovieReviewElement] {
-        reviews
+        videoWorks
     }
     
     
     func returnReviewForCell(forRow row: Int) -> MovieReviewElement {
-        reviews[row]
+        videoWorks[row]
     }
 
     func fetchReviews(result: [MovieReviewElement]) {
-        reviews = result
+        videoWorks = result
     }
     
     func deleteReview(row: Int) {
-        reviews.remove(at: row)
+        videoWorks.remove(at: row)
     }
     
     func returnSelectedReview(indexPath: IndexPath) -> MovieReviewElement {
-        reviews[indexPath.row]
+        videoWorks[indexPath.row]
     }
     
     func searchRefresh(result: [MovieReviewElement]) {
-        reviews.append(contentsOf: result)
+        videoWorks.append(contentsOf: result)
     }
     
     func logout() {
-        reviews.removeAll()
+        videoWorks.removeAll()
     }
     
     func sortReviews(sortState: sortState) {
         sortStateManagement = sortState
         switch sortState {
         case .createdAscend:
-            reviews.sort { $0.create_at ?? Date() > $1.create_at ?? Date() }
+            videoWorks.sort { $0.create_at ?? Date() > $1.create_at ?? Date() }
         case .createdDescend:
-            reviews.sort { $0.create_at ?? Date() < $1.create_at ?? Date() }
+            videoWorks.sort { $0.create_at ?? Date() < $1.create_at ?? Date() }
         case .reviewStarAscend:
-            reviews.sort { $0.reviewStars ?? 0.0 > $1.reviewStars ?? 0.0 }
+            videoWorks.sort { $0.reviewStars ?? 0.0 > $1.reviewStars ?? 0.0 }
         case .reviewStarDescend:
-            reviews.sort { $0.reviewStars ?? 0.0 < $1.reviewStars ?? 0.0 }
+            videoWorks.sort { $0.reviewStars ?? 0.0 < $1.reviewStars ?? 0.0 }
         }
     }
     

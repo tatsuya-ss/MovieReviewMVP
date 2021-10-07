@@ -9,7 +9,7 @@ import Foundation
 
 protocol VideoWorksRepositoryProtocol {
     func fetchVideoWorks(fetchState: FetchMovieState, query: String,
-                         completion: @escaping ResultHandler<[VideoWork]>)
+                         completion: @escaping ResultHandler<[MovieReviewElement]>)
 }
 
 final class VideoWorksRepository: VideoWorksRepositoryProtocol {
@@ -21,12 +21,12 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
     
     func fetchVideoWorks(fetchState: FetchMovieState,
                          query: String,
-                         completion: @escaping ResultHandler<[VideoWork]>) {
+                         completion: @escaping ResultHandler<[MovieReviewElement]>) {
         dataStore.fetchVideoWorks(fetchState: fetchState,
                                   query: query) { result in
             switch result {
             case .success(let tmdbVideoWorks):
-                let videoWorks = tmdbVideoWorks.results.map { VideoWork(data: $0) }
+                let videoWorks = tmdbVideoWorks.results.map { MovieReviewElement(data: $0) }
                 completion(.success(videoWorks))
             case.failure(let error):
                 completion(.failure(error))
@@ -50,5 +50,21 @@ private extension VideoWork {
                          id: data.id,
                          isStoredAsReview: data.isStoredAsReview,
                          mediaType: data.mediaType)
+    }
+}
+
+private extension MovieReviewElement {
+    init(data: TMDbVideoWork) {
+        self = MovieReviewElement(title: data.title,
+                                  poster_path: data.posterPath,
+                                  original_name: data.originalName,
+                                  backdrop_path: data.backdropPath,
+                                  overview: data.overview,
+                                  releaseDay: data.releaseDay,
+                                  reviewStars: nil,
+                                  review: nil,
+                                  create_at: nil, id: data.id,
+                                  isStoredAsReview: nil,
+                                  media_type: data.mediaType)
     }
 }

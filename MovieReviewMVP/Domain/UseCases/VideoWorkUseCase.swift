@@ -9,7 +9,7 @@ import Foundation
 
 protocol VideoWorkUseCaseProtocol {
     func fetchVideoWorks(fetchState: FetchMovieState, query: String,
-                         completion: @escaping ResultHandler<[VideoWork]>)
+                         completion: @escaping ResultHandler<[MovieReviewElement]>)
 }
 
 final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
@@ -20,7 +20,7 @@ final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
     }
     
     func fetchVideoWorks(fetchState: FetchMovieState, query: String,
-                         completion: @escaping ResultHandler<[VideoWork]>) {
+                         completion: @escaping ResultHandler<[MovieReviewElement]>) {
         repository.fetchVideoWorks(fetchState: fetchState,
                                    query: query,
                                    completion: completion)
