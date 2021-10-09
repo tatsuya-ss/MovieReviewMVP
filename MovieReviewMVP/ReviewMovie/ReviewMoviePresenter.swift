@@ -20,7 +20,7 @@ protocol ReviewMoviePresenterInput {
 
 protocol ReviewMoviePresenterOutput : AnyObject {
     func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement)
-    func displayCastImage(credits: Credits)
+    func displayCastImage(casts: [CastDetail])
     func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
     func displayLoggingOutAlert()
@@ -35,37 +35,36 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
+    private let useCase: VideoWorkUseCaseProtocol
     
     init(movieReviewState: MovieReviewStoreState,
          movieReviewElement: MovieReviewElement,
          movieUpdateState: MovieUpdateState,
          view: ReviewMoviePresenterOutput,
-         model: ReviewMovieModelInput) {
+         model: ReviewMovieModelInput,
+         useCase: VideoWorkUseCaseProtocol) {
         selectedReview = SelectedReview(review: movieReviewElement)
         self.movieReviewState = movieReviewState
         self.movieUpdateState = movieUpdateState
         self.view = view
         self.model = model
+        self.useCase = useCase
     }
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
         let review = selectedReview.returnReview()
         view.displayReviewMovie(movieReviewState: movieReviewState, review)
-        
-        model.requestMovieDetail(completion: { [weak self] result in
+        useCase.fetchVideoWorkDetail(videoWork: selectedReview.returnReview()) { result in
             switch result {
-            case let .success(credits):
-                // キャストと監督の情報取得できたら
+            case .success(let credits):
                 DispatchQueue.main.async { [weak self] in
-                    self?.view.displayCastImage(credits: credits)
+                    self?.view.displayCastImage(casts: credits)
                 }
-            case let .failure(SearchError.requestError(error)):
-                print(error)
-            case let .failure(error):
+            case .failure(let error):
                 print(error)
             }
-        })
+        }
     }
         
     // MARK: どこから画面遷移されたのかをenumで区別

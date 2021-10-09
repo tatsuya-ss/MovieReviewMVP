@@ -11,6 +11,8 @@ protocol VideoWorksRepositoryProtocol {
     func fetchVideoWorks(page: Int, query: String,
                          completion: @escaping ResultHandler<[MovieReviewElement]>)
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
+    func fetchVideoWorkDetail(videoWork: MovieReviewElement,
+                              completion: @escaping ResultHandler<[CastDetail]>)
 }
 
 final class VideoWorksRepository: VideoWorksRepositoryProtocol {
@@ -35,6 +37,19 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
         }
     }
     
+    func fetchVideoWorkDetail(videoWork: MovieReviewElement,
+                              completion: @escaping ResultHandler<[CastDetail]>) {
+        dataStore.fetchVideoWorkDetail(videoWork: videoWork) { result in
+            switch result {
+            case .success(let tmdbCredits):
+                let credits = tmdbCredits.cast.map { CastDetail(cast: $0) }
+                completion(.success(credits))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>) {
         dataStore.fetchUpcomingVideoWorks { result in
             switch result {
@@ -50,22 +65,22 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
     
 }
 
-private extension VideoWork {
-    init(data: TMDbVideoWork) {
-        self = VideoWork(title: data.title,
-                         posterPath: data.posterPath,
-                         originalName: data.originalName,
-                         backdropPath: data.backdropPath,
-                         overview: data.overview,
-                         releaseDay: data.releaseDay,
-                         reviewStars: data.reviewStars,
-                         review: data.review,
-                         createAt: data.createAt,
-                         id: data.id,
-                         isStoredAsReview: data.isStoredAsReview,
-                         mediaType: data.mediaType)
-    }
-}
+//private extension VideoWork {
+//    init(data: TMDbVideoWork) {
+//        self = VideoWork(title: data.title,
+//                         posterPath: data.posterPath,
+//                         originalName: data.originalName,
+//                         backdropPath: data.backdropPath,
+//                         overview: data.overview,
+//                         releaseDay: data.releaseDay,
+//                         reviewStars: data.reviewStars,
+//                         review: data.review,
+//                         createAt: data.createAt,
+//                         id: data.id,
+//                         isStoredAsReview: data.isStoredAsReview,
+//                         mediaType: data.mediaType)
+//    }
+//}
 
 private extension MovieReviewElement {
     init(data: TMDbVideoWork) {
@@ -80,5 +95,20 @@ private extension MovieReviewElement {
                                   create_at: nil, id: data.id,
                                   isStoredAsReview: nil,
                                   media_type: data.mediaType)
+    }
+}
+
+private extension CastDetail {
+    init(cast: TMDbCastDetail) {
+        self = CastDetail(id: cast.id,
+                          profile_path: cast.profilePath, name: cast.name)
+    }
+}
+
+private extension CrewDetail {
+    init(crew: TMDbCrewDetail) {
+        self = CrewDetail(id: crew.id,
+                          profile_path: crew.profilePath,
+                          job: crew.job, name: crew.name)
     }
 }

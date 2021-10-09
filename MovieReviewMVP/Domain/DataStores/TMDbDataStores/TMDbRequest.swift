@@ -38,12 +38,12 @@ struct TMDbAPI {
         let id: Int
         let mediaType: String
         
-        func returnDetailsURLRequest() -> URLRequest? {
+        func returnDetailsURLRequest() -> URL? {
             let detailsURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDbAPI.key)&language=ja-JP"
             guard let encodingURLString = detailsURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                   let encodingURL = URL(string: encodingURLString)
             else { return nil }
-            return URLRequest(url: encodingURL)
+            return encodingURL
         }
     }
     
