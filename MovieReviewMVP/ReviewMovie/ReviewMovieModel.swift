@@ -91,19 +91,3 @@ final class ReviewMovieModel : ReviewMovieModelInput {
         }
     }
 }
-
-
-private extension CastDetail {
-    init(cast: TMDBCastDetail) {
-        self = CastDetail(id: cast.id,
-                          profile_path: cast.profile_path, name: cast.name)
-    }
-}
-
-private extension CrewDetail {
-    init(crew: TMDBCrewDetail) {
-        self = CrewDetail(id: crew.id,
-                          profile_path: crew.profile_path,
-                          job: crew.job, name: crew.name)
-    }
-}
