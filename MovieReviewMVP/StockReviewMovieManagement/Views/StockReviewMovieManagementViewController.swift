@@ -247,7 +247,12 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
     func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
-        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
+        let videoWorkUseCase = VideoWorkUseCase(repository:
+                                                    VideoWorksRepository(dataStore:
+                                                                            TMDbDataStore()
+                                                                        ))
+
+        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model, useCase: videoWorkUseCase)
         reviewMovieVC.inject(presenter: presenter)
         navigationController?.pushViewController(reviewMovieVC, animated: true)
     }

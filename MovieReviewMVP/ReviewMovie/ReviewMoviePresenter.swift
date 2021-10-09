@@ -35,17 +35,20 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
 
     private weak var view: ReviewMoviePresenterOutput!
     private var model: ReviewMovieModelInput
+    private let useCase: VideoWorkUseCaseProtocol
     
     init(movieReviewState: MovieReviewStoreState,
          movieReviewElement: MovieReviewElement,
          movieUpdateState: MovieUpdateState,
          view: ReviewMoviePresenterOutput,
-         model: ReviewMovieModelInput) {
+         model: ReviewMovieModelInput,
+         useCase: VideoWorkUseCaseProtocol) {
         selectedReview = SelectedReview(review: movieReviewElement)
         self.movieReviewState = movieReviewState
         self.movieUpdateState = movieUpdateState
         self.view = view
         self.model = model
+        self.useCase = useCase
     }
 
     // MARK: viewDidLoad時

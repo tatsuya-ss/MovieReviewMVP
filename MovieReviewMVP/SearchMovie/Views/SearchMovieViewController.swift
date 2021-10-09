@@ -278,8 +278,12 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
 
         let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
+        let videoWorkUseCase = VideoWorkUseCase(repository:
+                                                    VideoWorksRepository(dataStore:
+                                                                            TMDbDataStore()
+                                                                        ))
 
-        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore, movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model)
+        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore, movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model, useCase: videoWorkUseCase)
 
         reviewMovieVC.inject(presenter: presenter)
 
