@@ -22,7 +22,7 @@ class ReviewMovieOwner: NSObject {
     
     var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
-    var credits: Credits?
+    var casts: [CastDetail]?
 
 
     var reviewMovieView: UIView!
@@ -131,8 +131,8 @@ class ReviewMovieOwner: NSObject {
         }
     }
     
-    func configureCastsCollectionView(credits: Credits) {
-        self.credits = credits
+    func configureCastsCollectionView(casts: [CastDetail]) {
+        self.casts = casts
         collectionView.reloadData()
     }
     
@@ -227,15 +227,15 @@ extension ReviewMovieOwner : UITextViewDelegate {
 extension ReviewMovieOwner : UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let credits = credits else { return 0 }
-        return credits.cast.count
+        guard let casts = casts else { return 0 }
+        return casts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
         cell.resetImage()
-        if let credits = credits {
-            cell.configure(cast: credits.cast[indexPath.row])
+        if let casts = casts {
+            cell.configure(cast: casts[indexPath.row])
         }
         
         return cell

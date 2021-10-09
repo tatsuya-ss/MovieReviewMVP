@@ -187,8 +187,8 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement)
     }
     
-    func displayCastImage(credits: Credits) {
-        reviewMovieOwner.configureCastsCollectionView(credits: credits)
+    func displayCastImage(casts: [CastDetail]) {
+        reviewMovieOwner.configureCastsCollectionView(casts: casts)
     }
 
     func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool) {
