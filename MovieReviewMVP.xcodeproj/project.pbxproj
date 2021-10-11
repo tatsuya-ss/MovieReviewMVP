@@ -429,7 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				75EC661E270E86C50001F464 /* TMDbDataStores */,
-				7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */,
+				758485412713CD8700B1D4C9 /* FirebaseDataStore */,
 			);
 			path = DataStores;
 			sourceTree = "<group>";
@@ -463,6 +463,14 @@
 				753B2A3C26AA298200EACFBD /* Cell */,
 			);
 			path = SettingManagement;
+			sourceTree = "<group>";
+		};
+		758485412713CD8700B1D4C9 /* FirebaseDataStore */ = {
+			isa = PBXGroup;
+			children = (
+				7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */,
+			);
+			path = FirebaseDataStore;
 			sourceTree = "<group>";
 		};
 		758B059326AD11ED00DFA33A /* DetailedSetting */ = {
