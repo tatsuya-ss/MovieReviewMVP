@@ -18,7 +18,20 @@ struct UserError: Error {
     }
 }
 
-final class Firebase : ReviewRepository {
+protocol FirebaseDataStoreProtocol {
+    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void)
+    func save(movie: MovieReviewElement)
+    func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
+    func delete(movie: MovieReviewElement)
+    func update(movie: MovieReviewElement)
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
+    func returnProfileInfomations() -> (String?, URL?)
+    func logout()
+    func returnCurrentUserEmail() -> String?
+    func returnloginStatus() -> Bool
+}
+
+final class FirebaseDataStore : FirebaseDataStoreProtocol {
     
     let db = Firestore.firestore()
     
