@@ -18,7 +18,7 @@
 		7518C0D6269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */; };
-		7518C0DB269C2AE000C27C1C /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */; };
+		7518C0DB269C2AE000C27C1C /* FirebaseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */; };
 		7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */; };
 		7518C16826A01E3100C27C1C /* ReviewManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16726A01E3100C27C1C /* ReviewManagement.swift */; };
 		7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16926A17DED00C27C1C /* SelectedReview.swift */; };
@@ -127,7 +127,7 @@
 		750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Ext.swift"; sourceTree = "<group>"; };
 		7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDataStore.swift; sourceTree = "<group>"; };
-		7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
+		7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUseCase.swift; sourceTree = "<group>"; };
 		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		7518C16726A01E3100C27C1C /* ReviewManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagement.swift; sourceTree = "<group>"; };
 		7518C16926A17DED00C27C1C /* SelectedReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedReview.swift; sourceTree = "<group>"; };
@@ -437,7 +437,7 @@
 		756DFCB2264D0DB100C6AF07 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */,
+				7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */,
 				75EC662A270E93F70001F464 /* VideoWorkUseCase.swift */,
 			);
 			path = UseCases;
@@ -909,7 +909,7 @@
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,
 				75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */,
-				7518C0DB269C2AE000C27C1C /* ReviewUseCase.swift in Sources */,
+				7518C0DB269C2AE000C27C1C /* FirebaseUseCase.swift in Sources */,
 				75834AE326A80D93004AC09C /* SettingManagementPresenter.swift in Sources */,
 				75676EDC263A89B400569AF5 /* AppDelegate.swift in Sources */,
 				7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */,

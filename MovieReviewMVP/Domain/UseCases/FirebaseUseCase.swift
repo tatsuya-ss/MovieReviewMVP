@@ -7,10 +7,10 @@
 
 import Foundation
 
-final class ReviewUseCase {
-    private var repository: ReviewRepository
+final class FirebaseUseCase {
+    private var repository: FirebaseDataStoreRepository
     
-    init(repository: ReviewRepository = Firebase()) {
+    init(repository: FirebaseDataStoreRepository = FirebaseDataStore()) {
         self.repository = repository
     }
     
