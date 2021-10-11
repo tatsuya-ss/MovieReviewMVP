@@ -19,7 +19,7 @@
 		7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */; };
 		7518C0DB269C2AE000C27C1C /* FirebaseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */; };
-		7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */; };
+		7518C0DD269C2B9300C27C1C /* FirebaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* FirebaseRepository.swift */; };
 		7518C16826A01E3100C27C1C /* ReviewManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16726A01E3100C27C1C /* ReviewManagement.swift */; };
 		7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16926A17DED00C27C1C /* SelectedReview.swift */; };
 		752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */; };
@@ -128,7 +128,7 @@
 		7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDataStore.swift; sourceTree = "<group>"; };
 		7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUseCase.swift; sourceTree = "<group>"; };
-		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
+		7518C0DC269C2B9300C27C1C /* FirebaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRepository.swift; sourceTree = "<group>"; };
 		7518C16726A01E3100C27C1C /* ReviewManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagement.swift; sourceTree = "<group>"; };
 		7518C16926A17DED00C27C1C /* SelectedReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedReview.swift; sourceTree = "<group>"; };
 		752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCastCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -394,8 +394,8 @@
 				75EC6627270E917A0001F464 /* Entities */,
 				75676F32263AA2FA00569AF5 /* TMDB.swift */,
 				75676F2A263AA0B900569AF5 /* Movie.swift */,
-				756DFCB3264D0DBD00C6AF07 /* Repositories */,
 				756DFCB2264D0DB100C6AF07 /* UseCases */,
+				756DFCB3264D0DBD00C6AF07 /* Repositories */,
 				756DFCB1264D0D9F00C6AF07 /* DataStores */,
 			);
 			path = Domain;
@@ -446,7 +446,7 @@
 		756DFCB3264D0DBD00C6AF07 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
+				7518C0DC269C2B9300C27C1C /* FirebaseRepository.swift */,
 				75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */,
 			);
 			path = Repositories;
@@ -952,7 +952,7 @@
 				7569BABB2679F0610058D495 /* StockReviewMovieManagementModel.swift in Sources */,
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
-				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
+				7518C0DD269C2B9300C27C1C /* FirebaseRepository.swift in Sources */,
 				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 				758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */,
 			);
