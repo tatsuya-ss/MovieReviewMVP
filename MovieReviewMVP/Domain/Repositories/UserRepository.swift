@@ -16,8 +16,8 @@ protocol UserRepositoryProtocol {
 
 final class UserRepository: UserRepositoryProtocol {
     
-    private let dataStore: FirebaseDataStoreProtocol
-    init(dataStore: FirebaseDataStoreProtocol) {
+    private let dataStore: UserDataStoreProtocol
+    init(dataStore: UserDataStoreProtocol) {
         self.dataStore = dataStore
     }
     

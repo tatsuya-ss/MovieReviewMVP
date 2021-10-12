@@ -15,17 +15,17 @@ protocol DetailedSettingModelInput {
 
 final class DetailedSettingModel : DetailedSettingModelInput {
     
-    let useCase = ReviewUseCase()
-    
+    let userUseCase = UserUseCase(repository: UserRepository(dataStore: ReviewDataStore()))
+
     func fetchUserInfomations() -> String? {
-        useCase.returnCurrentUserEmail()
+        userUseCase.returnCurrentUserEmail()
     }
     
     func logout() {
-        useCase.logout()
+        userUseCase.logout()
     }
     
     func returnloginStatus() -> Bool {
-        useCase.returnloginStatus()
+        userUseCase.returnloginStatus()
     }
 }
