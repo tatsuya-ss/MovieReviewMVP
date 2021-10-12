@@ -18,13 +18,21 @@ struct UserError: Error {
     }
 }
 
+enum FirebaseError: Error {
+    case fetchError
+}
+
 protocol FirebaseDataStoreProtocol {
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void)
     func save(movie: MovieReviewElement)
-    func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
+    func fetch(isStoredAsReview: Bool?,
+               sortState: sortState,
+               completion: @escaping (Result<[[String: Any]], Error>) -> Void)
+    func sort(isStoredAsReview: Bool,
+              sortState: sortState,
+              completion: @escaping (Result<[[String: Any]], Error>) -> Void)
     func delete(movie: MovieReviewElement)
     func update(movie: MovieReviewElement)
-    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
     func returnProfileInfomations() -> (String?, URL?)
     func logout()
     func returnCurrentUserEmail() -> String?
@@ -43,7 +51,9 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
         let uid = user.uid
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").getDocument { documentSnapshot, error in
             guard let documentSnapshot = documentSnapshot,
-                  documentSnapshot.exists else { completion(false) ; return }
+                  documentSnapshot.exists
+            else { completion(false)
+                return }
             completion(true)
         }
         
@@ -52,31 +62,33 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
     func save(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-            let dataToSave: [String: Any] = [
-                "title": movie.title ?? "",
-                "poster_path": movie.poster_path ?? "",
-                "original_name": movie.original_name ?? "",
-                "backdrop_path": movie.backdrop_path ?? "",
-                "overview": movie.overview ?? "",
-                "releaseDay": movie.releaseDay ?? "",
-                "reviewStars": movie.reviewStars ?? 0.0,
-                "review": movie.review,
-                "create_at": Timestamp(date: movie.create_at ?? Date()),
-                "id": movie.id,
-                "isStoredAsReview": movie.isStoredAsReview ?? true,
-                "media_type": movie.media_type
-            ]
-            
+        let dataToSave: [String: Any] = [
+            "title": movie.title ?? "",
+            "poster_path": movie.poster_path ?? "",
+            "original_name": movie.original_name ?? "",
+            "backdrop_path": movie.backdrop_path ?? "",
+            "overview": movie.overview ?? "",
+            "releaseDay": movie.releaseDay ?? "",
+            "reviewStars": movie.reviewStars ?? 0.0,
+            "review": movie.review,
+            "create_at": Timestamp(date: movie.create_at ?? Date()),
+            "id": movie.id,
+            "isStoredAsReview": movie.isStoredAsReview ?? true,
+            "media_type": movie.media_type
+        ]
+        
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").setData(dataToSave) { error in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    print("Data has been saved!")
-                }
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Data has been saved!")
             }
+        }
     }
     
-    func fetch(isStoredAsReview: Bool?, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+    func fetch(isStoredAsReview: Bool?,
+               sortState: sortState,
+               completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         if let isStoredAsReview = isStoredAsReview {
@@ -84,53 +96,63 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
                 .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
                 .order(by: "create_at", descending: sortState.Descending)
                 .getDocuments { querySnapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    self.movieReviews.removeAll()
-                    for document in querySnapshot!.documents {
-                        self.movieReviews.append(MovieReviewElement(document: document))
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        guard let querySnapshot = querySnapshot
+                        else { completion(.failure(FirebaseError.fetchError))
+                            return }
+                        let data = querySnapshot.documents.map {
+                            $0.data()
+                        }
+                        data.forEach {
+                            ($0["create_at"] as? Timestamp)?.dateValue()
+                        }
+                        completion(.success(data))
+                        //                        self.movieReviews.removeAll()
+                        //                        for document in querySnapshot!.documents {
+                        //                            self.movieReviews.append(MovieReviewElement(document: document))
+                        //                        }
+                        //                        completion(.success(self.movieReviews))
                     }
-                    completion(.success(self.movieReviews))
                 }
-            }
         } else {
             db.collection("users").document(uid).collection("reviews")
                 .order(by: "create_at", descending: sortState.Descending)
                 .getDocuments { querySnapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    self.movieReviews.removeAll()
-                    for document in querySnapshot!.documents {
-                        self.movieReviews.append(MovieReviewElement(document: document))
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        guard let querySnapshot = querySnapshot
+                        else { completion(.failure(FirebaseError.fetchError))
+                            return }
+                        let data = querySnapshot.documents.map { $0.data() }
+                        completion(.success(data))
                     }
-                    completion(.success(self.movieReviews))
                 }
-            }
         }
-
+        
     }
     
-    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         db.collection("users").document(uid).collection("reviews")
             .whereField("isStoredAsReview", isEqualTo: isStoredAsReview)
             .order(by: sortState.keyPath, descending: sortState.Descending)
             .getDocuments { querySnapshot, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                self.movieReviews.removeAll()
-                for document in querySnapshot!.documents {
-                    self.movieReviews.append(MovieReviewElement(document: document))
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    guard let querySnapshot = querySnapshot
+                    else { completion(.failure(FirebaseError.fetchError))
+                        return }
+                    let data = querySnapshot.documents.map { $0.data() }
+                    completion(.success(data))
                 }
-                completion(.success(self.movieReviews))
             }
-        }
     }
-
+    
     
     func delete(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
@@ -173,8 +195,8 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
     
     func returnProfileInfomations() -> (String?, URL?) {
         guard let user = Auth.auth().currentUser else { return (nil, nil) }
-            let name = user.displayName
-            let photoURL = user.photoURL
+        let name = user.displayName
+        let photoURL = user.photoURL
         return (name, photoURL)
     }
     
@@ -195,7 +217,7 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
         guard let _ = Auth.auth().currentUser else { return false }
         return true
     }
-
+    
 }
 
 private extension MovieReviewElement {

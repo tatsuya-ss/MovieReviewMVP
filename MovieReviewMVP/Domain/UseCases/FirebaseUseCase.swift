@@ -8,9 +8,9 @@
 import Foundation
 
 final class FirebaseUseCase {
-    private var repository: FirebaseDataStoreRepository
+    private var repository: FirebaseDataStoreProtocol
     
-    init(repository: FirebaseDataStoreRepository = FirebaseDataStore()) {
+    init(repository: FirebaseDataStoreProtocol = FirebaseDataStore()) {
         self.repository = repository
     }
     
