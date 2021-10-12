@@ -90,6 +90,7 @@
 		758F2B3926DC7B5D0067F64F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F2B3826DC7B5D0067F64F /* GradientView.swift */; };
 		75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75928722271518D400322CF8 /* ReviewUseCase.swift */; };
 		7592872527151EED00322CF8 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7592872427151EED00322CF8 /* UserRepository.swift */; };
+		759287272715241200322CF8 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759287262715241200322CF8 /* UserUseCase.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC661F270E87140001F464 /* TMDbDataStore.swift */; };
 		75EC6622270E87560001F464 /* TMDBSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6621270E87560001F464 /* TMDBSearchResponses.swift */; };
@@ -208,6 +209,7 @@
 		758F2B3826DC7B5D0067F64F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		75928722271518D400322CF8 /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
 		7592872427151EED00322CF8 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		759287262715241200322CF8 /* UserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		75EC661F270E87140001F464 /* TMDbDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbDataStore.swift; sourceTree = "<group>"; };
 		75EC6621270E87560001F464 /* TMDBSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBSearchResponses.swift; sourceTree = "<group>"; };
@@ -441,9 +443,10 @@
 		756DFCB2264D0DB100C6AF07 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */,
 				75EC662A270E93F70001F464 /* VideoWorkUseCase.swift */,
+				7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */,
 				75928722271518D400322CF8 /* ReviewUseCase.swift */,
+				759287262715241200322CF8 /* UserUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -935,6 +938,7 @@
 				758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
 				753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */,
+				759287272715241200322CF8 /* UserUseCase.swift in Sources */,
 				758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */,
 				756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */,
 				750B44002685A1A400191E17 /* UIMenu+Ext.swift in Sources */,
