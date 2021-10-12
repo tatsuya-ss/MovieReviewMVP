@@ -88,6 +88,7 @@
 		758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B05AB26AF72FE00DFA33A /* UserLoginState.swift */; };
 		758B05AE26AFA12D00DFA33A /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B05AD26AFA12D00DFA33A /* UIView+Ext.swift */; };
 		758F2B3926DC7B5D0067F64F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F2B3826DC7B5D0067F64F /* GradientView.swift */; };
+		75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75928722271518D400322CF8 /* ReviewUseCase.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC661F270E87140001F464 /* TMDbDataStore.swift */; };
 		75EC6622270E87560001F464 /* TMDBSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6621270E87560001F464 /* TMDBSearchResponses.swift */; };
@@ -204,6 +205,7 @@
 		758B05AB26AF72FE00DFA33A /* UserLoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginState.swift; sourceTree = "<group>"; };
 		758B05AD26AFA12D00DFA33A /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		758F2B3826DC7B5D0067F64F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		75928722271518D400322CF8 /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		75EC661F270E87140001F464 /* TMDbDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbDataStore.swift; sourceTree = "<group>"; };
 		75EC6621270E87560001F464 /* TMDBSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBSearchResponses.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 			children = (
 				7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */,
 				75EC662A270E93F70001F464 /* VideoWorkUseCase.swift */,
+				75928722271518D400322CF8 /* ReviewUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -446,8 +449,8 @@
 		756DFCB3264D0DBD00C6AF07 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
 				75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */,
+				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -953,6 +956,7 @@
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
 				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
+				75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */,
 				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 				758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */,
 			);
