@@ -15,7 +15,7 @@ protocol DetailedSettingModelInput {
 
 final class DetailedSettingModel : DetailedSettingModelInput {
     
-    let userUseCase = UserUseCase(repository: UserRepository(dataStore: ReviewDataStore()))
+    let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
 
     func fetchUserInfomations() -> String? {
         userUseCase.returnCurrentUserEmail()

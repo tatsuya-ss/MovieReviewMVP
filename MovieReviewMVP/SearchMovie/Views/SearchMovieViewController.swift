@@ -280,7 +280,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
 //        let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
         let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
-        let userUseCase = UserUseCase(repository: UserRepository(dataStore: ReviewDataStore()))
+        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
 
         let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore,
                                              movieReviewElement: movie,

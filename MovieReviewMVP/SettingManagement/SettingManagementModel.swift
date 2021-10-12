@@ -13,7 +13,7 @@ protocol SettingManagementModelInput {
 
 final class SettingManagementModel : SettingManagementModelInput {
     
-    let userUseCase = UserUseCase(repository: UserRepository(dataStore: ReviewDataStore()))
+    let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
 
     func returnProfileInfomations() -> (String?, URL?) {
         userUseCase.returnProfileInfomations()

@@ -106,12 +106,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             selectedReview.update(saveDate: Date())
         }
         let reviewElement = selectedReview.returnReview()
-        switch movieReviewState {
-        case .beforeStore:
-            reviewUseCase.save(movie: reviewElement)
-        case .afterStore:
-            reviewUseCase.update(movie: reviewElement)
-        }
+        reviewUseCase.update(movie: reviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
@@ -140,12 +135,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 if isUpdate {
                     selectedReview.update(score: reviewScore, review: review)
                     let selectedReview = selectedReview.returnReview()
-                    switch movieReviewState {
-                    case .beforeStore:
-                        reviewUseCase.save(movie: selectedReview)
-                    case .afterStore:
-                        reviewUseCase.update(movie: selectedReview)
-                    }
+                    reviewUseCase.update(movie: selectedReview)
                 }
                 view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: isUpdate)
 

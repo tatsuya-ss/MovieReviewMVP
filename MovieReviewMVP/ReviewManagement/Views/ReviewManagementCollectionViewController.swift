@@ -442,7 +442,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
-        let userUseCase = UserUseCase(repository: UserRepository(dataStore: ReviewDataStore()))
+        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
 
         let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState),
                                              movieReviewElement: movie,
