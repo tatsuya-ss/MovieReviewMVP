@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 protocol ReviewRepositoryProtocol {
     func checkSaved(movie: MovieReviewElement,
@@ -21,8 +22,8 @@ protocol ReviewRepositoryProtocol {
 
 final class ReviewRepository: ReviewRepositoryProtocol {
     
-    let dataStore: FirebaseDataStoreProtocol!
-    init(dataStore: FirebaseDataStoreProtocol) {
+    let dataStore: ReviewDataStoreProtocol!
+    init(dataStore: ReviewDataStoreProtocol) {
         self.dataStore = dataStore
     }
     
@@ -77,6 +78,7 @@ final class ReviewRepository: ReviewRepositoryProtocol {
 
 private extension MovieReviewElement {
     init(data: [String: Any]) {
+        let timestamp = data["create_at"] as? Timestamp
         self = MovieReviewElement(title: data["title"] as? String ?? "",
                                   poster_path: data["poster_path"] as? String ?? "",
                                   original_name: data["original_name"] as? String ?? "",
@@ -85,7 +87,7 @@ private extension MovieReviewElement {
                                   releaseDay: data["releaseDay"] as? String ?? "",
                                   reviewStars: data["reviewStars"] as? Double ?? 0.0,
                                   review: data["review"] as? String ?? "",
-                                  create_at: data["create_at"] as? Date,
+                                  create_at: timestamp?.dateValue(),
                                   id: data["id"] as? Int ?? 0,
                                   isStoredAsReview: data["isStoredAsReview"] as? Bool,
                                   media_type: data["media_type"] as? String)

@@ -180,22 +180,3 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     }
     
 }
-
-private extension MovieReviewElement {
-    init(document: QueryDocumentSnapshot) {
-        let data = document.data()
-        let timestamp = data["create_at"] as? Timestamp
-        self = MovieReviewElement(title: data["title"] as? String ?? "",
-                                  poster_path: data["poster_path"] as? String ?? "",
-                                  original_name: data["original_name"] as? String ?? "",
-                                  backdrop_path: data["backdrop_path"] as? String ?? "",
-                                  overview: data["overview"] as? String ?? "",
-                                  releaseDay: data["releaseDay"] as? String ?? "",
-                                  reviewStars: data["reviewStars"] as? Double ?? 0.0,
-                                  review: data["review"] as? String ?? "",
-                                  create_at: timestamp?.dateValue(),
-                                  id: data["id"] as? Int ?? 0,
-                                  isStoredAsReview: data["isStoredAsReview"] as? Bool,
-                                  media_type: data["media_type"] as? String)
-    }
-}
