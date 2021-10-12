@@ -22,7 +22,7 @@ enum FirebaseError: Error {
     case fetchError
 }
 
-protocol FirebaseDataStoreProtocol {
+protocol ReviewDataStoreProtocol {
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void)
     func save(movie: MovieReviewElement)
     func fetch(isStoredAsReview: Bool?,
@@ -35,7 +35,7 @@ protocol FirebaseDataStoreProtocol {
     func update(movie: MovieReviewElement)
 }
 
-final class ReviewDataStore : FirebaseDataStoreProtocol {
+final class ReviewDataStore : ReviewDataStoreProtocol {
     
     let db = Firestore.firestore()
     
