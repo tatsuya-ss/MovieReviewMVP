@@ -33,13 +33,9 @@ protocol FirebaseDataStoreProtocol {
               completion: @escaping (Result<[[String: Any]], Error>) -> Void)
     func delete(movie: MovieReviewElement)
     func update(movie: MovieReviewElement)
-    func returnProfileInfomations() -> (String?, URL?)
-    func logout()
-    func returnCurrentUserEmail() -> String?
-    func returnloginStatus() -> Bool
 }
 
-final class FirebaseDataStore : FirebaseDataStoreProtocol {
+final class ReviewDataStore : FirebaseDataStoreProtocol {
     
     let db = Firestore.firestore()
     
@@ -105,15 +101,7 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
                         let data = querySnapshot.documents.map {
                             $0.data()
                         }
-                        data.forEach {
-                            ($0["create_at"] as? Timestamp)?.dateValue()
-                        }
                         completion(.success(data))
-                        //                        self.movieReviews.removeAll()
-                        //                        for document in querySnapshot!.documents {
-                        //                            self.movieReviews.append(MovieReviewElement(document: document))
-                        //                        }
-                        //                        completion(.success(self.movieReviews))
                     }
                 }
         } else {
@@ -189,33 +177,6 @@ final class FirebaseDataStore : FirebaseDataStoreProtocol {
                 print("update!")
             }
         }
-    }
-    
-    // MARK: FirebaseAuth
-    
-    func returnProfileInfomations() -> (String?, URL?) {
-        guard let user = Auth.auth().currentUser else { return (nil, nil) }
-        let name = user.displayName
-        let photoURL = user.photoURL
-        return (name, photoURL)
-    }
-    
-    func returnCurrentUserEmail() -> String? {
-        guard let user = Auth.auth().currentUser else { return nil }
-        return user.email
-    }
-    
-    func logout() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print(error)
-        }
-    }
-    
-    func returnloginStatus() -> Bool {
-        guard let _ = Auth.auth().currentUser else { return false }
-        return true
     }
     
 }

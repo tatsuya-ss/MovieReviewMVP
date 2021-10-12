@@ -17,7 +17,7 @@
 		7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D6269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
-		7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */; };
+		7518C0D9269C1F3C00C27C1C /* ReviewDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */; };
 		7518C0DB269C2AE000C27C1C /* FirebaseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */; };
 		7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */; };
 		7518C16826A01E3100C27C1C /* ReviewManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16726A01E3100C27C1C /* ReviewManagement.swift */; };
@@ -70,6 +70,7 @@
 		756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
+		7573D973271532A6008ED07A /* UserDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573D972271532A6008ED07A /* UserDataStore.swift */; };
 		758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */; };
 		75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */; };
 		75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE026A80D74004AC09C /* SettingManagementViewController.swift */; };
@@ -129,7 +130,7 @@
 		750B44602687096F00191E17 /* ReviewTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTextView.swift; sourceTree = "<group>"; };
 		750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Ext.swift"; sourceTree = "<group>"; };
 		7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDataStore.swift; sourceTree = "<group>"; };
+		7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDataStore.swift; sourceTree = "<group>"; };
 		7518C0DA269C2AE000C27C1C /* FirebaseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUseCase.swift; sourceTree = "<group>"; };
 		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		7518C16726A01E3100C27C1C /* ReviewManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagement.swift; sourceTree = "<group>"; };
@@ -189,6 +190,7 @@
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/Views/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		7573D972271532A6008ED07A /* UserDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStore.swift; sourceTree = "<group>"; };
 		758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingManagement.storyboard; sourceTree = "<group>"; };
 		75834AE026A80D74004AC09C /* SettingManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementViewController.swift; sourceTree = "<group>"; };
@@ -477,7 +479,8 @@
 		758485412713CD8700B1D4C9 /* FirebaseDataStore */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */,
+				7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */,
+				7573D972271532A6008ED07A /* UserDataStore.swift */,
 			);
 			path = FirebaseDataStore;
 			sourceTree = "<group>";
@@ -905,7 +908,7 @@
 				752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */,
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
 				753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */,
-				7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */,
+				7518C0D9269C1F3C00C27C1C /* ReviewDataStore.swift in Sources */,
 				755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75EC6626270E90E00001F464 /* VideoWorksRepository.swift in Sources */,
@@ -914,6 +917,7 @@
 				75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */,
 				750B440B2685CF0A00191E17 /* Date.swift in Sources */,
 				755E9B0026D88E6B00A17709 /* SearchInstructionViewController.swift in Sources */,
+				7573D973271532A6008ED07A /* UserDataStore.swift in Sources */,
 				758B059726AD12C100DFA33A /* DetailedSettingViewController.swift in Sources */,
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
 				7592872527151EED00322CF8 /* UserRepository.swift in Sources */,
