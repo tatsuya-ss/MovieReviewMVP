@@ -34,28 +34,31 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     private let selectedReview: SelectedReview
 
     private weak var view: ReviewMoviePresenterOutput!
-    private var model: ReviewMovieModelInput
-    private let useCase: VideoWorkUseCaseProtocol
+    private let videoWorkUseCase: VideoWorkUseCaseProtocol
+    private let reviewUseCase: ReviewUseCaseProtocol
+    private let userUseCase: UserUseCaseProtocol
     
     init(movieReviewState: MovieReviewStoreState,
          movieReviewElement: MovieReviewElement,
          movieUpdateState: MovieUpdateState,
          view: ReviewMoviePresenterOutput,
-         model: ReviewMovieModelInput,
-         useCase: VideoWorkUseCaseProtocol) {
+         videoWorkuseCase: VideoWorkUseCaseProtocol,
+         reviewUseCase: ReviewUseCaseProtocol,
+         userUseCase: UserUseCaseProtocol) {
         selectedReview = SelectedReview(review: movieReviewElement)
         self.movieReviewState = movieReviewState
         self.movieUpdateState = movieUpdateState
         self.view = view
-        self.model = model
-        self.useCase = useCase
+        self.videoWorkUseCase = videoWorkuseCase
+        self.reviewUseCase = reviewUseCase
+        self.userUseCase = userUseCase
     }
 
     // MARK: viewDidLoad時
     func viewDidLoad() {
         let review = selectedReview.returnReview()
         view.displayReviewMovie(movieReviewState: movieReviewState, review)
-        useCase.fetchVideoWorkDetail(videoWork: selectedReview.returnReview()) { result in
+        videoWorkUseCase.fetchVideoWorkDetail(videoWork: selectedReview.returnReview()) { result in
             switch result {
             case .success(let credits):
                 DispatchQueue.main.async { [weak self] in
@@ -87,7 +90,12 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         selectedReview.update(isSavedAsReview: isStoredAsReview)
         selectedReview.checkTitle()
         let reviewElement = selectedReview.returnReview()
-        model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
+        switch movieReviewState {
+        case .beforeStore:
+            reviewUseCase.save(movie: reviewElement)
+        case .afterStore:
+            reviewUseCase.update(movie: reviewElement)
+        }
         NotificationCenter.default.post(name: .insertReview, object: nil)
         UserDefaults.standard.saveNumberOfSaves()
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
@@ -98,7 +106,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             selectedReview.update(saveDate: Date())
         }
         let reviewElement = selectedReview.returnReview()
-        model.reviewMovie(movieReviewState: movieReviewState, reviewElement)
+        reviewUseCase.update(movie: reviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
@@ -107,11 +115,11 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
         switch movieReviewState {
         case .beforeStore:
-            let isLogin = model.checkLoginState()
+            let isLogin = userUseCase.returnloginStatus()
             if isLogin {
                 // 同じものが保存されていないか検証
                 let selectedReview = selectedReview.returnReview()
-                model.checkSaved(movie: selectedReview) { result in
+                reviewUseCase.checkSaved(movie: selectedReview) { result in
                     self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
                     self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing, isUpdate: true)
                 }
@@ -127,7 +135,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 if isUpdate {
                     selectedReview.update(score: reviewScore, review: review)
                     let selectedReview = selectedReview.returnReview()
-                    model.reviewMovie(movieReviewState: movieReviewState, selectedReview)
+                    reviewUseCase.update(movie: selectedReview)
                 }
                 view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: isUpdate)
 

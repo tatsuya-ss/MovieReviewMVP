@@ -17,8 +17,7 @@
 		7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D6269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
-		7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */; };
-		7518C0DB269C2AE000C27C1C /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */; };
+		7518C0D9269C1F3C00C27C1C /* ReviewDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */; };
 		7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */; };
 		7518C16826A01E3100C27C1C /* ReviewManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16726A01E3100C27C1C /* ReviewManagement.swift */; };
 		7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518C16926A17DED00C27C1C /* SelectedReview.swift */; };
@@ -39,7 +38,6 @@
 		755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */; };
 		755E9B1026D9D44300A17709 /* EditReviewInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9B0F26D9D44300A17709 /* EditReviewInstructionViewController.swift */; };
 		75636BE6263B994F00281DB1 /* SearchMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75636BE5263B994F00281DB1 /* SearchMovie.storyboard */; };
-		75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */; };
 		75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */; };
 		756620E32647B14F00D211EC /* ReviewManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756620E22647B14F00D211EC /* ReviewManagementPresenter.swift */; };
 		756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756620E72647B15C00D211EC /* ReviewManagementModel.swift */; };
@@ -70,6 +68,7 @@
 		756D8FB4267308210026889B /* StockReviewMovieCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */; };
 		756DFC8F264CCBF500C6AF07 /* ReviewManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */; };
 		756DFCBB264D5B6900C6AF07 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DFCBA264D5B6900C6AF07 /* State.swift */; };
+		7573D973271532A6008ED07A /* UserDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573D972271532A6008ED07A /* UserDataStore.swift */; };
 		758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */; };
 		75834ADF26A80BE5004AC09C /* SettingManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */; };
 		75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75834AE026A80D74004AC09C /* SettingManagementViewController.swift */; };
@@ -88,6 +87,9 @@
 		758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B05AB26AF72FE00DFA33A /* UserLoginState.swift */; };
 		758B05AE26AFA12D00DFA33A /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B05AD26AFA12D00DFA33A /* UIView+Ext.swift */; };
 		758F2B3926DC7B5D0067F64F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758F2B3826DC7B5D0067F64F /* GradientView.swift */; };
+		75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75928722271518D400322CF8 /* ReviewUseCase.swift */; };
+		7592872527151EED00322CF8 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7592872427151EED00322CF8 /* UserRepository.swift */; };
+		759287272715241200322CF8 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759287262715241200322CF8 /* UserUseCase.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
 		75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC661F270E87140001F464 /* TMDbDataStore.swift */; };
 		75EC6622270E87560001F464 /* TMDBSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6621270E87560001F464 /* TMDBSearchResponses.swift */; };
@@ -126,8 +128,7 @@
 		750B44602687096F00191E17 /* ReviewTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTextView.swift; sourceTree = "<group>"; };
 		750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Ext.swift"; sourceTree = "<group>"; };
 		7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDataStore.swift; sourceTree = "<group>"; };
-		7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
+		7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDataStore.swift; sourceTree = "<group>"; };
 		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
 		7518C16726A01E3100C27C1C /* ReviewManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagement.swift; sourceTree = "<group>"; };
 		7518C16926A17DED00C27C1C /* SelectedReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedReview.swift; sourceTree = "<group>"; };
@@ -148,7 +149,6 @@
 		755E9B0526D88EEA00A17709 /* ReviewManagementInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementInstructionViewController.swift; sourceTree = "<group>"; };
 		755E9B0F26D9D44300A17709 /* EditReviewInstructionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReviewInstructionViewController.swift; sourceTree = "<group>"; };
 		75636BE5263B994F00281DB1 /* SearchMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchMovie.storyboard; sourceTree = "<group>"; };
-		75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieModel.swift; sourceTree = "<group>"; };
 		75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMoviePresenter.swift; sourceTree = "<group>"; };
 		756620E22647B14F00D211EC /* ReviewManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementPresenter.swift; sourceTree = "<group>"; };
 		756620E72647B15C00D211EC /* ReviewManagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementModel.swift; sourceTree = "<group>"; };
@@ -186,6 +186,7 @@
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
 		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/Views/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		7573D972271532A6008ED07A /* UserDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStore.swift; sourceTree = "<group>"; };
 		758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		75834ADE26A80BE5004AC09C /* SettingManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingManagement.storyboard; sourceTree = "<group>"; };
 		75834AE026A80D74004AC09C /* SettingManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementViewController.swift; sourceTree = "<group>"; };
@@ -204,6 +205,9 @@
 		758B05AB26AF72FE00DFA33A /* UserLoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginState.swift; sourceTree = "<group>"; };
 		758B05AD26AFA12D00DFA33A /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		758F2B3826DC7B5D0067F64F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		75928722271518D400322CF8 /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
+		7592872427151EED00322CF8 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		759287262715241200322CF8 /* UserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
 		75EC661F270E87140001F464 /* TMDbDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbDataStore.swift; sourceTree = "<group>"; };
 		75EC6621270E87560001F464 /* TMDBSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBSearchResponses.swift; sourceTree = "<group>"; };
@@ -297,7 +301,6 @@
 		75636BED263C004400281DB1 /* ReviewMovie */ = {
 			isa = PBXGroup;
 			children = (
-				75636BFB263C361A00281DB1 /* ReviewMovieModel.swift */,
 				7518C16926A17DED00C27C1C /* SelectedReview.swift */,
 				75EC6618270DC6290001F464 /* Views */,
 				75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */,
@@ -394,8 +397,8 @@
 				75EC6627270E917A0001F464 /* Entities */,
 				75676F32263AA2FA00569AF5 /* TMDB.swift */,
 				75676F2A263AA0B900569AF5 /* Movie.swift */,
-				756DFCB3264D0DBD00C6AF07 /* Repositories */,
 				756DFCB2264D0DB100C6AF07 /* UseCases */,
+				756DFCB3264D0DBD00C6AF07 /* Repositories */,
 				756DFCB1264D0D9F00C6AF07 /* DataStores */,
 			);
 			path = Domain;
@@ -429,7 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				75EC661E270E86C50001F464 /* TMDbDataStores */,
-				7518C0D8269C1F3C00C27C1C /* FirebaseDataStore.swift */,
+				758485412713CD8700B1D4C9 /* FirebaseDataStore */,
 			);
 			path = DataStores;
 			sourceTree = "<group>";
@@ -437,8 +440,9 @@
 		756DFCB2264D0DB100C6AF07 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0DA269C2AE000C27C1C /* ReviewUseCase.swift */,
 				75EC662A270E93F70001F464 /* VideoWorkUseCase.swift */,
+				75928722271518D400322CF8 /* ReviewUseCase.swift */,
+				759287262715241200322CF8 /* UserUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -446,8 +450,9 @@
 		756DFCB3264D0DBD00C6AF07 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
 				75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */,
+				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
+				7592872427151EED00322CF8 /* UserRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -463,6 +468,15 @@
 				753B2A3C26AA298200EACFBD /* Cell */,
 			);
 			path = SettingManagement;
+			sourceTree = "<group>";
+		};
+		758485412713CD8700B1D4C9 /* FirebaseDataStore */ = {
+			isa = PBXGroup;
+			children = (
+				7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */,
+				7573D972271532A6008ED07A /* UserDataStore.swift */,
+			);
+			path = FirebaseDataStore;
 			sourceTree = "<group>";
 		};
 		758B059326AD11ED00DFA33A /* DetailedSetting */ = {
@@ -888,7 +902,7 @@
 				752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */,
 				75676F2B263AA0B900569AF5 /* Movie.swift in Sources */,
 				753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */,
-				7518C0D9269C1F3C00C27C1C /* FirebaseDataStore.swift in Sources */,
+				7518C0D9269C1F3C00C27C1C /* ReviewDataStore.swift in Sources */,
 				755E9B0626D88EEA00A17709 /* ReviewManagementInstructionViewController.swift in Sources */,
 				7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */,
 				75EC6626270E90E00001F464 /* VideoWorksRepository.swift in Sources */,
@@ -897,11 +911,12 @@
 				75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */,
 				750B440B2685CF0A00191E17 /* Date.swift in Sources */,
 				755E9B0026D88E6B00A17709 /* SearchInstructionViewController.swift in Sources */,
+				7573D973271532A6008ED07A /* UserDataStore.swift in Sources */,
 				758B059726AD12C100DFA33A /* DetailedSettingViewController.swift in Sources */,
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
+				7592872527151EED00322CF8 /* UserRepository.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,
 				75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */,
-				7518C0DB269C2AE000C27C1C /* ReviewUseCase.swift in Sources */,
 				75834AE326A80D93004AC09C /* SettingManagementPresenter.swift in Sources */,
 				75676EDC263A89B400569AF5 /* AppDelegate.swift in Sources */,
 				7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */,
@@ -910,7 +925,6 @@
 				75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */,
 				75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */,
 				755E9AFE26D88CE400A17709 /* InstructionsViewController.swift in Sources */,
-				75636BFC263C361A00281DB1 /* ReviewMovieModel.swift in Sources */,
 				758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */,
 				756620E82647B15C00D211EC /* ReviewManagementModel.swift in Sources */,
 				75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */,
@@ -920,6 +934,7 @@
 				758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
 				753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */,
+				759287272715241200322CF8 /* UserUseCase.swift in Sources */,
 				758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */,
 				756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */,
 				750B44002685A1A400191E17 /* UIMenu+Ext.swift in Sources */,
@@ -945,6 +960,7 @@
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
 				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
+				75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */,
 				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 				758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */,
 			);

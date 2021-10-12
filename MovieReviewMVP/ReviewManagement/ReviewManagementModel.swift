@@ -14,8 +14,8 @@ protocol ReviewManagementModelInput {
 }
 
 class ReviewManagementModel : ReviewManagementModelInput {
-    let reviewUseCase = ReviewUseCase()
-    
+    let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+
     func delete(movie: MovieReviewElement) {
         reviewUseCase.delete(movie: movie)
     }

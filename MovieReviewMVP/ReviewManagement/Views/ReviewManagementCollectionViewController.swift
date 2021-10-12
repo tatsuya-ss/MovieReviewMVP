@@ -440,14 +440,18 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     // MARK: tapしたレビューを詳細表示
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
-        let model = ReviewMovieModel(movie: movie, movieReviewElement: movie)
-        let videoWorkUseCase = VideoWorkUseCase(repository:
-                                                    VideoWorksRepository(dataStore:
-                                                                            TMDbDataStore()
-                                                                        ))
-        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState), movieReviewElement: movie, movieUpdateState: movieUpdateState, view: reviewMovieVC, model: model, useCase: videoWorkUseCase)
-        reviewMovieVC.inject(presenter: presenter)
-        
+        let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
+        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
+
+        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState),
+                                             movieReviewElement: movie,
+                                             movieUpdateState: movieUpdateState,
+                                             view: reviewMovieVC,
+                                             videoWorkuseCase: videoWorkUseCase,
+                                             reviewUseCase: reviewUseCase,
+                                             userUseCase: userUseCase)
+        reviewMovieVC.inject(presenter: presenter)        
         let navigationController = UINavigationController(rootViewController: reviewMovieVC)
         navigationController.modalPresentationStyle = .fullScreen
         
