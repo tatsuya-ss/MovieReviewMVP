@@ -45,7 +45,7 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        let documentTitle = makeDocumentTitle(title: movie.title)
+        let documentTitle = makeDocumentTitle(movie: movie)
         db.collection("users").document(uid)
             .collection("reviews").document("\(movie.id)\(documentTitle)")
             .getDocument { documentSnapshot, error in
@@ -76,7 +76,7 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
             "media_type": movie.media_type
         ]
         
-        let documentTitle = makeDocumentTitle(title: movie.title)
+        let documentTitle = makeDocumentTitle(movie: movie)
         db.collection("users").document(uid)
             .collection("reviews").document("\(movie.id)\(documentTitle)")
             .setData(dataToSave) { error in
@@ -151,7 +151,7 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     func delete(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        let documentTitle = makeDocumentTitle(title: movie.title)
+        let documentTitle = makeDocumentTitle(movie: movie)
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(documentTitle)").delete() { error in
             if let error = error {
                 print(error.localizedDescription)
@@ -164,7 +164,7 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     func update(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        let documentTitle = makeDocumentTitle(title: movie.title)
+        let documentTitle = makeDocumentTitle(movie: movie)
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(documentTitle)").updateData([
             "title": movie.title ?? "",
             "poster_path": movie.poster_path ?? "",
@@ -187,13 +187,19 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
         }
     }
     
-    private func makeDocumentTitle(title: String?) -> String {
-        if let title = title {
+    private func makeDocumentTitle(movie: MovieReviewElement) -> String {
+        if let title = movie.title {
             let replacingTitle = title.contains("/")
             ? title.replacingOccurrences(of: "/", with: "／")
             : title
             return replacingTitle
+        } else if let originalName = movie.original_name {
+            let replacingTitle = originalName.contains("/")
+            ? originalName.replacingOccurrences(of: "/", with: "／")
+            : originalName
+            return replacingTitle
+        } else {
+            return "タイトルなし"
         }
-        return "タイトルなし"
     }
 }
