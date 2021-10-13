@@ -60,7 +60,6 @@
 		7569BAA92679EFEA0058D495 /* StockReviewMovieManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */; };
 		7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */; };
 		7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */; };
-		7569BABB2679F0610058D495 /* StockReviewMovieManagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BABA2679F0610058D495 /* StockReviewMovieManagementModel.swift */; };
 		7569BACA267B40EA0058D495 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAC9267B40EA0058D495 /* UIColor+Ext.swift */; };
 		756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AD27E26832B1200BF5D6A /* UIAlertController+Ext.swift */; };
 		756AD28D268469A500BF5D6A /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AD28C268469A500BF5D6A /* String+Ext.swift */; };
@@ -178,7 +177,6 @@
 		7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StockReviewMovieManagement.storyboard; path = MovieReviewMVP/StockReviewMovieManagement/Views/StockReviewMovieManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementViewController.swift; sourceTree = "<group>"; };
 		7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementPresenter.swift; sourceTree = "<group>"; };
-		7569BABA2679F0610058D495 /* StockReviewMovieManagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementModel.swift; sourceTree = "<group>"; };
 		7569BAC9267B40EA0058D495 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		756AD27E26832B1200BF5D6A /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
 		756AD28C268469A500BF5D6A /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
@@ -407,7 +405,6 @@
 		7569BAA42679EE930058D495 /* StockReviewMovieManagement */ = {
 			isa = PBXGroup;
 			children = (
-				7569BABA2679F0610058D495 /* StockReviewMovieManagementModel.swift */,
 				75EC661C270DC83E0001F464 /* Views */,
 				7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */,
 			);
@@ -956,7 +953,6 @@
 				75EC6622270E87560001F464 /* TMDBSearchResponses.swift in Sources */,
 				75834AE526A80DA8004AC09C /* SettingManagementModel.swift in Sources */,
 				75676F10263A953100569AF5 /* SearchMoviePresenter.swift in Sources */,
-				7569BABB2679F0610058D495 /* StockReviewMovieManagementModel.swift in Sources */,
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
 				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,

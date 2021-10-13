@@ -265,8 +265,8 @@ extension ReviewManagementCollectionViewController {
     
     @objc func stockButtonTapped() {
         let stockReviewMovieVC = UIStoryboard(name: .StockReviewMovieManagementStoryboardName, bundle: nil).instantiateInitialViewController() as! StockReviewMovieManagementViewController
-        let model = StockReviewMovieManagementModel()
-        let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, model: model)
+        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+        let presenter = StockReviewMovieManagementPresenter(view: stockReviewMovieVC, reviewUseCase: reviewUseCase)
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
         self.present(navigationController, animated: true, completion: nil)

@@ -14,16 +14,20 @@ protocol StockReviewMovieManagementPresenterInput {
     func returnSortState() -> sortState
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState,
+                              indexPaths: [IndexPath])
     func didSelectRowStockCollectionView(at indexPath: IndexPath)
     func didTapSortButtoniOS13()
 }
 
 protocol StockReviewMovieManagementPresenterOutput : AnyObject {
     func sortReview()
-    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
+    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool,
+                                                    _ indexPaths: [IndexPath]?)
     func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
-    func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
+    func displayReviewMovieView(_ movie: MovieReviewElement,
+                                afterStoreState: afterStoreState,
+                                movieUpdateState: MovieUpdateState)
     func displaySortAction()
 }
 
@@ -31,18 +35,19 @@ protocol StockReviewMovieManagementPresenterOutput : AnyObject {
 final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPresenterInput {
     
     private weak var view: StockReviewMovieManagementPresenterOutput!
-    private var model: StockReviewMovieManagementModelInput
     private let reviewManagement = ReviewManagement()
+    private let reviewUseCase: ReviewUseCaseProtocol
     
-    init(view: StockReviewMovieManagementPresenterOutput, model: StockReviewMovieManagementModelInput) {
+    init(view: StockReviewMovieManagementPresenterOutput,
+         reviewUseCase: ReviewUseCaseProtocol) {
         self.view = view
-        self.model = model
+        self.reviewUseCase = reviewUseCase
     }
     
     func returnSortState() -> sortState {
         reviewManagement.returnSortState()
     }
-
+    
     var numberOfStockMovies: Int {
         let reviewCount = reviewManagement.returnNumberOfReviews()
         return reviewCount
@@ -70,18 +75,19 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
         view.displayReviewMovieView(selectStockMovie, afterStoreState: .stock, movieUpdateState: .modificate)
     }
     
-    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
+    func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState,
+                              indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
-            model.delete(movie: selectedReview)
+            reviewUseCase.delete(movie: selectedReview)
             reviewManagement.deleteReview(row: indexPath.row)
             view.updateStockCollectionView(movieUpdateState: movieUpdateState, indexPath: indexPath)
         }
     }
-
+    
     func fetchStockMovies() {
         let sortState = reviewManagement.returnSortState()
-        model.fetch(isStoredAsReview: false, sortState: sortState) { [weak self] result in
+        reviewUseCase.fetch(isStoredAsReview: false, sortState: sortState) { [weak self] result in
             switch result {
             case .success(let reviews):
                 self?.reviewManagement.fetchReviews(result: reviews)
