@@ -12,14 +12,18 @@ import AppTrackingTransparency
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         let db = Firestore.firestore()
         print(db)
-
+        sleep(1)
+        return true
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // iOS14以降の場合、トラッキングのアラートを表示する
         if #available(iOS 14, *) {
             ATTrackingManager.requestTrackingAuthorization { status in
@@ -28,9 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             GADMobileAds.sharedInstance().start(completionHandler: nil)
         }
-        
-        sleep(1)
-        return true
     }
+    
 }
 
