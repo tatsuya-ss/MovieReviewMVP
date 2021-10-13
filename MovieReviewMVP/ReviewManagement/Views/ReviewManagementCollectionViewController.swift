@@ -144,8 +144,8 @@ private extension ReviewManagementCollectionViewController {
     }
     
     func setupPresenter() {
-        let reviewManagementModel = ReviewManagementModel()
-        let reviewManagementPresenter = ReviewManagementPresenter(view: self, model: reviewManagementModel)
+        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+        let reviewManagementPresenter = ReviewManagementPresenter(view: self, reviewUseCase: reviewUseCase )
         inject(presenter: reviewManagementPresenter)
     }
     
