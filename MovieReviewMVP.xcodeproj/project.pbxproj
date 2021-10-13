@@ -298,8 +298,8 @@
 			isa = PBXGroup;
 			children = (
 				7518C16926A17DED00C27C1C /* SelectedReview.swift */,
-				75EC6618270DC6290001F464 /* Views */,
 				75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */,
+				75EC6618270DC6290001F464 /* Views */,
 			);
 			path = ReviewMovie;
 			sourceTree = "<group>";
@@ -380,8 +380,8 @@
 		75676F0E263A94BB00569AF5 /* SearchMovie */ = {
 			isa = PBXGroup;
 			children = (
-				75EC661A270DC7360001F464 /* Views */,
 				75676F0F263A953100569AF5 /* SearchMoviePresenter.swift */,
+				75EC661A270DC7360001F464 /* Views */,
 			);
 			path = SearchMovie;
 			sourceTree = "<group>";

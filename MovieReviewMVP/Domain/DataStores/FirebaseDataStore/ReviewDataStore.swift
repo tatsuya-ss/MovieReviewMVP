@@ -45,7 +45,10 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").getDocument { documentSnapshot, error in
+        let documentTitle = makeDocumentTitle(title: movie.title)
+        db.collection("users").document(uid)
+            .collection("reviews").document("\(movie.id)\(documentTitle)")
+            .getDocument { documentSnapshot, error in
             guard let documentSnapshot = documentSnapshot,
                   documentSnapshot.exists
             else { completion(false)
@@ -73,11 +76,14 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
             "media_type": movie.media_type
         ]
         
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").setData(dataToSave) { error in
+        let documentTitle = makeDocumentTitle(title: movie.title)
+        db.collection("users").document(uid)
+            .collection("reviews").document("\(movie.id)\(documentTitle)")
+            .setData(dataToSave) { error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                print("Data has been saved!")
+                print("\(documentTitle)を保存しました!")
             }
         }
     }
@@ -145,7 +151,8 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     func delete(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").delete() { error in
+        let documentTitle = makeDocumentTitle(title: movie.title)
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(documentTitle)").delete() { error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
@@ -157,7 +164,8 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     func update(movie: MovieReviewElement) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
-        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(movie.title ?? "タイトルなし")").updateData([
+        let documentTitle = makeDocumentTitle(title: movie.title)
+        db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(documentTitle)").updateData([
             "title": movie.title ?? "",
             "poster_path": movie.poster_path ?? "",
             "original_name": movie.original_name ?? "",
@@ -179,4 +187,13 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
         }
     }
     
+    private func makeDocumentTitle(title: String?) -> String {
+        if let title = title {
+            let replacingTitle = title.contains("/")
+            ? title.replacingOccurrences(of: "/", with: "／")
+            : title
+            return replacingTitle
+        }
+        return "タイトルなし"
+    }
 }
