@@ -33,13 +33,14 @@ protocol ReviewManagementPresenterOutput: AnyObject {
 class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     private weak var view: ReviewManagementPresenterOutput!
-    private var model: ReviewManagementModelInput
+    private let reviewUseCase: ReviewUseCaseProtocol
     private var movieUpdateState: MovieUpdateState = .modificate
     private let reviewManagement = ReviewManagement()
 
-    init(view: ReviewManagementPresenterOutput, model: ReviewManagementModelInput) {
+    init(view: ReviewManagementPresenterOutput,
+         reviewUseCase: ReviewUseCaseProtocol) {
         self.view = view
-        self.model = model
+        self.reviewUseCase = reviewUseCase
     }
     
     var numberOfMovies: Int {
@@ -70,14 +71,13 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {
         let sortState = reviewManagement.returnSortState()
-        model.sort(isStoredAsReview: true, sortState: sortState) { result in
+        reviewUseCase.sort(isStoredAsReview: true, sortState: sortState) { result in
             switch result {
             case .success(let reviews):
                 self.reviewManagement.fetchReviews(result: reviews)
                 DispatchQueue.main.async {
                     self.view.updateReview(state, index: nil)
                 }
-                print(#function,reviews)
             case .failure(let error):
                 print(error)
             }
@@ -88,7 +88,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
         // trashが押されたら最初に呼ばれる
         for indexPath in indexPaths {
             let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
-            model.delete(movie: selectedReview)
+            reviewUseCase.delete(movie: selectedReview)
             reviewManagement.deleteReview(row: indexPath.row)
             view.updateReview(movieUpdateState, index: indexPath.row)
         }
