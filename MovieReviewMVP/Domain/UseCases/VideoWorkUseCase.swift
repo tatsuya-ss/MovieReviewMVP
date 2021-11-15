@@ -13,6 +13,7 @@ protocol VideoWorkUseCaseProtocol {
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
     func fetchVideoWorkDetail(videoWork: MovieReviewElement,
                               completion: @escaping ResultHandler<[CastDetail]>)
+    func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
 }
 
 final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
@@ -39,4 +40,8 @@ final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
         repository.fetchUpcomingVideoWorks(completion: completion)
     }
     
+    func fetchPosterImage(posterPath: String?,
+                          completion: @escaping ResultHandler<Data>) {
+        repository.fetchPosterImage(posterPath: posterPath, completion: completion)
+    }
 }

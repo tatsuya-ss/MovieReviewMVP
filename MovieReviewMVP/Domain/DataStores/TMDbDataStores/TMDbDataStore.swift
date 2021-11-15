@@ -21,6 +21,7 @@ protocol TMDbDataStoreProtocol {
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchVideoWorkDetail(videoWork: MovieReviewElement,
                               completion: @escaping ResultHandler<TMDbCredits>)
+    func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
 }
 
 final class TMDbDataStore: TMDbDataStoreProtocol {
@@ -115,6 +116,32 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
                 completion(.failure(TMDbSearchError.responseError))
                 print(error)
             }
+        }
+        task.resume()
+    }
+    
+    func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>) {
+        guard let posterPath = posterPath,
+              let posterPathURL = TMDbAPI.PosterRequest(posterPath: posterPath).poterURL else {
+                  completion(.failure(TMDbSearchError.urlError))
+                  return
+              }
+        let task = URLSession.shared.dataTask(with: posterPathURL) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data,
+                  let response = response as? HTTPURLResponse else {
+                      completion(.failure(TMDbSearchError.responseError))
+                      return
+                  }
+            
+            if response.statusCode == 200 {
+                completion(.success(data))
+            }
+            
         }
         task.resume()
     }

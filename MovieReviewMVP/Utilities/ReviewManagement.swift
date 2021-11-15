@@ -23,13 +23,16 @@ final class ReviewManagement {
         videoWorks
     }
     
-    
     func returnReviewForCell(forRow row: Int) -> MovieReviewElement {
         videoWorks[row]
     }
 
     func fetchReviews(result: [MovieReviewElement]) {
         videoWorks = result
+    }
+    
+    func fetchPosterData(index: Int, data: Data) {
+        videoWorks[index].posterData = data
     }
     
     func deleteReview(row: Int) {

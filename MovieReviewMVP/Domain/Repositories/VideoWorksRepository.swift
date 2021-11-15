@@ -13,6 +13,7 @@ protocol VideoWorksRepositoryProtocol {
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
     func fetchVideoWorkDetail(videoWork: MovieReviewElement,
                               completion: @escaping ResultHandler<[CastDetail]>)
+    func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
 }
 
 final class VideoWorksRepository: VideoWorksRepositoryProtocol {
@@ -61,6 +62,11 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func fetchPosterImage(posterPath: String?,
+                          completion: @escaping ResultHandler<Data>) {
+        dataStore.fetchPosterImage(posterPath: posterPath, completion: completion)
     }
     
 }
