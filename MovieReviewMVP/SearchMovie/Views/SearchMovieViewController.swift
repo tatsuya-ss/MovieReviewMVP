@@ -31,7 +31,12 @@ class SearchMovieViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupTabBarController()
+        setupNavigationController()
+        setupTableViewController()
+        setupPresenter()
+        setupIndicator()
+        setupBanner()
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
         presenter.fetchMovie(state: .upcoming, text: nil)
@@ -45,16 +50,6 @@ class SearchMovieViewController: UIViewController {
 
 // MARK: - setup
 private extension SearchMovieViewController {
-    
-    private func setup() {
-        setupTabBarController()
-        setupNavigationController()
-        setupTableViewController()
-        setupPresenter()
-        setupIndicator()
-        setupBanner()
-    }
-    
     
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
