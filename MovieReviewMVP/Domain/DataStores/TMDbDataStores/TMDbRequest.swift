@@ -28,9 +28,8 @@ struct TMDbAPI {
     
     struct PosterRequest {
         let posterPath: String
-        
-        func returnPosterURL() -> String {
-            "https://image.tmdb.org/t/p/w500\(posterPath)"
+        var poterURL: URL? {
+            URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
         }
     }
     

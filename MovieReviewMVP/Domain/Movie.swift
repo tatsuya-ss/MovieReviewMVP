@@ -18,6 +18,7 @@ struct MovieSearchResponses {
 struct MovieReviewElement {
     var title: String?
     var poster_path: String?
+    var posterData: Data?
     var original_name: String?
     var backdrop_path: String?
     var overview: String?

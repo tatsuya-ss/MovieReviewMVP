@@ -280,6 +280,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		755CCD8A2742348D001D9014 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				75676F0F263A953100569AF5 /* SearchMoviePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		755E9AFA26D88CA400A17709 /* Instructions */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,7 +388,7 @@
 		75676F0E263A94BB00569AF5 /* SearchMovie */ = {
 			isa = PBXGroup;
 			children = (
-				75676F0F263A953100569AF5 /* SearchMoviePresenter.swift */,
+				755CCD8A2742348D001D9014 /* Presenter */,
 				75EC661A270DC7360001F464 /* Views */,
 			);
 			path = SearchMovie;

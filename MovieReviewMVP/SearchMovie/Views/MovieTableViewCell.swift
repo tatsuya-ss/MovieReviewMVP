@@ -16,44 +16,20 @@ class MovieTableViewCell: UITableViewCell {
 
     static let reuserIdentifier: String = .movieTableCellIdentifier
     
-    func resetCell() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        movieImageView.layer.cornerRadius = movieImageView.bounds.height * 0.1
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
         movieImageView.image = nil
         titleLabel.text = nil
     }
-    
-    func configureCell(movie: MovieReviewElement, height: CGFloat) {
-        
-        if let posperPath = movie.poster_path,
-              let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) {
-            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-                guard let imageData = data else { return }
-                
-                DispatchQueue.global().async { [weak self] in
-                    guard let image = UIImage(data: imageData) else { return }
-                    DispatchQueue.main.async {
-                        self?.movieImageView.image = image
-                    }
-                }
-            }
-            task.resume()
-        } else {
-            movieImageView.image = UIImage(named: "no_image")
-        }
-        
-        if movie.title == nil || movie.title == "" {
-            titleLabel.text = movie.original_name
-        } else if movie.title != nil {
-            titleLabel.text = movie.title
-        } else {
-            titleLabel.text = .notTitle
-        }
-        
-        if let releaseDay = movie.releaseDay {
-            releaseDateLabel.text = "(\(releaseDay))"
-        } else {
-            releaseDateLabel.text = ""
-        }
-        movieImageView.layer.cornerRadius = height * 0.03
 
+    func configure(image: UIImage?, title: String, releaseDay: String) {
+        movieImageView.image = image
+        titleLabel.text = title
+        releaseDateLabel.text = releaseDay
     }
 }

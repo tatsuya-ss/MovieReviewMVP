@@ -91,17 +91,34 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                     print(error)
                 }
             }
-
+            
         case .upcoming:
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
             useCase.fetchUpcomingVideoWorks { [weak self] result in
+                defer { dispatchGroup.leave() }
                 switch result {
-                case .success(let result):
-                    self?.reviewManagement.fetchReviews(result: result)
-                    DispatchQueue.main.async {
-                        self?.view.update(state, result)
-                    }
                 case .failure(let error):
                     print(error)
+                case .success(let result):
+                    self?.reviewManagement.fetchReviews(result: result)
+                    result.enumerated().forEach { movieReviewElement in
+                        dispatchGroup.enter()
+                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                            defer { dispatchGroup.leave() }
+                            switch result {
+                            case .failure(let error):
+                                print(error)
+                            case .success(let data):
+                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                            }
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) {
+                        self?.view.update(state, self?.reviewManagement.returnReviews() ?? [])
+                    }
+                    
                 }
             }
         }

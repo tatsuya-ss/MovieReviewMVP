@@ -9,7 +9,7 @@ import UIKit
 import GoogleMobileAds
 import StoreKit
 
-class SearchMovieViewController: UIViewController {
+final class SearchMovieViewController: UIViewController {
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var displayLabel: UILabel!
@@ -18,7 +18,6 @@ class SearchMovieViewController: UIViewController {
     
     var scrollIndicator: UIActivityIndicatorView!
     var isLoadingMore = false
-
     
     private var tableViewCellHeight: CGFloat?
     private var searchMovieViewController: SearchMovieViewController!
@@ -28,10 +27,14 @@ class SearchMovieViewController: UIViewController {
         self.presenter = presenter
     }
     
-        
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupTabBarController()
+        setupNavigationController()
+        setupTableViewController()
+        setupPresenter()
+        setupIndicator()
+        setupBanner()
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
         presenter.fetchMovie(state: .upcoming, text: nil)
@@ -41,20 +44,29 @@ class SearchMovieViewController: UIViewController {
         presenter.didSaveReview()
     }
     
+    // MARK: - func
+    private func makeTitle(movie: MovieReviewElement) -> String {
+        if let title = movie.title, !title.isEmpty {
+            return title
+        } else if let originalName = movie.original_name, !originalName.isEmpty {
+            return originalName
+        } else {
+            return .notTitle
+        }
+    }
+
+    private func makeReleaseDay(movie: MovieReviewElement) -> String {
+        if let releaseDay = movie.releaseDay {
+            return "(\(releaseDay))"
+        } else {
+            return ""
+        }
+    }
+    
 }
 
 // MARK: - setup
 private extension SearchMovieViewController {
-    
-    private func setup() {
-        setupTabBarController()
-        setupNavigationController()
-        setupTableViewController()
-        setupPresenter()
-        setupIndicator()
-        setupBanner()
-    }
-    
     
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
@@ -93,7 +105,7 @@ private extension SearchMovieViewController {
          scrollIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
          scrollIndicator.leadingAnchor.constraint(equalTo: view.leadingAnchor),
          scrollIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor)].forEach { $0.isActive = true }
-
+        
         
     }
     
@@ -110,9 +122,9 @@ private extension SearchMovieViewController {
     
     private func setupBanner() {
         bannerView = GADBannerView(adSize: kGADAdSizeBanner)
-
+        
         addBannerViewToView(bannerView)
-
+        
         bannerView.delegate = self
         
         if let id = adUnitID(key: "banner") {
@@ -129,9 +141,9 @@ private extension SearchMovieViewController {
             }
             return adUnitIDs[key]
         }
-
+        
     }
-
+    
     func addBannerViewToView(_ bannerView: GADBannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
@@ -141,7 +153,7 @@ private extension SearchMovieViewController {
          bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
             .forEach { $0.isActive = true }
     }
-
+    
 }
 
 
@@ -188,7 +200,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
         searchBar.resignFirstResponder()
         
     }
-
+    
 }
 
 // MARK: - UITableViewDelegate
@@ -252,23 +264,20 @@ extension SearchMovieViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
-        cell.resetCell()
-
-        let movies = presenter.returnReview()
-        if let tableViewHeight = tableViewCellHeight {
-            cell.configureCell(movie: movies[indexPath.row], height: tableViewHeight)
-        } else {
-            cell.configureCell(movie: movies[indexPath.row], height: tableView.bounds.height / 5)
-        }
-
+        let movie = presenter.returnReview()[indexPath.item]
+        let image = (movie.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movie.posterData!)
+        let title = makeTitle(movie: movie)
+        let releaseDay = makeReleaseDay(movie: movie)
+        cell.configure(image: image, title: title, releaseDay: releaseDay)
         return cell
     }
+    
 }
 
 // MARK: - SearchMoviePresenterOutput
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
-
+    
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
         displayLabel.text = fetchState.displayLabelText
         tableView.reloadData()
@@ -276,12 +285,11 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
-
-//        let model = ReviewMovieModel(movie: movie, movieReviewElement: nil)
+        
         let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
-
+        
         let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore,
                                              movieReviewElement: movie,
                                              movieUpdateState: movieUpdateState,
@@ -289,11 +297,11 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
                                              videoWorkuseCase: videoWorkUseCase,
                                              reviewUseCase: reviewUseCase,
                                              userUseCase: userUseCase)
-
+        
         reviewMovieVC.inject(presenter: presenter)
-
+        
         let nav = UINavigationController(rootViewController: reviewMovieVC)
-
+        
         self.present(nav, animated: true, completion: nil)
     }
     
@@ -306,39 +314,39 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
             SKStoreReviewController.requestReview()
         }
     }
-
+    
 }
 
 extension SearchMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         let bannerHeight = CGFloat(50)
         tableViewBottomAnchor.constant = -bannerHeight
-
+        
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {
-          bannerView.alpha = 1
+            bannerView.alpha = 1
         })
-      print("bannerViewDidReceiveAd")
+        print("bannerViewDidReceiveAd")
     }
-
+    
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
     }
-
+    
     func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
-      print("bannerViewDidRecordImpression")
+        print("bannerViewDidRecordImpression")
     }
-
+    
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-      print("bannerViewWillPresentScreen")
+        print("bannerViewWillPresentScreen")
     }
-
+    
     func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
-      print("bannerViewWillDIsmissScreen")
+        print("bannerViewWillDIsmissScreen")
     }
-
+    
     func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-      print("bannerViewDidDismissScreen")
+        print("bannerViewDidDismissScreen")
     }
-
+    
 }
