@@ -57,7 +57,15 @@ class ReviewMovieViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         reviewMovieOwner.reviewTextResignFirstResponder()
     }
-
+    
+    private func getReviewAndFontColor(review: String?) -> (String, UIColor) {
+        if let review = review, !review.isEmpty {
+            return (review, .stringColor)
+        } else {
+            return (ReviewTextIsEnpty().text, .placeholderColor)
+        }
+    }
+    
 }
 
 // MARK: - setup
@@ -183,8 +191,17 @@ private extension ReviewMovieViewController {
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
-        reviewMovieOwner.configureReviewView(movieReviewState: movieReviewState, movie: movieReviewElement)
+    func displayReviewMovie(title: String, releaseDay: String, rating: Double, posterData: Data?, review: String?, overview: String?) {
+        let posterImage = (posterData == nil) ? UIImage(named: "no_image") : UIImage(data: posterData!)
+        let (review, fontColor) = getReviewAndFontColor(review: review)
+
+        reviewMovieOwner.configureReviewView(posterImage: posterImage,
+                                             title: title,
+                                             review: review,
+                                             color: fontColor,
+                                             releaseDay: releaseDay,
+                                             rating: rating,
+                                             overView: overview)
     }
     
     func displayCastImage(casts: [CastDetail]) {

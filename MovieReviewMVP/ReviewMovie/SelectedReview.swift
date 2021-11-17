@@ -13,9 +13,8 @@ final class SelectedReview {
     init(review: MovieReviewElement) {
         selectedReview = review
     }
-
-    func returnReview() -> MovieReviewElement {
-        print(#function, selectedReview)
+    
+    func getReview() -> MovieReviewElement {
         return selectedReview
     }
     
@@ -24,7 +23,7 @@ final class SelectedReview {
             selectedReview.title = selectedReview.original_name
         }
     }
-
+    
     func checkIsChanged(reviewScore: Double, review: String) -> Bool {
         var compareReview = review
         if review == .placeholderString {
@@ -36,30 +35,25 @@ final class SelectedReview {
             return false
         }
     }
-
+    
     func update(isSavedAsReview: Bool? = nil,
                 saveDate: Date? = nil,
                 score: Double? = nil,
                 review: String? = nil) {
         
         if let isSavedAsReview = isSavedAsReview {
-            print(#function, isSavedAsReview)
             selectedReview.isStoredAsReview = isSavedAsReview
         }
         
         if let saveDate = saveDate {
-            print(#function, saveDate)
             selectedReview.create_at = saveDate
         }
         
         if let score = score {
-            print(#function, score)
             selectedReview.reviewStars = score
         }
         
         if let review = review {
-            print(#function, review)
-
             if review.isEmpty || review == .placeholderString {
                 selectedReview.review = nil
             } else {
@@ -67,5 +61,5 @@ final class SelectedReview {
             }
         }
     }
-
+    
 }

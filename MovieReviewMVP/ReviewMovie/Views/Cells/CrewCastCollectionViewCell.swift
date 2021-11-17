@@ -15,35 +15,24 @@ final class CrewCastCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var blackView: UIView!
     
     static let nib = UINib(nibName: String(describing: CrewCastCollectionViewCell.self), bundle: nil)
-
     static let identifier = String(describing: CrewCastCollectionViewCell.self)
     
-    func configure(cast: CastDetail) {
-        if let posterPath = cast.profile_path,
-           let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) {
-            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-                guard let imageData = data else { return }
-
-                DispatchQueue.global().async { [weak self] in
-                    guard let image = UIImage(data: imageData) else { return }
-                    DispatchQueue.main.async {
-                        self?.crewCastImageView.image = image
-                    }
-                }
-            }
-            task.resume()
-        } else {
-            crewCastImageView.image = UIImage(named: "user_icon")
-        }
-        nameLabel.text = cast.name
-        layer.cornerRadius = bounds.width * 0.1
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        layer.cornerRadius = bounds.width * 0.05
         blackView.gradient(lightColor: .yellow, darkColor: .black)
     }
     
-    func resetImage() {
+    override func prepareForReuse() {
+        super.prepareForReuse()
         crewCastImageView.image = nil
     }
-
+    
+    func configure(posterImage: UIImage?, castName: String?) {
+        crewCastImageView.image = posterImage
+        nameLabel.text = castName
+    }
+    
 }
 
 private extension UIView {
@@ -59,4 +48,5 @@ private extension UIView {
         
         layer.insertSublayer(gradientLayer, at: 0)
     }
+    
 }

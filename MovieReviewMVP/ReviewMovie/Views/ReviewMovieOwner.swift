@@ -8,7 +8,7 @@
 import UIKit
 import Cosmos
 
-class ReviewMovieOwner: NSObject {
+final class ReviewMovieOwner: NSObject {
     
     @IBOutlet private weak var backgroundImageView: UIImageView!
     @IBOutlet private weak var overviewTextView: UITextView!
@@ -17,14 +17,13 @@ class ReviewMovieOwner: NSObject {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var reviewStarView: CosmosView!
     @IBOutlet private weak var reviewTextView: UITextView!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var blackFilterView: UIView!
     
     var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
-    var casts: [CastDetail]?
-
-
+    var casts: [CastDetail] = []
+    
     var reviewMovieView: UIView!
     
     override init() {
@@ -50,7 +49,7 @@ class ReviewMovieOwner: NSObject {
         reviewStarView.settings.fillMode = .half
         reviewStarView.isUserInteractionEnabled = true
     }
-
+    
     private func setOverView() {
         overviewTextView.isEditable = false
         overviewTextView.isSelectable = false
@@ -99,7 +98,7 @@ class ReviewMovieOwner: NSObject {
             reviewTextView.isEditable = true
             reviewTextView.isSelectable = true
             reviewStarView.isUserInteractionEnabled = true
-
+            
         case false:
             reviewTextView.isEditable = false
             reviewTextView.isSelectable = false
@@ -119,79 +118,27 @@ class ReviewMovieOwner: NSObject {
         reviewTextView.textColor = reviewTextIsReviewed.textColor
     }
     
-    func configureReviewView(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
-        fetchMovieImage(movieReviewState: movieReviewState, movie: movie)
-        returnTitleName(movie: movie)
-        returnReviewTextState(movie: movie)
-        makeReleaseDateText(movie: movie)
-        overviewTextView.text = movie.overview
-        if case .afterStore = movieReviewState {
-            reviewStarView.rating = movie.reviewStars ?? 0
-            reviewStarView.text = String(movie.reviewStars ?? 0)
-        }
+    func configureReviewView(posterImage: UIImage?,
+                             title: String,
+                             review: String,
+                             color: UIColor,
+                             releaseDay: String,
+                             rating: Double,
+                             overView: String?) {
+        movieImageView.image = posterImage
+        backgroundImageView.image = posterImage
+        titleLabel.text = title
+        reviewTextView.text = review
+        reviewTextView.textColor = color
+        releaseDateLabel.text = releaseDay
+        overviewTextView.text = overView
+        reviewStarView.rating = rating
+        reviewStarView.text = String(rating)
     }
     
     func configureCastsCollectionView(casts: [CastDetail]) {
         self.casts = casts
         collectionView.reloadData()
-    }
-    
-}
-
-// MARK: -　configureReviewView()内で使っているメソッド
-extension ReviewMovieOwner {
-    // MARK: URLから画像を取得し、映画情報をViewに反映する処理
-    private func fetchMovieImage(movieReviewState: MovieReviewStoreState, movie: MovieReviewElement) {
-        if let posperPath = movie.poster_path,
-           !posperPath.isEmpty,
-           let posterUrl = URL(string: TMDBPosterURL(posterPath: posperPath).posterURL) {
-            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-                guard let imageData = data else { return }
-                DispatchQueue.global().async { [weak self] in
-                    guard let image = UIImage(data: imageData) else { return }
-                    DispatchQueue.main.async {
-                        self?.movieImageView.image = image
-                        self?.backgroundImageView.image = image
-                    }
-                }
-            }
-            task.resume()
-        } else {
-            backgroundImageView.backgroundColor = .black
-            movieImageView.image = UIImage(named: "no_image")
-        }
-    }
-// MARK: タイトルを表示
-    private func returnTitleName(movie: MovieReviewElement) {
-        if movie.title == nil || movie.title == "" {
-            titleLabel.text = movie.original_name
-        } else {
-            titleLabel.text = movie.title
-        }
-        
-    }
-    
-    // MARK: レビューを表示
-    private func returnReviewTextState(movie: MovieReviewElement) {
-        if let review = movie.review, !review.isEmpty {
-            print(#function, review)
-            let reviewTextIsReviewed = ReviewTextIsReviewed()
-            reviewTextView.text = review
-            reviewTextView.textColor = reviewTextIsReviewed.textColor
-        } else {
-            let reviewTextIsEnpty = ReviewTextIsEnpty()
-            reviewTextView.text = reviewTextIsEnpty.text
-            reviewTextView.textColor = reviewTextIsEnpty.textColor
-        }
-    }
-    
-    // MARK: 公開日ラベルを表示
-    private func makeReleaseDateText(movie: MovieReviewElement) {
-        if movie.releaseDay == "" || movie.releaseDay == nil {
-            releaseDateLabel.text = " 公開日未定"
-        } else {
-            releaseDateLabel.text = " " + "公開日" + " " + movie.releaseDay!
-        }
     }
     
 }
@@ -225,18 +172,16 @@ extension ReviewMovieOwner : UITextViewDelegate {
 
 // MARK: - DataSource
 extension ReviewMovieOwner : UICollectionViewDataSource {
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let casts = casts else { return 0 }
         return casts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
-        cell.resetImage()
-        if let casts = casts {
-            cell.configure(cast: casts[indexPath.row])
-        }
+        let posterImage = casts[indexPath.item].posterData == nil ? UIImage(named: "user_icon") : UIImage(data: casts[indexPath.item].posterData!)
+        let castName = casts[indexPath.item].name
+        cell.configure(posterImage: posterImage, castName: castName)
         
         return cell
     }
