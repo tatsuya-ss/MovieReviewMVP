@@ -171,26 +171,8 @@ private extension SearchMovieViewController {
 extension SearchMovieViewController : UISearchBarDelegate {
     // MARK: 検索ボタンが押された時
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
         searchBar.resignFirstResponder()
-    }
-    
-    // MARK: 入力中に呼ばれる
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            if searchBar.text?.isEmpty == false {
-                self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
-            }
-        })
-        return true
-    }
-    
-    // MARK: 入力確定後に呼ばれる
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            if searchBar.text?.isEmpty == true {
-                self.presenter.fetchMovie(state: .upcoming, text: nil)
-            }
-        })
     }
     
     // MARK: キャンセルボタンが押された時
@@ -198,8 +180,19 @@ extension SearchMovieViewController : UISearchBarDelegate {
         searchBar.text = nil
         presenter.fetchMovie(state: .upcoming, text: nil)
         searchBar.resignFirstResponder()
-        
     }
+    
+    // MARK: 入力中に呼ばれる
+    // TODO: 入力早すぎたらIndex out of rangeが出るので一旦やめる
+    //        func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+    //                if searchBar.text?.isEmpty == false {
+    //                    self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
+    //                }
+    //            })
+    //            return true
+    //        }
+    
     
 }
 

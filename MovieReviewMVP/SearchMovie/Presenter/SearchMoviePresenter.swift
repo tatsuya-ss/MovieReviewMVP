@@ -57,22 +57,37 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
+        let dispatchGroup = DispatchGroup()
         switch state {
         case .search(.initial):
             guard let query = text,
                   !query.isEmpty else { return }
             cachedQuery = query
             page = 1
-            useCase.fetchVideoWorks(page: page,
-                                    query: query) { [weak self] result in
+            dispatchGroup.enter()
+            useCase.fetchVideoWorks(page: page, query: query) { [weak self] result in
+                defer { dispatchGroup.leave() }
                 switch result {
-                case .success(let result):
-                    self?.reviewManagement.fetchReviews(result: result)
-                    DispatchQueue.main.async {
-                        self?.view.update(state, result)
-                    }
                 case .failure(let error):
                     print(error)
+                case .success(let result):
+                    self?.reviewManagement.fetchReviews(result: result)
+                    guard let reviews = self?.reviewManagement.returnReviews() else { return }
+                    reviews.enumerated().forEach { movieReviewElement in
+                        dispatchGroup.enter()
+                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                            defer { dispatchGroup.leave() }
+                            switch result {
+                            case .failure(let error):
+                                print(error)
+                            case.success(let data):
+                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                            }
+                        }
+                    }
+                    dispatchGroup.notify(queue: .main) {
+                        self?.view.update(state, result)
+                    }
                 }
             }
             
@@ -93,7 +108,6 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             }
             
         case .upcoming:
-            let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
             useCase.fetchUpcomingVideoWorks { [weak self] result in
                 defer { dispatchGroup.leave() }
