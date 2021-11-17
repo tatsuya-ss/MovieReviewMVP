@@ -37,8 +37,8 @@ enum MovieUpdateState {
 enum MovieReviewStoreState {
     case beforeStore
     case afterStore(afterStoreState)
-    
 }
+
 enum afterStoreState {
     case reviewed
     case stock
