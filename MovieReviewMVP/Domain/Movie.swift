@@ -41,6 +41,7 @@ struct CastDetail {
     var id: Int?
     var profile_path: String?
     var name: String?
+    var posterData: Data?
 }
 
 struct CrewDetail {

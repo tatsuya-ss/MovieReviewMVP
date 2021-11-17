@@ -22,8 +22,7 @@ class ReviewMovieOwner: NSObject {
     
     var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
-    var casts: [CastDetail]?
-
+    var casts: [CastDetail] = []
 
     var reviewMovieView: UIView!
     
@@ -227,16 +226,14 @@ extension ReviewMovieOwner : UITextViewDelegate {
 extension ReviewMovieOwner : UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let casts = casts else { return 0 }
         return casts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CrewCastCollectionViewCell.identifier, for: indexPath) as! CrewCastCollectionViewCell
-        cell.resetImage()
-        if let casts = casts {
-            cell.configure(cast: casts[indexPath.row])
-        }
+        let posterImage = casts[indexPath.item].posterData == nil ? UIImage(named: "user_icon") : UIImage(data: casts[indexPath.item].posterData!)
+        let castName = casts[indexPath.item].name
+        cell.configure(posterImage: posterImage, castName: castName)
         
         return cell
     }

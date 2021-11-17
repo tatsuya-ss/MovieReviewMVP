@@ -32,7 +32,8 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     private var movieReviewState: MovieReviewStoreState
     private var movieUpdateState: MovieUpdateState
     private let selectedReview: SelectedReview
-
+    private var casts: [CastDetail] = []
+    
     private weak var view: ReviewMoviePresenterOutput!
     private let videoWorkUseCase: VideoWorkUseCaseProtocol
     private let reviewUseCase: ReviewUseCaseProtocol
@@ -53,43 +54,63 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         self.reviewUseCase = reviewUseCase
         self.userUseCase = userUseCase
     }
-
+    
     // MARK: viewDidLoad時
     func viewDidLoad() {
-        let review = selectedReview.returnReview()
+        let review = selectedReview.getReview()
         view.displayReviewMovie(movieReviewState: movieReviewState, review)
-        videoWorkUseCase.fetchVideoWorkDetail(videoWork: selectedReview.returnReview()) { result in
+        
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        videoWorkUseCase.fetchVideoWorkDetail(videoWork: review) { [weak self] result in
+            defer { dispatchGroup.leave() }
             switch result {
-            case .success(let credits):
-                DispatchQueue.main.async { [weak self] in
-                    self?.view.displayCastImage(casts: credits)
-                }
             case .failure(let error):
                 print(error)
+            case .success(let casts):
+                self?.casts = casts
+                casts.enumerated().forEach { cast in
+                    dispatchGroup.enter()
+                    self?.videoWorkUseCase.fetchPosterImage(posterPath: cast.element.profile_path) {
+                        result in
+                        defer { dispatchGroup.leave() }
+                        switch result {
+                        case .failure(let error):
+                            print(error)
+                        case .success(let data):
+                            self?.casts[cast.offset].posterData = data
+                        }
+                    }
+                }
+                
+                dispatchGroup.notify(queue: .main) {
+                    self?.view.displayCastImage(casts: self?.casts ?? [])
+                }
+                
             }
         }
     }
-        
+    
     // MARK: どこから画面遷移されたのかをenumで区別
     func returnMovieReviewState() -> MovieReviewStoreState {
         movieReviewState
     }
-
+    
     func returnMovieUpdateState() -> MovieUpdateState {
         movieUpdateState
     }
     
     func returnMovieReviewElement() -> MovieReviewElement? {
-        selectedReview.returnReview()
+        selectedReview.getReview()
     }
-
+    
     func didSelectLogin() {
         view.displayLoginView()
     }
     func didTapStoreLocationAlert(isStoredAsReview: Bool) { // 初保存で呼ばれる
         selectedReview.update(isSavedAsReview: isStoredAsReview)
         selectedReview.checkTitle()
-        let reviewElement = selectedReview.returnReview()
+        let reviewElement = selectedReview.getReview()
         switch movieReviewState {
         case .beforeStore:
             reviewUseCase.save(movie: reviewElement)
@@ -105,7 +126,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         if case .today = storeDateState {
             selectedReview.update(saveDate: Date())
         }
-        let reviewElement = selectedReview.returnReview()
+        let reviewElement = selectedReview.getReview()
         reviewUseCase.update(movie: reviewElement)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
@@ -118,7 +139,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             let isLogin = userUseCase.returnloginStatus()
             if isLogin {
                 // 同じものが保存されていないか検証
-                let selectedReview = selectedReview.returnReview()
+                let selectedReview = selectedReview.getReview()
                 reviewUseCase.checkSaved(movie: selectedReview) { result in
                     self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
                     self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing, isUpdate: true)
@@ -134,11 +155,11 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 let isUpdate = selectedReview.checkIsChanged(reviewScore: reviewScore, review: review ?? "")
                 if isUpdate {
                     selectedReview.update(score: reviewScore, review: review)
-                    let selectedReview = selectedReview.returnReview()
+                    let selectedReview = selectedReview.getReview()
                     reviewUseCase.update(movie: selectedReview)
                 }
                 view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: isUpdate)
-
+                
             case true:
                 view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: true)
             }
@@ -148,6 +169,6 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
             view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: true)
         }
     }
-
+    
     
 }

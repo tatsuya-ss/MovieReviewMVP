@@ -15,7 +15,6 @@ final class CrewCastCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var blackView: UIView!
     
     static let nib = UINib(nibName: String(describing: CrewCastCollectionViewCell.self), bundle: nil)
-
     static let identifier = String(describing: CrewCastCollectionViewCell.self)
     
     func configure(cast: CastDetail) {
@@ -43,7 +42,12 @@ final class CrewCastCollectionViewCell: UICollectionViewCell {
     func resetImage() {
         crewCastImageView.image = nil
     }
-
+    
+    func configure(posterImage: UIImage?, castName: String?) {
+        crewCastImageView.image = posterImage
+        nameLabel.text = castName
+    }
+    
 }
 
 private extension UIView {
