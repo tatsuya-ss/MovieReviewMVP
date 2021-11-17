@@ -11,7 +11,7 @@ import UIKit
 import FirebaseUI
 import GoogleMobileAds
 
-class ReviewManagementCollectionViewController: UIViewController {
+final class ReviewManagementViewController: UIViewController {
     
     private var collectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
@@ -63,7 +63,7 @@ class ReviewManagementCollectionViewController: UIViewController {
 }
 
 // MARK: - setup
-private extension ReviewManagementCollectionViewController {
+private extension ReviewManagementViewController {
     
     func setupLogin() {
         if Auth.auth().currentUser != nil {
@@ -251,7 +251,7 @@ private extension ReviewManagementCollectionViewController {
 }
 
 // MARK: - @objc
-extension ReviewManagementCollectionViewController {
+extension ReviewManagementViewController {
     @objc func trashButtonTapped() {
         let deleteAlert = UIAlertController(title: nil, message: .deleteAlertMessage, preferredStyle: .alert)
         
@@ -292,7 +292,7 @@ extension ReviewManagementCollectionViewController {
 }
 
 // MARK: - UICollectionViewDelegate
-extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
+extension ReviewManagementViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
@@ -318,7 +318,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension ReviewManagementCollectionViewController : UICollectionViewDelegateFlowLayout {
+extension ReviewManagementViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return CGFloat(10)
@@ -332,7 +332,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDelegateFlo
 
 
 // MARK: - UICollectionViewDataSource
-extension ReviewManagementCollectionViewController : UICollectionViewDataSource {
+extension ReviewManagementViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(presenter.numberOfMovies)
@@ -355,7 +355,7 @@ extension ReviewManagementCollectionViewController : UICollectionViewDataSource 
 }
 
 // MARK: - ReviewManagementPresenterOutput
-extension ReviewManagementCollectionViewController : ReviewManagementPresenterOutput {
+extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     
     func sortReview() {
         if presenter.numberOfMovies > 1 { // cellの数が0か1の時は、並び替えても意味がないので
@@ -468,7 +468,7 @@ extension ReviewManagementCollectionViewController : ReviewManagementPresenterOu
     }
 }
 
-extension ReviewManagementCollectionViewController : FUIAuthDelegate {
+extension ReviewManagementViewController : FUIAuthDelegate {
     private func auth() {
         if let authUI = FUIAuth.defaultAuthUI() {
             if #available(iOS 13.0, *) {
@@ -499,7 +499,7 @@ extension ReviewManagementCollectionViewController : FUIAuthDelegate {
 
 }
 
-extension ReviewManagementCollectionViewController : GADBannerViewDelegate {
+extension ReviewManagementViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.isHidden = false
         let bannerHeight = CGFloat(50)

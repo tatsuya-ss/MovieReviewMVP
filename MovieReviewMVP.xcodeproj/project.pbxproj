@@ -56,7 +56,7 @@
 		75699F10264BAAAA001904C4 /* ReviewMovie.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */; };
 		75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */; };
 		75699F3D264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */; };
-		75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F47264BD307001904C4 /* ReviewManagementCollectionViewController.swift */; };
+		75699F48264BD307001904C4 /* ReviewManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F47264BD307001904C4 /* ReviewManagementViewController.swift */; };
 		7569BAA92679EFEA0058D495 /* StockReviewMovieManagement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */; };
 		7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */; };
 		7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */; };
@@ -173,7 +173,7 @@
 		75699F0F264BAAAA001904C4 /* ReviewMovie.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewMovie.storyboard; sourceTree = "<group>"; };
 		75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewCell.swift; sourceTree = "<group>"; };
 		75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewManagementCollectionViewCell.xib; sourceTree = "<group>"; };
-		75699F47264BD307001904C4 /* ReviewManagementCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewController.swift; sourceTree = "<group>"; };
+		75699F47264BD307001904C4 /* ReviewManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementViewController.swift; sourceTree = "<group>"; };
 		7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StockReviewMovieManagement.storyboard; path = MovieReviewMVP/StockReviewMovieManagement/Views/StockReviewMovieManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementViewController.swift; sourceTree = "<group>"; };
 		7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementPresenter.swift; sourceTree = "<group>"; };
@@ -568,7 +568,7 @@
 		75EC661B270DC7F40001F464 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				75699F47264BD307001904C4 /* ReviewManagementCollectionViewController.swift */,
+				75699F47264BD307001904C4 /* ReviewManagementViewController.swift */,
 				756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */,
 				75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */,
 				75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */,
@@ -929,7 +929,7 @@
 				756AD27F26832B1200BF5D6A /* UIAlertController+Ext.swift in Sources */,
 				7592872527151EED00322CF8 /* UserRepository.swift in Sources */,
 				756DFCBB264D5B6900C6AF07 /* State.swift in Sources */,
-				75699F48264BD307001904C4 /* ReviewManagementCollectionViewController.swift in Sources */,
+				75699F48264BD307001904C4 /* ReviewManagementViewController.swift in Sources */,
 				75834AE326A80D93004AC09C /* SettingManagementPresenter.swift in Sources */,
 				75676EDC263A89B400569AF5 /* AppDelegate.swift in Sources */,
 				7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */,
