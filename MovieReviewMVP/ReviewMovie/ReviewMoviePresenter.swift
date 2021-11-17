@@ -19,7 +19,7 @@ protocol ReviewMoviePresenterInput {
 }
 
 protocol ReviewMoviePresenterOutput : AnyObject {
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement)
+    func displayReviewMovie(title: String, releaseDay: String, rating: Double, posterData: Data?, review: String?, overview: String?)
     func displayCastImage(casts: [CastDetail])
     func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
@@ -55,11 +55,34 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         self.userUseCase = userUseCase
     }
     
-    // MARK: viewDidLoad時
-    func viewDidLoad() {
-        let review = selectedReview.getReview()
-        view.displayReviewMovie(movieReviewState: movieReviewState, review)
+    private func makeTitle(movie: MovieReviewElement) -> String {
+        if let title = movie.title, !title.isEmpty {
+            return title
+        } else if let originalName = movie.original_name, !originalName.isEmpty {
+            return originalName
+        } else {
+            return .notTitle
+        }
+    }
         
+    private func makeReleaseDateText(movie: MovieReviewElement) -> String {
+        if let releaseDay = movie.releaseDay,
+           !releaseDay.isEmpty {
+            return " " + "公開日" + " " + releaseDay
+        } else {
+            return " " + "公開日未定"
+        }
+    }
+    
+    func viewDidLoad() {
+        // MARK: レビュー情報の表示
+        let review = selectedReview.getReview()
+        let title = makeTitle(movie: review)
+        let releaseDay = makeReleaseDateText(movie: review)
+        let rating = review.reviewStars ?? 3.0
+        view.displayReviewMovie(title: title, releaseDay: releaseDay, rating: rating, posterData: review.posterData, review: review.review, overview: review.overview)
+        
+        // MARK: キャスト情報取得してViewを更新
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         videoWorkUseCase.fetchVideoWorkDetail(videoWork: review) { [weak self] result in

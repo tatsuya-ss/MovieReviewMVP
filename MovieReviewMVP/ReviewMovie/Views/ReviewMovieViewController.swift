@@ -58,30 +58,11 @@ class ReviewMovieViewController: UIViewController {
         reviewMovieOwner.reviewTextResignFirstResponder()
     }
     
-    private func makeTitle(movie: MovieReviewElement) -> String {
-        if let title = movie.title, !title.isEmpty {
-            return title
-        } else if let originalName = movie.original_name, !originalName.isEmpty {
-            return originalName
-        } else {
-            return .notTitle
-        }
-    }
-    
-    private func getReviewAndFontColor(movie: MovieReviewElement) -> (String, UIColor) {
-        if let review = movie.review, !review.isEmpty {
+    private func getReviewAndFontColor(review: String?) -> (String, UIColor) {
+        if let review = review, !review.isEmpty {
             return (review, .stringColor)
         } else {
             return (ReviewTextIsEnpty().text, .placeholderColor)
-        }
-    }
-    
-    private func makeReleaseDateText(movie: MovieReviewElement) -> String {
-        if let releaseDay = movie.releaseDay,
-           !releaseDay.isEmpty {
-            return " " + "公開日" + " " + releaseDay
-        } else {
-            return " " + "公開日未定"
         }
     }
     
@@ -210,20 +191,17 @@ private extension ReviewMovieViewController {
 // MARK: - ReviewMoviePresenterOutput
 extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     
-    func displayReviewMovie(movieReviewState: MovieReviewStoreState, _ movieReviewElement: MovieReviewElement) {
-        let posterImage = movieReviewElement.posterData == nil ? UIImage(named: "no_image") : UIImage(data: movieReviewElement.posterData!)
-        let title = makeTitle(movie: movieReviewElement)
-        let (review, fontColor) = getReviewAndFontColor(movie: movieReviewElement)
-        let releaseDay = makeReleaseDateText(movie: movieReviewElement)
-        let rating = movieReviewElement.reviewStars ?? 3.0
-        
+    func displayReviewMovie(title: String, releaseDay: String, rating: Double, posterData: Data?, review: String?, overview: String?) {
+        let posterImage = (posterData == nil) ? UIImage(named: "no_image") : UIImage(data: posterData!)
+        let (review, fontColor) = getReviewAndFontColor(review: review)
+
         reviewMovieOwner.configureReviewView(posterImage: posterImage,
                                              title: title,
                                              review: review,
                                              color: fontColor,
                                              releaseDay: releaseDay,
                                              rating: rating,
-                                             overView: movieReviewElement.overview)
+                                             overView: overview)
     }
     
     func displayCastImage(casts: [CastDetail]) {
