@@ -8,7 +8,7 @@
 import UIKit
 import Cosmos
 
-class ReviewMovieOwner: NSObject {
+final class ReviewMovieOwner: NSObject {
     
     @IBOutlet private weak var backgroundImageView: UIImageView!
     @IBOutlet private weak var overviewTextView: UITextView!
@@ -23,7 +23,7 @@ class ReviewMovieOwner: NSObject {
     var crewCastColumnLayout: UICollectionViewFlowLayout!
     var keyboardHeight: CGFloat?
     var casts: [CastDetail] = []
-
+    
     var reviewMovieView: UIView!
     
     override init() {
@@ -49,7 +49,7 @@ class ReviewMovieOwner: NSObject {
         reviewStarView.settings.fillMode = .half
         reviewStarView.isUserInteractionEnabled = true
     }
-
+    
     private func setOverView() {
         overviewTextView.isEditable = false
         overviewTextView.isSelectable = false
@@ -98,7 +98,7 @@ class ReviewMovieOwner: NSObject {
             reviewTextView.isEditable = true
             reviewTextView.isSelectable = true
             reviewStarView.isUserInteractionEnabled = true
-
+            
         case false:
             reviewTextView.isEditable = false
             reviewTextView.isSelectable = false
@@ -172,7 +172,7 @@ extension ReviewMovieOwner : UITextViewDelegate {
 
 // MARK: - DataSource
 extension ReviewMovieOwner : UICollectionViewDataSource {
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return casts.count
     }
