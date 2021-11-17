@@ -28,6 +28,7 @@
 		753B2A4026AA29F800EACFBD /* SettingManagementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 753B2A3E26AA29F800EACFBD /* SettingManagementTableViewCell.xib */; };
 		753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */; };
 		753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */; };
+		754856BF27449FCE00A4C31B /* CachedSearchConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754856BE27449FCE00A4C31B /* CachedSearchConditions.swift */; };
 		755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755D71E0264385F5007C0D77 /* ReviewMovie.xib */; };
 		755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */; };
 		755E9AFC26D88CCA00A17709 /* Instructions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755E9AFB26D88CCA00A17709 /* Instructions.storyboard */; };
@@ -137,6 +138,7 @@
 		753B2A3E26AA29F800EACFBD /* SettingManagementTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingManagementTableViewCell.xib; sourceTree = "<group>"; };
 		753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementHeaderView.swift; sourceTree = "<group>"; };
 		753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingManagementHeaderView.xib; sourceTree = "<group>"; };
+		754856BE27449FCE00A4C31B /* CachedSearchConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedSearchConditions.swift; sourceTree = "<group>"; };
 		755D71E0264385F5007C0D77 /* ReviewMovie.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovie.xib; sourceTree = "<group>"; };
 		755D71E526438F2E007C0D77 /* ReviewMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewMovieViewController.swift; sourceTree = "<group>"; };
 		755E9AFB26D88CCA00A17709 /* Instructions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Instructions.storyboard; sourceTree = "<group>"; };
@@ -280,6 +282,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		754856BD27449FA000A4C31B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				754856BE27449FCE00A4C31B /* CachedSearchConditions.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		755CCD8A2742348D001D9014 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,6 +400,7 @@
 			children = (
 				755CCD8A2742348D001D9014 /* Presenter */,
 				75EC661A270DC7360001F464 /* Views */,
+				754856BD27449FA000A4C31B /* Utilities */,
 			);
 			path = SearchMovie;
 			sourceTree = "<group>";
@@ -960,6 +971,7 @@
 				7569BAAE2679F0320058D495 /* StockReviewMovieManagementViewController.swift in Sources */,
 				755D71E626438F2E007C0D77 /* ReviewMovieViewController.swift in Sources */,
 				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
+				754856BF27449FCE00A4C31B /* CachedSearchConditions.swift in Sources */,
 				75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */,
 				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 				758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */,

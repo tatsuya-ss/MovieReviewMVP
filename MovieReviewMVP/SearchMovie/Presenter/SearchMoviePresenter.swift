@@ -26,8 +26,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private weak var view: SearchMoviePresenterOutput!
     private var useCase: VideoWorkUseCaseProtocol
     private let reviewManagement = ReviewManagement()
-    private var page = 1
-    private var cachedQuery: String?
+    private var cachedSearchConditions = CachedSearchConditions()
     
     init(view: SearchMoviePresenterOutput,
          useCase: VideoWorkUseCaseProtocol) {
@@ -57,43 +56,71 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     func fetchMovie(state: FetchMovieState, text: String?) {
+        let dispatchGroup = DispatchGroup()
         switch state {
         case .search(.initial):
             guard let query = text,
                   !query.isEmpty else { return }
-            cachedQuery = query
-            page = 1
-            useCase.fetchVideoWorks(page: page,
-                                    query: query) { [weak self] result in
+            cachedSearchConditions.cachedQuery(query: query)
+            cachedSearchConditions.initialPage()
+            dispatchGroup.enter()
+            useCase.fetchVideoWorks(page: cachedSearchConditions.page, query: query) { [weak self] result in
+                defer { dispatchGroup.leave() }
                 switch result {
-                case .success(let result):
-                    self?.reviewManagement.fetchReviews(result: result)
-                    DispatchQueue.main.async {
-                        self?.view.update(state, result)
-                    }
                 case .failure(let error):
                     print(error)
+                case .success(let result):
+                    self?.reviewManagement.fetchReviews(result: result)
+                    guard let reviews = self?.reviewManagement.returnReviews() else { return }
+                    reviews.enumerated().forEach { movieReviewElement in
+                        dispatchGroup.enter()
+                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                            defer { dispatchGroup.leave() }
+                            switch result {
+                            case .failure(let error):
+                                print(error)
+                            case.success(let data):
+                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                            }
+                        }
+                    }
+                    dispatchGroup.notify(queue: .main) {
+                        self?.view.update(state, result)
+                    }
                 }
             }
             
         case .search(.refresh):
-            guard let query = cachedQuery else { return }
-            page += 1
-            useCase.fetchVideoWorks(page: page,
-                                    query: query) { [weak self] result in
+            guard let query = cachedSearchConditions.cachedQuery else { return }
+            cachedSearchConditions.countUpPage()
+            dispatchGroup.enter()
+            useCase.fetchVideoWorks(page: cachedSearchConditions.page, query: query) { [weak self] result in
+                defer { dispatchGroup.leave() }
                 switch result {
-                case .success(let result):
-                    self?.reviewManagement.searchRefresh(result: result)
-                    DispatchQueue.main.async {
-                        self?.view.update(state, result)
-                    }
                 case .failure(let error):
                     print(error)
+                case .success(let result):
+                    self?.reviewManagement.searchRefresh(result: result)
+                    guard let reviews = self?.reviewManagement.returnReviews() else { return }
+                    reviews.enumerated().forEach { movieReviewElement in
+                        dispatchGroup.enter()
+                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                            defer { dispatchGroup.leave() }
+                            switch result {
+                            case .failure(let error):
+                                print(error)
+                            case.success(let data):
+                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                            }
+                        }
+                    }
+                    dispatchGroup.notify(queue: .main) {
+                        self?.view.update(state, result)
+                    }
                 }
             }
             
         case .upcoming:
-            let dispatchGroup = DispatchGroup()
             dispatchGroup.enter()
             useCase.fetchUpcomingVideoWorks { [weak self] result in
                 defer { dispatchGroup.leave() }
