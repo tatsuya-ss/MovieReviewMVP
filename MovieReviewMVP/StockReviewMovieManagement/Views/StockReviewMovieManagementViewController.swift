@@ -7,7 +7,8 @@
 
 import UIKit
 
-class StockReviewMovieManagementViewController: UIViewController {
+final class StockReviewMovieManagementViewController: UIViewController {
+    
     @IBOutlet var stockCollectionView: UICollectionView!
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     private var stopButton: UIBarButtonItem!
@@ -134,27 +135,26 @@ class StockReviewMovieManagementViewController: UIViewController {
 
 }
 
+// MARK: - UICollectionViewDataSource
 extension StockReviewMovieManagementViewController : UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         presenter.numberOfStockMovies
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = stockCollectionView.dequeueReusableCell(withReuseIdentifier: StockReviewMovieCollectionViewCell.identifier, for: indexPath) as! StockReviewMovieCollectionViewCell
-        cell.resetImage()
-        let stockMovieReview = presenter.returnStockMovieForCell(forRow: indexPath.row)
-        if stockCollectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
-            cell.configure(movieReview: stockMovieReview, cellSelectedState: .selected)
-        } else {
-            cell.configure(movieReview: stockMovieReview, cellSelectedState: .deselected)
-        }
+        let stock = presenter.returnStockMovieForCell(forRow: indexPath.row)
+        let posterImage = (stock.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: stock.posterData!)
+        let cellSelectState: CellSelectedState = (collectionView.indexPathsForSelectedItems?.contains(indexPath) == true) ? .selected : .deselected
+        cell.configure(posterImage: posterImage, cellSelectState: cellSelectState)
         
         return cell
     }
     
-    
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension StockReviewMovieManagementViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         CGFloat(5)
@@ -185,11 +185,12 @@ extension StockReviewMovieManagementViewController : UICollectionViewDelegateFlo
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension StockReviewMovieManagementViewController : UICollectionViewDelegate {
     
 }
 
-
+// MARK: - StockReviewMovieManagementPresenterOutput
 extension StockReviewMovieManagementViewController : StockReviewMovieManagementPresenterOutput {
     
     func sortReview() {

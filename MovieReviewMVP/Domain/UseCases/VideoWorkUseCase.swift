@@ -19,7 +19,7 @@ protocol VideoWorkUseCaseProtocol {
 final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
     
     private var repository: VideoWorksRepositoryProtocol
-    init(repository: VideoWorksRepositoryProtocol) {
+    init(repository: VideoWorksRepositoryProtocol = VideoWorksRepository()) {
         self.repository = repository
     }
     

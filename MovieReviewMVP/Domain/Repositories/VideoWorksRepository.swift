@@ -19,7 +19,7 @@ protocol VideoWorksRepositoryProtocol {
 final class VideoWorksRepository: VideoWorksRepositoryProtocol {
     
     private var dataStore: TMDbDataStoreProtocol
-    init(dataStore: TMDbDataStoreProtocol) {
+    init(dataStore: TMDbDataStoreProtocol = TMDbDataStore()) {
         self.dataStore = dataStore
     }
     

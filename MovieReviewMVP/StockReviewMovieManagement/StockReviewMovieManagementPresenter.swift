@@ -37,11 +37,14 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     private weak var view: StockReviewMovieManagementPresenterOutput!
     private let reviewManagement = ReviewManagement()
     private let reviewUseCase: ReviewUseCaseProtocol
-    
+    private var videoWorkuseCase: VideoWorkUseCaseProtocol
+
     init(view: StockReviewMovieManagementPresenterOutput,
-         reviewUseCase: ReviewUseCaseProtocol) {
+         reviewUseCase: ReviewUseCaseProtocol,
+         videoWorkuseCase: VideoWorkUseCaseProtocol) {
         self.view = view
         self.reviewUseCase = reviewUseCase
+        self.videoWorkuseCase = videoWorkuseCase
     }
     
     func returnSortState() -> sortState {
@@ -87,16 +90,29 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
     
     func fetchStockMovies() {
         let sortState = reviewManagement.returnSortState()
+        let dispatchGroup = DispatchGroup()
+
         reviewUseCase.fetch(isStoredAsReview: false, sortState: sortState) { [weak self] result in
             switch result {
-            case .success(let reviews):
-                self?.reviewManagement.fetchReviews(result: reviews)
-                DispatchQueue.main.async {
-                    self?.view.updateStockCollectionView(movieUpdateState: .initial, indexPath: nil)
-                }
-                print(#function,reviews)
             case .failure(let error):
                 print(error)
+            case .success(let reviews):
+                self?.reviewManagement.fetchReviews(result: reviews)
+                reviews.enumerated().forEach { movieReviewElement in
+                    dispatchGroup.enter()
+                    self?.videoWorkuseCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                        defer { dispatchGroup.leave() }
+                        switch result {
+                        case .failure(let error):
+                            print(error)
+                        case.success(let data):
+                            self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                        }
+                    }
+                }
+                dispatchGroup.notify(queue: .main) {
+                    self?.view.updateStockCollectionView(movieUpdateState: .initial, indexPath: nil)
+                }
             }
         }
     }
