@@ -145,7 +145,8 @@ private extension ReviewManagementViewController {
     
     func setupPresenter() {
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
-        let reviewManagementPresenter = ReviewManagementPresenter(view: self, reviewUseCase: reviewUseCase )
+        let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
+        let reviewManagementPresenter = ReviewManagementPresenter(view: self, reviewUseCase: reviewUseCase, videoWorkuseCase: videoWorkUseCase )
         inject(presenter: reviewManagementPresenter)
     }
     

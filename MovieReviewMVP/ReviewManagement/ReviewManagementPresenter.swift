@@ -30,17 +30,20 @@ protocol ReviewManagementPresenterOutput: AnyObject {
 }
 
 
-class ReviewManagementPresenter : ReviewManagementPresenterInput {
+final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     private weak var view: ReviewManagementPresenterOutput!
     private let reviewUseCase: ReviewUseCaseProtocol
+    private var videoWorkuseCase: VideoWorkUseCaseProtocol
     private var movieUpdateState: MovieUpdateState = .modificate
     private let reviewManagement = ReviewManagement()
-
+    
     init(view: ReviewManagementPresenterOutput,
-         reviewUseCase: ReviewUseCaseProtocol) {
+         reviewUseCase: ReviewUseCaseProtocol,
+         videoWorkuseCase: VideoWorkUseCaseProtocol) {
         self.view = view
         self.reviewUseCase = reviewUseCase
+        self.videoWorkuseCase = videoWorkuseCase
     }
     
     var numberOfMovies: Int {
@@ -71,17 +74,32 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {
         let sortState = reviewManagement.returnSortState()
-        reviewUseCase.sort(isStoredAsReview: true, sortState: sortState) { result in
+        let dispatchGroup = DispatchGroup()
+        
+        self.reviewUseCase.sort(isStoredAsReview: true, sortState: sortState) { [weak self] result in
             switch result {
-            case .success(let reviews):
-                self.reviewManagement.fetchReviews(result: reviews)
-                DispatchQueue.main.async {
-                    self.view.updateReview(state, index: nil)
-                }
             case .failure(let error):
                 print(error)
+            case .success(let result):
+                self?.reviewManagement.fetchReviews(result: result)
+                result.enumerated().forEach { movieReviewElement in
+                    dispatchGroup.enter()
+                    self?.videoWorkuseCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                        defer { dispatchGroup.leave() }
+                        switch result {
+                        case .failure(let error):
+                            print(error)
+                        case.success(let data):
+                            self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                        }
+                    }
+                }
+                dispatchGroup.notify(queue: .main) {
+                    self?.view.updateReview(state, index: nil)
+                }
             }
         }
+        
     }
     
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
@@ -93,7 +111,7 @@ class ReviewManagementPresenter : ReviewManagementPresenterInput {
             view.updateReview(movieUpdateState, index: indexPath.row)
         }
     }
-
+    
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
         reviewManagement.sortReviews(sortState: sortState)
