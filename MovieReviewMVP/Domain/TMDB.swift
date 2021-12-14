@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Keys
 
 // TMDBに依存しているもの
 // MARK: - 検索時
@@ -51,16 +50,6 @@ struct TMDBPerson: Codable {
     var also_known_as: [String]?
 }
 
-
-// MARK: - API
-struct TMDBApi {
-    static let key = MovieReviewMVPKeys().tMDBApiKey
-    let searchURL: String
-    init(query: String, page: String) {
-        self.searchURL = "https://api.themoviedb.org/3/search/multi?api_key=\(TMDBApi.key)&language=ja-JP&page=\(page)&query=\(query)"
-    }
-    
-}
 // MARK: - 詳細情報
 //enum MediaType {
 //    case movie
@@ -72,24 +61,24 @@ struct TMDBApi {
 //        }
 //    }
 //}
-struct TMDBDetailURL {
-    static let key = MovieReviewMVPKeys().tMDBApiKey
-    let detailURL: String
-    let mediaType: String
-    init(id: Int, mediaType: String) {
-        self.mediaType = mediaType
-        self.detailURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDBDetailURL.key)&language=ja-JP"
-    }
-}
+//struct TMDBDetailURL {
+//    static let key = MovieReviewMVPKeys().tMDBApiKey
+//    let detailURL: String
+//    let mediaType: String
+//    init(id: Int, mediaType: String) {
+//        self.mediaType = mediaType
+//        self.detailURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDBDetailURL.key)&language=ja-JP"
+//    }
+//}
 
-struct TMDBPersonURL {
-    static let key = MovieReviewMVPKeys().tMDBApiKey
-    let personURL: String
-    init(id: Int) {
-        self.personURL = "https://api.themoviedb.org/3/person/\(String(id))?api_key=\(TMDBPersonURL.key)&language=ja-JP"
-    }
-}
-
+//struct TMDBPersonURL {
+//    static let key = MovieReviewMVPKeys().tMDBApiKey
+//    let personURL: String
+//    init(id: Int) {
+//        self.personURL = "https://api.themoviedb.org/3/person/\(String(id))?api_key=\(TMDBPersonURL.key)&language=ja-JP"
+//    }
+//}
+//
 
 // MARK: - PosterURL
 struct TMDBPosterURL {
@@ -123,17 +112,17 @@ struct TMDBBackdropURL {
 
 }
 
-// MARK: - PopularMovieURL
-struct TMDBPopularMovieURL {
-    static let key = MovieReviewMVPKeys().tMDBApiKey
-    let popularMovieURL = "https://api.themoviedb.org/3/movie/popular?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1"
-}
-
-// MARK: - upcoming
-struct TMDBUpcomingMovieURL {
-    static let key = MovieReviewMVPKeys().tMDBApiKey
-    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBUpcomingMovieURL.key)&language=ja-JA&page=1&region=JP"
-}
+//// MARK: - PopularMovieURL
+//struct TMDBPopularMovieURL {
+//    static let key = MovieReviewMVPKeys().tMDBApiKey
+//    let popularMovieURL = "https://api.themoviedb.org/3/movie/popular?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1"
+//}
+//
+//// MARK: - upcoming
+//struct TMDBUpcomingMovieURL {
+//    static let key = MovieReviewMVPKeys().tMDBApiKey
+//    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBUpcomingMovieURL.key)&language=ja-JA&page=1&region=JP"
+//}
 
 
 //enum TMDBSearchError : Error {

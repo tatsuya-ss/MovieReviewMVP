@@ -138,10 +138,17 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
                       return
                   }
             
-            if response.statusCode == 200 {
-                completion(.success(data))
-            }
+            // 教訓として
+            // 以下のコメントアウトのよう200以外の時のcompletionの呼び忘れで、呼び出し側のdispatchGroup.notifyが呼ばれなくなっていた
+            //            if response.statusCode == 200 {
+            //                completion(.success(data))
+            //            }
             
+            guard response.statusCode == 200 else {
+                completion(.failure(TMDbSearchError.responseError))
+                return
+            }
+            completion(.success(data))
         }
         task.resume()
     }

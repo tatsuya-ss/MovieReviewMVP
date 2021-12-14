@@ -8,7 +8,7 @@
 import UIKit
 import Cosmos
 
-class ReviewManagementCollectionViewCell: UICollectionViewCell {
+final class ReviewManagementCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet private weak var movieImageView: UIImageView!
     @IBOutlet private weak var reviewView: CosmosView!
@@ -18,43 +18,27 @@ class ReviewManagementCollectionViewCell: UICollectionViewCell {
 
     static let identifier = String(describing: ReviewManagementCollectionViewCell.self)
     
-    func resetMovieImage() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.04
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
         movieImageView.image = nil
+        checkImageView.image = nil
     }
     
     // MARK: configure
-    func configure(movieReview: MovieReviewElement, cellSelectedState: CellSelectedState) {
-        
-        if let posterPath = movieReview.poster_path,
-           !posterPath.isEmpty,
-           let posterUrl = URL(string: TMDBPosterURL(posterPath: posterPath).posterURL) {
-            let task = URLSession.shared.dataTask(with: posterUrl) { (data, resopnse, error) in
-                guard let imageData = data else { return }
-
-                DispatchQueue.global().async { [weak self] in
-                    guard let image = UIImage(data: imageData) else { return }
-                    DispatchQueue.main.async {
-                        self?.movieImageView.image = image
-                    }
-                }
-            }
-            task.resume()
-        } else {
-            movieImageView.image = UIImage(named: "no_image")
-        }
-        
-        reviewView.rating = movieReview.reviewStars ?? 0.0
-        reviewView.text = String(movieReview.reviewStars ?? 0.0)
+    func configure(posterImage: UIImage?, rating: Double, cellSelectState: CellSelectedState) {
+        movieImageView.image = posterImage
+        reviewView.rating = rating
+        reviewView.text = String(rating)
         checkImageView.image = UIImage(named: .checkImageName)
         checkImageView.isHidden = true
-        setupLayout()
-        tapCell(state: cellSelectedState)
-    }
-    
-    // MARK: setupLayout
-    func setupLayout() {
-        movieImageView.layoutIfNeeded()
-        movieImageView.layer.cornerRadius = movieImageView.bounds.width * 0.04
+        [movieImageView, reviewView].forEach { $0?.alpha = cellSelectState.imageAlpha }
+        checkImageView.isHidden = cellSelectState.isHidden
+        tapCell(state: cellSelectState)
     }
     
     func tapCell(state: CellSelectedState) {

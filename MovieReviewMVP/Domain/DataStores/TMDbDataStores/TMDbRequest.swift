@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import Keys
 
 struct TMDbAPI {
     
-    static let key = MovieReviewMVPKeys().tMDBApiKey
+    static let key = ProcessInfo.processInfo.environment["TMDbAPIKEY"]!
     
     struct SearchRequest {
         let query: String
