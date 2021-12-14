@@ -342,14 +342,11 @@ extension ReviewManagementViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
-        cell.resetMovieImage()
         let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row)
-        if collectionView.indexPathsForSelectedItems?.contains(indexPath) == true {
-            cell.configure(movieReview: movieReviews, cellSelectedState: .selected)
-        } else {
-            cell.configure(movieReview: movieReviews, cellSelectedState: .deselected)
-        }
-
+        let posterImage = (movieReviews.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movieReviews.posterData!)
+        let rating = movieReviews.reviewStars ?? 0.0
+        let cellSelectState: CellSelectedState = (collectionView.indexPathsForSelectedItems?.contains(indexPath) == true) ? .selected : .deselected
+        cell.configure(posterImage: posterImage, rating: rating, cellSelectState: cellSelectState)
         return cell
     }
     

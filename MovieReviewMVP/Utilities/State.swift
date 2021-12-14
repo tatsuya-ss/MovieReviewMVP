@@ -57,6 +57,14 @@ enum CellSelectedState {
             return 1
         }
     }
+    var isHidden: Bool {
+        switch self {
+        case .selected:
+            return false
+        case .deselected:
+            return true
+        }
+    }
 }
 
 enum sortState {
