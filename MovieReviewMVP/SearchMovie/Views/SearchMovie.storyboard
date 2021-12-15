@@ -36,6 +36,9 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DjA-oQ-7gZ">
+                                <rect key="frame" x="197" y="396.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KGb-Lq-u2a"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -43,17 +46,20 @@
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="bottom" secondItem="KGb-Lq-u2a" secondAttribute="bottom" id="2Mj-rS-CPN"/>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="E1g-Vh-P8b"/>
                             <constraint firstItem="mdR-U8-AD1" firstAttribute="top" secondItem="ZbQ-Q1-UzC" secondAttribute="bottom" id="Jhb-k5-O3f"/>
+                            <constraint firstItem="DjA-oQ-7gZ" firstAttribute="centerX" secondItem="oTg-gg-1IR" secondAttribute="centerX" id="PCq-2g-N8u"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="cfG-aq-C0c"/>
                             <constraint firstItem="KGb-Lq-u2a" firstAttribute="trailing" secondItem="mdR-U8-AD1" secondAttribute="trailing" constant="20" id="csw-R4-73n"/>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="fME-H4-nDa"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="top" secondItem="KGb-Lq-u2a" secondAttribute="top" id="hJH-If-tUb"/>
                             <constraint firstItem="mdR-U8-AD1" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" constant="20" id="oR0-Ho-Cl0"/>
+                            <constraint firstItem="DjA-oQ-7gZ" firstAttribute="centerY" secondItem="oTg-gg-1IR" secondAttribute="centerY" id="qRJ-qT-Gfr"/>
                             <constraint firstItem="Ss0-Jn-OVT" firstAttribute="top" secondItem="mdR-U8-AD1" secondAttribute="bottom" id="sgN-bZ-pLy"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="una-js-Mdd"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hBP-Z3-PC3"/>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="DjA-oQ-7gZ" id="sjo-yg-w1X"/>
                         <outlet property="displayLabel" destination="mdR-U8-AD1" id="5Ve-G0-zai"/>
                         <outlet property="movieSearchBar" destination="ZbQ-Q1-UzC" id="d2g-5M-Muh"/>
                         <outlet property="tableView" destination="Ss0-Jn-OVT" id="k3l-gk-GMM"/>

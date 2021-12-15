@@ -9,12 +9,15 @@ import UIKit
 import GoogleMobileAds
 import StoreKit
 
+extension SearchMovieViewController: UIActivityIndicatorProtocol { }
+
 final class SearchMovieViewController: UIViewController {
     
     @IBOutlet private weak var movieSearchBar: UISearchBar!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var displayLabel: UILabel!
     @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     private var bannerView: GADBannerView!
 
     private var scrollIndicator: UIActivityIndicatorView!
@@ -34,6 +37,8 @@ final class SearchMovieViewController: UIViewController {
         setupIndicator()
         setupSearchBar()
         setupBanner()
+        setupIndicator(indicator: activityIndicatorView)
+        startIndicator(indicator: activityIndicatorView)
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
@@ -156,12 +161,14 @@ extension SearchMovieViewController {
 extension SearchMovieViewController : UISearchBarDelegate {
     // MARK: 検索ボタンが押された時
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        startIndicator(indicator: activityIndicatorView)
         self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
         searchBar.resignFirstResponder()
     }
     
     // MARK: キャンセルボタンが押された時
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        startIndicator(indicator: activityIndicatorView)
         searchBar.text = nil
         presenter.fetchMovie(state: .upcoming, text: nil)
         searchBar.resignFirstResponder()
@@ -260,6 +267,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
         displayLabel.text = fetchState.displayLabelText
         tableView.reloadData()
+        stopIndicator(indicator: activityIndicatorView)
     }
     
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
