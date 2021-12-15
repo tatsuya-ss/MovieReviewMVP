@@ -9,10 +9,12 @@ import Foundation
 
 protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
-    func returnReview() -> [MovieReviewElement]
+    func returnReview(indexPath: IndexPath) -> MovieReviewElement
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
+    func makeTitle(indexPath: IndexPath) -> String
+    func makeReleaseDay(indexPath: IndexPath) -> String
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
@@ -38,8 +40,16 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         reviewManagement.returnNumberOfReviews()
     }
     
-    func returnReview() -> [MovieReviewElement] {
-        reviewManagement.returnReviews()
+    func makeTitle(indexPath: IndexPath) -> String {
+        reviewManagement.makeTitle(indexPath: indexPath)
+    }
+    
+    func makeReleaseDay(indexPath: IndexPath) -> String {
+        reviewManagement.makeReleaseDay(indexPath: indexPath)
+    }
+    
+    func returnReview(indexPath: IndexPath) -> MovieReviewElement {
+        reviewManagement.returnReviews()[indexPath.item]
     }
     
     func didSelectRow(at indexPath: IndexPath) {
@@ -49,7 +59,6 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     func didSaveReview() {
         let saveCount = UserDefaults.standard.loadNumberOfSaves()
-        print(saveCount)
         if saveCount % 10 == 0 {
             view.displayStoreReviewController()
         }
@@ -69,23 +78,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 switch result {
                 case .failure(let error):
                     print(error)
-                case .success(let result):
-                    self?.reviewManagement.fetchReviews(result: result)
-                    guard let reviews = self?.reviewManagement.returnReviews() else { return }
-                    reviews.enumerated().forEach { movieReviewElement in
-                        dispatchGroup.enter()
-                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
-                            defer { dispatchGroup.leave() }
-                            switch result {
-                            case .failure(let error):
-                                print(error)
-                            case.success(let data):
-                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
-                            }
-                        }
-                    }
+                case .success(let results):
+                    self?.reviewManagement.fetchReviews(state: state, results: results)
+                    self?.fetchPosterImage(results: results, dispatchGroup: dispatchGroup)
                     dispatchGroup.notify(queue: .main) {
-                        self?.view.update(state, result)
+                        self?.view.update(state, results)
                     }
                 }
             }
@@ -99,23 +96,12 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 switch result {
                 case .failure(let error):
                     print(error)
-                case .success(let result):
-                    self?.reviewManagement.searchRefresh(result: result)
+                case .success(let results):
+                    self?.reviewManagement.fetchReviews(state: state, results: results)
                     guard let reviews = self?.reviewManagement.returnReviews() else { return }
-                    reviews.enumerated().forEach { movieReviewElement in
-                        dispatchGroup.enter()
-                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
-                            defer { dispatchGroup.leave() }
-                            switch result {
-                            case .failure(let error):
-                                print(error)
-                            case.success(let data):
-                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
-                            }
-                        }
-                    }
+                    self?.fetchPosterImage(results: reviews, dispatchGroup: dispatchGroup)
                     dispatchGroup.notify(queue: .main) {
-                        self?.view.update(state, result)
+                        self?.view.update(state, results)
                     }
                 }
             }
@@ -127,21 +113,9 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 switch result {
                 case .failure(let error):
                     print(error)
-                case .success(let result):
-                    self?.reviewManagement.fetchReviews(result: result)
-                    result.enumerated().forEach { movieReviewElement in
-                        dispatchGroup.enter()
-                        self?.useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
-                            defer { dispatchGroup.leave() }
-                            switch result {
-                            case .failure(let error):
-                                print(error)
-                            case .success(let data):
-                                self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
-                            }
-                        }
-                    }
-                    
+                case .success(let results):
+                    self?.reviewManagement.fetchReviews(state: state, results: results)
+                    self?.fetchPosterImage(results: results, dispatchGroup: dispatchGroup)
                     dispatchGroup.notify(queue: .main) {
                         self?.view.update(state, self?.reviewManagement.returnReviews() ?? [])
                     }
@@ -151,4 +125,18 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         }
     }
     
+    private func fetchPosterImage(results: [MovieReviewElement], dispatchGroup: DispatchGroup) {
+        results.enumerated().forEach { movieReviewElement in
+            dispatchGroup.enter()
+            useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { [weak self] result in
+                defer { dispatchGroup.leave() }
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let data):
+                    self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                }
+            }
+        }
+    }
 }

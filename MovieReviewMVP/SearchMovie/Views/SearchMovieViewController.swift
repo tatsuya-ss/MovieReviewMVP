@@ -10,17 +10,15 @@ import GoogleMobileAds
 import StoreKit
 
 final class SearchMovieViewController: UIViewController {
-    @IBOutlet weak var movieSearchBar: UISearchBar!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var displayLabel: UILabel!
+    
+    @IBOutlet private weak var movieSearchBar: UISearchBar!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var displayLabel: UILabel!
+    @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
     private var bannerView: GADBannerView!
-    @IBOutlet weak var tableViewBottomAnchor: NSLayoutConstraint!
-    
-    var scrollIndicator: UIActivityIndicatorView!
-    var isLoadingMore = false
-    
+
+    private var scrollIndicator: UIActivityIndicatorView!
     private var tableViewCellHeight: CGFloat?
-    private var searchMovieViewController: SearchMovieViewController!
     private var presenter: SearchMoviePresenterInput!
     
     func inject(presenter: SearchMoviePresenterInput) {
@@ -34,9 +32,8 @@ final class SearchMovieViewController: UIViewController {
         setupTableViewController()
         setupPresenter()
         setupIndicator()
+        setupSearchBar()
         setupBanner()
-        movieSearchBar.delegate = self
-        movieSearchBar.keyboardType = .namePhonePad
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
@@ -44,29 +41,28 @@ final class SearchMovieViewController: UIViewController {
         presenter.didSaveReview()
     }
     
-    // MARK: - func
-    private func makeTitle(movie: MovieReviewElement) -> String {
-        if let title = movie.title, !title.isEmpty {
-            return title
-        } else if let originalName = movie.original_name, !originalName.isEmpty {
-            return originalName
-        } else {
-            return .notTitle
-        }
-    }
-
-    private func makeReleaseDay(movie: MovieReviewElement) -> String {
-        if let releaseDay = movie.releaseDay {
-            return "(\(releaseDay))"
-        } else {
-            return ""
-        }
-    }
-    
 }
 
 // MARK: - setup
-private extension SearchMovieViewController {
+extension SearchMovieViewController {
+
+    private func setupSearchBar() {
+        movieSearchBar.delegate = self
+        movieSearchBar.keyboardType = .namePhonePad
+        if #available(iOS 13.0, *) {
+            movieSearchBar.searchTextField.backgroundColor = .white
+            movieSearchBar.barStyle = .default
+            
+            // キャンセルボタンを白
+            movieSearchBar.tintColor = .white
+            // カーソルの色を黒
+            UITextField.appearance(whenContainedInInstancesOf: [type(of: movieSearchBar)]).tintColor = .black
+
+        } else {
+            movieSearchBar.barStyle = .black
+            movieSearchBar.tintColor = .white
+        }
+    }
     
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
@@ -95,7 +91,7 @@ private extension SearchMovieViewController {
         
     }
     
-    func setupIndicator() {
+    private func setupIndicator() {
         scrollIndicator = UIActivityIndicatorView()
         scrollIndicator.color = .white
         scrollIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +117,7 @@ private extension SearchMovieViewController {
     }
     
     private func setupBanner() {
-        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView = GADBannerView(adSize: GADAdSizeBanner)
         
         addBannerViewToView(bannerView)
         
@@ -144,7 +140,7 @@ private extension SearchMovieViewController {
         
     }
     
-    func addBannerViewToView(_ bannerView: GADBannerView) {
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         bannerView.translatesAutoresizingMaskIntoConstraints = false
@@ -154,17 +150,6 @@ private extension SearchMovieViewController {
             .forEach { $0.isActive = true }
     }
     
-}
-
-
-// MARK: - @objc
-@objc extension SearchMovieViewController {
-    func handleRefreshControl() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            self.presenter.fetchMovie(state: .search(.refresh), text: nil)
-        })
-        tableView.refreshControl?.endRefreshing()
-    }
 }
 
 // MARK: - UISearchBarDelegate
@@ -222,7 +207,8 @@ extension SearchMovieViewController : UITableViewDelegate {
         
         let previousScrollViewBottomInset = CGFloat(0)
         let indicatorHeight = scrollIndicator.bounds.height + 16
-        
+        var isLoadingMore = false
+
         if isLoadingMore == true {
             scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
         } else {
@@ -240,7 +226,7 @@ extension SearchMovieViewController : UITableViewDelegate {
                 self?.presenter.fetchMovie(state: .search(.refresh), text: nil)
                 self?.scrollIndicator.stopAnimating()
                 self?.scrollIndicator.isHidden = true
-                self?.isLoadingMore = false
+                isLoadingMore = false
             }
         }
         
@@ -257,10 +243,10 @@ extension SearchMovieViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
-        let movie = presenter.returnReview()[indexPath.item]
+        let movie = presenter.returnReview(indexPath: indexPath)
         let image = (movie.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movie.posterData!)
-        let title = makeTitle(movie: movie)
-        let releaseDay = makeReleaseDay(movie: movie)
+        let title = presenter.makeTitle(indexPath: indexPath)
+        let releaseDay = presenter.makeReleaseDay(indexPath: indexPath)
         cell.configure(image: image, title: title, releaseDay: releaseDay)
         return cell
     }
@@ -279,7 +265,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
-        let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
+        let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
         

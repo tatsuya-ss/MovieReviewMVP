@@ -284,6 +284,15 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		753DB9DA27697E27002BF4B7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				75676F1F263A97E300569AF5 /* MovieTableViewCell.swift */,
+				75676F20263A97E300569AF5 /* MovieTableViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		754856BD27449FA000A4C31B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -562,8 +571,7 @@
 			children = (
 				75676EDF263A89B400569AF5 /* SearchMovieViewController.swift */,
 				75636BE5263B994F00281DB1 /* SearchMovie.storyboard */,
-				75676F1F263A97E300569AF5 /* MovieTableViewCell.swift */,
-				75676F20263A97E300569AF5 /* MovieTableViewCell.xib */,
+				753DB9DA27697E27002BF4B7 /* Cell */,
 			);
 			path = Views;
 			sourceTree = "<group>";

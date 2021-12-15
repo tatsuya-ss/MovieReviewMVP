@@ -10,7 +10,7 @@ import Foundation
 final class ReviewManagement {
     private var videoWorks: [MovieReviewElement] = []
     private var sortStateManagement: sortState = .createdDescend
-    
+
     func returnSortState() -> sortState {
         sortStateManagement
     }
@@ -27,10 +27,15 @@ final class ReviewManagement {
         videoWorks[row]
     }
 
-    func fetchReviews(result: [MovieReviewElement]) {
-        videoWorks = result
+    func fetchReviews(state: FetchMovieState, results: [MovieReviewElement]) {
+        switch state {
+        case .search(.initial), .upcoming:
+            videoWorks = results
+        case .search(.refresh):
+            videoWorks.append(contentsOf: results)
+        }
     }
-    
+
     func fetchPosterData(index: Int, data: Data) {
         videoWorks[index].posterData = data
     }
@@ -43,14 +48,29 @@ final class ReviewManagement {
         videoWorks[indexPath.row]
     }
     
-    func searchRefresh(result: [MovieReviewElement]) {
-        videoWorks.append(contentsOf: result)
-    }
     
     func logout() {
         videoWorks.removeAll()
     }
     
+    func makeTitle(indexPath: IndexPath) -> String {
+        if let title = videoWorks[indexPath.item].title, !title.isEmpty {
+            return title
+        } else if let originalName = videoWorks[indexPath.item].original_name, !originalName.isEmpty {
+            return originalName
+        } else {
+            return .notTitle
+        }
+    }
+    
+    func makeReleaseDay(indexPath: IndexPath) -> String {
+        if let releaseDay = videoWorks[indexPath.item].releaseDay {
+            return "(\(releaseDay))"
+        } else {
+            return ""
+        }
+    }
+
     func sortReviews(sortState: sortState) {
         sortStateManagement = sortState
         switch sortState {

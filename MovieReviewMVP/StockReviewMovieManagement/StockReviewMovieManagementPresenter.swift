@@ -97,7 +97,7 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
             case .failure(let error):
                 print(error)
             case .success(let reviews):
-                self?.reviewManagement.fetchReviews(result: reviews)
+                self?.reviewManagement.fetchReviews(state: .search(.initial), results: reviews)
                 reviews.enumerated().forEach { movieReviewElement in
                     dispatchGroup.enter()
                     self?.videoWorkuseCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
