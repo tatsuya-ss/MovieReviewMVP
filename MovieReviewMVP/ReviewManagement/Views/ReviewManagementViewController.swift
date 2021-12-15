@@ -11,9 +11,13 @@ import UIKit
 import FirebaseUI
 import GoogleMobileAds
 
+extension ReviewManagementViewController: UIActivityIndicatorProtocol { }
+
 final class ReviewManagementViewController: UIViewController {
     
-    private var collectionView: UICollectionView!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     private var sortButton: UIBarButtonItem!
     private var editButton: UIBarButtonItem!
@@ -25,7 +29,7 @@ final class ReviewManagementViewController: UIViewController {
 
     private var trashButtonBottomAnchor: NSLayoutConstraint!
     private var stockButtonBottomAnchor: NSLayoutConstraint!
-    private var collectionViewBottomAnchor: NSLayoutConstraint!
+    @IBOutlet private weak var collectionViewBottomAnchor: NSLayoutConstraint!
     
     private(set) var presenter: ReviewManagementPresenterInput!
     func inject(presenter: ReviewManagementPresenterInput) {
@@ -43,6 +47,7 @@ final class ReviewManagementViewController: UIViewController {
         setupStockButton()
         setupNotification()
         setupTabBarController()
+        setupIndicator()
         presenter.fetchUpdateReviewMovies(state: .initial)
         isEditing = false
     }
@@ -56,6 +61,7 @@ final class ReviewManagementViewController: UIViewController {
     
     @IBAction func saveButtonTappedSegue(segue: UIStoryboardSegue) {
         guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
+        startIndicator(indicator: activityIndicatorView)
         let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
         presenter.fetchUpdateReviewMovies(state: movieUpdateState)
     }
@@ -63,9 +69,14 @@ final class ReviewManagementViewController: UIViewController {
 }
 
 // MARK: - setup
-private extension ReviewManagementViewController {
+extension ReviewManagementViewController {
     
-    func setupLogin() {
+    private func setupIndicator() {
+        setupIndicator(indicator: activityIndicatorView)
+        startIndicator(indicator: activityIndicatorView)
+    }
+    
+    private func setupLogin() {
         if Auth.auth().currentUser != nil {
             guard let uid = Auth.auth().currentUser?.uid else { return }
             print("\(uid)でログインしています")
@@ -74,7 +85,7 @@ private extension ReviewManagementViewController {
         }
     }
     
-    func setupTrashButton() {
+    private func setupTrashButton() {
         trashButton = UIButton()
         trashButton.setImage(UIImage(named: .trashImage), for: .normal)
         trashButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
@@ -109,7 +120,7 @@ private extension ReviewManagementViewController {
         trashButton.isHidden = true
     }
     
-    func setupStockButton() {
+    private func setupStockButton() {
         stockButton = UIButton()
         stockButton.setImage(UIImage(named: .stockImage), for: .normal)
         stockButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
@@ -143,14 +154,14 @@ private extension ReviewManagementViewController {
         
     }
     
-    func setupPresenter() {
+    private func setupPresenter() {
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewManagementPresenter = ReviewManagementPresenter(view: self, reviewUseCase: reviewUseCase, videoWorkuseCase: videoWorkUseCase )
         inject(presenter: reviewManagementPresenter)
     }
     
-    func setupNavigation() {
+    private func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
         
@@ -177,21 +188,12 @@ private extension ReviewManagementViewController {
         tabBarController?.tabBar.tintColor = .baseColor
     }
         
-    func setupCollectionView() {
+    private func setupCollectionView() {
         colunmFlowLayout = ColumnFlowLayout()
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: colunmFlowLayout)
+        collectionView.collectionViewLayout = colunmFlowLayout
         collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .black
         collectionView.alwaysBounceVertical = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(collectionView)
-
-        collectionViewBottomAnchor = collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        [collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-         collectionViewBottomAnchor,
-         collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)]
-            .forEach { $0.isActive = true}
         collectionView.allowsMultipleSelection = true
         collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
         collectionView.dataSource = self
@@ -200,7 +202,7 @@ private extension ReviewManagementViewController {
     }
     
     
-    func setupNotification() {
+    private func setupNotification() {
         NotificationCenter.default.addObserver(self,
                                        selector: #selector(updateReviewManagementCollectionView),
                                        name: .insertReview,
@@ -258,6 +260,7 @@ extension ReviewManagementViewController {
         
         deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { _ in
             guard let reviewSortedIndex = (self.collectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
+            self.startIndicator(indicator: self.activityIndicatorView)
             self.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
         }))
         deleteAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
@@ -336,7 +339,6 @@ extension ReviewManagementViewController : UICollectionViewDelegateFlowLayout {
 extension ReviewManagementViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(presenter.numberOfMovies)
         return presenter.numberOfMovies
     }
     
@@ -369,6 +371,11 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     
     // MARK: 初期化、削除、挿入、修正を行う
     func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?) {
+        defer {
+            stopIndicator(indicator: activityIndicatorView)
+            isEditing = false
+        }
+        
         switch movieUpdateState {
         case .initial:
             collectionView.reloadData()
@@ -400,7 +407,6 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
             
         }
         
-        isEditing = false
     }
     
     // MARK: 選択解除を行う

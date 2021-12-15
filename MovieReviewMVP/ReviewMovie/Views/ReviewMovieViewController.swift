@@ -10,7 +10,7 @@ import Cosmos
 import FirebaseUI
 import GoogleMobileAds
 
-class ReviewMovieViewController: UIViewController {
+final class ReviewMovieViewController: UIViewController {
 
     private var saveButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
