@@ -10,17 +10,15 @@ import GoogleMobileAds
 import StoreKit
 
 final class SearchMovieViewController: UIViewController {
-    @IBOutlet weak var movieSearchBar: UISearchBar!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var displayLabel: UILabel!
+    
+    @IBOutlet private weak var movieSearchBar: UISearchBar!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var displayLabel: UILabel!
+    @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
     private var bannerView: GADBannerView!
-    @IBOutlet weak var tableViewBottomAnchor: NSLayoutConstraint!
-    
-    var scrollIndicator: UIActivityIndicatorView!
-    var isLoadingMore = false
-    
+
+    private var scrollIndicator: UIActivityIndicatorView!
     private var tableViewCellHeight: CGFloat?
-    private var searchMovieViewController: SearchMovieViewController!
     private var presenter: SearchMoviePresenterInput!
     
     func inject(presenter: SearchMoviePresenterInput) {
@@ -43,7 +41,11 @@ final class SearchMovieViewController: UIViewController {
         presenter.didSaveReview()
     }
     
-    // MARK: - func
+}
+
+// MARK: - func
+extension SearchMovieViewController {
+    
     private func makeTitle(movie: MovieReviewElement) -> String {
         if let title = movie.title, !title.isEmpty {
             return title
@@ -65,7 +67,7 @@ final class SearchMovieViewController: UIViewController {
 }
 
 // MARK: - setup
-private extension SearchMovieViewController {
+extension SearchMovieViewController {
 
     private func setupSearchBar() {
         movieSearchBar.delegate = self
@@ -112,7 +114,7 @@ private extension SearchMovieViewController {
         
     }
     
-    func setupIndicator() {
+    private func setupIndicator() {
         scrollIndicator = UIActivityIndicatorView()
         scrollIndicator.color = .white
         scrollIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -161,7 +163,7 @@ private extension SearchMovieViewController {
         
     }
     
-    func addBannerViewToView(_ bannerView: GADBannerView) {
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         bannerView.translatesAutoresizingMaskIntoConstraints = false
@@ -239,7 +241,8 @@ extension SearchMovieViewController : UITableViewDelegate {
         
         let previousScrollViewBottomInset = CGFloat(0)
         let indicatorHeight = scrollIndicator.bounds.height + 16
-        
+        var isLoadingMore = false
+
         if isLoadingMore == true {
             scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
         } else {
@@ -257,7 +260,7 @@ extension SearchMovieViewController : UITableViewDelegate {
                 self?.presenter.fetchMovie(state: .search(.refresh), text: nil)
                 self?.scrollIndicator.stopAnimating()
                 self?.scrollIndicator.isHidden = true
-                self?.isLoadingMore = false
+                isLoadingMore = false
             }
         }
         

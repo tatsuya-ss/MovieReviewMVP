@@ -7,13 +7,13 @@
 
 import UIKit
 
-class MovieTableViewCell: UITableViewCell {
+final class MovieTableViewCell: UITableViewCell {
+    
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var releaseDateLabel: UILabel!
     
     static let nib = UINib(nibName: String(describing: MovieTableViewCell.self), bundle: nil)
-
     static let reuserIdentifier: String = .movieTableCellIdentifier
     
     override func awakeFromNib() {
@@ -26,7 +26,7 @@ class MovieTableViewCell: UITableViewCell {
         movieImageView.image = nil
         titleLabel.text = nil
     }
-
+    
     func configure(image: UIImage?, title: String, releaseDay: String) {
         movieImageView.image = image
         titleLabel.text = title
