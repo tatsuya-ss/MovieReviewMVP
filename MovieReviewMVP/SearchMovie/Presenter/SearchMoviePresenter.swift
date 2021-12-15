@@ -9,10 +9,12 @@ import Foundation
 
 protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
-    func returnReview() -> [MovieReviewElement]
+    func returnReview(indexPath: IndexPath) -> MovieReviewElement
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
+    func makeTitle(indexPath: IndexPath) -> String
+    func makeReleaseDay(indexPath: IndexPath) -> String
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
@@ -38,8 +40,16 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         reviewManagement.returnNumberOfReviews()
     }
     
-    func returnReview() -> [MovieReviewElement] {
-        reviewManagement.returnReviews()
+    func makeTitle(indexPath: IndexPath) -> String {
+        reviewManagement.makeTitle(indexPath: indexPath)
+    }
+    
+    func makeReleaseDay(indexPath: IndexPath) -> String {
+        reviewManagement.makeReleaseDay(indexPath: indexPath)
+    }
+    
+    func returnReview(indexPath: IndexPath) -> MovieReviewElement {
+        reviewManagement.returnReviews()[indexPath.item]
     }
     
     func didSelectRow(at indexPath: IndexPath) {
@@ -49,7 +59,6 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     func didSaveReview() {
         let saveCount = UserDefaults.standard.loadNumberOfSaves()
-        print(saveCount)
         if saveCount % 10 == 0 {
             view.displayStoreReviewController()
         }

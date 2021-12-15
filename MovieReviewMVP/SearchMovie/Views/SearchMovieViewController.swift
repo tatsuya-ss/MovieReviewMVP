@@ -43,29 +43,6 @@ final class SearchMovieViewController: UIViewController {
     
 }
 
-// MARK: - func
-extension SearchMovieViewController {
-    
-    private func makeTitle(movie: MovieReviewElement) -> String {
-        if let title = movie.title, !title.isEmpty {
-            return title
-        } else if let originalName = movie.original_name, !originalName.isEmpty {
-            return originalName
-        } else {
-            return .notTitle
-        }
-    }
-
-    private func makeReleaseDay(movie: MovieReviewElement) -> String {
-        if let releaseDay = movie.releaseDay {
-            return "(\(releaseDay))"
-        } else {
-            return ""
-        }
-    }
-    
-}
-
 // MARK: - setup
 extension SearchMovieViewController {
 
@@ -140,7 +117,7 @@ extension SearchMovieViewController {
     }
     
     private func setupBanner() {
-        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView = GADBannerView(adSize: GADAdSizeBanner)
         
         addBannerViewToView(bannerView)
         
@@ -173,17 +150,6 @@ extension SearchMovieViewController {
             .forEach { $0.isActive = true }
     }
     
-}
-
-
-// MARK: - @objc
-@objc extension SearchMovieViewController {
-    func handleRefreshControl() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-            self.presenter.fetchMovie(state: .search(.refresh), text: nil)
-        })
-        tableView.refreshControl?.endRefreshing()
-    }
 }
 
 // MARK: - UISearchBarDelegate
@@ -277,10 +243,10 @@ extension SearchMovieViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
-        let movie = presenter.returnReview()[indexPath.item]
+        let movie = presenter.returnReview(indexPath: indexPath)
         let image = (movie.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movie.posterData!)
-        let title = makeTitle(movie: movie)
-        let releaseDay = makeReleaseDay(movie: movie)
+        let title = presenter.makeTitle(indexPath: indexPath)
+        let releaseDay = presenter.makeReleaseDay(indexPath: indexPath)
         cell.configure(image: image, title: title, releaseDay: releaseDay)
         return cell
     }
@@ -299,7 +265,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         
-        let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
+        let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
         
