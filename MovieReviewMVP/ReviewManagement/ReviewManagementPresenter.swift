@@ -81,7 +81,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
             case .failure(let error):
                 print(error)
             case .success(let result):
-                self?.reviewManagement.fetchReviews(result: result)
+                self?.reviewManagement.fetchReviews(state: .search(.initial), results: result)
                 result.enumerated().forEach { movieReviewElement in
                     dispatchGroup.enter()
                     self?.videoWorkuseCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in

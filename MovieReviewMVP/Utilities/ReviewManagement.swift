@@ -27,10 +27,15 @@ final class ReviewManagement {
         videoWorks[row]
     }
 
-    func fetchReviews(result: [MovieReviewElement]) {
-        videoWorks = result
+    func fetchReviews(state: FetchMovieState, results: [MovieReviewElement]) {
+        switch state {
+        case .search(.initial), .upcoming:
+            videoWorks = results
+        case .search(.refresh):
+            videoWorks.append(contentsOf: results)
+        }
     }
-    
+
     func fetchPosterData(index: Int, data: Data) {
         videoWorks[index].posterData = data
     }
@@ -43,9 +48,6 @@ final class ReviewManagement {
         videoWorks[indexPath.row]
     }
     
-    func searchRefresh(result: [MovieReviewElement]) {
-        videoWorks.append(contentsOf: result)
-    }
     
     func logout() {
         videoWorks.removeAll()
