@@ -7,15 +7,18 @@
 
 import UIKit
 
+extension StockReviewMovieManagementViewController: UIActivityIndicatorProtocol { }
+
 final class StockReviewMovieManagementViewController: UIViewController {
     
-    @IBOutlet var stockCollectionView: UICollectionView!
+    @IBOutlet private weak var stockCollectionView: UICollectionView!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    
     private var colunmFlowLayout: UICollectionViewFlowLayout!
     private var stopButton: UIBarButtonItem!
     private var sortButton: UIBarButtonItem!
     private var editButton: UIBarButtonItem!
     private var trashButton: UIButton!
-
     
     private var presenter: StockReviewMovieManagementPresenterInput!
     func inject(presenter: StockReviewMovieManagementPresenterInput) {
@@ -26,9 +29,9 @@ final class StockReviewMovieManagementViewController: UIViewController {
         super.viewDidLoad()
         setupNavigation()
         setupCollection()
+        setupIndicator()
         presenter.fetchStockMovies()
         setupTrashButton()
-
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -37,6 +40,10 @@ final class StockReviewMovieManagementViewController: UIViewController {
         presenter.changeEditingStateProcess(editing, indexPaths)
     }
     
+    private func setupIndicator() {
+        setupIndicator(indicator: activityIndicatorView)
+        startIndicator(indicator: activityIndicatorView)
+    }
     
     func setupCollection() {
         colunmFlowLayout = StockReviewColumnFlowLayout()
@@ -47,7 +54,6 @@ final class StockReviewMovieManagementViewController: UIViewController {
         stockCollectionView.register(StockReviewMovieCollectionViewCell.nib, forCellWithReuseIdentifier: StockReviewMovieCollectionViewCell.identifier)
         stockCollectionView.dataSource = self
         stockCollectionView.delegate = self
-
     }
     
     func setupNavigation() {
@@ -228,6 +234,7 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
     }
     
     func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?) {
+        defer { stopIndicator(indicator: activityIndicatorView) }
         switch movieUpdateState {
         case .initial:
             stockCollectionView.reloadData()
