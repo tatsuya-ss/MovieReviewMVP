@@ -34,9 +34,8 @@ final class SearchMovieViewController: UIViewController {
         setupTableViewController()
         setupPresenter()
         setupIndicator()
+        setupSearchBar()
         setupBanner()
-        movieSearchBar.delegate = self
-        movieSearchBar.keyboardType = .namePhonePad
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
@@ -67,6 +66,24 @@ final class SearchMovieViewController: UIViewController {
 
 // MARK: - setup
 private extension SearchMovieViewController {
+
+    private func setupSearchBar() {
+        movieSearchBar.delegate = self
+        movieSearchBar.keyboardType = .namePhonePad
+        if #available(iOS 13.0, *) {
+            movieSearchBar.searchTextField.backgroundColor = .white
+            movieSearchBar.barStyle = .default
+            
+            // キャンセルボタンを白
+            movieSearchBar.tintColor = .white
+            // カーソルの色を黒
+            UITextField.appearance(whenContainedInInstancesOf: [type(of: movieSearchBar)]).tintColor = .black
+
+        } else {
+            movieSearchBar.barStyle = .black
+            movieSearchBar.tintColor = .white
+        }
+    }
     
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
