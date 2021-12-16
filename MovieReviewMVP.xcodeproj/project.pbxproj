@@ -89,8 +89,10 @@
 		75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75928722271518D400322CF8 /* ReviewUseCase.swift */; };
 		7592872527151EED00322CF8 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7592872427151EED00322CF8 /* UserRepository.swift */; };
 		759287272715241200322CF8 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759287262715241200322CF8 /* UserUseCase.swift */; };
-		75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */; };
+		75AADE932655C452008D360E /* ReviewManagementColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementColumnFlowLayout.swift */; };
 		75E4A627276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4A626276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift */; };
+		75E4A62A276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4A629276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift */; };
+		75E4A62C276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4A62B276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift */; };
 		75EC6620270E87140001F464 /* TMDbDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC661F270E87140001F464 /* TMDbDataStore.swift */; };
 		75EC6622270E87560001F464 /* TMDBSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6621270E87560001F464 /* TMDBSearchResponses.swift */; };
 		75EC6624270E8A440001F464 /* TMDbRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EC6623270E8A440001F464 /* TMDbRequest.swift */; };
@@ -210,8 +212,10 @@
 		75928722271518D400322CF8 /* ReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUseCase.swift; sourceTree = "<group>"; };
 		7592872427151EED00322CF8 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		759287262715241200322CF8 /* UserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
-		75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCellLayout.swift; sourceTree = "<group>"; };
+		75AADE922655C452008D360E /* ReviewManagementColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementColumnFlowLayout.swift; sourceTree = "<group>"; };
 		75E4A626276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActivityIndicatorProtocol.swift; sourceTree = "<group>"; };
+		75E4A629276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewColumnFlowLayout.swift; sourceTree = "<group>"; };
+		75E4A62B276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCastColumnFlowLayout.swift; sourceTree = "<group>"; };
 		75EC661F270E87140001F464 /* TMDbDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbDataStore.swift; sourceTree = "<group>"; };
 		75EC6621270E87560001F464 /* TMDBSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBSearchResponses.swift; sourceTree = "<group>"; };
 		75EC6623270E8A440001F464 /* TMDbRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbRequest.swift; sourceTree = "<group>"; };
@@ -556,6 +560,16 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		75E4A628276B0B6200E9A838 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */,
+				75AADE922655C452008D360E /* ReviewManagementColumnFlowLayout.swift */,
+				75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		75EC6618270DC6290001F464 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -573,6 +587,7 @@
 			children = (
 				752478A8268EF14700347972 /* CrewCastCollectionViewCell.swift */,
 				752478A9268EF14700347972 /* CrewCastCollectionViewCell.xib */,
+				75E4A62B276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -592,9 +607,7 @@
 			children = (
 				75699F47264BD307001904C4 /* ReviewManagementViewController.swift */,
 				756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */,
-				75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */,
-				75AADE922655C452008D360E /* ReviewManagementCellLayout.swift */,
-				75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */,
+				75E4A628276B0B6200E9A838 /* Cell */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -606,6 +619,7 @@
 				7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */,
 				756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */,
 				756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */,
+				75E4A629276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -960,6 +974,7 @@
 				75093DDC271179290010787D /* TMDbDetailResponses.swift in Sources */,
 				75676F21263A97E300569AF5 /* MovieTableViewCell.swift in Sources */,
 				75636C01263C370800281DB1 /* ReviewMoviePresenter.swift in Sources */,
+				75E4A62C276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift in Sources */,
 				75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */,
 				755E9AFE26D88CE400A17709 /* InstructionsViewController.swift in Sources */,
 				758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */,
@@ -969,6 +984,7 @@
 				755E9B1026D9D44300A17709 /* EditReviewInstructionViewController.swift in Sources */,
 				758B05AC26AF72FE00DFA33A /* UserLoginState.swift in Sources */,
 				7569BAB62679F0530058D495 /* StockReviewMovieManagementPresenter.swift in Sources */,
+				75E4A62A276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift in Sources */,
 				753B2A3F26AA29F800EACFBD /* SettingManagementTableViewCell.swift in Sources */,
 				759287272715241200322CF8 /* UserUseCase.swift in Sources */,
 				758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */,
@@ -981,7 +997,7 @@
 				75676F33263AA2FA00569AF5 /* TMDB.swift in Sources */,
 				75EC6629270E919C0001F464 /* VideoWork.swift in Sources */,
 				755E9B0426D88EA500A17709 /* StockInstructionViewController.swift in Sources */,
-				75AADE932655C452008D360E /* ReviewManagementCellLayout.swift in Sources */,
+				75AADE932655C452008D360E /* ReviewManagementColumnFlowLayout.swift in Sources */,
 				758B05A426AE459E00DFA33A /* DetailedSettingTableViewCell.swift in Sources */,
 				750B44612687096F00191E17 /* ReviewTextView.swift in Sources */,
 				75EC662B270E93F70001F464 /* VideoWorkUseCase.swift in Sources */,

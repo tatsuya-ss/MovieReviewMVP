@@ -189,7 +189,7 @@ extension ReviewManagementViewController {
     }
         
     private func setupCollectionView() {
-        colunmFlowLayout = ColumnFlowLayout()
+        colunmFlowLayout = ReviewManagementColumnFlowLayout()
         collectionView.collectionViewLayout = colunmFlowLayout
         collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
         collectionView.alwaysBounceVertical = true
