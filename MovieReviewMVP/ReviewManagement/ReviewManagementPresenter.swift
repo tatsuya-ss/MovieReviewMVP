@@ -13,20 +13,21 @@ protocol ReviewManagementPresenterInput {
     func returnSortState() -> sortState
     func returnMovieReview() -> [MovieReviewElement]
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
-    func didSelectRowCollectionView(at indexPath: IndexPath)
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func didTapSortButtoniOS13()
     func didLogout()
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func fetchUpdateReviewMovies(state: MovieUpdateState)
+    func didTapItemAt(isEditing: Bool, indexPath: IndexPath, cellSelectedState: CellSelectedState)
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?)
-    func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
+    func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
     func displaySortAction()
+    func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState)
 }
 
 
@@ -51,11 +52,6 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
         return reviewCount
     }
     
-    func didSelectRowCollectionView(at indexPath: IndexPath) {
-        let selectStockMovie = reviewManagement.returnSelectedReview(indexPath: indexPath)
-        view.displaySelectMyReview(selectStockMovie, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
-    }
-    
     func returnSortState() -> sortState {
         reviewManagement.returnSortState()
     }
@@ -70,6 +66,15 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?) {
         view.changeTheDisplayDependingOnTheEditingState(editing, indexPaths)
+    }
+    
+    func didTapItemAt(isEditing: Bool, indexPath: IndexPath, cellSelectedState: CellSelectedState) {
+        if isEditing {
+            view.changeTapCellState(indexPath: indexPath, cellSelectedState: cellSelectedState)
+        } else {
+            let selectReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
+            view.displaySelectMyReview(selectReview: selectReview, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
+        }
     }
     
     func fetchUpdateReviewMovies(state: MovieUpdateState) {

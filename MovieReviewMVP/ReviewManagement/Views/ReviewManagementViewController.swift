@@ -85,24 +85,11 @@ extension ReviewManagementViewController {
 extension ReviewManagementViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-        if isEditing {
-            cell.tapCell(state: .selected)
-            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
-        } else {
-            presenter.didSelectRowCollectionView(at: indexPath)
-            collectionView.deselectItem(at: indexPath, animated: false)
-        }
-        
+        presenter.didTapItemAt(isEditing: isEditing, indexPath: indexPath, cellSelectedState: .selected)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if isEditing == true {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-            cell.tapCell(state: .deselected)
-            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
-        }
-        
+        presenter.didTapItemAt(isEditing: isEditing, indexPath: indexPath, cellSelectedState: .deselected)
     }
     
 }
@@ -142,6 +129,12 @@ extension ReviewManagementViewController : UICollectionViewDataSource {
 
 // MARK: - ReviewManagementPresenterOutput
 extension ReviewManagementViewController : ReviewManagementPresenterOutput {
+    
+    func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+            cell.tapCell(state: cellSelectedState)
+            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+    }
     
     func sortReview() {
         if presenter.numberOfMovies > 1 { // cellの数が0か1の時は、並び替えても意味がないので
@@ -219,14 +212,14 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
     
     // MARK: tapしたレビューを詳細表示
-    func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
+    func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
-        let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
+        let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
 
         let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState),
-                                             movieReviewElement: movie,
+                                             movieReviewElement: selectReview,
                                              movieUpdateState: movieUpdateState,
                                              view: reviewMovieVC,
                                              videoWorkuseCase: videoWorkUseCase,
