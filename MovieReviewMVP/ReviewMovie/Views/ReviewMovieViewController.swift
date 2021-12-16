@@ -232,15 +232,14 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
         switch movieUpdateState {
         case .insert:
-            performSegue(withIdentifier: "saveButtonTappedForInsertSegue", sender: nil)
-//            dismiss(animated: true, completion: nil)
+            dismiss(animated: true, completion: nil)
         case .modificate:
             performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
         default:
             break
         }
     }
-    
+        
     func displayLoggingOutAlert() {
         let loginAlert = UIAlertController.makeLoginAlert(presenter: presenter)
         present(loginAlert, animated: true, completion: nil)

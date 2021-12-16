@@ -59,13 +59,6 @@ final class ReviewManagementViewController: UIViewController {
         
     }
     
-    @IBAction func saveButtonTappedSegue(segue: UIStoryboardSegue) {
-        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
-        startIndicator(indicator: activityIndicatorView)
-        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
-        presenter.fetchUpdateReviewMovies(state: movieUpdateState)
-    }
-    
 }
 
 // MARK: - setup
