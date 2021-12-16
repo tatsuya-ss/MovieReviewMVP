@@ -61,6 +61,26 @@ final class ReviewManagementViewController: UIViewController {
     
 }
 
+// MARK: - func
+extension ReviewManagementViewController {
+    
+    private func deselectAllItems(indexPaths: [IndexPath]?) {
+        guard let indexPaths = indexPaths else { return }
+        for index in indexPaths {
+            collectionView.deselectItem(at: index, animated: true)
+        }
+    }
+    
+    private func deselectAllItemsAndReload(indexPaths: [IndexPath]?) {
+        guard let indexPaths = indexPaths else { return }
+        for index in indexPaths {
+            collectionView.deselectItem(at: index, animated: true)
+            collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
+        }
+    }
+    
+}
+
 // MARK: - setup
 extension ReviewManagementViewController {
     
@@ -413,11 +433,7 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
             stockButton.isHidden = true
             editButton.title = .deselectTitle
             // trueになった時、一旦全選択解除
-            guard let indexPaths = indexPaths else { return }
-            for index in indexPaths {
-                collectionView.deselectItem(at: index, animated: true)
-            }
-
+            deselectAllItems(indexPaths: indexPaths)
         case false:
             tabBarController?.tabBar.isHidden = false
             sortButton.isEnabled = true
@@ -425,14 +441,9 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
             stockButton.isHidden = false
             editButton.title = .selectTitle
             // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
-            guard let indexPaths = indexPaths else { return }
-            for index in indexPaths {
-                collectionView.deselectItem(at: index, animated: true)
-                collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
-            }
+            deselectAllItemsAndReload(indexPaths: indexPaths)
         }
     }
-    
     
     // MARK: tapしたレビューを詳細表示
     func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
