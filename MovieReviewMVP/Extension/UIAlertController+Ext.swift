@@ -130,11 +130,11 @@ extension UIAlertController {
     }
     
     class func makeStoreLocationAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let storeLocationAlert = UIAlertController(title: nil, message: .storeLocationAlertMessage, preferredStyle: .actionSheet)
-        storeLocationAlert.addAction(UIAlertAction(title: .storeLocationAlertStockTitle, style: .default) { action in
+        let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
+        storeLocationAlert.addAction(UIAlertAction(title: "ストックに保存", style: .default) { action in
             presenter.didTapStoreLocationAlert(isStoredAsReview: false)
         })
-        storeLocationAlert.addAction(UIAlertAction(title: .storeLocationAlertReviewTitle, style: .default) { action in
+        storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default) { action in
             presenter.didTapStoreLocationAlert(isStoredAsReview: true)
         })
         storeLocationAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
