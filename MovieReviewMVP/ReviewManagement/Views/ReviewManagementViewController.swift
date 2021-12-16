@@ -81,191 +81,6 @@ extension ReviewManagementViewController {
     
 }
 
-// MARK: - setup
-extension ReviewManagementViewController {
-    
-    private func setupIndicator() {
-        setupIndicator(indicator: activityIndicatorView)
-        startIndicator(indicator: activityIndicatorView)
-    }
-    
-    private func setupLogin() {
-        if Auth.auth().currentUser != nil {
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            print("\(uid)でログインしています")
-        } else {
-            auth()
-        }
-    }
-    
-    private func setupTrashButton() {
-        trashButton = UIButton()
-        trashButton.setImage(UIImage(named: .trashImage), for: .normal)
-        trashButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        
-        trashButton.tintColor = .black
-        trashButton.backgroundColor = .baseColor
-        trashButton.translatesAutoresizingMaskIntoConstraints = false
-        trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
-        collectionView.addSubview(trashButton)
-        let buttonWidth: CGFloat = 55
-
-        trashButtonBottomAnchor = trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
-        [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
-         trashButtonBottomAnchor,
-         trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-         trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)]
-            .forEach { $0.isActive = true }
-
-        trashButton.layer.cornerRadius = buttonWidth / 2
-        
-//        // 影をつける設定
-//        trashButton.layer.shadowColor = UIColor.black.cgColor
-//        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-//        trashButton.layer.shadowOpacity = 0.7
-//        trashButton.layer.shadowRadius = 10
-//
-//        // 紫色の警告(レンダリングの最適化を行ってくださいみたいな)が出るため、以下の２行で対応
-//        // https://stackoverflow.com/questions/64277067/how-to-fix-optimization-opportunities
-//        trashButton.layer.shouldRasterize = true
-//        trashButton.layer.rasterizationScale = UIScreen.main.scale
-
-        trashButton.isHidden = true
-    }
-    
-    private func setupStockButton() {
-        stockButton = UIButton()
-        stockButton.setImage(UIImage(named: .stockImage), for: .normal)
-        stockButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        stockButton.tintColor = .black
-        stockButton.backgroundColor = .systemYellow
-        stockButton.translatesAutoresizingMaskIntoConstraints = false
-        stockButton.addTarget(self, action: #selector(stockButtonTapped), for: .touchUpInside)
-        collectionView.addSubview(stockButton)
-        
-        let buttonWidth: CGFloat = 55
-        
-        stockButtonBottomAnchor = stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
-        [stockButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
-         stockButtonBottomAnchor,
-         stockButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-         stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)]
-            .forEach { $0.isActive = true }
-        
-        stockButton.layer.cornerRadius = buttonWidth / 2
-
-//        stockButton.clipsToBounds = false
-//        stockButton.layer.shadowColor = UIColor.black.cgColor
-//        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-//        stockButton.layer.shadowOpacity = 0.7
-//        stockButton.layer.shadowRadius = 10
-//
-//        stockButton.layer.shouldRasterize = true
-//        stockButton.layer.rasterizationScale = UIScreen.main.scale
-
-        stockButton.isHidden = false
-        
-    }
-    
-    private func setupPresenter() {
-        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
-        let videoWorkUseCase = VideoWorkUseCase()
-        let reviewManagementPresenter = ReviewManagementPresenter(view: self, reviewUseCase: reviewUseCase, videoWorkuseCase: videoWorkUseCase )
-        inject(presenter: reviewManagementPresenter)
-    }
-    
-    private func setupNavigation() {
-        navigationController?.navigationBar.isTranslucent = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
-        
-        if #available(iOS 14.0, *) {
-            let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
-            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
-                                         image: nil,
-                                         primaryAction: nil,
-                                         menu: sortMenu)
-        } else {
-            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(sortButtonTapped))
-        }
-        editButton = editButtonItem
-        [sortButton, editButton].forEach { $0?.tintColor = .stringColor }
-        
-        navigationItem.rightBarButtonItems = [editButton, sortButton]
-        
-    }
-    
-    private func setupTabBarController() {
-        tabBarController?.tabBar.tintColor = .baseColor
-    }
-        
-    private func setupCollectionView() {
-        colunmFlowLayout = ReviewManagementColumnFlowLayout()
-        collectionView.collectionViewLayout = colunmFlowLayout
-        collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
-        collectionView.alwaysBounceVertical = true
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.allowsMultipleSelection = true
-        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
-    }
-    
-    
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(self,
-                                       selector: #selector(updateReviewManagementCollectionView),
-                                       name: .insertReview,
-                                       object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(logout),
-                                               name: .logout,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(login),
-                                               name: .login,
-                                               object: nil)
-    }
-
-    private func setupBanner() {
-        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
-
-        addBannerViewToView(bannerView)
-
-        bannerView.delegate = self
-        
-        if let id = adUnitID(key: "banner") {
-            bannerView.adUnitID = id
-            bannerView.rootViewController = self
-            bannerView.load(GADRequest())
-            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
-            bannerView.adSize = adSize
-        }
-        
-        func adUnitID(key: String) -> String? {
-            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
-                return nil
-            }
-            return adUnitIDs[key]
-        }
-
-    }
-    
-    private func addBannerViewToView(_ bannerView: GADBannerView) {
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bannerView)
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
-        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
-            .forEach { $0.isActive = true }
-    }
-
-}
-
 // MARK: - @objc
 extension ReviewManagementViewController {
     @objc func trashButtonTapped() {
@@ -476,6 +291,7 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
 }
 
+// MARK: - FUIAuthDelegate
 extension ReviewManagementViewController : FUIAuthDelegate {
     private func auth() {
         if let authUI = FUIAuth.defaultAuthUI() {
@@ -507,6 +323,7 @@ extension ReviewManagementViewController : FUIAuthDelegate {
 
 }
 
+// MARK: - GADBannerViewDelegate
 extension ReviewManagementViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.isHidden = false
@@ -542,4 +359,189 @@ extension ReviewManagementViewController : GADBannerViewDelegate {
     func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
       print("bannerViewDidDismissScreen")
     }
+}
+
+// MARK: - setup
+extension ReviewManagementViewController {
+    
+    private func setupIndicator() {
+        setupIndicator(indicator: activityIndicatorView)
+        startIndicator(indicator: activityIndicatorView)
+    }
+    
+    private func setupLogin() {
+        if Auth.auth().currentUser != nil {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            print("\(uid)でログインしています")
+        } else {
+            auth()
+        }
+    }
+    
+    private func setupTrashButton() {
+        trashButton = UIButton()
+        trashButton.setImage(UIImage(named: .trashImage), for: .normal)
+        trashButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        
+        trashButton.tintColor = .black
+        trashButton.backgroundColor = .baseColor
+        trashButton.translatesAutoresizingMaskIntoConstraints = false
+        trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
+        collectionView.addSubview(trashButton)
+        let buttonWidth: CGFloat = 55
+
+        trashButtonBottomAnchor = trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
+        [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
+         trashButtonBottomAnchor,
+         trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
+         trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)]
+            .forEach { $0.isActive = true }
+
+        trashButton.layer.cornerRadius = buttonWidth / 2
+        
+//        // 影をつける設定
+//        trashButton.layer.shadowColor = UIColor.black.cgColor
+//        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+//        trashButton.layer.shadowOpacity = 0.7
+//        trashButton.layer.shadowRadius = 10
+//
+//        // 紫色の警告(レンダリングの最適化を行ってくださいみたいな)が出るため、以下の２行で対応
+//        // https://stackoverflow.com/questions/64277067/how-to-fix-optimization-opportunities
+//        trashButton.layer.shouldRasterize = true
+//        trashButton.layer.rasterizationScale = UIScreen.main.scale
+
+        trashButton.isHidden = true
+    }
+    
+    private func setupStockButton() {
+        stockButton = UIButton()
+        stockButton.setImage(UIImage(named: .stockImage), for: .normal)
+        stockButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        stockButton.tintColor = .black
+        stockButton.backgroundColor = .systemYellow
+        stockButton.translatesAutoresizingMaskIntoConstraints = false
+        stockButton.addTarget(self, action: #selector(stockButtonTapped), for: .touchUpInside)
+        collectionView.addSubview(stockButton)
+        
+        let buttonWidth: CGFloat = 55
+        
+        stockButtonBottomAnchor = stockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
+        [stockButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
+         stockButtonBottomAnchor,
+         stockButton.widthAnchor.constraint(equalToConstant: buttonWidth),
+         stockButton.heightAnchor.constraint(equalTo: stockButton.widthAnchor)]
+            .forEach { $0.isActive = true }
+        
+        stockButton.layer.cornerRadius = buttonWidth / 2
+
+//        stockButton.clipsToBounds = false
+//        stockButton.layer.shadowColor = UIColor.black.cgColor
+//        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+//        stockButton.layer.shadowOpacity = 0.7
+//        stockButton.layer.shadowRadius = 10
+//
+//        stockButton.layer.shouldRasterize = true
+//        stockButton.layer.rasterizationScale = UIScreen.main.scale
+
+        stockButton.isHidden = false
+        
+    }
+    
+    private func setupPresenter() {
+        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+        let videoWorkUseCase = VideoWorkUseCase()
+        let reviewManagementPresenter = ReviewManagementPresenter(view: self, reviewUseCase: reviewUseCase, videoWorkuseCase: videoWorkUseCase )
+        inject(presenter: reviewManagementPresenter)
+    }
+    
+    private func setupNavigation() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
+        
+        if #available(iOS 14.0, *) {
+            let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
+            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
+                                         image: nil,
+                                         primaryAction: nil,
+                                         menu: sortMenu)
+        } else {
+            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(sortButtonTapped))
+        }
+        editButton = editButtonItem
+        [sortButton, editButton].forEach { $0?.tintColor = .stringColor }
+        
+        navigationItem.rightBarButtonItems = [editButton, sortButton]
+        
+    }
+    
+    private func setupTabBarController() {
+        tabBarController?.tabBar.tintColor = .baseColor
+    }
+        
+    private func setupCollectionView() {
+        colunmFlowLayout = ReviewManagementColumnFlowLayout()
+        collectionView.collectionViewLayout = colunmFlowLayout
+        collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
+        collectionView.alwaysBounceVertical = true
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.allowsMultipleSelection = true
+        collectionView.register(ReviewManagementCollectionViewCell.nib, forCellWithReuseIdentifier: ReviewManagementCollectionViewCell.identifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+    }
+    
+    
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(updateReviewManagementCollectionView),
+                                       name: .insertReview,
+                                       object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(logout),
+                                               name: .logout,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(login),
+                                               name: .login,
+                                               object: nil)
+    }
+
+    private func setupBanner() {
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+
+        addBannerViewToView(bannerView)
+
+        bannerView.delegate = self
+        
+        if let id = adUnitID(key: "banner") {
+            bannerView.adUnitID = id
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: 50))
+            bannerView.adSize = adSize
+        }
+        
+        func adUnitID(key: String) -> String? {
+            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
+                return nil
+            }
+            return adUnitIDs[key]
+        }
+
+    }
+    
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+
 }
