@@ -9,28 +9,6 @@ import UIKit
 
 @available(iOS 13.0, *)
 extension UIMenu {
-    class func makeSortMenuForReview(presenter: ReviewManagementPresenterInput) -> UIMenu {
-        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in
-            presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdDescend)
-        })
-        
-        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { _ in
-            presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdAscend)
-        })
-        
-        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { _ in
-            presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarAscend)
-        })
-        
-        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { _ in
-            presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarDescend)
-        })
-        
-        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
-        
-        return menu
-
-    }
     
     class func makeSortMenuForStock(presenter: StockReviewMovieManagementPresenterInput) -> UIMenu {
         let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { _ in

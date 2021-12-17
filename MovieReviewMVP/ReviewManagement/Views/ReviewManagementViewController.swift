@@ -79,6 +79,29 @@ extension ReviewManagementViewController {
         }
     }
     
+    @available(iOS 13.0, *)
+    private func makeSortMenu() -> UIMenu {
+        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdDescend)
+        })
+        
+        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdAscend)
+        })
+        
+        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarAscend)
+        })
+        
+        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarDescend)
+        })
+        
+        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
+        
+        return menu
+    }
+    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -106,7 +129,6 @@ extension ReviewManagementViewController : UICollectionViewDelegateFlowLayout {
     }
     
 }
-
 
 // MARK: - UICollectionViewDataSource
 extension ReviewManagementViewController : UICollectionViewDataSource {
@@ -410,7 +432,7 @@ extension ReviewManagementViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
         
         if #available(iOS 14.0, *) {
-            let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
+            let sortMenu = makeSortMenu()
             sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
                                          image: nil,
                                          primaryAction: nil,
