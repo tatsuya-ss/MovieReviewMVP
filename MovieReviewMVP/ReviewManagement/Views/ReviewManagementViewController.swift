@@ -546,6 +546,7 @@ extension ReviewManagementViewController {
     }
     
     @objc func updateReviewManagementCollectionView() {
+        startIndicator(indicator: activityIndicatorView)
         presenter.fetchUpdateReviewMovies(state: .insert)
     }
     

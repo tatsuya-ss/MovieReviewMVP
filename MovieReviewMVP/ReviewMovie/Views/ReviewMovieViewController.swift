@@ -230,14 +230,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     }
     
     func closeReviewMovieView(movieUpdateState: MovieUpdateState) {
-        switch movieUpdateState {
-        case .insert:
-            dismiss(animated: true, completion: nil)
-        case .modificate:
-            performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
-        default:
-            break
-        }
+        dismiss(animated: true, completion: nil)
     }
         
     func displayLoggingOutAlert() {
