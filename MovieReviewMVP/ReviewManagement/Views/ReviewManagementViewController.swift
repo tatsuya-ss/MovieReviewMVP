@@ -159,16 +159,14 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
     
     func sortReview() {
-        if presenter.numberOfMovies > 1 { // cellの数が0か1の時は、並び替えても意味がないので
-            for index in 0...presenter.numberOfMovies - 1 {
-                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-            }
+        for index in 0...presenter.numberOfMovies - 1 {
+            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
         }
-        sortButton.title = presenter.returnSortState().buttonTitle
-        print("\(presenter.returnSortState().buttonTitle)に並び替えました。review")
-
     }
     
+    func changeSortButtonTitle(sortState: sortState) {
+        sortButton.title = sortState.title
+    }
     
     // MARK: 初期化、削除、挿入、修正を行う
     func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?) {

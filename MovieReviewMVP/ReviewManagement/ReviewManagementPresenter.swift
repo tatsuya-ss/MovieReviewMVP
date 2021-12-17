@@ -28,6 +28,7 @@ protocol ReviewManagementPresenterOutput: AnyObject {
     func sortReview()
     func displaySortAction()
     func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState)
+    func changeSortButtonTitle(sortState: sortState)
 }
 
 
@@ -119,8 +120,12 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
-        reviewManagement.sortReviews(sortState: sortState)
-        view.sortReview()
+        view.changeSortButtonTitle(sortState: sortState)
+        let isSorted = reviewManagement.returnNumberOfReviews() > 1
+        if isSorted {
+            reviewManagement.sortReviews(sortState: sortState)
+            view.sortReview()
+        }
     }
     
     func didTapSortButtoniOS13() {
