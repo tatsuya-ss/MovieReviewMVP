@@ -169,43 +169,26 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
     
     // MARK: 初期化、削除、挿入、修正を行う
-    func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?) {
+    func updateReview(_ movieUpdateState: MovieUpdateState, indexPath: IndexPath?) {
         defer {
             stopIndicator(indicator: activityIndicatorView)
             isEditing = false
         }
-        
         switch movieUpdateState {
-        case .initial:
-            collectionView.reloadData()
-            
+        case .initial, .insert, .modificate:
+            if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
+                collectionView.reloadData()
+            } else {
+                for index in 0...presenter.numberOfMovies - 1 {
+                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+                }
+            }
         case .delete:
-            guard let index = index else { return }
+            guard let indexPath = indexPath else { return }
             collectionView.performBatchUpdates {
-                collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+                collectionView.deleteItems(at: [IndexPath(item: indexPath.item, section: 0)])
             }
-            
-            
-        case .insert:
-            if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-                collectionView.reloadData()
-            } else {
-                for index in 0...presenter.numberOfMovies - 1 {
-                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-                }
-            }
-            
-        case .modificate:
-            if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-                collectionView.reloadData()
-            } else {
-                for index in 0...presenter.numberOfMovies - 1 {
-                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-                }
-            }
-            
         }
-        
     }
     
     // MARK: 選択解除を行う

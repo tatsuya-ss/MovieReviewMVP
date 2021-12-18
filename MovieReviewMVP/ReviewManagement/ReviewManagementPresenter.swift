@@ -23,7 +23,7 @@ protocol ReviewManagementPresenterInput {
 
 protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?)
+    func updateReview(_ movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
     func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
     func displaySortAction()
@@ -101,7 +101,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
                     }
                 }
                 dispatchGroup.notify(queue: .main) {
-                    self?.view.updateReview(state, index: nil)
+                    self?.view.updateReview(state, indexPath: nil)
                 }
             }
         }
@@ -114,7 +114,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
             let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
             reviewUseCase.delete(movie: selectedReview)
             reviewManagement.deleteReview(row: indexPath.row)
-            view.updateReview(movieUpdateState, index: indexPath.row)
+            view.updateReview(movieUpdateState, indexPath: indexPath)
         }
     }
     
@@ -134,7 +134,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func didLogout() {
         reviewManagement.logout()
-        view.updateReview(.initial, index: nil)
+        view.updateReview(.initial, indexPath: nil)
     }
     
 }
