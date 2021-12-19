@@ -17,13 +17,14 @@ protocol ReviewManagementPresenterInput {
     func didTapSortButtoniOS13()
     func didLogout()
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func fetchUpdateReviewMovies(state: MovieUpdateState)
+    func fetchUpdateReviewMovies()
     func didTapItemAt(isEditing: Bool, indexPath: IndexPath, cellSelectedState: CellSelectedState)
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateReview(_ movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
+    func updateReview()
+    func deleteReview(indexPath: IndexPath)
     func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
     func displaySortAction()
@@ -78,7 +79,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
         }
     }
     
-    func fetchUpdateReviewMovies(state: MovieUpdateState) {
+    func fetchUpdateReviewMovies() {
         let sortState = reviewManagement.returnSortState()
         let dispatchGroup = DispatchGroup()
         
@@ -101,7 +102,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
                     }
                 }
                 dispatchGroup.notify(queue: .main) {
-                    self?.view.updateReview(state, indexPath: nil)
+                    self?.view.updateReview()
                 }
             }
         }
@@ -114,7 +115,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
             let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
             reviewUseCase.delete(movie: selectedReview)
             reviewManagement.deleteReview(row: indexPath.row)
-            view.updateReview(movieUpdateState, indexPath: indexPath)
+            view.deleteReview(indexPath: indexPath)
         }
     }
     
@@ -134,7 +135,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func didLogout() {
         reviewManagement.logout()
-        view.updateReview(.initial, indexPath: nil)
+        view.updateReview()
     }
     
 }

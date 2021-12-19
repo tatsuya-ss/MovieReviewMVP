@@ -48,7 +48,7 @@ final class ReviewManagementViewController: UIViewController {
         setupNotification()
         setupTabBarController()
         setupIndicator()
-        presenter.fetchUpdateReviewMovies(state: .initial)
+        presenter.fetchUpdateReviewMovies()
         isEditing = false
     }
     
@@ -168,26 +168,29 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
         sortButton.title = sortState.title
     }
     
-    // MARK: 初期化、削除、挿入、修正を行う
-    func updateReview(_ movieUpdateState: MovieUpdateState, indexPath: IndexPath?) {
+    func updateReview() {
         defer {
             stopIndicator(indicator: activityIndicatorView)
             isEditing = false
         }
-        switch movieUpdateState {
-        case .initial, .insert, .modificate:
-            if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-                collectionView.reloadData()
-            } else {
+        if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
+            collectionView.reloadData()
+        } else {
+            collectionView.performBatchUpdates {
                 for index in 0...presenter.numberOfMovies - 1 {
                     collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
                 }
             }
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            collectionView.performBatchUpdates {
-                collectionView.deleteItems(at: [IndexPath(item: indexPath.item, section: 0)])
-            }
+        }
+    }
+    
+    func deleteReview(indexPath: IndexPath) {
+        defer {
+            stopIndicator(indicator: activityIndicatorView)
+            isEditing = false
+        }
+        collectionView.performBatchUpdates {
+            collectionView.deleteItems(at: [IndexPath(item: indexPath.item, section: 0)])
         }
     }
     
@@ -271,7 +274,7 @@ extension ReviewManagementViewController : FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         if let user = authDataResult?.user {
             print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
-            presenter.fetchUpdateReviewMovies(state: .initial)
+            presenter.fetchUpdateReviewMovies()
         }
     }
 
@@ -465,7 +468,7 @@ extension ReviewManagementViewController {
     }
 
     private func setupBanner() {
-        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView = GADBannerView(adSize: GADAdSizeBanner)
 
         addBannerViewToView(bannerView)
 
@@ -530,7 +533,7 @@ extension ReviewManagementViewController {
     
     @objc func updateReviewManagementCollectionView() {
         startIndicator(indicator: activityIndicatorView)
-        presenter.fetchUpdateReviewMovies(state: .insert)
+        presenter.fetchUpdateReviewMovies()
     }
     
     @objc func logout() {
@@ -538,7 +541,7 @@ extension ReviewManagementViewController {
     }
     
     @objc func login() {
-        presenter.fetchUpdateReviewMovies(state: .initial)
+        presenter.fetchUpdateReviewMovies()
     }
     
 }
