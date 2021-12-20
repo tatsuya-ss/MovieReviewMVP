@@ -102,6 +102,37 @@ extension ReviewManagementViewController {
         return menu
     }
     
+    private func makeSortAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "並び替える", message: nil, preferredStyle: .actionSheet)
+        
+        let createdDescendAction = UIAlertAction(title: sortState.createdDescend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdDescend)
+        })
+        
+        let createdAscendAction = UIAlertAction(title: sortState.createdAscend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdAscend)
+        })
+        
+        let reviewStarAscendAction = UIAlertAction(title: sortState.reviewStarAscend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarAscend)
+        })
+        
+        let reviewStarDescendAction = UIAlertAction(title: sortState.reviewStarDescend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarDescend)
+        })
+        
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+
+        [createdDescendAction,
+         createdAscendAction,
+         reviewStarAscendAction,
+         reviewStarDescendAction,
+         cancelAction]
+            .forEach { alert.addAction($0) }
+        
+        return alert
+    }
+
 }
 
 // MARK: - UICollectionViewDelegate
@@ -239,13 +270,14 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
     
     func displaySortAction() {
-        let sortAlert = UIAlertController.makeSortAlertForReviewManagement(presenter: presenter)
+        let sortAlert = makeSortAlert()
         if UIDevice.current.userInterfaceIdiom == .pad {
             sortAlert.popoverPresentationController?.sourceView = self.view
             sortAlert.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.maxX - 100, y: view.safeAreaInsets.top, width: 0, height: 0)
         }
         present(sortAlert, animated: true, completion: nil)
     }
+    
 }
 
 // MARK: - FUIAuthDelegate
