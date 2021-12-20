@@ -508,10 +508,10 @@ extension ReviewManagementViewController {
     @objc func trashButtonTapped() {
         let deleteAlert = UIAlertController(title: nil, message: .deleteAlertMessage, preferredStyle: .alert)
         
-        deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { _ in
-            guard let reviewSortedIndex = (self.collectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
-            self.startIndicator(indicator: self.activityIndicatorView)
-            self.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
+        deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { [weak self] _ in
+            guard let reviewSortedIndex = self?.collectionView.indexPathsForSelectedItems else { return }
+            self?.startIndicator(indicator: self?.activityIndicatorView ?? UIActivityIndicatorView())
+            self?.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
         }))
         deleteAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
@@ -524,7 +524,6 @@ extension ReviewManagementViewController {
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
         self.present(navigationController, animated: true, completion: nil)
-        print("ストックボタンが押されました。", #function)
     }
     
     @objc private func sortButtonTapped() {

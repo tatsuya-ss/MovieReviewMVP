@@ -110,13 +110,15 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
-        // trashが押されたら最初に呼ばれる
-        for indexPath in indexPaths {
-            let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
-            reviewUseCase.delete(movie: selectedReview)
-            reviewManagement.deleteReview(row: indexPath.row)
-            view.deleteReview(indexPath: indexPath)
-        }
+        indexPaths
+            .sorted { $0 > $1 }
+            .forEach {
+                print($0)
+                let selectedReview = reviewManagement.returnSelectedReview(indexPath: $0)
+                reviewUseCase.delete(movie: selectedReview)
+                reviewManagement.deleteReview(row: $0.row)
+                view.deleteReview(indexPath: $0)
+            }
     }
     
     
