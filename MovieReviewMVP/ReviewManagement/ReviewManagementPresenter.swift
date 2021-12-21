@@ -13,20 +13,23 @@ protocol ReviewManagementPresenterInput {
     func returnSortState() -> sortState
     func returnMovieReview() -> [MovieReviewElement]
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
-    func didSelectRowCollectionView(at indexPath: IndexPath)
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func didTapSortButtoniOS13()
     func didLogout()
     func changeEditingStateProcess(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func fetchUpdateReviewMovies(state: MovieUpdateState)
+    func fetchUpdateReviewMovies()
+    func didTapItemAt(isEditing: Bool, indexPath: IndexPath, cellSelectedState: CellSelectedState)
 }
 
 protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
-    func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?)
-    func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
+    func updateReview()
+    func deleteReview(indexPath: IndexPath)
+    func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
     func displaySortAction()
+    func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState)
+    func changeSortButtonTitle(sortState: sortState)
 }
 
 
@@ -51,11 +54,6 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
         return reviewCount
     }
     
-    func didSelectRowCollectionView(at indexPath: IndexPath) {
-        let selectStockMovie = reviewManagement.returnSelectedReview(indexPath: indexPath)
-        view.displaySelectMyReview(selectStockMovie, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
-    }
-    
     func returnSortState() -> sortState {
         reviewManagement.returnSortState()
     }
@@ -72,7 +70,16 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
         view.changeTheDisplayDependingOnTheEditingState(editing, indexPaths)
     }
     
-    func fetchUpdateReviewMovies(state: MovieUpdateState) {
+    func didTapItemAt(isEditing: Bool, indexPath: IndexPath, cellSelectedState: CellSelectedState) {
+        if isEditing {
+            view.changeTapCellState(indexPath: indexPath, cellSelectedState: cellSelectedState)
+        } else {
+            let selectReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
+            view.displaySelectMyReview(selectReview: selectReview, afterStoreState: .reviewed, movieUpdateState: movieUpdateState)
+        }
+    }
+    
+    func fetchUpdateReviewMovies() {
         let sortState = reviewManagement.returnSortState()
         let dispatchGroup = DispatchGroup()
         
@@ -95,7 +102,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
                     }
                 }
                 dispatchGroup.notify(queue: .main) {
-                    self?.view.updateReview(state, index: nil)
+                    self?.view.updateReview()
                 }
             }
         }
@@ -103,19 +110,25 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     }
     
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath]) {
-        // trashが押されたら最初に呼ばれる
-        for indexPath in indexPaths {
-            let selectedReview = reviewManagement.returnSelectedReview(indexPath: indexPath)
-            reviewUseCase.delete(movie: selectedReview)
-            reviewManagement.deleteReview(row: indexPath.row)
-            view.updateReview(movieUpdateState, index: indexPath.row)
-        }
+        indexPaths
+            .sorted { $0 > $1 }
+            .forEach {
+                print($0)
+                let selectedReview = reviewManagement.returnSelectedReview(indexPath: $0)
+                reviewUseCase.delete(movie: selectedReview)
+                reviewManagement.deleteReview(row: $0.row)
+                view.deleteReview(indexPath: $0)
+            }
     }
     
     
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState) {
-        reviewManagement.sortReviews(sortState: sortState)
-        view.sortReview()
+        view.changeSortButtonTitle(sortState: sortState)
+        let isSorted = reviewManagement.returnNumberOfReviews() > 1
+        if isSorted {
+            reviewManagement.sortReviews(sortState: sortState)
+            view.sortReview()
+        }
     }
     
     func didTapSortButtoniOS13() {
@@ -124,7 +137,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     
     func didLogout() {
         reviewManagement.logout()
-        view.updateReview(.initial, index: nil)
+        view.updateReview()
     }
     
 }

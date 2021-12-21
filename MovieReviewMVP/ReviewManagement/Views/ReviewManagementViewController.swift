@@ -48,7 +48,7 @@ final class ReviewManagementViewController: UIViewController {
         setupNotification()
         setupTabBarController()
         setupIndicator()
-        presenter.fetchUpdateReviewMovies(state: .initial)
+        presenter.fetchUpdateReviewMovies()
         isEditing = false
     }
     
@@ -59,13 +59,295 @@ final class ReviewManagementViewController: UIViewController {
         
     }
     
-    @IBAction func saveButtonTappedSegue(segue: UIStoryboardSegue) {
-        guard let reviewMovieViewController = segue.source as? ReviewMovieViewController else { return }
-        startIndicator(indicator: activityIndicatorView)
-        let movieUpdateState = reviewMovieViewController.presenter.returnMovieUpdateState()
-        presenter.fetchUpdateReviewMovies(state: movieUpdateState)
+}
+
+// MARK: - func
+extension ReviewManagementViewController {
+    
+    private func deselectAllItems(indexPaths: [IndexPath]?) {
+        guard let indexPaths = indexPaths else { return }
+        for index in indexPaths {
+            collectionView.deselectItem(at: index, animated: true)
+        }
     }
     
+    private func deselectAllItemsAndReload(indexPaths: [IndexPath]?) {
+        guard let indexPaths = indexPaths else { return }
+        for index in indexPaths {
+            collectionView.deselectItem(at: index, animated: true)
+            collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    private func makeSortMenu() -> UIMenu {
+        let createdDescendAction = UIAction(title: sortState.createdDescend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdDescend)
+        })
+        
+        let createdAscendAction = UIAction(title: sortState.createdAscend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdAscend)
+        })
+        
+        let reviewStarAscendAction = UIAction(title: sortState.reviewStarAscend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarAscend)
+        })
+        
+        let reviewStarDescendAction = UIAction(title: sortState.reviewStarDescend.title, image: nil, state: .off, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarDescend)
+        })
+        
+        let menu = UIMenu(children: [createdDescendAction, createdAscendAction, reviewStarAscendAction, reviewStarDescendAction])
+        
+        return menu
+    }
+    
+    private func makeSortAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "並び替える", message: nil, preferredStyle: .actionSheet)
+        
+        let createdDescendAction = UIAlertAction(title: sortState.createdDescend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdDescend)
+        })
+        
+        let createdAscendAction = UIAlertAction(title: sortState.createdAscend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .createdAscend)
+        })
+        
+        let reviewStarAscendAction = UIAlertAction(title: sortState.reviewStarAscend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarAscend)
+        })
+        
+        let reviewStarDescendAction = UIAlertAction(title: sortState.reviewStarDescend.title, style: .default, handler: { [weak self] _ in
+            self?.presenter.didTapSortButton(isStoredAsReview: true, sortState: .reviewStarDescend)
+        })
+        
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+
+        [createdDescendAction,
+         createdAscendAction,
+         reviewStarAscendAction,
+         reviewStarDescendAction,
+         cancelAction]
+            .forEach { alert.addAction($0) }
+        
+        return alert
+    }
+
+}
+
+// MARK: - UICollectionViewDelegate
+extension ReviewManagementViewController : UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter.didTapItemAt(isEditing: isEditing, indexPath: indexPath, cellSelectedState: .selected)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        presenter.didTapItemAt(isEditing: isEditing, indexPath: indexPath, cellSelectedState: .deselected)
+    }
+    
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension ReviewManagementViewController : UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return CGFloat(10)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return CGFloat(1)
+    }
+    
+}
+
+// MARK: - UICollectionViewDataSource
+extension ReviewManagementViewController : UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return presenter.numberOfMovies
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
+        let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row)
+        let posterImage = (movieReviews.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movieReviews.posterData!)
+        let rating = movieReviews.reviewStars ?? 0.0
+        let cellSelectState: CellSelectedState = (collectionView.indexPathsForSelectedItems?.contains(indexPath) == true) ? .selected : .deselected
+        cell.configure(posterImage: posterImage, rating: rating, cellSelectState: cellSelectState)
+        return cell
+    }
+    
+}
+
+// MARK: - ReviewManagementPresenterOutput
+extension ReviewManagementViewController : ReviewManagementPresenterOutput {
+    
+    func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
+            cell.tapCell(state: cellSelectedState)
+            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+    }
+    
+    func sortReview() {
+        for index in 0...presenter.numberOfMovies - 1 {
+            collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        }
+    }
+    
+    func changeSortButtonTitle(sortState: sortState) {
+        sortButton.title = sortState.title
+    }
+    
+    func updateReview() {
+        defer {
+            stopIndicator(indicator: activityIndicatorView)
+            isEditing = false
+        }
+        if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
+            collectionView.reloadData()
+        } else {
+            collectionView.performBatchUpdates {
+                for index in 0...presenter.numberOfMovies - 1 {
+                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+                }
+            }
+        }
+    }
+    
+    func deleteReview(indexPath: IndexPath) {
+        defer {
+            stopIndicator(indicator: activityIndicatorView)
+            isEditing = false
+        }
+        collectionView.performBatchUpdates {
+            collectionView.deleteItems(at: [IndexPath(item: indexPath.item, section: 0)])
+        }
+    }
+    
+    // MARK: 選択解除を行う
+    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {
+        switch editing {
+        case true:
+            tabBarController?.tabBar.isHidden = true
+            sortButton.isEnabled = false
+            trashButton.isHidden = false
+            trashButton.isEnabled = false
+            stockButton.isHidden = true
+            editButton.title = .deselectTitle
+            // trueになった時、一旦全選択解除
+            deselectAllItems(indexPaths: indexPaths)
+        case false:
+            tabBarController?.tabBar.isHidden = false
+            sortButton.isEnabled = true
+            trashButton.isHidden = true
+            stockButton.isHidden = false
+            editButton.title = .selectTitle
+            // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
+            deselectAllItemsAndReload(indexPaths: indexPaths)
+        }
+    }
+    
+    // MARK: tapしたレビューを詳細表示
+    func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
+        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        let videoWorkUseCase = VideoWorkUseCase()
+        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
+
+        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState),
+                                             movieReviewElement: selectReview,
+                                             movieUpdateState: movieUpdateState,
+                                             view: reviewMovieVC,
+                                             videoWorkuseCase: videoWorkUseCase,
+                                             reviewUseCase: reviewUseCase,
+                                             userUseCase: userUseCase)
+        reviewMovieVC.inject(presenter: presenter)        
+        let navigationController = UINavigationController(rootViewController: reviewMovieVC)
+        navigationController.modalPresentationStyle = .fullScreen
+        
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    func displaySortAction() {
+        let sortAlert = makeSortAlert()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            sortAlert.popoverPresentationController?.sourceView = self.view
+            sortAlert.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.maxX - 100, y: view.safeAreaInsets.top, width: 0, height: 0)
+        }
+        present(sortAlert, animated: true, completion: nil)
+    }
+    
+}
+
+// MARK: - FUIAuthDelegate
+extension ReviewManagementViewController : FUIAuthDelegate {
+    private func auth() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            if #available(iOS 13.0, *) {
+                authUI.providers = [
+                    FUIOAuth.appleAuthProvider(),
+                    FUIGoogleAuth(authUI: authUI),
+                    FUIOAuth.twitterAuthProvider()
+                ]
+            } else {
+                authUI.providers = [
+                    FUIGoogleAuth(authUI: authUI),
+                    FUIOAuth.twitterAuthProvider()
+                ]
+            }
+            authUI.delegate = self
+            
+            let authViewController = authUI.authViewController()
+            self.present(authViewController, animated: true)
+        }
+    }
+    
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        if let user = authDataResult?.user {
+            print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
+            presenter.fetchUpdateReviewMovies()
+        }
+    }
+
+}
+
+// MARK: - GADBannerViewDelegate
+extension ReviewManagementViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.isHidden = false
+        let bannerHeight = CGFloat(50)
+        collectionViewBottomAnchor.constant = -bannerHeight
+        [trashButtonBottomAnchor,
+         stockButtonBottomAnchor]
+            .forEach { $0?.constant = -bannerHeight + buttonConstant }
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+          bannerView.alpha = 1
+        })
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+        bannerView.isHidden = true
+        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
+    }
 }
 
 // MARK: - setup
@@ -166,7 +448,7 @@ extension ReviewManagementViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
         
         if #available(iOS 14.0, *) {
-            let sortMenu = UIMenu.makeSortMenuForReview(presenter: presenter)
+            let sortMenu = makeSortMenu()
             sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
                                          image: nil,
                                          primaryAction: nil,
@@ -189,7 +471,7 @@ extension ReviewManagementViewController {
     }
         
     private func setupCollectionView() {
-        colunmFlowLayout = ColumnFlowLayout()
+        colunmFlowLayout = ReviewManagementColumnFlowLayout()
         collectionView.collectionViewLayout = colunmFlowLayout
         collectionView.autoresizingMask = [ .flexibleWidth, .flexibleHeight]
         collectionView.alwaysBounceVertical = true
@@ -218,7 +500,7 @@ extension ReviewManagementViewController {
     }
 
     private func setupBanner() {
-        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView = GADBannerView(adSize: GADAdSizeBanner)
 
         addBannerViewToView(bannerView)
 
@@ -258,10 +540,10 @@ extension ReviewManagementViewController {
     @objc func trashButtonTapped() {
         let deleteAlert = UIAlertController(title: nil, message: .deleteAlertMessage, preferredStyle: .alert)
         
-        deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { _ in
-            guard let reviewSortedIndex = (self.collectionView.indexPathsForSelectedItems?.sorted { $0 > $1 }) else { return }
-            self.startIndicator(indicator: self.activityIndicatorView)
-            self.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
+        deleteAlert.addAction(UIAlertAction(title: .deleteAlertTitle, style: .destructive, handler: { [weak self] _ in
+            guard let reviewSortedIndex = self?.collectionView.indexPathsForSelectedItems else { return }
+            self?.startIndicator(indicator: self?.activityIndicatorView ?? UIActivityIndicatorView())
+            self?.presenter.didDeleteReviewMovie(.delete, indexPaths: reviewSortedIndex)
         }))
         deleteAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
         self.present(deleteAlert, animated: true, completion: nil)
@@ -274,7 +556,6 @@ extension ReviewManagementViewController {
         stockReviewMovieVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: stockReviewMovieVC)
         self.present(navigationController, animated: true, completion: nil)
-        print("ストックボタンが押されました。", #function)
     }
     
     @objc private func sortButtonTapped() {
@@ -282,7 +563,8 @@ extension ReviewManagementViewController {
     }
     
     @objc func updateReviewManagementCollectionView() {
-        presenter.fetchUpdateReviewMovies(state: .insert)
+        startIndicator(indicator: activityIndicatorView)
+        presenter.fetchUpdateReviewMovies()
     }
     
     @objc func logout() {
@@ -290,252 +572,8 @@ extension ReviewManagementViewController {
     }
     
     @objc func login() {
-        presenter.fetchUpdateReviewMovies(state: .initial)
+        presenter.fetchUpdateReviewMovies()
     }
     
 }
 
-// MARK: - UICollectionViewDelegate
-extension ReviewManagementViewController : UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-        if isEditing {
-            cell.tapCell(state: .selected)
-            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
-        } else {
-            presenter.didSelectRowCollectionView(at: indexPath)
-            collectionView.deselectItem(at: indexPath, animated: false)
-        }
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if isEditing == true {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-            cell.tapCell(state: .deselected)
-            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
-        }
-        
-    }
-    
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension ReviewManagementViewController : UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat(10)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat(1)
-    }
-    
-}
-
-
-// MARK: - UICollectionViewDataSource
-extension ReviewManagementViewController : UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.numberOfMovies
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewManagementCollectionViewCell.identifier, for: indexPath) as! ReviewManagementCollectionViewCell
-        let movieReviews = presenter.returnMovieReviewForCell(forRow: indexPath.row)
-        let posterImage = (movieReviews.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movieReviews.posterData!)
-        let rating = movieReviews.reviewStars ?? 0.0
-        let cellSelectState: CellSelectedState = (collectionView.indexPathsForSelectedItems?.contains(indexPath) == true) ? .selected : .deselected
-        cell.configure(posterImage: posterImage, rating: rating, cellSelectState: cellSelectState)
-        return cell
-    }
-    
-}
-
-// MARK: - ReviewManagementPresenterOutput
-extension ReviewManagementViewController : ReviewManagementPresenterOutput {
-    
-    func sortReview() {
-        if presenter.numberOfMovies > 1 { // cellの数が0か1の時は、並び替えても意味がないので
-            for index in 0...presenter.numberOfMovies - 1 {
-                collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-            }
-        }
-        sortButton.title = presenter.returnSortState().buttonTitle
-        print("\(presenter.returnSortState().buttonTitle)に並び替えました。review")
-
-    }
-    
-    
-    // MARK: 初期化、削除、挿入、修正を行う
-    func updateReview(_ movieUpdateState: MovieUpdateState, index: Int?) {
-        defer {
-            stopIndicator(indicator: activityIndicatorView)
-            isEditing = false
-        }
-        
-        switch movieUpdateState {
-        case .initial:
-            collectionView.reloadData()
-            
-        case .delete:
-            guard let index = index else { return }
-            collectionView.performBatchUpdates {
-                collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-            }
-            
-            
-        case .insert:
-            if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-                collectionView.reloadData()
-            } else {
-                for index in 0...presenter.numberOfMovies - 1 {
-                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-                }
-            }
-            
-        case .modificate:
-            if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-                collectionView.reloadData()
-            } else {
-                for index in 0...presenter.numberOfMovies - 1 {
-                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-                }
-            }
-            
-        }
-        
-    }
-    
-    // MARK: 選択解除を行う
-    func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?) {
-        switch editing {
-        case true:
-            tabBarController?.tabBar.isHidden = true
-            sortButton.isEnabled = false
-            trashButton.isHidden = false
-            trashButton.isEnabled = false
-            stockButton.isHidden = true
-            editButton.title = .deselectTitle
-            // trueになった時、一旦全選択解除
-            guard let indexPaths = indexPaths else { return }
-            for index in indexPaths {
-                collectionView.deselectItem(at: index, animated: true)
-            }
-
-        case false:
-            tabBarController?.tabBar.isHidden = false
-            sortButton.isEnabled = true
-            trashButton.isHidden = true
-            stockButton.isHidden = false
-            editButton.title = .selectTitle
-            // falseになった時も、全選択解除して、cell選択時のエフェクトも解除
-            guard let indexPaths = indexPaths else { return }
-            for index in indexPaths {
-                collectionView.deselectItem(at: index, animated: true)
-                collectionView.reloadItems(at: [IndexPath(item: index.row, section: 0)])
-            }
-        }
-    }
-    
-    
-    // MARK: tapしたレビューを詳細表示
-    func displaySelectMyReview(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
-        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
-        let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))
-        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
-        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
-
-        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState),
-                                             movieReviewElement: movie,
-                                             movieUpdateState: movieUpdateState,
-                                             view: reviewMovieVC,
-                                             videoWorkuseCase: videoWorkUseCase,
-                                             reviewUseCase: reviewUseCase,
-                                             userUseCase: userUseCase)
-        reviewMovieVC.inject(presenter: presenter)        
-        let navigationController = UINavigationController(rootViewController: reviewMovieVC)
-        navigationController.modalPresentationStyle = .fullScreen
-        
-        self.present(navigationController, animated: true, completion: nil)
-    }
-    
-    func displaySortAction() {
-        let sortAlert = UIAlertController.makeSortAlertForReviewManagement(presenter: presenter)
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            sortAlert.popoverPresentationController?.sourceView = self.view
-            sortAlert.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.maxX - 100, y: view.safeAreaInsets.top, width: 0, height: 0)
-        }
-        present(sortAlert, animated: true, completion: nil)
-    }
-}
-
-extension ReviewManagementViewController : FUIAuthDelegate {
-    private func auth() {
-        if let authUI = FUIAuth.defaultAuthUI() {
-            if #available(iOS 13.0, *) {
-                authUI.providers = [
-                    FUIOAuth.appleAuthProvider(),
-                    FUIGoogleAuth(authUI: authUI),
-                    FUIOAuth.twitterAuthProvider()
-                ]
-            } else {
-                authUI.providers = [
-                    FUIGoogleAuth(authUI: authUI),
-                    FUIOAuth.twitterAuthProvider()
-                ]
-            }
-            authUI.delegate = self
-            
-            let authViewController = authUI.authViewController()
-            self.present(authViewController, animated: true)
-        }
-    }
-    
-    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
-        if let user = authDataResult?.user {
-            print("\(user.uid)でサインインしました。emailは\(user.email ?? "")です。アカウントは\(user.displayName ?? "")")
-            presenter.fetchUpdateReviewMovies(state: .initial)
-        }
-    }
-
-}
-
-extension ReviewManagementViewController : GADBannerViewDelegate {
-    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-        bannerView.isHidden = false
-        let bannerHeight = CGFloat(50)
-        collectionViewBottomAnchor.constant = -bannerHeight
-        [trashButtonBottomAnchor,
-         stockButtonBottomAnchor]
-            .forEach { $0?.constant = -bannerHeight + buttonConstant }
-        bannerView.alpha = 0
-        UIView.animate(withDuration: 1, animations: {
-          bannerView.alpha = 1
-        })
-      print("bannerViewDidReceiveAd")
-    }
-
-    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        bannerView.isHidden = true
-        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
-    }
-
-    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
-      print("bannerViewDidRecordImpression")
-    }
-
-    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-      print("bannerViewWillPresentScreen")
-    }
-
-    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
-      print("bannerViewWillDIsmissScreen")
-    }
-
-    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-      print("bannerViewDidDismissScreen")
-    }
-}

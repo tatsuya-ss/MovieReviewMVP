@@ -151,6 +151,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         }
         let reviewElement = selectedReview.getReview()
         reviewUseCase.update(movie: reviewElement)
+        NotificationCenter.default.post(name: .insertReview, object: nil)
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
