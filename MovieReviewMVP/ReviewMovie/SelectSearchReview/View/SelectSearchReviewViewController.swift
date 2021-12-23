@@ -10,9 +10,15 @@ import UIKit
 final class SelectSearchReviewViewController: UIViewController {
     
     private var reviewMovieOwner: ReviewMovieOwner!
+
+    private var presenter: SelectSearchReviewPresenterInput!
     
     init() {
         super.init(nibName: String(describing: Self.self), bundle: nil)
+    }
+    
+    func inject(presenter: SelectSearchReviewPresenter) {
+        self.presenter = presenter
     }
     
     required init?(coder: NSCoder) {
@@ -38,5 +44,9 @@ final class SelectSearchReviewViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         reviewMovieOwner.reviewTextResignFirstResponder()
     }
+    
+}
+
+extension SelectSearchReviewViewController: SelectSearchReviewPresenterOutput {
     
 }
