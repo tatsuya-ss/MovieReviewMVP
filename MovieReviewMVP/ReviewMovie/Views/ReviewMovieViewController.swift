@@ -53,6 +53,10 @@ final class ReviewMovieViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         reviewMovieOwner.reviewTextResignFirstResponder()
     }
+}
+
+// MARK: - func
+extension ReviewMovieViewController {
     
     private func getReviewAndFontColor(review: String?) -> (String, UIColor) {
         if let review = review, !review.isEmpty {
@@ -60,6 +64,61 @@ final class ReviewMovieViewController: UIViewController {
         } else {
             return (ReviewTextIsEnpty().text, .placeholderColor)
         }
+    }
+    
+    private func makeAlert(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState) -> UIAlertController?  {
+        switch primaryKeyIsStored {
+        case true:
+            let storedAlert = makeStoredAlert()
+            return storedAlert
+            
+        case false:
+            switch movieReviewState {
+            case .beforeStore:
+                let storeLocationAlertController = makeStoreLocationAlert(presenter: presenter)
+                return storeLocationAlertController
+                
+            case .afterStore(.reviewed):
+                return nil
+                
+            case .afterStore(.stock):
+                let storeDateAlert = makeStoreDateAlert(presenter: presenter)
+                return storeDateAlert
+            }
+        }
+    }
+    
+    private func makeStoredAlert() -> UIAlertController {
+        let storedAlert = UIAlertController(title: nil, message: .storedAlertMessage, preferredStyle: .alert)
+        storedAlert.addAction(UIAlertAction(title: .storedAlertCancelTitle, style: .cancel, handler: nil))
+        
+        return storedAlert
+    }
+    
+    private func makeStoreLocationAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
+        let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
+        storeLocationAlert.addAction(UIAlertAction(title: "ストックに保存", style: .default) { action in
+            presenter.didTapStoreLocationAlert(isStoredAsReview: false)
+        })
+        storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default) { action in
+            presenter.didTapStoreLocationAlert(isStoredAsReview: true)
+        })
+        storeLocationAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
+        
+        return storeLocationAlert
+    }
+    
+    private func makeStoreDateAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
+        let storeDateAlert = UIAlertController(title: nil, message: .storeDateAlertMessage, preferredStyle: .actionSheet)
+        storeDateAlert.addAction(UIAlertAction(title: .storeDateAlertAddDateTitle, style: .default) { action in
+            presenter.didTapSelectStoreDateAlert(storeDateState: .stockDate)
+        })
+        storeDateAlert.addAction(UIAlertAction(title: .storeDateAlertAddTodayTitle, style: .default) { action in
+            presenter.didTapSelectStoreDateAlert(storeDateState: .today)
+        })
+        storeDateAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
+
+        return storeDateAlert
     }
     
 }
@@ -200,7 +259,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
 
     func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?) {
         
-        if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
+        if let alert = makeAlert(primaryKeyIsStored: primaryKeyIsStored, movieReviewState: movieReviewState) {
             if UIDevice.current.userInterfaceIdiom == .pad {
                 alert.popoverPresentationController?.sourceView = self.view
                 alert.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.maxX - 40, y: view.safeAreaInsets.top, width: 0, height: 0)
