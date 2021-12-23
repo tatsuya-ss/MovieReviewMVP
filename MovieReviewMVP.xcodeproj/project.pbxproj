@@ -90,6 +90,9 @@
 		7592872527151EED00322CF8 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7592872427151EED00322CF8 /* UserRepository.swift */; };
 		759287272715241200322CF8 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759287262715241200322CF8 /* UserUseCase.swift */; };
 		75AADE932655C452008D360E /* ReviewManagementColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AADE922655C452008D360E /* ReviewManagementColumnFlowLayout.swift */; };
+		75B12EAE2775246A00F35F83 /* SelectSearchReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B12EAC2775246A00F35F83 /* SelectSearchReviewViewController.swift */; };
+		75B12EAF2775246A00F35F83 /* SelectSearchReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75B12EAD2775246A00F35F83 /* SelectSearchReviewViewController.xib */; };
+		75B12EB32775274100F35F83 /* SelectSearchReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B12EB22775274100F35F83 /* SelectSearchReview.swift */; };
 		75E4A627276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4A626276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift */; };
 		75E4A62A276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4A629276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift */; };
 		75E4A62C276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4A62B276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift */; };
@@ -213,6 +216,9 @@
 		7592872427151EED00322CF8 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		759287262715241200322CF8 /* UserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
 		75AADE922655C452008D360E /* ReviewManagementColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementColumnFlowLayout.swift; sourceTree = "<group>"; };
+		75B12EAC2775246A00F35F83 /* SelectSearchReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSearchReviewViewController.swift; sourceTree = "<group>"; };
+		75B12EAD2775246A00F35F83 /* SelectSearchReviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectSearchReviewViewController.xib; sourceTree = "<group>"; };
+		75B12EB22775274100F35F83 /* SelectSearchReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSearchReview.swift; sourceTree = "<group>"; };
 		75E4A626276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActivityIndicatorProtocol.swift; sourceTree = "<group>"; };
 		75E4A629276B0C5100E9A838 /* StockReviewColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewColumnFlowLayout.swift; sourceTree = "<group>"; };
 		75E4A62B276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewCastColumnFlowLayout.swift; sourceTree = "<group>"; };
@@ -332,6 +338,7 @@
 		75636BED263C004400281DB1 /* ReviewMovie */ = {
 			isa = PBXGroup;
 			children = (
+				75B12EAB277522E500F35F83 /* SelectSearchReview */,
 				7518C16926A17DED00C27C1C /* SelectedReview.swift */,
 				75636C00263C370800281DB1 /* ReviewMoviePresenter.swift */,
 				75EC6618270DC6290001F464 /* Views */,
@@ -552,6 +559,32 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		75B12EAB277522E500F35F83 /* SelectSearchReview */ = {
+			isa = PBXGroup;
+			children = (
+				75B12EB12775272800F35F83 /* Presenter */,
+				75B12EB02775271B00F35F83 /* View */,
+			);
+			path = SelectSearchReview;
+			sourceTree = "<group>";
+		};
+		75B12EB02775271B00F35F83 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				75B12EAC2775246A00F35F83 /* SelectSearchReviewViewController.swift */,
+				75B12EAD2775246A00F35F83 /* SelectSearchReviewViewController.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		75B12EB12775272800F35F83 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				75B12EB22775274100F35F83 /* SelectSearchReview.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		75E4A625276A0D0D00E9A838 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
@@ -765,6 +798,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75B12EAF2775246A00F35F83 /* SelectSearchReviewViewController.xib in Resources */,
 				753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */,
 				758B059A26AD4DA100DFA33A /* TMDbAttribution.storyboard in Resources */,
 				7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */,
@@ -989,6 +1023,7 @@
 				759287272715241200322CF8 /* UserUseCase.swift in Sources */,
 				758119EC26C4860D00C4BAA3 /* UserDefaults+Ext.swift in Sources */,
 				756D8FB3267308210026889B /* StockReviewMovieCollectionViewCell.swift in Sources */,
+				75B12EAE2775246A00F35F83 /* SelectSearchReviewViewController.swift in Sources */,
 				750B44002685A1A400191E17 /* UIMenu+Ext.swift in Sources */,
 				756620E32647B14F00D211EC /* ReviewManagementPresenter.swift in Sources */,
 				756AD28D268469A500BF5D6A /* String+Ext.swift in Sources */,
@@ -1015,6 +1050,7 @@
 				75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */,
 				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 				758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */,
+				75B12EB32775274100F35F83 /* SelectSearchReview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
