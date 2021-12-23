@@ -14,7 +14,6 @@ final class ReviewMovieViewController: UIViewController {
 
     private var saveButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
-    private var isUpdate: Bool = false
     private(set) var reviewMovieOwner: ReviewMovieOwner!
     private var bannerView: GADBannerView!
         
@@ -41,12 +40,9 @@ final class ReviewMovieViewController: UIViewController {
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        if case .afterStore(.reviewed) = presenter.returnMovieReviewState() {
-            let review = reviewMovieOwner.returnReviewText()
-            let reviewStar = reviewMovieOwner.returnReviewStarScore()
-            print(#function, review)
-            presenter.didTapUpdateButton(editing: editing, date: Date(), reviewScore: reviewStar, review: review)
-        }
+        let review = reviewMovieOwner.returnReviewText()
+        let reviewScore = reviewMovieOwner.returnReviewStarScore()
+        presenter.didTapUpdateButton(editing: editing, review: review, reviewScore: reviewScore)
     }
     
     override func viewDidLayoutSubviews() {
@@ -163,13 +159,7 @@ private extension ReviewMovieViewController {
 
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
-        switch isUpdate {
-        case true:
-            performSegue(withIdentifier: .segueIdentifierForSave, sender: nil)
-            isUpdate = false
-        case false:
             dismiss(animated: true, completion: nil)
-        }
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -208,7 +198,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
         reviewMovieOwner.configureCastsCollectionView(casts: casts)
     }
 
-    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool) {
+    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?) {
         
         if let alert = UIAlertController.makeAlert(primaryKeyIsStored, movieReviewState: movieReviewState, presenter: presenter) {
             if UIDevice.current.userInterfaceIdiom == .pad {
@@ -218,12 +208,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
             present(alert, animated: true, completion: nil)
         } else {  // .afterStore(.reviewed)の時
             guard let editing = editing else { return }
-            if editing {
-                saveButton.title = .updateButtonTitle
-            } else {
-                saveButton.title = .editButtonTitle
-                self.isUpdate = isUpdate
-            }
+            saveButton.title = editing ? .updateButtonTitle : .editButtonTitle
             reviewMovieOwner.editButtonTapped(isEditing: editing,
                                               state: movieReviewState)
         }

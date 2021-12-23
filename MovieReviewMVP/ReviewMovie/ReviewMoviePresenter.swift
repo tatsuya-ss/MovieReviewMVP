@@ -10,6 +10,7 @@ import Foundation
 protocol ReviewMoviePresenterInput {
     func viewDidLoad()
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?)
+    func didTapUpdateButton(editing: Bool, review: String, reviewScore: Double)
     func returnMovieReviewState() -> MovieReviewStoreState
     func didTapStoreLocationAlert(isStoredAsReview: Bool)
     func didTapSelectStoreDateAlert(storeDateState: storeDateState)
@@ -21,7 +22,7 @@ protocol ReviewMoviePresenterInput {
 protocol ReviewMoviePresenterOutput : AnyObject {
     func displayReviewMovie(title: String, releaseDay: String, rating: Double, posterData: Data?, review: String?, overview: String?)
     func displayCastImage(casts: [CastDetail])
-    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?, isUpdate: Bool)
+    func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?)
     func closeReviewMovieView(movieUpdateState: MovieUpdateState)
     func displayLoggingOutAlert()
     func displayLoginView()
@@ -33,7 +34,7 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
     private var movieUpdateState: MovieUpdateState
     private let selectedReview: SelectedReview
     private var casts: [CastDetail] = []
-    
+
     private weak var view: ReviewMoviePresenterOutput!
     private let videoWorkUseCase: VideoWorkUseCaseProtocol
     private let reviewUseCase: ReviewUseCaseProtocol
@@ -155,6 +156,21 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
         view.closeReviewMovieView(movieUpdateState: movieUpdateState)
     }
     
+    func didTapUpdateButton(editing: Bool,
+                            review: String,
+                            reviewScore: Double) {
+        guard case .afterStore(.reviewed) = movieReviewState else { return }
+        if !editing {
+            let isUpdate = selectedReview.checkIsChanged(reviewScore: reviewScore, review: review)
+            if isUpdate {
+                selectedReview.update(score: reviewScore, review: review)
+                let selectedReview = selectedReview.getReview()
+                reviewUseCase.update(movie: selectedReview)
+                NotificationCenter.default.post(name: .insertReview, object: nil)
+            }
+        }
+        view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing)
+    }
     
     // MARK: 保存・更新ボタンが押された時の処理
     func didTapUpdateButton(editing: Bool?, date: Date, reviewScore: Double, review: String?) {
@@ -166,31 +182,17 @@ final class ReviewMoviePresenter : ReviewMoviePresenterInput {
                 let selectedReview = selectedReview.getReview()
                 reviewUseCase.checkSaved(movie: selectedReview) { result in
                     self.selectedReview.update(saveDate: date, score: reviewScore, review: review)
-                    self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing, isUpdate: true)
+                    self.view.displayAfterStoreButtonTapped(primaryKeyIsStored: result, movieReviewState: self.movieReviewState, editing: editing)
                 }
             } else {
                 view.displayLoggingOutAlert()
             }
             
         case .afterStore(.reviewed):
-            guard let editing = editing else { return }
-            switch editing {
-            case false:
-                let isUpdate = selectedReview.checkIsChanged(reviewScore: reviewScore, review: review ?? "")
-                if isUpdate {
-                    selectedReview.update(score: reviewScore, review: review)
-                    let selectedReview = selectedReview.getReview()
-                    reviewUseCase.update(movie: selectedReview)
-                }
-                view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: isUpdate)
-                
-            case true:
-                view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: true)
-            }
-            
+            break
         case .afterStore(.stock):
             selectedReview.update(isSavedAsReview: true, score: reviewScore, review: review)
-            view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing, isUpdate: true)
+            view.displayAfterStoreButtonTapped(primaryKeyIsStored: false, movieReviewState: movieReviewState, editing: editing)
         }
     }
     

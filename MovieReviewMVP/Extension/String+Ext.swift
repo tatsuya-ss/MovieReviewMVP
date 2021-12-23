@@ -39,7 +39,6 @@ extension String {
     static let stockImage = "stock_image"
     
     // identifier
-    static let segueIdentifierForSave = "saveButtonTappedSegue"
     static let reviewMovieStoryboardName = "ReviewMovie"
     static let StockReviewMovieManagementStoryboardName = "StockReviewMovieManagement"
     static let reviewMovieNibName = "ReviewMovie"
