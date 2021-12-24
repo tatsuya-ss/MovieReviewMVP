@@ -55,14 +55,4 @@ extension UIAlertController {
 
         return alert
     }
-    
-    class func makeLoginAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let loginAlert = UIAlertController(title: "ログインしますか？", message: "ログインすると保存機能を利用できます", preferredStyle: .alert)
-        loginAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-        loginAlert.addAction(UIAlertAction(title: "ログイン", style: .default, handler: { _ in
-            presenter.didSelectLogin()
-        }))
-        
-        return loginAlert
-    }
 }

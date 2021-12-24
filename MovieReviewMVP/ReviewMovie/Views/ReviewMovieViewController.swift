@@ -14,10 +14,10 @@ final class ReviewMovieViewController: UIViewController {
 
     private var saveButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
-    private(set) var reviewMovieOwner: ReviewMovieOwner!
+    private var reviewMovieOwner: ReviewMovieOwner!
     private var bannerView: GADBannerView!
         
-    private(set) var presenter: ReviewMoviePresenterInput!
+    private var presenter: ReviewMoviePresenterInput!
     func inject(presenter: ReviewMoviePresenterInput) {
         self.presenter = presenter
     }
@@ -68,15 +68,15 @@ extension ReviewMovieViewController {
     
     private func makeAlert(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState) -> UIAlertController?  {
         switch primaryKeyIsStored {
-        case true:
-            let storedAlert = makeStoredAlert()
-            return storedAlert
+        case true: return nil
+//            let storedAlert = makeStoredAlert()
+//            return storedAlert
             
         case false:
             switch movieReviewState {
-            case .beforeStore:
-                let storeLocationAlertController = makeStoreLocationAlert(presenter: presenter)
-                return storeLocationAlertController
+            case .beforeStore: return nil
+//                let storeLocationAlertController = makeStoreLocationAlert(presenter: presenter)
+//                return storeLocationAlertController
                 
             case .afterStore(.reviewed):
                 return nil
@@ -121,6 +121,16 @@ extension ReviewMovieViewController {
         return storeDateAlert
     }
     
+    private func makeLoginAlert() -> UIAlertController {
+        let loginAlert = UIAlertController(title: "ログインしますか？", message: "ログインすると保存機能を利用できます", preferredStyle: .alert)
+        loginAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        loginAlert.addAction(UIAlertAction(title: "ログイン", style: .default, handler: { [weak self] _ in
+            self?.presenter.didSelectLogin()
+        }))
+        
+        return loginAlert
+    }
+
 }
 
 // MARK: - ReviewMoviePresenterOutput
@@ -164,7 +174,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     }
         
     func displayLoggingOutAlert() {
-        let loginAlert = UIAlertController.makeLoginAlert(presenter: presenter)
+        let loginAlert = makeLoginAlert()
         present(loginAlert, animated: true, completion: nil)
     }
     
