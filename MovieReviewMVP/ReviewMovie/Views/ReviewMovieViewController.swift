@@ -152,7 +152,7 @@ extension ReviewMovieViewController : ReviewMoviePresenterOutput {
     func displayCastImage(casts: [CastDetail]) {
         reviewMovieOwner.configureCastsCollectionView(casts: casts)
     }
-
+    
     func displayAfterStoreButtonTapped(primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, editing: Bool?) {
         
         if let alert = makeAlert(primaryKeyIsStored: primaryKeyIsStored, movieReviewState: movieReviewState) {
