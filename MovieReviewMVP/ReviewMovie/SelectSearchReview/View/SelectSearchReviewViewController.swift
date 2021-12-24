@@ -13,7 +13,7 @@ final class SelectSearchReviewViewController: UIViewController {
     private var saveButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
     private var reviewMovieOwner: ReviewMovieOwner!
-
+    
     private var presenter: SelectSearchReviewPresenterInput!
     
     init() {
@@ -40,10 +40,6 @@ final class SelectSearchReviewViewController: UIViewController {
         setupReview()
     }
     
-    private func setupReview() {
-        presenter.viewDidLoad()
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         reviewMovieOwner.reviewMovieView.frame = view.frame
@@ -162,10 +158,16 @@ extension SelectSearchReviewViewController: FUIAuthDelegate {
 // MARK: - setup
 extension SelectSearchReviewViewController {
     
+    private func setupReview() {
+        presenter.viewDidLoad()
+    }
+    
     private func setupNavigation() {
         saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
+        saveButton.tintColor = .white
         stopButton.tintColor = .white
+        navigationItem.rightBarButtonItem = saveButton
         navigationItem.leftBarButtonItem = stopButton
     }
     
@@ -179,10 +181,9 @@ extension SelectSearchReviewViewController {
         let review = reviewMovieOwner.returnReviewText()
         presenter.didTapSaveButton(review: review, reviewScore: reviewScore)
     }
-
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
-            dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
 }
