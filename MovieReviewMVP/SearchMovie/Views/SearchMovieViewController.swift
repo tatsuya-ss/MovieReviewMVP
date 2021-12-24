@@ -273,11 +273,10 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
 //        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let reviewMovieVC = SelectSearchReviewViewController()
-
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
-        let presenter = SelectSearchReviewPresenter(view: reviewMovieVC, selectedReview: SelectedReview(review: movie), reviewUseCase: reviewUseCase, userUseCase: userUseCase)
+        let presenter = SelectSearchReviewPresenter(view: reviewMovieVC, selectedReview: SelectedReview(review: movie), reviewUseCase: reviewUseCase, userUseCase: userUseCase, videoWorkuseCase: videoWorkUseCase)
 
 //        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore,
 //                                             movieReviewElement: movie,

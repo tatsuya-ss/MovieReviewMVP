@@ -79,6 +79,9 @@ extension SelectSearchReviewViewController: SelectSearchReviewPresenterOutput {
         dismiss(animated: true, completion: nil)
     }
     
+    func displayCastImage(casts: [CastDetail]) {
+        reviewMovieOwner.configureCastsCollectionView(casts: casts)
+    }
 }
 
 // MARK: - func
