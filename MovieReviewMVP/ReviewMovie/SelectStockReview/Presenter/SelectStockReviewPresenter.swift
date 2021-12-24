@@ -9,19 +9,22 @@ import Foundation
 
 protocol SelectStockReviewPresenterInput {
     func viewDidLoad()
+    func didTapSaveButton(review: String, reviewScore: Double)
+    func didTapSelectSaveDateAlert(storeDateState: storeDateState)
 }
 
 protocol SelectStockReviewPresenterOutput: AnyObject {
     func viewDidLoad(title: String, releaseDay: String, rating: Double, posterData: Data?, review: String?, overview: String?)
     func displayCastImage(casts: [CastDetail])
+    func showAlertAfterSaveButtonTapped()
+    func closeView()
 }
 
 final class SelectStockReviewPresenter: SelectStockReviewPresenterInput {
     
     private weak var view: SelectStockReviewPresenterOutput!
     private let selectedReview: SelectedReview
-//    private let reviewUseCase: ReviewUseCaseProtocol
-//    private let userUseCase: UserUseCaseProtocol
+    private let reviewUseCase: ReviewUseCaseProtocol
     private let videoWorkUseCase: VideoWorkUseCaseProtocol
     private var casts: [CastDetail] = []
 
@@ -32,8 +35,7 @@ final class SelectStockReviewPresenter: SelectStockReviewPresenterInput {
          videoWorkuseCase: VideoWorkUseCaseProtocol) {
         self.view = view
         self.selectedReview = selectedReview
-//        self.reviewUseCase = reviewUseCase
-//        self.userUseCase = userUseCase
+        self.reviewUseCase = reviewUseCase
         self.videoWorkUseCase = videoWorkuseCase
     }
     
@@ -95,5 +97,20 @@ final class SelectStockReviewPresenter: SelectStockReviewPresenterInput {
             return " " + "公開日未定"
         }
     }
-
+    
+    func didTapSaveButton(review: String, reviewScore: Double) {
+        selectedReview.update(isSavedAsReview: true, score: reviewScore, review: review)
+        view.showAlertAfterSaveButtonTapped()
+    }
+    
+    func didTapSelectSaveDateAlert(storeDateState: storeDateState) {
+        if case .today = storeDateState {
+            selectedReview.update(saveDate: Date())
+        }
+        let reviewElement = selectedReview.getReview()
+        reviewUseCase.update(movie: reviewElement)
+        NotificationCenter.default.post(name: .insertReview, object: nil)
+        view.closeView()
+    }
+    
 }

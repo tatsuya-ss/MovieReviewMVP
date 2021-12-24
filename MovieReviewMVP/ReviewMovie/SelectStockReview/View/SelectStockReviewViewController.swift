@@ -60,6 +60,19 @@ extension SelectStockReviewViewController {
         }
     }
     
+    private func makeSaveDateAlert() -> UIAlertController {
+        let storeDateAlert = UIAlertController(title: nil, message: "保存日を選択してください", preferredStyle: .actionSheet)
+        storeDateAlert.addAction(UIAlertAction(title: "追加した日付で保存", style: .default) { [weak self] action in
+            self?.presenter.didTapSelectSaveDateAlert(storeDateState: .stockDate)
+        })
+        storeDateAlert.addAction(UIAlertAction(title: "今日の日付で保存", style: .default) { [weak self] action in
+            self?.presenter.didTapSelectSaveDateAlert(storeDateState: .today)
+        })
+        storeDateAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
+
+        return storeDateAlert
+    }
+    
 }
 
 // MARK: - SelectStockReviewPresenterOutput
@@ -75,6 +88,14 @@ extension SelectStockReviewViewController: SelectStockReviewPresenterOutput {
         reviewMovieOwner.configureCastsCollectionView(casts: casts)
     }
     
+    func showAlertAfterSaveButtonTapped() {
+        let saveDateAlert = makeSaveDateAlert()
+        present(saveDateAlert, animated: true, completion: nil)
+    }
+    
+    func closeView() {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - setup
@@ -103,7 +124,7 @@ extension SelectStockReviewViewController {
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) { // textViewに入力がない場合とある場合の保存処理
         let reviewScore = reviewMovieOwner.returnReviewStarScore()
         let review = reviewMovieOwner.returnReviewText()
-//        presenter.didTapSaveButton(review: review, reviewScore: reviewScore)
+        presenter.didTapSaveButton(review: review, reviewScore: reviewScore)
     }
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
