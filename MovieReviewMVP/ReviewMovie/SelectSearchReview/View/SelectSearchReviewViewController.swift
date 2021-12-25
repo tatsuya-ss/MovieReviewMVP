@@ -20,7 +20,7 @@ final class SelectSearchReviewViewController: UIViewController {
         super.init(nibName: String(describing: Self.self), bundle: nil)
     }
     
-    func inject(presenter: SelectSearchReviewPresenter) {
+    func inject(presenter: SelectSearchReviewPresenterInput) {
         self.presenter = presenter
     }
     

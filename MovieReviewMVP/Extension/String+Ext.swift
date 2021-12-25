@@ -51,9 +51,6 @@ extension String {
     static let notTitle = "タイトルがありません"
     static let storedAlertMessage = "既に保存されているレビューです"
     static let storedAlertCancelTitle = "閉じる"
-    static let storeDateAlertMessage = "保存日を選択してください"
-    static let storeDateAlertAddDateTitle = "追加した日付で保存"
-    static let storeDateAlertAddTodayTitle = "今日の日付で保存"
 
     // Google Admob
     static let testAdUnitId = "ca-app-pub-3940256099942544/2934735716"

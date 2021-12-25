@@ -250,20 +250,14 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     
     // MARK: tapしたレビューを詳細表示
     func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
-        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        let selectSavedReviewVC = SelectSavedReviewViewController()
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
 
-        let presenter = ReviewMoviePresenter(movieReviewState: .afterStore(afterStoreState),
-                                             movieReviewElement: selectReview,
-                                             movieUpdateState: movieUpdateState,
-                                             view: reviewMovieVC,
-                                             videoWorkuseCase: videoWorkUseCase,
-                                             reviewUseCase: reviewUseCase,
-                                             userUseCase: userUseCase)
-        reviewMovieVC.inject(presenter: presenter)        
-        let navigationController = UINavigationController(rootViewController: reviewMovieVC)
+        let presenter = SelectSavedReviewPresenter(view: selectSavedReviewVC, selectedReview: SelectedReview(review: selectReview), reviewUseCase: reviewUseCase, userUseCase: userUseCase, videoWorkuseCase: videoWorkUseCase)
+        selectSavedReviewVC.inject(presenter: presenter)
+        let navigationController = UINavigationController(rootViewController: selectSavedReviewVC)
         navigationController.modalPresentationStyle = .fullScreen
         
         self.present(navigationController, animated: true, completion: nil)

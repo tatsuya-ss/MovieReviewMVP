@@ -33,8 +33,7 @@ final class ReviewMovieViewController: UIViewController {
         setNavigationController()
         setupTextView()
         presenter.viewDidLoad()
-        reviewMovieOwner.editButtonTapped(isEditing: isEditing,
-                                          state: presenter.returnMovieReviewState())
+        reviewMovieOwner.editButtonTapped(isEditing: isEditing)
         setupBanner()
     }
     
