@@ -6,15 +6,17 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 final class SelectSavedReviewViewController: UIViewController {
     
     private var editButton: UIBarButtonItem!
     private var stopButton: UIBarButtonItem!
     private var reviewMovieOwner: ReviewMovieOwner!
+    private var bannerView: GADBannerView!
     
     private var presenter: SelectSavedReviewPresenterInput!
-
+    
     init() {
         super.init(nibName: String(describing: Self.self), bundle: nil)
     }
@@ -38,6 +40,7 @@ final class SelectSavedReviewViewController: UIViewController {
         setupTextView()
         setupReview()
         setupNavigation()
+        setupBanner()
     }
     
     override func viewDidLayoutSubviews() {
@@ -117,13 +120,45 @@ extension SelectSavedReviewViewController {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
+    private func setupBanner() {
+        let bannerSize = GADAdSizeBanner
+        bannerView = GADBannerView(adSize: bannerSize)
+        addBannerViewToView(bannerView)
+        bannerView.delegate = self
+        
+        if let id = adUnitID(key: "banner") {
+            bannerView.adUnitID = id
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: bannerSize.size.height))
+            bannerView.adSize = adSize
+        }
+        
+        func adUnitID(key: String) -> String? {
+            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
+                return nil
+            }
+            return adUnitIDs[key]
+        }
+    }
+    
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+    
 }
 
 // MARK: - @objc
 extension SelectSavedReviewViewController {
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
-            dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -137,5 +172,16 @@ extension SelectSavedReviewViewController {
         let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight - view.safeAreaInsets.bottom, right: 0)
         reviewMovieOwner.addContentInsets(insets: insets)
     }
+    
+}
 
+// MARK: - GADBannerViewDelegate
+extension SelectSavedReviewViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+            bannerView.alpha = 1
+        })
+        print("bannerViewDidReceiveAd")
+    }
 }

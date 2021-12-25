@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 final class SelectStockReviewViewController: UIViewController {
     
     private var saveButton: UIBarButtonItem!
     private var reviewMovieOwner: ReviewMovieOwner!
+    private var bannerView: GADBannerView!
     
     private var presenter: SelectStockReviewPresenterInput!
     
@@ -36,6 +38,7 @@ final class SelectStockReviewViewController: UIViewController {
         super.viewDidLoad()
         setupReview()
         setupNavigation()
+        setupBanner()
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,7 +72,7 @@ extension SelectStockReviewViewController {
             self?.presenter.didTapSelectSaveDateAlert(storeDateState: .today)
         })
         storeDateAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
-
+        
         return storeDateAlert
     }
     
@@ -116,6 +119,38 @@ extension SelectStockReviewViewController {
         navigationItem.rightBarButtonItem = saveButton
     }
     
+    private func setupBanner() {
+        let bannerSize = GADAdSizeBanner
+        bannerView = GADBannerView(adSize: bannerSize)
+        addBannerViewToView(bannerView)
+        bannerView.delegate = self
+        
+        if let id = adUnitID(key: "banner") {
+            bannerView.adUnitID = id
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+            let adSize = GADAdSizeFromCGSize(CGSize(width: view.bounds.width, height: bannerSize.size.height))
+            bannerView.adSize = adSize
+        }
+        
+        func adUnitID(key: String) -> String? {
+            guard let adUnitIDs = Bundle.main.object(forInfoDictionaryKey: "AdUnitIDs") as? [String: String] else {
+                return nil
+            }
+            return adUnitIDs[key]
+        }
+    }
+    
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        [bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+         bannerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+         bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
+            .forEach { $0.isActive = true }
+    }
+    
 }
 
 // MARK: - objc
@@ -131,4 +166,15 @@ extension SelectStockReviewViewController {
         dismiss(animated: true, completion: nil)
     }
     
+}
+
+// MARK: - GADBannerViewDelegate
+extension SelectStockReviewViewController : GADBannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+            bannerView.alpha = 1
+        })
+        print("bannerViewDidReceiveAd")
+    }
 }
