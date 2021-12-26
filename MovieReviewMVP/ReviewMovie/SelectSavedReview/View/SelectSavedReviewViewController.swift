@@ -37,6 +37,7 @@ final class SelectSavedReviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupEditing()
         setupTextView()
         setupReview()
         setupNavigation()
@@ -96,11 +97,15 @@ extension SelectSavedReviewViewController: SelectSavedReviewPresenterOutput {
 // MARK: - setup
 extension SelectSavedReviewViewController {
     
+    private func setupEditing() {
+        reviewMovieOwner.editButtonTapped(isEditing: false)
+    }
+    
     private func setupReview() {
         presenter.viewDidLoad()
     }
     
-    func setupTextView() {
+    private func setupTextView() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
     }
     
