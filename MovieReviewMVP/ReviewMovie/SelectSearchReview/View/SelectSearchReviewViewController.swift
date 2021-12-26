@@ -38,6 +38,7 @@ final class SelectSearchReviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTextView()
         setupNavigation()
         setupReview()
         setupBanner()
@@ -168,6 +169,10 @@ extension SelectSearchReviewViewController {
         presenter.viewDidLoad()
     }
     
+    private func setupTextView() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: nil, object: nil)
+    }
+    
     private func setupNavigation() {
         saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
         stopButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(stopButtonTapped))
@@ -222,6 +227,18 @@ extension SelectSearchReviewViewController {
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: Any],
+              let keyboardInfo = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardInfo.cgRectValue.size
+        let keyboardHeight = keyboardSize.height
+        reviewMovieOwner.keyboardHeight = keyboardHeight
+        
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight - view.safeAreaInsets.bottom, right: 0)
+        reviewMovieOwner.addContentInsets(insets: insets)
     }
     
 }
