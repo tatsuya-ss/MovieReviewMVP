@@ -196,7 +196,7 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
     
     func changeSortButtonTitle(sortState: sortState) {
-        sortButton.title = sortState.title
+        sortButton.title = sortState.buttonTitle
     }
     
     func updateReview() {
