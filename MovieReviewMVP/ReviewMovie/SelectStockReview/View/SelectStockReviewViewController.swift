@@ -122,6 +122,12 @@ extension SelectStockReviewViewController {
         saveButton = UIBarButtonItem(title: .saveButtonTitle, style: .done, target: self, action: #selector(saveButtonTapped))
         saveButton.tintColor = .stringColor
         navigationItem.rightBarButtonItem = saveButton
+        
+        // MARK: NavigationBarのtitleに保存日を表示
+        guard let createdDate = presenter.createdDate else { return }
+        let navigationTitle = DateFormat().convertDateToStringForNavigationTitle(date: createdDate)
+        navigationItem.title = navigationTitle
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     private func setupBanner() {

@@ -25,7 +25,6 @@ final class SelectSavedReviewPresenter {
     private let selectedReview: SelectedReview
 
     private let reviewUseCase: ReviewUseCaseProtocol
-//    private let userUseCase: UserUseCaseProtocol
     private let videoWorkUseCase: VideoWorkUseCaseProtocol
     private var casts: [CastDetail] = []
 
@@ -37,10 +36,9 @@ final class SelectSavedReviewPresenter {
         self.view = view
         self.selectedReview = selectedReview
         self.reviewUseCase = reviewUseCase
-//        self.userUseCase = userUseCase
         self.videoWorkUseCase = videoWorkuseCase
     }
-
+    
 }
 
 // MARK: - SelectSavedReviewPresenterInput

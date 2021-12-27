@@ -8,6 +8,7 @@
 import Foundation
 
 protocol SelectStockReviewPresenterInput {
+    var createdDate: Date? { get }
     func viewDidLoad()
     func didTapSaveButton(review: String, reviewScore: Double)
     func didTapSelectSaveDateAlert(storeDateState: storeDateState)
@@ -20,7 +21,7 @@ protocol SelectStockReviewPresenterOutput: AnyObject {
     func closeView()
 }
 
-final class SelectStockReviewPresenter: SelectStockReviewPresenterInput {
+final class SelectStockReviewPresenter {
     
     private weak var view: SelectStockReviewPresenterOutput!
     private let selectedReview: SelectedReview
@@ -37,6 +38,14 @@ final class SelectStockReviewPresenter: SelectStockReviewPresenterInput {
         self.selectedReview = selectedReview
         self.reviewUseCase = reviewUseCase
         self.videoWorkUseCase = videoWorkuseCase
+    }
+}
+
+// MARK: - SelectStockReviewPresenterInput
+extension SelectStockReviewPresenter: SelectStockReviewPresenterInput {
+    
+    var createdDate: Date? {
+        selectedReview.getReview().create_at
     }
     
     func viewDidLoad() {
