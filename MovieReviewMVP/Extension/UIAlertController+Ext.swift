@@ -9,28 +9,6 @@ import UIKit
 
 extension UIAlertController {
     
-    class func makeAlert(_ primaryKeyIsStored: Bool, movieReviewState: MovieReviewStoreState, presenter: ReviewMoviePresenterInput) -> UIAlertController? {
-        switch primaryKeyIsStored {
-        case true:
-            let storedAlert = makeStoredAlert()
-            return storedAlert
-            
-        case false:
-            switch movieReviewState {
-            case .beforeStore:
-                let storeLocationAlertController = makeStoreLocationAlert(presenter: presenter)
-                return storeLocationAlertController
-                
-            case .afterStore(.reviewed):
-                return nil
-                
-            case .afterStore(.stock):
-                let storeDateAlert = makeStoreDateAlert(presenter: presenter)
-                return storeDateAlert
-            }
-        }
-    }
-    
     class func makeLogoutAlert(presenter: DetailedSettingPresenterInput) -> UIAlertController? {
         let logoutAlert = UIAlertController(title: "ログアウト",
                                             message: "ログアウトしますか？",
@@ -77,50 +55,4 @@ extension UIAlertController {
 
         return alert
     }
-    
-    class func makeLoginAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let loginAlert = UIAlertController(title: "ログインしますか？", message: "ログインすると保存機能を利用できます", preferredStyle: .alert)
-        loginAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-        loginAlert.addAction(UIAlertAction(title: "ログイン", style: .default, handler: { _ in
-            presenter.didSelectLogin()
-        }))
-        
-        return loginAlert
-    }
-}
-
-extension UIAlertController {
-    class func makeStoredAlert() -> UIAlertController {
-        let storedAlert = UIAlertController(title: nil, message: .storedAlertMessage, preferredStyle: .alert)
-        storedAlert.addAction(UIAlertAction(title: .storedAlertCancelTitle, style: .cancel, handler: nil))
-        
-        return storedAlert
-    }
-    
-    class func makeStoreLocationAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let storeLocationAlert = UIAlertController(title: nil, message: "保存先を選択してください", preferredStyle: .actionSheet)
-        storeLocationAlert.addAction(UIAlertAction(title: "ストックに保存", style: .default) { action in
-            presenter.didTapStoreLocationAlert(isStoredAsReview: false)
-        })
-        storeLocationAlert.addAction(UIAlertAction(title: "レビューリストに保存", style: .default) { action in
-            presenter.didTapStoreLocationAlert(isStoredAsReview: true)
-        })
-        storeLocationAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
-        
-        return storeLocationAlert
-    }
-    
-    class func makeStoreDateAlert(presenter: ReviewMoviePresenterInput) -> UIAlertController {
-        let storeDateAlert = UIAlertController(title: nil, message: .storeDateAlertMessage, preferredStyle: .actionSheet)
-        storeDateAlert.addAction(UIAlertAction(title: .storeDateAlertAddDateTitle, style: .default) { action in
-            presenter.didTapSelectStoreDateAlert(storeDateState: .stockDate)
-        })
-        storeDateAlert.addAction(UIAlertAction(title: .storeDateAlertAddTodayTitle, style: .default) { action in
-            presenter.didTapSelectStoreDateAlert(storeDateState: .today)
-        })
-        storeDateAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
-
-        return storeDateAlert
-    }
-
 }
