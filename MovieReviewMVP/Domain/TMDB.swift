@@ -50,59 +50,6 @@ struct TMDBPerson: Codable {
     var also_known_as: [String]?
 }
 
-// MARK: - 詳細情報
-//enum MediaType {
-//    case movie
-//    case tv
-//    var url: String {
-//        switch self {
-//        case .movie: return "movie"
-//        case .tv: return "tv"
-//        }
-//    }
-//}
-//struct TMDBDetailURL {
-//    static let key = MovieReviewMVPKeys().tMDBApiKey
-//    let detailURL: String
-//    let mediaType: String
-//    init(id: Int, mediaType: String) {
-//        self.mediaType = mediaType
-//        self.detailURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDBDetailURL.key)&language=ja-JP"
-//    }
-//}
-
-//struct TMDBPersonURL {
-//    static let key = MovieReviewMVPKeys().tMDBApiKey
-//    let personURL: String
-//    init(id: Int) {
-//        self.personURL = "https://api.themoviedb.org/3/person/\(String(id))?api_key=\(TMDBPersonURL.key)&language=ja-JP"
-//    }
-//}
-//
-
-// MARK: - PosterURL
-struct TMDBPosterURL {
-    let posterURL: String
-    init(posterPath: String) {
-//        self.posterURL = "https://image.tmdb.org/t/p/w185\(posterPath)"
-        self.posterURL = "https://image.tmdb.org/t/p/w500\(posterPath)"
-    }
-}
-
-//|  poster  | backdrop |  still   | profile  |   logo   |
-//| :------: | :------: | :------: | :------: | :------: |
-//| -------- | -------- | -------- |    w45   |    w45   |
-//|    w92   | -------- |    w92   | -------- |    w92   |
-//|   w154   | -------- | -------- | -------- |   w154   |
-//|   w185   | -------- |   w185   |   w185   |   w185   |
-//| -------- |   w300   |   w300   | -------- |   w300   |
-//|   w342   | -------- | -------- | -------- | -------- |
-//|   w500   | -------- | -------- | -------- |   w500   |
-//| -------- | -------- | -------- |   h632   | -------- |
-//|   w780   |   w780   | -------- | -------- | -------- |
-//| -------- |  w1280   | -------- | -------- | -------- |
-//| original | original | original | original | original |
-
 // MARK: - BackdropURL
 struct TMDBBackdropURL {
     let backdropURL: String
@@ -111,21 +58,3 @@ struct TMDBBackdropURL {
     }
 
 }
-
-//// MARK: - PopularMovieURL
-//struct TMDBPopularMovieURL {
-//    static let key = MovieReviewMVPKeys().tMDBApiKey
-//    let popularMovieURL = "https://api.themoviedb.org/3/movie/popular?api_key=\(TMDBPopularMovieURL.key)&language=ja-JA&page=1"
-//}
-//
-//// MARK: - upcoming
-//struct TMDBUpcomingMovieURL {
-//    static let key = MovieReviewMVPKeys().tMDBApiKey
-//    let upcomingMovieURL = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDBUpcomingMovieURL.key)&language=ja-JA&page=1&region=JP"
-//}
-
-
-//enum TMDBSearchError : Error {
-//    case TMDBrequestError(Error)
-//    case TMDBresponseError
-//}
