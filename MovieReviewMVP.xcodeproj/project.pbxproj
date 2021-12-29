@@ -439,9 +439,9 @@
 			isa = PBXGroup;
 			children = (
 				75EC6627270E917A0001F464 /* Entities */,
-				756DFCB2264D0DB100C6AF07 /* UseCases */,
-				756DFCB3264D0DBD00C6AF07 /* Repositories */,
-				756DFCB1264D0D9F00C6AF07 /* DataStores */,
+				75E4384C277C0BCE00089BAF /* VideoWork */,
+				75E4384F277C0E2800089BAF /* Review */,
+				75E43853277C0E7000089BAF /* User */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -467,35 +467,6 @@
 				758119EB26C4860D00C4BAA3 /* UserDefaults+Ext.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		756DFCB1264D0D9F00C6AF07 /* DataStores */ = {
-			isa = PBXGroup;
-			children = (
-				75EC661E270E86C50001F464 /* TMDbDataStores */,
-				758485412713CD8700B1D4C9 /* FirebaseDataStore */,
-			);
-			path = DataStores;
-			sourceTree = "<group>";
-		};
-		756DFCB2264D0DB100C6AF07 /* UseCases */ = {
-			isa = PBXGroup;
-			children = (
-				75EC662A270E93F70001F464 /* VideoWorkUseCase.swift */,
-				75928722271518D400322CF8 /* ReviewUseCase.swift */,
-				759287262715241200322CF8 /* UserUseCase.swift */,
-			);
-			path = UseCases;
-			sourceTree = "<group>";
-		};
-		756DFCB3264D0DBD00C6AF07 /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */,
-				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
-				7592872427151EED00322CF8 /* UserRepository.swift */,
-			);
-			path = Repositories;
 			sourceTree = "<group>";
 		};
 		758028092779720500E4B68D /* Model */ = {
@@ -576,15 +547,6 @@
 				758028102779736700E4B68D /* Model */,
 			);
 			path = SettingManagement;
-			sourceTree = "<group>";
-		};
-		758485412713CD8700B1D4C9 /* FirebaseDataStore */ = {
-			isa = PBXGroup;
-			children = (
-				7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */,
-				7573D972271532A6008ED07A /* UserDataStore.swift */,
-			);
-			path = FirebaseDataStore;
 			sourceTree = "<group>";
 		};
 		758B059326AD11ED00DFA33A /* DetailedSetting */ = {
@@ -706,6 +668,100 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
+		75E4384C277C0BCE00089BAF /* VideoWork */ = {
+			isa = PBXGroup;
+			children = (
+				75E4384E277C0C6D00089BAF /* UseCase */,
+				75E4384D277C0C3400089BAF /* Repository */,
+				75EC661E270E86C50001F464 /* DataStores */,
+			);
+			path = VideoWork;
+			sourceTree = "<group>";
+		};
+		75E4384D277C0C3400089BAF /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				75EC6625270E90DF0001F464 /* VideoWorksRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		75E4384E277C0C6D00089BAF /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				75EC662A270E93F70001F464 /* VideoWorkUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		75E4384F277C0E2800089BAF /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				75E43850277C0E3E00089BAF /* UseCase */,
+				75E43851277C0E4900089BAF /* Repository */,
+				75E43852277C0E5200089BAF /* DataStore */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		75E43850277C0E3E00089BAF /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				75928722271518D400322CF8 /* ReviewUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		75E43851277C0E4900089BAF /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		75E43852277C0E5200089BAF /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		75E43853277C0E7000089BAF /* User */ = {
+			isa = PBXGroup;
+			children = (
+				75E43856277C0EC900089BAF /* UseCase */,
+				75E43855277C0EBF00089BAF /* Repository */,
+				75E43854277C0EB500089BAF /* DataStore */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		75E43854277C0EB500089BAF /* DataStore */ = {
+			isa = PBXGroup;
+			children = (
+				7573D972271532A6008ED07A /* UserDataStore.swift */,
+			);
+			path = DataStore;
+			sourceTree = "<group>";
+		};
+		75E43855277C0EBF00089BAF /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				7592872427151EED00322CF8 /* UserRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		75E43856277C0EC900089BAF /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				759287262715241200322CF8 /* UserUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
 		75E4A625276A0D0D00E9A838 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
@@ -786,7 +842,7 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		75EC661E270E86C50001F464 /* TMDbDataStores */ = {
+		75EC661E270E86C50001F464 /* DataStores */ = {
 			isa = PBXGroup;
 			children = (
 				75EC661F270E87140001F464 /* TMDbDataStore.swift */,
@@ -794,7 +850,7 @@
 				75093DDB271179290010787D /* TMDbDetailResponses.swift */,
 				75EC6623270E8A440001F464 /* TMDbRequest.swift */,
 			);
-			path = TMDbDataStores;
+			path = DataStores;
 			sourceTree = "<group>";
 		};
 		75EC6627270E917A0001F464 /* Entities */ = {
