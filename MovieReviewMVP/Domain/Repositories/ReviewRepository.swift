@@ -9,15 +9,15 @@ import Foundation
 import Firebase
 
 protocol ReviewRepositoryProtocol {
-    func checkSaved(movie: MovieReviewElement,
+    func checkSaved(movie: VideoWork,
                     completion: @escaping (Bool) -> Void)
-    func save(movie: MovieReviewElement)
+    func save(movie: VideoWork)
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
-               completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
-    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
-    func delete(movie: MovieReviewElement)
-    func update(movie: MovieReviewElement)
+               completion: @escaping (Result<[VideoWork], Error>) -> Void)
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[VideoWork], Error>) -> Void)
+    func delete(movie: VideoWork)
+    func update(movie: VideoWork)
 }
 
 final class ReviewRepository: ReviewRepositoryProtocol {
@@ -27,23 +27,23 @@ final class ReviewRepository: ReviewRepositoryProtocol {
         self.dataStore = dataStore
     }
     
-    func checkSaved(movie: MovieReviewElement,
+    func checkSaved(movie: VideoWork,
                     completion: @escaping (Bool) -> Void) {
         dataStore.checkSaved(movie: movie, completion: completion)
     }
     
-    func save(movie: MovieReviewElement) {
+    func save(movie: VideoWork) {
         dataStore.save(movie: movie)
     }
     
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
-               completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+               completion: @escaping (Result<[VideoWork], Error>) -> Void) {
         dataStore.fetch(isStoredAsReview: isStoredAsReview,
                         sortState: sortState) { result in
             switch result {
             case .success(let data):
-                let videoWorks = data.map { MovieReviewElement(data: $0) }
+                let videoWorks = data.map { VideoWork(data: $0) }
                 completion(.success(videoWorks))
             case .failure(let error):
                 completion(.failure(error))
@@ -53,12 +53,12 @@ final class ReviewRepository: ReviewRepositoryProtocol {
     
     func sort(isStoredAsReview: Bool,
               sortState: sortState,
-              completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+              completion: @escaping (Result<[VideoWork], Error>) -> Void) {
         dataStore.sort(isStoredAsReview: isStoredAsReview,
                        sortState: sortState) { result in
             switch result {
             case .success(let data):
-                let videoWorks = data.map { MovieReviewElement(data: $0) }
+                let videoWorks = data.map { VideoWork(data: $0) }
                 completion(.success(videoWorks))
             case .failure(let error):
                 completion(.failure(error))
@@ -66,30 +66,30 @@ final class ReviewRepository: ReviewRepositoryProtocol {
         }
     }
     
-    func delete(movie: MovieReviewElement) {
+    func delete(movie: VideoWork) {
         dataStore.delete(movie: movie)
     }
     
-    func update(movie: MovieReviewElement) {
+    func update(movie: VideoWork) {
         dataStore.update(movie: movie)
     }
     
 }
 
-private extension MovieReviewElement {
+private extension VideoWork {
     init(data: [String: Any]) {
         let timestamp = data["create_at"] as? Timestamp
-        self = MovieReviewElement(title: data["title"] as? String ?? "",
-                                  poster_path: data["poster_path"] as? String ?? "",
-                                  original_name: data["original_name"] as? String ?? "",
-                                  backdrop_path: data["backdrop_path"] as? String ?? "",
-                                  overview: data["overview"] as? String ?? "",
-                                  releaseDay: data["releaseDay"] as? String ?? "",
-                                  reviewStars: data["reviewStars"] as? Double ?? 0.0,
-                                  review: data["review"] as? String ?? "",
-                                  create_at: timestamp?.dateValue(),
-                                  id: data["id"] as? Int ?? 0,
-                                  isStoredAsReview: data["isStoredAsReview"] as? Bool,
-                                  media_type: data["media_type"] as? String)
+        self = VideoWork(title: data["title"] as? String ?? "",
+                         posterPath: data["poster_path"] as? String ?? "",
+                         originalName: data["original_name"] as? String ?? "",
+                         backdropPath: data["backdrop_path"] as? String ?? "",
+                         overview: data["overview"] as? String ?? "",
+                         releaseDay: data["releaseDay"] as? String ?? "",
+                         reviewStars: data["reviewStars"] as? Double ?? 0.0,
+                         review: data["review"] as? String ?? "",
+                         createAt: timestamp?.dateValue(),
+                         id: data["id"] as? Int ?? 0,
+                         isStoredAsReview: data["isStoredAsReview"] as? Bool,
+                         mediaType: data["media_type"] as? String)
     }
 }

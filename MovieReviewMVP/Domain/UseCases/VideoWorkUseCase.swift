@@ -9,9 +9,9 @@ import Foundation
 
 protocol VideoWorkUseCaseProtocol {
     func fetchVideoWorks(page: Int, query: String,
-                         completion: @escaping ResultHandler<[MovieReviewElement]>)
-    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>)
-    func fetchVideoWorkDetail(videoWork: MovieReviewElement,
+                         completion: @escaping ResultHandler<[VideoWork]>)
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
+    func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<[CastDetail]>)
     func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
 }
@@ -24,19 +24,19 @@ final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
     }
     
     func fetchVideoWorks(page: Int, query: String,
-                         completion: @escaping ResultHandler<[MovieReviewElement]>) {
+                         completion: @escaping ResultHandler<[VideoWork]>) {
         repository.fetchVideoWorks(page: page,
                                    query: query,
                                    completion: completion)
     }
     
-    func fetchVideoWorkDetail(videoWork: MovieReviewElement,
+    func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<[CastDetail]>) {
         repository.fetchVideoWorkDetail(videoWork: videoWork,
                                         completion: completion)
     }
     
-    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[MovieReviewElement]>) {
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
         repository.fetchUpcomingVideoWorks(completion: completion)
     }
     

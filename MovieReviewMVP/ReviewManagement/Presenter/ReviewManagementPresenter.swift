@@ -9,9 +9,9 @@ import Foundation
 
 protocol ReviewManagementPresenterInput {
     var numberOfMovies: Int { get }
-    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement
+    func returnMovieReviewForCell(forRow row: Int) -> VideoWork
     func returnSortState() -> sortState
-    func returnMovieReview() -> [MovieReviewElement]
+    func returnMovieReview() -> [VideoWork]
     func didDeleteReviewMovie(_ movieUpdateState: MovieUpdateState, indexPaths: [IndexPath])
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
     func didTapSortButtoniOS13()
@@ -25,7 +25,7 @@ protocol ReviewManagementPresenterOutput: AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool, _ indexPaths: [IndexPath]?)
     func updateReview()
     func deleteReview(indexPath: IndexPath)
-    func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
+    func displaySelectMyReview(selectReview: VideoWork, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState)
     func sortReview()
     func displaySortAction()
     func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState)
@@ -58,11 +58,11 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
         reviewManagement.returnSortState()
     }
     
-    func returnMovieReview() -> [MovieReviewElement] {
+    func returnMovieReview() -> [VideoWork] {
         reviewManagement.returnReviews()
     }
     
-    func returnMovieReviewForCell(forRow row: Int) -> MovieReviewElement {
+    func returnMovieReviewForCell(forRow row: Int) -> VideoWork {
         reviewManagement.returnReviewForCell(forRow: row)
     }
     
@@ -89,15 +89,15 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
                 print(error)
             case .success(let result):
                 self?.reviewManagement.fetchReviews(state: .search(.initial), results: result)
-                result.enumerated().forEach { movieReviewElement in
+                result.enumerated().forEach { videoWorks in
                     dispatchGroup.enter()
-                    self?.videoWorkuseCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                    self?.videoWorkuseCase.fetchPosterImage(posterPath: videoWorks.element.posterPath) { result in
                         defer { dispatchGroup.leave() }
                         switch result {
                         case .failure(let error):
                             print(error)
                         case.success(let data):
-                            self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                            self?.reviewManagement.fetchPosterData(index: videoWorks.offset, data: data)
                         }
                     }
                 }

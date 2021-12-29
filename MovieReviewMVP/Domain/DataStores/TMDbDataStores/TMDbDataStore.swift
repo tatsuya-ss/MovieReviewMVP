@@ -19,7 +19,7 @@ protocol TMDbDataStoreProtocol {
     func fetchVideoWorks(page: Int, query: String,
                     completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<TMDbSearchResponses>)
-    func fetchVideoWorkDetail(videoWork: MovieReviewElement,
+    func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<TMDbCredits>)
     func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
 }
@@ -60,9 +60,9 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
         task.resume()
     }
     
-    func fetchVideoWorkDetail(videoWork: MovieReviewElement,
+    func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<TMDbCredits>) {
-        guard let url = TMDbAPI.DetailsRequest(id: videoWork.id, mediaType: videoWork.media_type ?? "movie").returnDetailsURLRequest() else {
+        guard let url = TMDbAPI.DetailsRequest(id: videoWork.id, mediaType: videoWork.mediaType ?? "movie").returnDetailsURLRequest() else {
             completion(.failure(TMDbSearchError.urlError))
             return
         }
