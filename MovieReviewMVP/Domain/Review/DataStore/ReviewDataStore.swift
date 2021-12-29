@@ -23,16 +23,16 @@ enum FirebaseError: Error {
 }
 
 protocol ReviewDataStoreProtocol {
-    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void)
-    func save(movie: MovieReviewElement)
+    func checkSaved(movie: VideoWork, completion: @escaping (Bool) -> Void)
+    func save(movie: VideoWork)
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
                completion: @escaping (Result<[[String: Any]], Error>) -> Void)
     func sort(isStoredAsReview: Bool,
               sortState: sortState,
               completion: @escaping (Result<[[String: Any]], Error>) -> Void)
-    func delete(movie: MovieReviewElement)
-    func update(movie: MovieReviewElement)
+    func delete(movie: VideoWork)
+    func update(movie: VideoWork)
 }
 
 final class ReviewDataStore : ReviewDataStoreProtocol {
@@ -40,9 +40,8 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     let db = Firestore.firestore()
     
     let collectionReference = Firestore.firestore().collection("movieReview")
-    var movieReviews = [MovieReviewElement]()
     
-    func checkSaved(movie: MovieReviewElement, completion: @escaping (Bool) -> Void) {
+    func checkSaved(movie: VideoWork, completion: @escaping (Bool) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         let documentTitle = makeDocumentTitle(movie: movie)
@@ -58,22 +57,22 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
         
     }
     
-    func save(movie: MovieReviewElement) {
+    func save(movie: VideoWork) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         let dataToSave: [String: Any] = [
             "title": movie.title ?? "",
-            "poster_path": movie.poster_path ?? "",
-            "original_name": movie.original_name ?? "",
-            "backdrop_path": movie.backdrop_path ?? "",
+            "poster_path": movie.posterPath ?? "",
+            "original_name": movie.originalName ?? "",
+            "backdrop_path": movie.backdropPath ?? "",
             "overview": movie.overview ?? "",
             "releaseDay": movie.releaseDay ?? "",
             "reviewStars": movie.reviewStars ?? 0.0,
             "review": movie.review,
-            "create_at": Timestamp(date: movie.create_at ?? Date()),
+            "create_at": Timestamp(date: movie.createAt ?? Date()),
             "id": movie.id,
             "isStoredAsReview": movie.isStoredAsReview ?? true,
-            "media_type": movie.media_type
+            "media_type": movie.mediaType
         ]
         
         let documentTitle = makeDocumentTitle(movie: movie)
@@ -148,7 +147,7 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
     }
     
     
-    func delete(movie: MovieReviewElement) {
+    func delete(movie: VideoWork) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         let documentTitle = makeDocumentTitle(movie: movie)
@@ -161,23 +160,23 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
         }
     }
     
-    func update(movie: MovieReviewElement) {
+    func update(movie: VideoWork) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         let documentTitle = makeDocumentTitle(movie: movie)
         db.collection("users").document(uid).collection("reviews").document("\(movie.id)\(documentTitle)").updateData([
             "title": movie.title ?? "",
-            "poster_path": movie.poster_path ?? "",
-            "original_name": movie.original_name ?? "",
-            "backdrop_path": movie.backdrop_path ?? "",
+            "poster_path": movie.posterPath ?? "",
+            "original_name": movie.originalName ?? "",
+            "backdrop_path": movie.backdropPath ?? "",
             "overview": movie.overview ?? "",
             "releaseDay": movie.releaseDay ?? "",
             "reviewStars": movie.reviewStars ?? 0.0,
             "review": movie.review,
-            "create_at": movie.create_at ?? Date(),
+            "create_at": movie.createAt ?? Date(),
             "id": movie.id,
             "isStoredAsReview": movie.isStoredAsReview ?? true,
-            "media_type": movie.media_type
+            "media_type": movie.mediaType
         ]) { error in
             if let error = error {
                 print(error.localizedDescription)
@@ -187,13 +186,13 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
         }
     }
     
-    private func makeDocumentTitle(movie: MovieReviewElement) -> String {
+    private func makeDocumentTitle(movie: VideoWork) -> String {
         if let title = movie.title {
             let replacingTitle = title.contains("/")
             ? title.replacingOccurrences(of: "/", with: "／")
             : title
             return replacingTitle
-        } else if let originalName = movie.original_name {
+        } else if let originalName = movie.originalName {
             let replacingTitle = originalName.contains("/")
             ? originalName.replacingOccurrences(of: "/", with: "／")
             : originalName

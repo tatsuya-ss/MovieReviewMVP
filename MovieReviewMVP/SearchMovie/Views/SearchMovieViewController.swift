@@ -264,27 +264,19 @@ extension SearchMovieViewController : UITableViewDataSource {
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
-    func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement]) {
+    func update(_ fetchState: FetchMovieState, _ movie: [VideoWork]) {
         displayLabel.text = fetchState.displayLabelText
         tableView.reloadData()
         stopIndicator(indicator: activityIndicatorView)
     }
     
-    func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState) {
+    func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
 //        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let reviewMovieVC = SelectSearchReviewViewController()
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
         let presenter = SelectSearchReviewPresenter(view: reviewMovieVC, selectedReview: SelectedReview(review: movie), reviewUseCase: reviewUseCase, userUseCase: userUseCase, videoWorkuseCase: videoWorkUseCase)
-
-//        let presenter = ReviewMoviePresenter(movieReviewState: .beforeStore,
-//                                             movieReviewElement: movie,
-//                                             movieUpdateState: movieUpdateState,
-//                                             view: reviewMovieVC,
-//                                             videoWorkuseCase: videoWorkUseCase,
-//                                             reviewUseCase: reviewUseCase,
-//                                             userUseCase: userUseCase)
         
         reviewMovieVC.inject(presenter: presenter)
         

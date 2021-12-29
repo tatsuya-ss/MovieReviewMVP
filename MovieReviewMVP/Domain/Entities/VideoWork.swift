@@ -10,13 +10,14 @@ import Foundation
 struct VideoWork: Hashable {
     var title: String?
     var posterPath: String?
+    var posterData: Data?
     var originalName: String?
     var backdropPath: String?
     var overview: String?
     var releaseDay: String?
     var reviewStars: Double?
     var review: String?
-    let createAt: Date?
+    var createAt: Date?
     let id: Int
     var isStoredAsReview: Bool?
     var mediaType: String?

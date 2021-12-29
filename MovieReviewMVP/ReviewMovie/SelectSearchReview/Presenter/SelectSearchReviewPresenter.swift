@@ -67,7 +67,7 @@ extension SelectSearchReviewPresenter: SelectSearchReviewPresenterInput {
                 self?.casts = casts
                 casts.enumerated().forEach { cast in
                     dispatchGroup.enter()
-                    self?.videoWorkUseCase.fetchPosterImage(posterPath: cast.element.profile_path) {
+                    self?.videoWorkUseCase.fetchPosterImage(posterPath: cast.element.profilePath) {
                         result in
                         defer { dispatchGroup.leave() }
                         switch result {
@@ -88,17 +88,17 @@ extension SelectSearchReviewPresenter: SelectSearchReviewPresenterInput {
         
     }
     
-    private func makeTitle(movie: MovieReviewElement) -> String {
+    private func makeTitle(movie: VideoWork) -> String {
         if let title = movie.title, !title.isEmpty {
             return title
-        } else if let originalName = movie.original_name, !originalName.isEmpty {
+        } else if let originalName = movie.originalName, !originalName.isEmpty {
             return originalName
         } else {
             return .notTitle
         }
     }
         
-    private func makeReleaseDateText(movie: MovieReviewElement) -> String {
+    private func makeReleaseDateText(movie: VideoWork) -> String {
         if let releaseDay = movie.releaseDay,
            !releaseDay.isEmpty {
             return " " + "公開日" + " " + releaseDay

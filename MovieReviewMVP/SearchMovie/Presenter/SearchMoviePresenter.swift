@@ -9,7 +9,7 @@ import Foundation
 
 protocol SearchMoviePresenterInput {
     var numberOfMovies: Int { get }
-    func returnReview(indexPath: IndexPath) -> MovieReviewElement
+    func returnReview(indexPath: IndexPath) -> VideoWork
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
@@ -18,8 +18,8 @@ protocol SearchMoviePresenterInput {
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
-    func update(_ fetchState: FetchMovieState, _ movie: [MovieReviewElement])
-    func reviewTheMovie(movie: MovieReviewElement, movieUpdateState: MovieUpdateState)
+    func update(_ fetchState: FetchMovieState, _ movie: [VideoWork])
+    func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState)
     func displayStoreReviewController()
 }
 
@@ -48,7 +48,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         reviewManagement.makeReleaseDay(indexPath: indexPath)
     }
     
-    func returnReview(indexPath: IndexPath) -> MovieReviewElement {
+    func returnReview(indexPath: IndexPath) -> VideoWork {
         reviewManagement.returnReviews()[indexPath.item]
     }
     
@@ -125,16 +125,16 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         }
     }
     
-    private func fetchPosterImage(results: [MovieReviewElement], dispatchGroup: DispatchGroup) {
-        results.enumerated().forEach { movieReviewElement in
+    private func fetchPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
+        results.enumerated().forEach { videoWork in
             dispatchGroup.enter()
-            useCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { [weak self] result in
+            useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                    self?.reviewManagement.fetchPosterData(index: videoWork.offset, data: data)
                 }
             }
         }

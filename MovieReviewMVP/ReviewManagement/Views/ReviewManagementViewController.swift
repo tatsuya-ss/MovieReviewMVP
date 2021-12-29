@@ -249,7 +249,7 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     }
     
     // MARK: tapしたレビューを詳細表示
-    func displaySelectMyReview(selectReview: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
+    func displaySelectMyReview(selectReview: VideoWork, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
         let selectSavedReviewVC = SelectSavedReviewViewController()
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))

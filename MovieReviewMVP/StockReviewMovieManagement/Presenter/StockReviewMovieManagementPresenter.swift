@@ -9,7 +9,7 @@ import Foundation
 
 protocol StockReviewMovieManagementPresenterInput {
     var numberOfStockMovies: Int { get }
-    func returnStockMovieForCell(forRow row: Int) -> MovieReviewElement
+    func returnStockMovieForCell(forRow row: Int) -> VideoWork
     func fetchStockMovies()
     func returnSortState() -> sortState
     func didTapSortButton(isStoredAsReview: Bool, sortState: sortState)
@@ -25,7 +25,7 @@ protocol StockReviewMovieManagementPresenterOutput : AnyObject {
     func changeTheDisplayDependingOnTheEditingState(_ editing: Bool,
                                                     _ indexPaths: [IndexPath]?)
     func updateStockCollectionView(movieUpdateState: MovieUpdateState, indexPath: IndexPath?)
-    func displayReviewMovieView(_ movie: MovieReviewElement,
+    func displayReviewMovieView(_ movie: VideoWork,
                                 afterStoreState: afterStoreState,
                                 movieUpdateState: MovieUpdateState)
     func displaySortAction()
@@ -56,7 +56,7 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
         return reviewCount
     }
     
-    func returnStockMovieForCell(forRow row: Int) -> MovieReviewElement {
+    func returnStockMovieForCell(forRow row: Int) -> VideoWork {
         reviewManagement.returnReviewForCell(forRow: row)
     }
     
@@ -98,15 +98,15 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
                 print(error)
             case .success(let reviews):
                 self?.reviewManagement.fetchReviews(state: .search(.initial), results: reviews)
-                reviews.enumerated().forEach { movieReviewElement in
+                reviews.enumerated().forEach { videoWorks in
                     dispatchGroup.enter()
-                    self?.videoWorkuseCase.fetchPosterImage(posterPath: movieReviewElement.element.poster_path) { result in
+                    self?.videoWorkuseCase.fetchPosterImage(posterPath: videoWorks.element.posterPath) { result in
                         defer { dispatchGroup.leave() }
                         switch result {
                         case .failure(let error):
                             print(error)
                         case.success(let data):
-                            self?.reviewManagement.fetchPosterData(index: movieReviewElement.offset, data: data)
+                            self?.reviewManagement.fetchPosterData(index: videoWorks.offset, data: data)
                         }
                     }
                 }

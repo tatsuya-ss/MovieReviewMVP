@@ -252,7 +252,7 @@ extension StockReviewMovieManagementViewController : StockReviewMovieManagementP
         isEditing = false
     }
     
-    func displayReviewMovieView(_ movie: MovieReviewElement, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
+    func displayReviewMovieView(_ movie: VideoWork, afterStoreState: afterStoreState, movieUpdateState: MovieUpdateState) {
 //        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let reviewMovieVC = SelectStockReviewViewController()
         let videoWorkUseCase = VideoWorkUseCase(repository: VideoWorksRepository(dataStore: TMDbDataStore()))

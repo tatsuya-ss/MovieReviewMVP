@@ -8,19 +8,19 @@
 import Foundation
 
 final class SelectedReview {
-    private var selectedReview: MovieReviewElement
+    private var selectedReview: VideoWork
     
-    init(review: MovieReviewElement) {
+    init(review: VideoWork) {
         selectedReview = review
     }
     
-    func getReview() -> MovieReviewElement {
+    func getReview() -> VideoWork {
         return selectedReview
     }
     
     func checkTitle() {
         if selectedReview.title == nil || selectedReview.title?.isEmpty == true {
-            selectedReview.title = selectedReview.original_name
+            selectedReview.title = selectedReview.originalName
         }
     }
     
@@ -46,7 +46,7 @@ final class SelectedReview {
         }
         
         if let saveDate = saveDate {
-            selectedReview.create_at = saveDate
+            selectedReview.createAt = saveDate
         }
         
         if let score = score {

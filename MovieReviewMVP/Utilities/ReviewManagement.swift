@@ -8,7 +8,7 @@
 import Foundation
 
 final class ReviewManagement {
-    private var videoWorks: [MovieReviewElement] = []
+    private var videoWorks: [VideoWork] = []
     private var sortStateManagement: sortState = .createdDescend
 
     func returnSortState() -> sortState {
@@ -19,15 +19,15 @@ final class ReviewManagement {
         videoWorks.count
     }
     
-    func returnReviews() -> [MovieReviewElement] {
+    func returnReviews() -> [VideoWork] {
         videoWorks
     }
     
-    func returnReviewForCell(forRow row: Int) -> MovieReviewElement {
+    func returnReviewForCell(forRow row: Int) -> VideoWork {
         videoWorks[row]
     }
 
-    func fetchReviews(state: FetchMovieState, results: [MovieReviewElement]) {
+    func fetchReviews(state: FetchMovieState, results: [VideoWork]) {
         switch state {
         case .search(.initial), .upcoming:
             videoWorks = results
@@ -44,7 +44,7 @@ final class ReviewManagement {
         videoWorks.remove(at: row)
     }
     
-    func returnSelectedReview(indexPath: IndexPath) -> MovieReviewElement {
+    func returnSelectedReview(indexPath: IndexPath) -> VideoWork {
         videoWorks[indexPath.row]
     }
     
@@ -56,7 +56,7 @@ final class ReviewManagement {
     func makeTitle(indexPath: IndexPath) -> String {
         if let title = videoWorks[indexPath.item].title, !title.isEmpty {
             return title
-        } else if let originalName = videoWorks[indexPath.item].original_name, !originalName.isEmpty {
+        } else if let originalName = videoWorks[indexPath.item].originalName, !originalName.isEmpty {
             return originalName
         } else {
             return .notTitle
@@ -75,9 +75,9 @@ final class ReviewManagement {
         sortStateManagement = sortState
         switch sortState {
         case .createdAscend:
-            videoWorks.sort { $0.create_at ?? Date() > $1.create_at ?? Date() }
+            videoWorks.sort { $0.createAt ?? Date() > $1.createAt ?? Date() }
         case .createdDescend:
-            videoWorks.sort { $0.create_at ?? Date() < $1.create_at ?? Date() }
+            videoWorks.sort { $0.createAt ?? Date() < $1.createAt ?? Date() }
         case .reviewStarAscend:
             videoWorks.sort { $0.reviewStars ?? 0.0 > $1.reviewStars ?? 0.0 }
         case .reviewStarDescend:

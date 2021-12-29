@@ -8,15 +8,15 @@
 import Foundation
 
 protocol ReviewUseCaseProtocol {
-    func checkSaved(movie: MovieReviewElement,
+    func checkSaved(movie: VideoWork,
                     completion: @escaping (Bool) -> Void)
-    func save(movie: MovieReviewElement)
+    func save(movie: VideoWork)
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
-               completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
-    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[MovieReviewElement], Error>) -> Void)
-    func delete(movie: MovieReviewElement)
-    func update(movie: MovieReviewElement)
+               completion: @escaping (Result<[VideoWork], Error>) -> Void)
+    func sort(isStoredAsReview: Bool, sortState: sortState, completion: @escaping (Result<[VideoWork], Error>) -> Void)
+    func delete(movie: VideoWork)
+    func update(movie: VideoWork)
 }
 
 final class ReviewUseCase: ReviewUseCaseProtocol {
@@ -26,18 +26,18 @@ final class ReviewUseCase: ReviewUseCaseProtocol {
         self.repository = repository
     }
     
-    func checkSaved(movie: MovieReviewElement,
+    func checkSaved(movie: VideoWork,
                     completion: @escaping (Bool) -> Void) {
         repository.checkSaved(movie: movie, completion: completion)
     }
     
-    func save(movie: MovieReviewElement) {
+    func save(movie: VideoWork) {
         repository.save(movie: movie)
     }
     
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
-               completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+               completion: @escaping (Result<[VideoWork], Error>) -> Void) {
         repository.fetch(isStoredAsReview: isStoredAsReview,
                          sortState: sortState,
                          completion: completion)
@@ -45,17 +45,17 @@ final class ReviewUseCase: ReviewUseCaseProtocol {
     
     func sort(isStoredAsReview: Bool,
               sortState: sortState,
-              completion: @escaping (Result<[MovieReviewElement], Error>) -> Void) {
+              completion: @escaping (Result<[VideoWork], Error>) -> Void) {
         repository.sort(isStoredAsReview: isStoredAsReview,
                         sortState: sortState,
                         completion: completion)
     }
     
-    func delete(movie: MovieReviewElement) {
+    func delete(movie: VideoWork) {
         repository.delete(movie: movie)
     }
     
-    func update(movie: MovieReviewElement) {
+    func update(movie: VideoWork) {
         repository.update(movie: movie)
     }
     
