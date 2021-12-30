@@ -278,18 +278,11 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
 extension ReviewManagementViewController : FUIAuthDelegate {
     private func auth() {
         if let authUI = FUIAuth.defaultAuthUI() {
-            if #available(iOS 13.0, *) {
-                authUI.providers = [
-                    FUIOAuth.appleAuthProvider(),
-                    FUIGoogleAuth(authUI: authUI),
-                    FUIOAuth.twitterAuthProvider()
-                ]
-            } else {
-                authUI.providers = [
-                    FUIGoogleAuth(authUI: authUI),
-                    FUIOAuth.twitterAuthProvider()
-                ]
-            }
+            authUI.providers = [
+                FUIOAuth.appleAuthProvider(),
+                FUIGoogleAuth(authUI: authUI),
+                FUIOAuth.twitterAuthProvider()
+            ]
             authUI.delegate = self
             
             let authViewController = authUI.authViewController()
@@ -440,19 +433,11 @@ extension ReviewManagementViewController {
     private func setupNavigation() {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .reviewTitle))
-        
-        if #available(iOS 14.0, *) {
-            let sortMenu = makeSortMenu()
-            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
-                                         image: nil,
-                                         primaryAction: nil,
-                                         menu: sortMenu)
-        } else {
-            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(sortButtonTapped))
-        }
+        let sortMenu = makeSortMenu()
+        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
+                                     image: nil,
+                                     primaryAction: nil,
+                                     menu: sortMenu)
         editButton = editButtonItem
         [sortButton, editButton].forEach { $0?.tintColor = .stringColor }
         
@@ -463,7 +448,7 @@ extension ReviewManagementViewController {
     private func setupTabBarController() {
         tabBarController?.tabBar.tintColor = .baseColor
     }
-        
+    
     private func setupCollectionView() {
         colunmFlowLayout = ReviewManagementColumnFlowLayout()
         collectionView.collectionViewLayout = colunmFlowLayout

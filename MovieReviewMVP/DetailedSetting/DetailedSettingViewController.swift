@@ -96,18 +96,11 @@ extension DetailedSettingViewController : UITableViewDelegate {
 extension DetailedSettingViewController : FUIAuthDelegate {
     private func auth() {
         if let authUI = FUIAuth.defaultAuthUI() {
-            if #available(iOS 13.0, *) {
-                authUI.providers = [
-                    FUIOAuth.appleAuthProvider(),
-                    FUIGoogleAuth(authUI: authUI),
-                    FUIOAuth.twitterAuthProvider()
-                ]
-            } else {
-                authUI.providers = [
-                    FUIGoogleAuth(authUI: authUI),
-                    FUIOAuth.twitterAuthProvider()
-                ]
-            }
+            authUI.providers = [
+                FUIOAuth.appleAuthProvider(),
+                FUIGoogleAuth(authUI: authUI),
+                FUIOAuth.twitterAuthProvider()
+            ]
             authUI.delegate = self
             
             let authViewController = authUI.authViewController()

@@ -19,7 +19,7 @@ final class SearchMovieViewController: UIViewController {
     @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     private var bannerView: GADBannerView!
-
+    
     private var scrollIndicator: UIActivityIndicatorView!
     private var tableViewCellHeight: CGFloat?
     private var presenter: SearchMoviePresenterInput!
@@ -50,23 +50,17 @@ final class SearchMovieViewController: UIViewController {
 
 // MARK: - setup
 extension SearchMovieViewController {
-
+    
     private func setupSearchBar() {
         movieSearchBar.delegate = self
         movieSearchBar.keyboardType = .namePhonePad
-        if #available(iOS 13.0, *) {
-            movieSearchBar.searchTextField.backgroundColor = .white
-            movieSearchBar.barStyle = .default
-            
-            // キャンセルボタンを白
-            movieSearchBar.tintColor = .white
-            // カーソルの色を黒
-            UITextField.appearance(whenContainedInInstancesOf: [type(of: movieSearchBar)]).tintColor = .black
-
-        } else {
-            movieSearchBar.barStyle = .black
-            movieSearchBar.tintColor = .white
-        }
+        movieSearchBar.searchTextField.backgroundColor = .white
+        movieSearchBar.barStyle = .default
+        
+        // キャンセルボタンを白
+        movieSearchBar.tintColor = .white
+        // カーソルの色を黒
+        UITextField.appearance(whenContainedInInstancesOf: [type(of: movieSearchBar)]).tintColor = .black
     }
     
     private func setupTabBarController() {
@@ -215,7 +209,7 @@ extension SearchMovieViewController : UITableViewDelegate {
         let previousScrollViewBottomInset = CGFloat(0)
         let indicatorHeight = scrollIndicator.bounds.height + 16
         var isLoadingMore = false
-
+        
         if isLoadingMore == true {
             scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
         } else {
@@ -271,7 +265,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     }
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
-//        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
+        //        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let reviewMovieVC = SelectSearchReviewViewController()
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
@@ -286,12 +280,8 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     }
     
     func displayStoreReviewController() {
-        if #available(iOS 14.0, *) {
-            if let windowScene = UIApplication.shared.windows.first?.windowScene {
-                SKStoreReviewController.requestReview(in: windowScene)
-            }
-        } else {
-            SKStoreReviewController.requestReview()
+        if let windowScene = UIApplication.shared.windows.first?.windowScene {
+            SKStoreReviewController.requestReview(in: windowScene)
         }
     }
     
