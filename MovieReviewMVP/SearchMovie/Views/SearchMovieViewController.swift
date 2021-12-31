@@ -14,15 +14,18 @@ extension SearchMovieViewController: UIActivityIndicatorProtocol { }
 final class SearchMovieViewController: UIViewController {
     
     @IBOutlet private weak var movieSearchBar: UISearchBar!
-    @IBOutlet private weak var tableView: UITableView!
+//    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var displayLabel: UILabel!
-    @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
+//    @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
+    @IBOutlet private weak var collectionViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     private var bannerView: GADBannerView!
     
     private var scrollIndicator: UIActivityIndicatorView!
     private var tableViewCellHeight: CGFloat?
     private var presenter: SearchMoviePresenterInput!
+    private var dataSource: UICollectionViewDiffableDataSource<Int, VideoWork>! = nil
     
     func inject(presenter: SearchMoviePresenterInput) {
         self.presenter = presenter
@@ -32,13 +35,15 @@ final class SearchMovieViewController: UIViewController {
         super.viewDidLoad()
         setupTabBarController()
         setupNavigationController()
-        setupTableViewController()
+//        setupTableViewController()
         setupPresenter()
         setupIndicator()
         setupSearchBar()
         setupBanner()
         setupIndicator(indicator: activityIndicatorView)
         startIndicator(indicator: activityIndicatorView)
+        setupCollectionView()
+        configureDataSource()
         presenter.fetchMovie(state: .upcoming, text: nil)
     }
     
@@ -72,23 +77,65 @@ extension SearchMovieViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .searchTitle))
     }
     
-    private func setupTableViewController() {
-        tableView.register(MovieTableViewCell.nib, forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
-        tableView.dataSource = self
-        tableView.delegate = self
-        // MARK: tableViewの高さを設定
-        
-        if let height = tableViewCellHeight {
-            tableView.rowHeight = height
-            tableView.estimatedRowHeight = height
-        } else {
-            tableViewCellHeight = tableView.bounds.height / 5
-            guard let height = tableViewCellHeight else { return }
-            tableView.rowHeight = height
-            tableView.estimatedRowHeight = height
-        }
-        
+    private func setupCollectionView() {
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.register(SearchMovieCollectionViewCell.nib, forCellWithReuseIdentifier: SearchMovieCollectionViewCell.identifier)
+        collectionView.backgroundColor = .black
     }
+    
+    private func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Int, VideoWork>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchMovieCollectionViewCell.identifier, for: indexPath) as? SearchMovieCollectionViewCell else { return UICollectionViewCell() }
+            let movie = self?.presenter.returnReview(indexPath: indexPath)
+            let image = (movie?.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: (movie?.posterData!)!)
+            let title = self?.presenter.makeTitle(indexPath: indexPath) ?? "タイトル無し"
+            let releaseDay = self?.presenter.makeReleaseDay(indexPath: indexPath) ?? "公開日不明"
+            cell.configure(image: image, title: title, releaseDay: releaseDay)
+            return cell
+        })
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
+        snapshot.appendSections([1])
+        snapshot.appendItems(presenter.returnReview())
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection in
+            let leadingItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                                        heightDimension: .fractionalHeight(1.0)))
+            leadingItem.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+            let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3),
+                                                                                                       heightDimension: .fractionalHeight(0.3)),
+                                                                    subitems: [leadingItem])
+            let section = NSCollectionLayoutSection(group: containerGroup)
+            section.orthogonalScrollingBehavior = .continuous
+            return section
+        }, configuration: config)
+        
+        return layout
+    }
+    
+//    private func setupTableViewController() {
+//        tableView.register(MovieTableViewCell.nib, forCellReuseIdentifier: MovieTableViewCell.reuserIdentifier)
+//        tableView.dataSource = self
+//        tableView.delegate = self
+//        // MARK: tableViewの高さを設定
+//
+//        if let height = tableViewCellHeight {
+//            tableView.rowHeight = height
+//            tableView.estimatedRowHeight = height
+//        } else {
+//            tableViewCellHeight = tableView.bounds.height / 5
+//            guard let height = tableViewCellHeight else { return }
+//            tableView.rowHeight = height
+//            tableView.estimatedRowHeight = height
+//        }
+//
+//    }
     
     private func setupIndicator() {
         scrollIndicator = UIActivityIndicatorView()
@@ -236,23 +283,23 @@ extension SearchMovieViewController : UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension SearchMovieViewController : UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.numberOfMovies
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
-        let movie = presenter.returnReview(indexPath: indexPath)
-        let image = (movie.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movie.posterData!)
-        let title = presenter.makeTitle(indexPath: indexPath)
-        let releaseDay = presenter.makeReleaseDay(indexPath: indexPath)
-        cell.configure(image: image, title: title, releaseDay: releaseDay)
-        return cell
-    }
-    
-}
+//extension SearchMovieViewController : UITableViewDataSource {
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        presenter.numberOfMovies
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.reuserIdentifier, for: indexPath) as! MovieTableViewCell
+//        let movie = presenter.returnReview(indexPath: indexPath)
+//        let image = (movie.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: movie.posterData!)
+//        let title = presenter.makeTitle(indexPath: indexPath)
+//        let releaseDay = presenter.makeReleaseDay(indexPath: indexPath)
+//        cell.configure(image: image, title: title, releaseDay: releaseDay)
+//        return cell
+//    }
+//
+//}
 
 // MARK: - SearchMoviePresenterOutput
 
@@ -260,8 +307,15 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func update(_ fetchState: FetchMovieState, _ movie: [VideoWork]) {
         displayLabel.text = fetchState.displayLabelText
-        tableView.reloadData()
+        collectionViewSnapshot()
         stopIndicator(indicator: activityIndicatorView)
+    }
+    
+    private func collectionViewSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
+        snapshot.appendSections([1])
+        snapshot.appendItems(presenter.returnReview())
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
@@ -290,7 +344,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
 extension SearchMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         let bannerHeight = CGFloat(50)
-        tableViewBottomAnchor.constant = -bannerHeight
+        collectionViewBottomAnchor.constant = -bannerHeight
         
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {
