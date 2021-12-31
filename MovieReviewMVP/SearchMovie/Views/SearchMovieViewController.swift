@@ -16,7 +16,6 @@ final class SearchMovieViewController: UIViewController {
     @IBOutlet private weak var movieSearchBar: UISearchBar!
 //    @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var displayLabel: UILabel!
 //    @IBOutlet private weak var tableViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var collectionViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
@@ -95,6 +94,16 @@ extension SearchMovieViewController {
             return cell
         })
         
+        // MARK: Headerの作成
+        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<CollectionViewHeaderTitle>(elementKind: "header-element-kind") { supplementaryView, elementKind, indexPath in
+            supplementaryView.label.text = "近日公開"
+            supplementaryView.label.textColor = .white
+            supplementaryView.label.font = .boldSystemFont(ofSize: 20)
+        }
+        dataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
+            return self?.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
+        }
+        
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
         snapshot.appendSections([1])
         snapshot.appendItems(presenter.returnReview())
@@ -113,6 +122,14 @@ extension SearchMovieViewController {
                                                                     subitems: [leadingItem])
             let section = NSCollectionLayoutSection(group: containerGroup)
             section.orthogonalScrollingBehavior = .continuous
+            
+            // MARK: Headerの処理
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                                                               heightDimension: .estimated(44)),
+                                                                            elementKind: "header-element-kind",
+                                                                            alignment: .top)
+            section.boundarySupplementaryItems = [sectionHeader]
+
             return section
         }, configuration: config)
         
@@ -306,7 +323,6 @@ extension SearchMovieViewController : UITableViewDelegate {
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func update(_ fetchState: FetchMovieState, _ movie: [VideoWork]) {
-        displayLabel.text = fetchState.displayLabelText
         collectionViewSnapshot()
         stopIndicator(indicator: activityIndicatorView)
     }
