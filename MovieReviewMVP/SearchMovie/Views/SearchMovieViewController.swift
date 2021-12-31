@@ -13,6 +13,16 @@ extension SearchMovieViewController: UIActivityIndicatorProtocol { }
 
 final class SearchMovieViewController: UIViewController {
     
+    private enum SectionKind: Int, CaseIterable {
+        case upcoming
+        var title: String {
+            switch self {
+            case .upcoming:
+                return "近日公開"
+            }
+        }
+    }
+    
     @IBOutlet private weak var movieSearchBar: UISearchBar!
 //    @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -96,7 +106,8 @@ extension SearchMovieViewController {
         
         // MARK: Headerの作成
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<CollectionViewHeaderTitle>(elementKind: "header-element-kind") { supplementaryView, elementKind, indexPath in
-            supplementaryView.label.text = "近日公開"
+            let sectionKind = SectionKind(rawValue: indexPath.section)
+            supplementaryView.label.text = sectionKind?.title
             supplementaryView.label.textColor = .white
             supplementaryView.label.font = .boldSystemFont(ofSize: 20)
         }
