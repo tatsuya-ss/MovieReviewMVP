@@ -11,6 +11,8 @@ protocol VideoWorkUseCaseProtocol {
     func fetchVideoWorks(page: Int, query: String,
                          completion: @escaping ResultHandler<[VideoWork]>)
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
+    func fetchTrendingWeekVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
+    func fetchNowPlayingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
     func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<[CastDetail]>)
     func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
@@ -37,7 +39,27 @@ final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
     }
     
     func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
-        repository.fetchUpcomingVideoWorks(completion: completion)
+        guard let url = TMDbAPI.UpcomingRequest().upcomingURL else {
+            completion(.failure(TMDbSearchError.urlError))
+            return
+        }
+        repository.fetchUpcomingVideoWorks(url: url, completion: completion)
+    }
+    
+    func fetchTrendingWeekVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
+        guard let url = TMDbAPI.TrendingWeekRequest().url else {
+            completion(.failure(TMDbSearchError.urlError))
+            return
+        }
+        repository.fetchUpcomingVideoWorks(url: url, completion: completion)
+    }
+    
+    func fetchNowPlayingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
+        guard let url = TMDbAPI.NowPlayingRequest().url else {
+            completion(.failure(TMDbSearchError.urlError))
+            return
+        }
+        repository.fetchUpcomingVideoWorks(url: url, completion: completion)
     }
     
     func fetchPosterImage(posterPath: String?,

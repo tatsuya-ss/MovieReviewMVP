@@ -18,7 +18,7 @@ typealias ResultHandler<T> = (Result<T, Error>) -> Void
 protocol TMDbDataStoreProtocol {
     func fetchVideoWorks(page: Int, query: String,
                     completion: @escaping ResultHandler<TMDbSearchResponses>)
-    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<TMDbSearchResponses>)
+    func fetchUpcomingVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<TMDbCredits>)
     func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
@@ -35,6 +35,32 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
             return
         }
         
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            do {
+                if let error = error {
+                    completion(.failure(TMDbSearchError.requestError))
+                    print(error)
+                }
+                guard let data = data,
+                      let response = response as? HTTPURLResponse else {
+                          completion(.failure(TMDbSearchError.responseError))
+                          return
+                      }
+                
+                if response.statusCode == 200 {
+                    let data = try JSONDecoder().decode(TMDbSearchResponses.self,
+                                                        from: data)
+                    completion(.success(data))
+                }
+            } catch {
+                completion(.failure(TMDbSearchError.responseError))
+                print(error)
+            }
+        }
+        task.resume()
+    }
+    
+    func fetchUpcomingVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>) {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             do {
                 if let error = error {
@@ -79,37 +105,6 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
                       }
                 if response.statusCode == 200 {
                     let data = try JSONDecoder().decode(TMDbCredits.self, from: data)
-                    completion(.success(data))
-                }
-            } catch {
-                completion(.failure(TMDbSearchError.responseError))
-                print(error)
-            }
-        }
-        task.resume()
-    }
-
-    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<TMDbSearchResponses>) {
-        guard let url = TMDbAPI.UpcomingRequest().upcomingURL
-        else {
-            completion(.failure(TMDbSearchError.urlError))
-            return
-        }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            do {
-                if let error = error {
-                    completion(.failure(TMDbSearchError.requestError))
-                    print(error)
-                }
-                guard let data = data,
-                      let response = response as? HTTPURLResponse else {
-                          completion(.failure(TMDbSearchError.responseError))
-                          return
-                      }
-                
-                if response.statusCode == 200 {
-                    let data = try JSONDecoder().decode(TMDbSearchResponses.self,
-                                                        from: data)
                     completion(.success(data))
                 }
             } catch {

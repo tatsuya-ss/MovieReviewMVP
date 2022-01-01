@@ -15,10 +15,13 @@ final class SearchMovieViewController: UIViewController {
     
     private enum SectionKind: Int, CaseIterable {
         case upcoming
+        case trendingWeek
+        case nowPlaying
         var title: String {
             switch self {
-            case .upcoming:
-                return "近日公開"
+            case .upcoming: return "近日公開"
+            case .trendingWeek: return "１週間のトレンド"
+            case .nowPlaying: return "公開中"
             }
         }
     }
@@ -96,7 +99,8 @@ extension SearchMovieViewController {
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, VideoWork>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchMovieCollectionViewCell.identifier, for: indexPath) as? SearchMovieCollectionViewCell else { return UICollectionViewCell() }
-            let movie = self?.presenter.returnReview(indexPath: indexPath)
+//            let movie = self?.presenter.returnReview(indexPath: indexPath)
+            let movie = self?.presenter.returnRecomendedVideoWorks()[indexPath.section][indexPath.item]
             let image = (movie?.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: (movie?.posterData!)!)
             let title = self?.presenter.makeTitle(indexPath: indexPath) ?? "タイトル無し"
             let releaseDay = self?.presenter.makeReleaseDay(indexPath: indexPath) ?? "公開日不明"
@@ -107,6 +111,7 @@ extension SearchMovieViewController {
         // MARK: Headerの作成
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<CollectionViewHeaderTitle>(elementKind: "header-element-kind") { supplementaryView, elementKind, indexPath in
             let sectionKind = SectionKind(rawValue: indexPath.section)
+            print(sectionKind?.title)
             supplementaryView.label.text = sectionKind?.title
             supplementaryView.label.textColor = .white
             supplementaryView.label.font = .boldSystemFont(ofSize: 20)
@@ -114,11 +119,19 @@ extension SearchMovieViewController {
         dataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
             return self?.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
-        
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        snapshot.appendSections([1])
-        snapshot.appendItems(presenter.returnReview())
-        dataSource.apply(snapshot, animatingDifferences: true)
+        for section in (0..<presenter.numberOfSections) {
+            snapshot.appendSections([section])
+            snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
+            print(#function, section)
+            dataSource.apply(snapshot, animatingDifferences: true)
+        }
+        stopIndicator(indicator: activityIndicatorView)
+
+//        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
+//        snapshot.appendSections([1])
+//        snapshot.appendItems(presenter.returnReview())
+//        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -332,6 +345,16 @@ extension SearchMovieViewController : UITableViewDelegate {
 // MARK: - SearchMoviePresenterOutput
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
+    
+    func initial() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
+        for section in (0..<presenter.numberOfSections) {
+            snapshot.appendSections([section])
+            snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
+            dataSource.apply(snapshot, animatingDifferences: true)
+        }
+        stopIndicator(indicator: activityIndicatorView)
+    }
     
     func update(_ fetchState: FetchMovieState, _ movie: [VideoWork]) {
         collectionViewSnapshot()
