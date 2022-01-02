@@ -29,7 +29,7 @@ final class ReviewManagement {
 
     func fetchReviews(state: FetchMovieState, results: [VideoWork]) {
         switch state {
-        case .search(.initial), .upcoming:
+        case .search(.initial), .recommend:
             videoWorks = results
         case .search(.refresh):
             videoWorks.append(contentsOf: results)

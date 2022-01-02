@@ -28,7 +28,7 @@
 		753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */; };
 		753B2A4426AA59A200EACFBD /* SettingManagementHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */; };
 		754856BF27449FCE00A4C31B /* CachedSearchConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754856BE27449FCE00A4C31B /* CachedSearchConditions.swift */; };
-		754E980427815A5A00CB579B /* Recomendations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754E980327815A5A00CB579B /* Recomendations.swift */; };
+		754E980427815A5A00CB579B /* Recommendations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754E980327815A5A00CB579B /* Recommendations.swift */; };
 		755D71E1264385F5007C0D77 /* ReviewMovie.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755D71E0264385F5007C0D77 /* ReviewMovie.xib */; };
 		755E9AFC26D88CCA00A17709 /* Instructions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 755E9AFB26D88CCA00A17709 /* Instructions.storyboard */; };
 		755E9AFE26D88CE400A17709 /* InstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E9AFD26D88CE400A17709 /* InstructionsViewController.swift */; };
@@ -153,7 +153,7 @@
 		753B2A4126AA598C00EACFBD /* SettingManagementHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingManagementHeaderView.swift; sourceTree = "<group>"; };
 		753B2A4326AA59A200EACFBD /* SettingManagementHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingManagementHeaderView.xib; sourceTree = "<group>"; };
 		754856BE27449FCE00A4C31B /* CachedSearchConditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedSearchConditions.swift; sourceTree = "<group>"; };
-		754E980327815A5A00CB579B /* Recomendations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recomendations.swift; sourceTree = "<group>"; };
+		754E980327815A5A00CB579B /* Recommendations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendations.swift; sourceTree = "<group>"; };
 		755D71E0264385F5007C0D77 /* ReviewMovie.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewMovie.xib; sourceTree = "<group>"; };
 		755E9AFB26D88CCA00A17709 /* Instructions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Instructions.storyboard; sourceTree = "<group>"; };
 		755E9AFD26D88CE400A17709 /* InstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsViewController.swift; sourceTree = "<group>"; };
@@ -324,7 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				754856BE27449FCE00A4C31B /* CachedSearchConditions.swift */,
-				754E980327815A5A00CB579B /* Recomendations.swift */,
+				754E980327815A5A00CB579B /* Recommendations.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1173,7 +1173,7 @@
 			files = (
 				752478AA268EF14700347972 /* CrewCastCollectionViewCell.swift in Sources */,
 				75676F2B263AA0B900569AF5 /* Credits.swift in Sources */,
-				754E980427815A5A00CB579B /* Recomendations.swift in Sources */,
+				754E980427815A5A00CB579B /* Recommendations.swift in Sources */,
 				75B12EC02776AFE300F35F83 /* SelectSavedReviewViewController.swift in Sources */,
 				75E4A627276A0D2900E9A838 /* UIActivityIndicatorProtocol.swift in Sources */,
 				753B2A4226AA598C00EACFBD /* SettingManagementHeaderView.swift in Sources */,

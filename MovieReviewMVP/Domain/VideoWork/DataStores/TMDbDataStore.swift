@@ -18,7 +18,7 @@ typealias ResultHandler<T> = (Result<T, Error>) -> Void
 protocol TMDbDataStoreProtocol {
     func fetchVideoWorks(page: Int, query: String,
                     completion: @escaping ResultHandler<TMDbSearchResponses>)
-    func fetchUpcomingVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>)
+    func fetchRecommendVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<TMDbCredits>)
     func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
@@ -60,7 +60,7 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
         task.resume()
     }
     
-    func fetchUpcomingVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>) {
+    func fetchRecommendVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>) {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             do {
                 if let error = error {

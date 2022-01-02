@@ -56,7 +56,7 @@ final class SearchMovieViewController: UIViewController {
         startIndicator(indicator: activityIndicatorView)
         setupCollectionView()
         configureDataSource()
-        presenter.fetchMovie(state: .upcoming, text: nil)
+        presenter.fetchMovie(state: .recommend, text: nil)
     }
     
     @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
@@ -112,7 +112,6 @@ extension SearchMovieViewController {
         // MARK: Headerの作成
         let supplementaryRegistration = UICollectionView.SupplementaryRegistration<CollectionViewHeaderTitle>(elementKind: "header-element-kind") { supplementaryView, elementKind, indexPath in
             let sectionKind = SectionKind(rawValue: indexPath.section)
-            print(sectionKind?.title)
             supplementaryView.label.text = sectionKind?.title
             supplementaryView.label.textColor = .white
             supplementaryView.label.font = .boldSystemFont(ofSize: 20)
@@ -247,21 +246,9 @@ extension SearchMovieViewController : UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         startIndicator(indicator: activityIndicatorView)
         searchBar.text = nil
-        presenter.fetchMovie(state: .upcoming, text: nil)
+        presenter.fetchMovie(state: .recommend, text: nil)
         searchBar.resignFirstResponder()
     }
-    
-    // MARK: 入力中に呼ばれる
-    // TODO: 入力早すぎたらIndex out of rangeが出るので一旦やめる
-    //        func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-    //                if searchBar.text?.isEmpty == false {
-    //                    self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
-    //                }
-    //            })
-    //            return true
-    //        }
-    
     
 }
 

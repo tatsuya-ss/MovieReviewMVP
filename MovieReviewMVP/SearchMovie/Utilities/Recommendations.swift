@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Recomendation {
+struct Recommendation {
     var videoWorks: [VideoWork] = []
     
     mutating func append(videoWorks: [VideoWork]) {
@@ -19,10 +19,10 @@ struct Recomendation {
     }
 }
 
-struct Recomendations {
-    var upcoming = Recomendation()
-    var trendingWeek = Recomendation()
-    var nowPlaying = Recomendation()
+struct Recommendations {
+    var upcoming = Recommendation()
+    var trendingWeek = Recommendation()
+    var nowPlaying = Recommendation()
     var videoWorks: [[VideoWork]] {
         [
             upcoming.videoWorks,

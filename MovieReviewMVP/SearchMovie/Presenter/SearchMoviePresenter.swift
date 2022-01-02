@@ -33,7 +33,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private var useCase: VideoWorkUseCaseProtocol
 //    private let reviewManagement = ReviewManagement()
     private var cachedSearchConditions = CachedSearchConditions()
-    private var recomendations = Recomendations()
+    private var recomendations = Recommendations()
 
     init(view: SearchMoviePresenterOutput,
          useCase: VideoWorkUseCaseProtocol) {
@@ -129,9 +129,9 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 }
             }
             
-        case .upcoming:
+        case .recommend:
             dispatchGroup.enter()
-            useCase.fetchUpcomingVideoWorks { [weak self] result in
+            useCase.fetchRecommendVideoWorks { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
