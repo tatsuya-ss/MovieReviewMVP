@@ -127,12 +127,6 @@ extension SearchMovieViewController {
             print(#function, section)
             dataSource.apply(snapshot, animatingDifferences: true)
         }
-        stopIndicator(indicator: activityIndicatorView)
-
-//        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-//        snapshot.appendSections([1])
-//        snapshot.appendItems(presenter.returnReview())
-//        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -271,7 +265,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
     
 }
 
-// MARK:
+// MARK: - UICollectionViewDelegate
 extension SearchMovieViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
