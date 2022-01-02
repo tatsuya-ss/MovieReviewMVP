@@ -94,6 +94,7 @@ extension SearchMovieViewController {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(SearchMovieCollectionViewCell.nib, forCellWithReuseIdentifier: SearchMovieCollectionViewCell.identifier)
         collectionView.backgroundColor = .black
+        collectionView.delegate = self
     }
     
     private func configureDataSource() {
@@ -267,6 +268,20 @@ extension SearchMovieViewController : UISearchBarDelegate {
     //            return true
     //        }
     
+    
+}
+
+// MARK:
+extension SearchMovieViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        movieSearchBar.resignFirstResponder()
+        presenter.didSelectRow(at: indexPath)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        movieSearchBar.resignFirstResponder()
+    }
     
 }
 
