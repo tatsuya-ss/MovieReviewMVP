@@ -8,16 +8,19 @@
 import Foundation
 
 protocol SearchMoviePresenterInput {
-    var numberOfSections: Int { get }
+    var numberOfRecommendationSections: Int { get }
+    var numberOfSearchResultSections: Int { get }
     var numberOfMovies: Int { get }
     func returnRecomendedVideoWorks() -> [[VideoWork]]
-    func returnReview(indexPath: IndexPath) -> VideoWork
-    func returnReview() -> [VideoWork]
+    func returnSearchResult(indexPath: IndexPath) -> VideoWork
+    func returnSearchResults() -> [VideoWork]
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
-    func makeTitle(indexPath: IndexPath) -> String
-    func makeReleaseDay(indexPath: IndexPath) -> String
+    func makeRecommendationTitle(indexPath: IndexPath) -> String
+    func makeRecommendationReleaseDay(indexPath: IndexPath) -> String
+    func makeSearchResultTitle(indexPath: IndexPath) -> String
+    func makeSearchResultReleaseDay(indexPath: IndexPath) -> String
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
@@ -31,7 +34,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     private weak var view: SearchMoviePresenterOutput!
     private var useCase: VideoWorkUseCaseProtocol
-//    private let reviewManagement = ReviewManagement()
+    private let reviewManagement = ReviewManagement()
     private var cachedSearchConditions = CachedSearchConditions()
     private var recomendations = Recommendations()
 
@@ -41,8 +44,12 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         self.useCase = useCase
     }
     
-    var numberOfSections: Int {
+    var numberOfRecommendationSections: Int {
         recomendations.videoWorks.count
+    }
+    
+    var numberOfSearchResultSections: Int {
+        1
     }
     
     func returnRecomendedVideoWorks() -> [[VideoWork]] {
@@ -50,28 +57,31 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     }
     
     var numberOfMovies: Int {
-//        reviewManagement.returnNumberOfReviews()
-        0
+        reviewManagement.returnNumberOfReviews()
     }
     
-    func makeTitle(indexPath: IndexPath) -> String {
-//        reviewManagement.makeTitle(indexPath: indexPath)
+    func returnSearchResult(indexPath: IndexPath) -> VideoWork {
+        reviewManagement.returnReviews()[indexPath.item]
+    }
+    
+    func returnSearchResults() -> [VideoWork] {
+        reviewManagement.returnReviews()
+    }
+    
+    func makeRecommendationTitle(indexPath: IndexPath) -> String {
         recomendations.makeTitle(indexPath: indexPath)
     }
     
-    func makeReleaseDay(indexPath: IndexPath) -> String {
-//        reviewManagement.makeReleaseDay(indexPath: indexPath)
+    func makeRecommendationReleaseDay(indexPath: IndexPath) -> String {
         recomendations.makeReleaseDay(indexPath: indexPath)
     }
     
-    func returnReview(indexPath: IndexPath) -> VideoWork {
-//        reviewManagement.returnReviews()[indexPath.item]
-        recomendations.videoWorks[indexPath.section][indexPath.item]
+    func makeSearchResultTitle(indexPath: IndexPath) -> String {
+        reviewManagement.makeTitle(indexPath: indexPath)
     }
     
-    func returnReview() -> [VideoWork] {
-//        reviewManagement.returnReviews()
-        []
+    func makeSearchResultReleaseDay(indexPath: IndexPath) -> String {
+        reviewManagement.makeReleaseDay(indexPath: indexPath)
     }
     
     func didSelectRow(at indexPath: IndexPath) {
@@ -102,7 +112,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let results):
-//                    self?.reviewManagement.fetchReviews(state: state, results: results)
+                    self?.reviewManagement.fetchReviews(state: state, results: results)
                     self?.fetchPosterImage(results: results, dispatchGroup: dispatchGroup)
                     dispatchGroup.notify(queue: .main) {
                         self?.view.update(state, results)
@@ -229,8 +239,8 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 switch result {
                 case .failure(let error):
                     print(error)
-                case .success(let data): break
-//                    self?.reviewManagement.fetchPosterData(index: videoWork.offset, data: data)
+                case .success(let data):
+                    self?.reviewManagement.fetchPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
