@@ -56,7 +56,7 @@ struct TMDbAPI {
     // MARK: １週間
     struct TrendingWeekRequest {
         var url: URL? {
-            let urlString = "https://api.themoviedb.org/3/trending/all/week?api_key=\(TMDbAPI.key)&language=ja-JA"
+            let urlString = "https://api.themoviedb.org/3/trending/all/week?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
             return URL(string: urlString)
         }
     }
