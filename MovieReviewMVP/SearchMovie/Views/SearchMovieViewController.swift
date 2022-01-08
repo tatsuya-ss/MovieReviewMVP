@@ -52,7 +52,7 @@ final class SearchMovieViewController: UIViewController {
         setupIndicator(indicator: activityIndicatorView)
         startIndicator(indicator: activityIndicatorView)
         setupCollectionView()
-        configureDataSource()
+        configureRecommendationDataSource()
         presenter.fetchMovie(state: .recommend, text: nil)
     }
     
@@ -87,7 +87,7 @@ extension SearchMovieViewController {
     }
     
     private func setupCollectionView() {
-        collectionView.collectionViewLayout = createLayout()
+        collectionView.collectionViewLayout = createRecommendationLayout()
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(SearchMovieCollectionViewCell.nib, forCellWithReuseIdentifier: SearchMovieCollectionViewCell.identifier)
         collectionView.register(SearchResultCollectionViewCell.nib, forCellWithReuseIdentifier: SearchResultCollectionViewCell.identifier)
@@ -122,7 +122,7 @@ extension SearchMovieViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    private func configureDataSource() {
+    private func configureRecommendationDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, VideoWork>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchMovieCollectionViewCell.identifier, for: indexPath) as? SearchMovieCollectionViewCell else { return UICollectionViewCell() }
             let movie = self?.presenter.returnRecomendedVideoWorks()[indexPath.section][indexPath.item]
@@ -176,7 +176,7 @@ extension SearchMovieViewController {
         return layout
     }
     
-    private func createLayout() -> UICollectionViewLayout {
+    private func createRecommendationLayout() -> UICollectionViewLayout {
         let config = UICollectionViewCompositionalLayoutConfiguration()
         
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection in
@@ -273,9 +273,12 @@ extension SearchMovieViewController : UISearchBarDelegate {
     // MARK: キャンセルボタンが押された時
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         startIndicator(indicator: activityIndicatorView)
+        presenter.changeFetchStateToRecommend()
         searchBar.text = nil
-        presenter.fetchMovie(state: .recommend, text: nil)
+        collectionView.collectionViewLayout = createRecommendationLayout()
+        configureRecommendationDataSource()
         searchBar.resignFirstResponder()
+        stopIndicator(indicator: activityIndicatorView)
     }
     
 }
@@ -292,58 +295,46 @@ extension SearchMovieViewController: UICollectionViewDelegate {
         movieSearchBar.resignFirstResponder()
     }
     
-}
-
-// MARK: - UITableViewDelegate
-extension SearchMovieViewController : UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        movieSearchBar.resignFirstResponder()
-        presenter.didSelectRow(at: indexPath)
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        movieSearchBar.resignFirstResponder()
-    }
-    
     // MARK: 下部スクロール
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentSize = scrollView.contentSize.height
-        let tableSize = scrollView.frame.size.height
-        let canLoadFromBottom = contentSize > tableSize
-        // Offset　何かの位置を指し示す際に、基準となる位置からの差（距離、ズレ、相対位置）を表す値のことをオフセット
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = contentSize - tableSize
-        let difference = maximumOffset - currentOffset
-        
-        scrollView.backgroundColor = .black
-        
-        let previousScrollViewBottomInset = CGFloat(0)
-        let indicatorHeight = scrollIndicator.bounds.height + 16
-        var isLoadingMore = false
-        
-        if isLoadingMore == true {
-            scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
-        } else {
-            scrollView.contentInset.bottom = previousScrollViewBottomInset
-        }
-        
-        
-        if canLoadFromBottom, difference <= -120 {
-            isLoadingMore = true
+        let fetchState = presenter.getFetchState
+        if case .search = fetchState {
+            let contentSize = scrollView.contentSize.height
+            let tableSize = scrollView.frame.size.height
+            let canLoadFromBottom = contentSize > tableSize
+            // Offset　何かの位置を指し示す際に、基準となる位置からの差（距離、ズレ、相対位置）を表す値のことをオフセット
+            let currentOffset = scrollView.contentOffset.y
+            let maximumOffset = contentSize - tableSize
+            let difference = maximumOffset - currentOffset
             
-            scrollIndicator.isHidden = false
-            scrollIndicator.startAnimating()
+            scrollView.backgroundColor = .black
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) { [weak self] in
-                self?.presenter.fetchMovie(state: .search(.refresh), text: nil)
-                self?.scrollIndicator.stopAnimating()
-                self?.scrollIndicator.isHidden = true
-                isLoadingMore = false
+            let previousScrollViewBottomInset = CGFloat(0)
+            let indicatorHeight = scrollIndicator.bounds.height + 16
+            var isLoadingMore = false
+            
+            if isLoadingMore == true {
+                scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
+            } else {
+                scrollView.contentInset.bottom = previousScrollViewBottomInset
+            }
+            
+            if canLoadFromBottom, difference <= -120 {
+                isLoadingMore = true
+                
+                scrollIndicator.isHidden = false
+                scrollIndicator.startAnimating()
+                
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) { [weak self] in
+                    self?.presenter.fetchMovie(state: .search(.refresh), text: nil)
+                    self?.scrollIndicator.stopAnimating()
+                    self?.scrollIndicator.isHidden = true
+                    isLoadingMore = false
+                }
             }
         }
-        
     }
+
 }
 
 // MARK: - SearchMoviePresenterOutput
@@ -351,6 +342,8 @@ extension SearchMovieViewController : UITableViewDelegate {
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func initial() {
+        collectionView.collectionViewLayout = createRecommendationLayout()
+        configureRecommendationDataSource()
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
         for section in (0..<presenter.numberOfRecommendationSections) {
             snapshot.appendSections([section])
@@ -360,8 +353,14 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         stopIndicator(indicator: activityIndicatorView)
     }
     
-    func update(_ fetchState: FetchMovieState, _ movie: [VideoWork]) {
+    func searchInitial() {
         collectionView.collectionViewLayout = createSearchResultLayout()
+        configureSearchResultDataSource()
+        collectionViewSnapshot()
+        stopIndicator(indicator: activityIndicatorView)
+    }
+    
+    func searchRefresh() {
         configureSearchResultDataSource()
         collectionViewSnapshot()
         stopIndicator(indicator: activityIndicatorView)
@@ -375,7 +374,6 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     }
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
-        //        let reviewMovieVC = UIStoryboard(name: .reviewMovieStoryboardName, bundle: nil).instantiateInitialViewController() as! ReviewMovieViewController
         let reviewMovieVC = SelectSearchReviewViewController()
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))

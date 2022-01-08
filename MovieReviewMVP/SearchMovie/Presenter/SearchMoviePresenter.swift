@@ -14,6 +14,7 @@ protocol SearchMoviePresenterInput {
     func returnRecomendedVideoWorks() -> [[VideoWork]]
     func returnSearchResult(indexPath: IndexPath) -> VideoWork
     func returnSearchResults() -> [VideoWork]
+    var getFetchState: FetchMovieState { get }
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
@@ -21,10 +22,12 @@ protocol SearchMoviePresenterInput {
     func makeRecommendationReleaseDay(indexPath: IndexPath) -> String
     func makeSearchResultTitle(indexPath: IndexPath) -> String
     func makeSearchResultReleaseDay(indexPath: IndexPath) -> String
+    func changeFetchStateToRecommend()
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
-    func update(_ fetchState: FetchMovieState, _ movie: [VideoWork])
+    func searchInitial()
+    func searchRefresh()
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState)
     func displayStoreReviewController()
     func initial()
@@ -37,11 +40,20 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private let reviewManagement = ReviewManagement()
     private var cachedSearchConditions = CachedSearchConditions()
     private var recomendations = Recommendations()
+    private var fetchState: FetchMovieState = .recommend
 
     init(view: SearchMoviePresenterOutput,
          useCase: VideoWorkUseCaseProtocol) {
         self.view = view
         self.useCase = useCase
+    }
+    
+    var getFetchState: FetchMovieState {
+        fetchState
+    }
+    
+    func changeFetchStateToRecommend() {
+        fetchState.changeState(state: .recommend)
     }
     
     var numberOfRecommendationSections: Int {
@@ -99,10 +111,15 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     func fetchMovie(state: FetchMovieState, text: String?) {
         let dispatchGroup = DispatchGroup()
+        fetchState.changeState(state: state)
         switch state {
         case .search(.initial):
             guard let query = text,
-                  !query.isEmpty else { return }
+                  !query.isEmpty else {
+                      fetchState.changeState(state: .recommend)
+                      view.initial()
+                      return
+                  }
             cachedSearchConditions.cachedQuery(query: query)
             cachedSearchConditions.initialPage()
             dispatchGroup.enter()
@@ -115,7 +132,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                     self?.reviewManagement.fetchReviews(state: state, results: results)
                     self?.fetchPosterImage(results: results, dispatchGroup: dispatchGroup)
                     dispatchGroup.notify(queue: .main) {
-                        self?.view.update(state, results)
+                        self?.view.searchInitial()
                     }
                 }
             }
@@ -130,11 +147,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let results):
-//                    self?.reviewManagement.fetchReviews(state: state, results: results)
-//                    guard let reviews = self?.reviewManagement.returnReviews() else { return }
-//                    self?.fetchPosterImage(results: reviews, dispatchGroup: dispatchGroup)
+                    self?.reviewManagement.fetchReviews(state: state, results: results)
+                    guard let reviews = self?.reviewManagement.returnReviews() else { return }
+                    self?.fetchPosterImage(results: reviews, dispatchGroup: dispatchGroup)
                     dispatchGroup.notify(queue: .main) {
-                        self?.view.update(state, results)
+                        self?.view.searchRefresh()
                     }
                 }
             }

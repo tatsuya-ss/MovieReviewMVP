@@ -20,6 +20,10 @@ enum FetchMovieState {
             return .upcomingLabelTitle
         }
     }
+    
+    mutating func changeState(state: Self) {
+        self = state
+    }
 }
 
 enum refreshState {
