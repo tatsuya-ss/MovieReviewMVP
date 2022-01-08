@@ -49,8 +49,6 @@
 		75676EF3263A89B600569AF5 /* MovieReviewMVPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676EF2263A89B600569AF5 /* MovieReviewMVPTests.swift */; };
 		75676EFE263A89B600569AF5 /* MovieReviewMVPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676EFD263A89B600569AF5 /* MovieReviewMVPUITests.swift */; };
 		75676F10263A953100569AF5 /* SearchMoviePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F0F263A953100569AF5 /* SearchMoviePresenter.swift */; };
-		75676F21263A97E300569AF5 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F1F263A97E300569AF5 /* MovieTableViewCell.swift */; };
-		75676F22263A97E300569AF5 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75676F20263A97E300569AF5 /* MovieTableViewCell.xib */; };
 		75676F2B263AA0B900569AF5 /* Credits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75676F2A263AA0B900569AF5 /* Credits.swift */; };
 		75699F3C264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */; };
 		75699F3D264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */; };
@@ -182,8 +180,6 @@
 		75676EFD263A89B600569AF5 /* MovieReviewMVPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieReviewMVPUITests.swift; sourceTree = "<group>"; };
 		75676EFF263A89B600569AF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75676F0F263A953100569AF5 /* SearchMoviePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMoviePresenter.swift; sourceTree = "<group>"; };
-		75676F1F263A97E300569AF5 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
-		75676F20263A97E300569AF5 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
 		75676F2A263AA0B900569AF5 /* Credits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credits.swift; sourceTree = "<group>"; };
 		7567D58926B3F9EF006DA25A /* MovieReviewMVP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MovieReviewMVP.entitlements; sourceTree = "<group>"; };
 		75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -315,8 +311,6 @@
 		753DB9DA27697E27002BF4B7 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				75676F1F263A97E300569AF5 /* MovieTableViewCell.swift */,
-				75676F20263A97E300569AF5 /* MovieTableViewCell.xib */,
 				75F9B7B1277EAA6A001A9F9A /* SearchMovieCollectionViewCell.swift */,
 				75F9B7B2277EAA6A001A9F9A /* SearchMovieCollectionViewCell.xib */,
 				75F9B7B6277EE403001A9F9A /* CollectionViewHeaderTitle.swift */,
@@ -1014,7 +1008,6 @@
 				755E9AFC26D88CCA00A17709 /* Instructions.storyboard in Resources */,
 				758B05AA26AE507B00DFA33A /* DetailedSettingHeaderView.xib in Resources */,
 				753B2A4026AA29F800EACFBD /* SettingManagementTableViewCell.xib in Resources */,
-				75676F22263A97E300569AF5 /* MovieTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1204,7 +1197,6 @@
 				75676EDC263A89B400569AF5 /* AppDelegate.swift in Sources */,
 				7518C16A26A17DED00C27C1C /* SelectedReview.swift in Sources */,
 				75093DDC271179290010787D /* TMDbDetailResponses.swift in Sources */,
-				75676F21263A97E300569AF5 /* MovieTableViewCell.swift in Sources */,
 				75E4A62C276B0C8300E9A838 /* CrewCastColumnFlowLayout.swift in Sources */,
 				75834AE126A80D74004AC09C /* SettingManagementViewController.swift in Sources */,
 				755E9AFE26D88CE400A17709 /* InstructionsViewController.swift in Sources */,
