@@ -90,13 +90,14 @@ extension SearchMovieViewController {
         collectionView.collectionViewLayout = createLayout()
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.register(SearchMovieCollectionViewCell.nib, forCellWithReuseIdentifier: SearchMovieCollectionViewCell.identifier)
+        collectionView.register(SearchResultCollectionViewCell.nib, forCellWithReuseIdentifier: SearchResultCollectionViewCell.identifier)
         collectionView.backgroundColor = .black
         collectionView.delegate = self
     }
     
     private func configureSearchResultDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, VideoWork>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchMovieCollectionViewCell.identifier, for: indexPath) as? SearchMovieCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.identifier, for: indexPath) as? SearchResultCollectionViewCell else { return UICollectionViewCell() }
             let movie = self?.presenter.returnSearchResult(indexPath: indexPath)
                    let image = (movie?.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: (movie?.posterData!)!)
                    let title = self?.presenter.makeSearchResultTitle(indexPath: indexPath) ?? "タイトル無し"
@@ -148,6 +149,31 @@ extension SearchMovieViewController {
             snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
             dataSource.apply(snapshot, animatingDifferences: true)
         }
+    }
+    
+    private func createSearchResultLayout() -> UICollectionViewLayout {
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection in
+            let leadingItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                                        heightDimension: .fractionalHeight(1.0)))
+            leadingItem.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+            let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                                                       heightDimension: .fractionalHeight(0.2)),
+                                                                    subitems: [leadingItem])
+            let section = NSCollectionLayoutSection(group: containerGroup)
+            
+            // MARK: Headerの処理
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                                                               heightDimension: .estimated(44)),
+                                                                            elementKind: "header-element-kind",
+                                                                            alignment: .top)
+            section.boundarySupplementaryItems = [sectionHeader]
+
+            return section
+        }, configuration: config)
+        
+        return layout
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -335,6 +361,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     }
     
     func update(_ fetchState: FetchMovieState, _ movie: [VideoWork]) {
+        collectionView.collectionViewLayout = createSearchResultLayout()
         configureSearchResultDataSource()
         collectionViewSnapshot()
         stopIndicator(indicator: activityIndicatorView)

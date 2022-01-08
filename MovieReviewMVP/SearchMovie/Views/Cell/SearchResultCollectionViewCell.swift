@@ -18,7 +18,7 @@ final class SearchResultCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        movieImageView.layer.cornerRadius = movieImageView.bounds.height * 0.1
+        movieImageView.layer.cornerRadius = movieImageView.bounds.height * 0.05
     }
     
     override func prepareForReuse() {
