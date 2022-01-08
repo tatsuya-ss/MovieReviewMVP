@@ -62,6 +62,27 @@ final class SearchMovieViewController: UIViewController {
     
 }
 
+// MARK: - func
+extension SearchMovieViewController {
+    
+    private func collectionViewRecommendationSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
+        for section in (0..<presenter.numberOfRecommendationSections) {
+            snapshot.appendSections([section])
+            snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
+            dataSource.apply(snapshot, animatingDifferences: true)
+        }
+    }
+    
+    private func collectionViewSearchResultSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
+        snapshot.appendSections([presenter.numberOfSearchResultSections])
+        snapshot.appendItems(presenter.returnSearchResults())
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+}
+
 // MARK: - setup
 extension SearchMovieViewController {
     
@@ -341,36 +362,24 @@ extension SearchMovieViewController: UICollectionViewDelegate {
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
-    func initial() {
+    func initialRecommendation() {
         collectionView.collectionViewLayout = createRecommendationLayout()
         configureRecommendationDataSource()
-        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        for section in (0..<presenter.numberOfRecommendationSections) {
-            snapshot.appendSections([section])
-            snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
-            dataSource.apply(snapshot, animatingDifferences: true)
-        }
+        collectionViewRecommendationSnapshot()
         stopIndicator(indicator: activityIndicatorView)
     }
     
     func searchInitial() {
         collectionView.collectionViewLayout = createSearchResultLayout()
         configureSearchResultDataSource()
-        collectionViewSnapshot()
+        collectionViewSearchResultSnapshot()
         stopIndicator(indicator: activityIndicatorView)
     }
     
     func searchRefresh() {
         configureSearchResultDataSource()
-        collectionViewSnapshot()
+        collectionViewSearchResultSnapshot()
         stopIndicator(indicator: activityIndicatorView)
-    }
-    
-    private func collectionViewSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        snapshot.appendSections([presenter.numberOfSearchResultSections])
-        snapshot.appendItems(presenter.returnSearchResults())
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
@@ -395,6 +404,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     
 }
 
+// MARK: - GADBannerViewDelegate
 extension SearchMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         let bannerHeight = CGFloat(50)

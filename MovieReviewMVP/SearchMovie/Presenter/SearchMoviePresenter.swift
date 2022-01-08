@@ -30,7 +30,7 @@ protocol SearchMoviePresenterOutput : AnyObject {
     func searchRefresh()
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState)
     func displayStoreReviewController()
-    func initial()
+    func initialRecommendation()
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
@@ -117,7 +117,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             guard let query = text,
                   !query.isEmpty else {
                       fetchState.changeState(state: .recommend)
-                      view.initial()
+                      view.initialRecommendation()
                       return
                   }
             cachedSearchConditions.cachedQuery(query: query)
@@ -195,8 +195,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             }
             
             dispatchGroup.notify(queue: .main) {
-                self.view.initial()
-//                self?.view.update(state, self?.reviewManagement.returnReviews() ?? [])
+                self.view.initialRecommendation()
             }
             
         }
