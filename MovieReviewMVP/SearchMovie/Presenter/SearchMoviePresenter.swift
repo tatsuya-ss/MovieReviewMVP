@@ -11,6 +11,7 @@ protocol SearchMoviePresenterInput {
     var numberOfSections: Int { get }
     func getVideoWorks(section: Int) -> [VideoWork]
     var getFetchState: FetchMovieState { get }
+    func getHeaderTitle(indexPath: IndexPath) -> String
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
@@ -57,6 +58,10 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         case .recommend:
             return recomendations.videoWorks.count
         }
+    }
+    
+    func getHeaderTitle(indexPath: IndexPath) -> String {
+        recomendations.recommendations[indexPath.section].title
     }
     
     func getVideoWorks(section: Int) -> [VideoWork] {

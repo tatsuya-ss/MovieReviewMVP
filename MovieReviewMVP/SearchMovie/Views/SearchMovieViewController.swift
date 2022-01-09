@@ -13,25 +13,12 @@ extension SearchMovieViewController: UIActivityIndicatorProtocol { }
 
 final class SearchMovieViewController: UIViewController {
     
-    private enum SectionKind: Int, CaseIterable {
-        case upcoming
-        case trendingWeek
-        case nowPlaying
-        var title: String {
-            switch self {
-            case .upcoming: return "近日公開"
-            case .trendingWeek: return "１週間のトレンド"
-            case .nowPlaying: return "公開中"
-            }
-        }
-    }
-    
     @IBOutlet private weak var movieSearchBar: UISearchBar!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
-    private var bannerView: GADBannerView!
     
+    private var bannerView: GADBannerView!
     private var scrollIndicator: UIActivityIndicatorView!
     private var tableViewCellHeight: CGFloat?
     private var presenter: SearchMoviePresenterInput!
@@ -154,9 +141,8 @@ extension SearchMovieViewController {
         })
         
         // MARK: Headerの作成
-        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<CollectionViewHeaderTitle>(elementKind: "header-element-kind") { supplementaryView, elementKind, indexPath in
-            let sectionKind = SectionKind(rawValue: indexPath.section)
-            supplementaryView.label.text = sectionKind?.title
+        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<CollectionViewHeaderTitle>(elementKind: "header-element-kind") { [weak self] supplementaryView, elementKind, indexPath in
+            supplementaryView.label.text = self?.presenter.getHeaderTitle(indexPath: indexPath)
             supplementaryView.label.textColor = .white
             supplementaryView.label.font = .boldSystemFont(ofSize: 20)
         }

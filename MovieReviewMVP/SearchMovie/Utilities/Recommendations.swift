@@ -9,6 +9,7 @@ import Foundation
 
 struct Recommendation {
     var videoWorks: [VideoWork] = []
+    let title: String
     
     mutating func append(videoWorks: [VideoWork]) {
         self.videoWorks = videoWorks
@@ -20,14 +21,17 @@ struct Recommendation {
 }
 
 struct Recommendations {
-    var upcoming = Recommendation()
-    var trendingWeek = Recommendation()
-    var nowPlaying = Recommendation()
+    var nowPlaying = Recommendation(title: "公開中")
+    var upcoming = Recommendation(title: "近日公開")
+    var trendingWeek = Recommendation(title: "１週間のトレンド")
+    var recommendations: [Recommendation] {
+        [nowPlaying, upcoming, trendingWeek]
+    }
     var videoWorks: [[VideoWork]] {
         [
+            nowPlaying.videoWorks,
             upcoming.videoWorks,
-            trendingWeek.videoWorks,
-            nowPlaying.videoWorks
+            trendingWeek.videoWorks
         ]
     }
     
