@@ -5,6 +5,8 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,11 +18,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ss0-Jn-OVT">
-                                <rect key="frame" x="0.0" y="163" width="414" height="650"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2Ji-sI-fw3">
+                                <rect key="frame" x="0.0" y="139" width="414" height="674"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0Kn-z8-A1E">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="HcQ-EO-1LO">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vEq-iN-bvg">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                             <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" placeholder="検索" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-Q1-UzC">
                                 <rect key="frame" x="0.0" y="88" width="414" height="51"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -30,12 +47,6 @@
                                     <string>Title</string>
                                 </scopeButtonTitles>
                             </searchBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="更新中..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mdR-U8-AD1">
-                                <rect key="frame" x="20" y="144" width="374" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DjA-oQ-7gZ">
                                 <rect key="frame" x="197" y="396.5" width="20" height="20"/>
                             </activityIndicatorView>
@@ -43,27 +54,23 @@
                         <viewLayoutGuide key="safeArea" id="KGb-Lq-u2a"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Ss0-Jn-OVT" firstAttribute="bottom" secondItem="KGb-Lq-u2a" secondAttribute="bottom" id="2Mj-rS-CPN"/>
-                            <constraint firstItem="Ss0-Jn-OVT" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="E1g-Vh-P8b"/>
-                            <constraint firstItem="mdR-U8-AD1" firstAttribute="top" secondItem="ZbQ-Q1-UzC" secondAttribute="bottom" id="Jhb-k5-O3f"/>
+                            <constraint firstItem="KGb-Lq-u2a" firstAttribute="bottom" secondItem="2Ji-sI-fw3" secondAttribute="bottom" id="38t-Np-AqY"/>
                             <constraint firstItem="DjA-oQ-7gZ" firstAttribute="centerX" secondItem="oTg-gg-1IR" secondAttribute="centerX" id="PCq-2g-N8u"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="cfG-aq-C0c"/>
-                            <constraint firstItem="KGb-Lq-u2a" firstAttribute="trailing" secondItem="mdR-U8-AD1" secondAttribute="trailing" constant="20" id="csw-R4-73n"/>
-                            <constraint firstItem="Ss0-Jn-OVT" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="fME-H4-nDa"/>
+                            <constraint firstItem="2Ji-sI-fw3" firstAttribute="top" secondItem="ZbQ-Q1-UzC" secondAttribute="bottom" symbolic="YES" id="fty-sA-eHU"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="top" secondItem="KGb-Lq-u2a" secondAttribute="top" id="hJH-If-tUb"/>
-                            <constraint firstItem="mdR-U8-AD1" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" constant="20" id="oR0-Ho-Cl0"/>
+                            <constraint firstItem="2Ji-sI-fw3" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="ht5-H9-ZUm"/>
+                            <constraint firstItem="KGb-Lq-u2a" firstAttribute="trailing" secondItem="2Ji-sI-fw3" secondAttribute="trailing" id="ndn-x4-NcR"/>
                             <constraint firstItem="DjA-oQ-7gZ" firstAttribute="centerY" secondItem="oTg-gg-1IR" secondAttribute="centerY" id="qRJ-qT-Gfr"/>
-                            <constraint firstItem="Ss0-Jn-OVT" firstAttribute="top" secondItem="mdR-U8-AD1" secondAttribute="bottom" id="sgN-bZ-pLy"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="leading" secondItem="KGb-Lq-u2a" secondAttribute="leading" id="una-js-Mdd"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hBP-Z3-PC3"/>
                     <connections>
                         <outlet property="activityIndicatorView" destination="DjA-oQ-7gZ" id="sjo-yg-w1X"/>
-                        <outlet property="displayLabel" destination="mdR-U8-AD1" id="5Ve-G0-zai"/>
+                        <outlet property="collectionView" destination="2Ji-sI-fw3" id="x4W-DS-Fta"/>
+                        <outlet property="collectionViewBottomAnchor" destination="38t-Np-AqY" id="lFT-fr-Cwu"/>
                         <outlet property="movieSearchBar" destination="ZbQ-Q1-UzC" id="d2g-5M-Muh"/>
-                        <outlet property="tableView" destination="Ss0-Jn-OVT" id="k3l-gk-GMM"/>
-                        <outlet property="tableViewBottomAnchor" destination="2Mj-rS-CPN" id="4BM-9A-YVs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDf-vD-iyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -136,5 +143,8 @@
         <image name="gearshape" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

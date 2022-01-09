@@ -10,15 +10,19 @@ import UIKit
 
 enum FetchMovieState {
     case search(refreshState)
-    case upcoming
+    case recommend
     
     var displayLabelText: String {
         switch self {
         case .search:
             return .searchLabelTitle
-        case .upcoming:
+        case .recommend:
             return .upcomingLabelTitle
         }
+    }
+    
+    mutating func changeState(state: Self) {
+        self = state
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 protocol VideoWorksRepositoryProtocol {
     func fetchVideoWorks(page: Int, query: String,
                          completion: @escaping ResultHandler<[VideoWork]>)
-    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
+    func fetchRecommendVideoWorks(url: URL, completion: @escaping ResultHandler<[VideoWork]>)
     func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<[CastDetail]>)
     func fetchPosterImage(posterPath: String?, completion: @escaping ResultHandler<Data>)
@@ -51,8 +51,8 @@ final class VideoWorksRepository: VideoWorksRepositoryProtocol {
         }
     }
     
-    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
-        dataStore.fetchUpcomingVideoWorks { result in
+    func fetchRecommendVideoWorks(url: URL, completion: @escaping ResultHandler<[VideoWork]>) {
+        dataStore.fetchRecommendVideoWorks(url: url) { result in
             switch result {
             case .success(let tmdbVideoWorks):
                 let videoWorks = tmdbVideoWorks.results

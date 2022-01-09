@@ -72,19 +72,12 @@ final class StockReviewMovieManagementViewController: UIViewController {
         editButton = editButtonItem
         editButton.title = .selectTitle
         // MARK: 並び替えボタン
-        if #available(iOS 14.0, *) {
-            let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
-            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
-        } else {
-            sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle,
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(sortButtonTapped))
-        }
+        let sortMenu = UIMenu.makeSortMenuForStock(presenter: presenter)
+        sortButton = UIBarButtonItem(title: presenter.returnSortState().buttonTitle, image: nil, primaryAction: nil, menu: sortMenu)
         
         [stopButton, editButton, sortButton].forEach { $0.tintColor = .stringColor }
         navigationItem.rightBarButtonItems = [editButton, sortButton]
-
+        
     }
     
     @objc func stopButtonTapped(_ sender: UIBarButtonItem) {

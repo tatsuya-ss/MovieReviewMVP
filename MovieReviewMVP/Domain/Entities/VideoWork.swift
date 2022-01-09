@@ -21,4 +21,14 @@ struct VideoWork: Hashable {
     let id: Int
     var isStoredAsReview: Bool?
     var mediaType: String?
+    
+    var uuid = UUID()
+}
+
+extension VideoWork {
+    
+    static func == (lhs: VideoWork, rhs: VideoWork) -> Bool {
+        lhs.uuid == rhs.uuid
+    }
+    
 }

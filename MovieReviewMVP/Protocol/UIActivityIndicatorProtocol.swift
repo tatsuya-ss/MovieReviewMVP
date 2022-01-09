@@ -18,11 +18,7 @@ extension UIActivityIndicatorProtocol where Self: UIViewController {
     func setupIndicator(indicator: UIActivityIndicatorView) {
         indicator.color = .white
         indicator.isHidden = true
-        if #available(iOS 13.0, *) {
-            indicator.style = .large
-        } else {
-            indicator.style = .whiteLarge
-        }
+        indicator.style = .large
     }
 
     func startIndicator(indicator: UIActivityIndicatorView) {

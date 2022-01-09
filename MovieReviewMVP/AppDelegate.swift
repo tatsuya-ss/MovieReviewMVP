@@ -25,12 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // iOS14以降の場合、トラッキングのアラートを表示する
-        if #available(iOS 14, *) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                GADMobileAds.sharedInstance().start(completionHandler: nil)
-            }
-        } else {
+        ATTrackingManager.requestTrackingAuthorization { status in
             GADMobileAds.sharedInstance().start(completionHandler: nil)
         }
     }

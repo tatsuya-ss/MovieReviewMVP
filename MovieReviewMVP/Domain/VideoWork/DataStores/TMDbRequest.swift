@@ -53,6 +53,22 @@ struct TMDbAPI {
         }
     }
     
+    // MARK: １週間
+    struct TrendingWeekRequest {
+        var url: URL? {
+            let urlString = "https://api.themoviedb.org/3/trending/all/week?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
+            return URL(string: urlString)
+        }
+    }
+    
+    // MARK: 公開中
+    struct NowPlayingRequest {
+        var url: URL? {
+            let urlString = "https://api.themoviedb.org/3/movie/now_playing?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
+            return URL(string: urlString)
+        }
+    }
+    
 }
 
 // MARK: ポスターの画質指定表（TMDb公式より）
