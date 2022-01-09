@@ -67,17 +67,17 @@ extension SearchMovieViewController {
     
     private func collectionViewRecommendationSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        for section in (0..<presenter.numberOfRecommendationSections) {
+        for section in (0..<presenter.numberOfSections) {
             snapshot.appendSections([section])
-            snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
+            snapshot.appendItems(presenter.getVideoWorks(section: section))
             dataSource.apply(snapshot, animatingDifferences: true)
         }
     }
     
     private func collectionViewSearchResultSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        snapshot.appendSections([presenter.numberOfSearchResultSections])
-        snapshot.appendItems(presenter.returnSearchResults())
+        snapshot.appendSections([presenter.numberOfSections])
+        snapshot.appendItems(presenter.getVideoWorks(section: 0))
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
@@ -119,10 +119,10 @@ extension SearchMovieViewController {
     private func configureSearchResultDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, VideoWork>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionViewCell.identifier, for: indexPath) as? SearchResultCollectionViewCell else { return UICollectionViewCell() }
-            let movie = self?.presenter.returnSearchResult(indexPath: indexPath)
+            let movie = self?.presenter.getVideoWorks(section: 0)[indexPath.item]
                    let image = (movie?.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: (movie?.posterData!)!)
-                   let title = self?.presenter.makeSearchResultTitle(indexPath: indexPath) ?? "タイトル無し"
-                   let releaseDay = self?.presenter.makeSearchResultReleaseDay(indexPath: indexPath) ?? "公開日不明"
+                   let title = self?.presenter.makeTitle(indexPath: indexPath) ?? "タイトル無し"
+                   let releaseDay = self?.presenter.makeReleaseDay(indexPath: indexPath) ?? "公開日不明"
                    cell.configure(image: image, title: title, releaseDay: releaseDay)
                    return cell
                })
@@ -137,19 +137,18 @@ extension SearchMovieViewController {
         }
 
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        snapshot.appendSections([presenter.numberOfSearchResultSections])
-        snapshot.appendItems(presenter.returnSearchResults())
-        print(presenter.returnSearchResults())
+        snapshot.appendSections([presenter.numberOfSections])
+        snapshot.appendItems(presenter.getVideoWorks(section: 0))
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func configureRecommendationDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, VideoWork>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchMovieCollectionViewCell.identifier, for: indexPath) as? SearchMovieCollectionViewCell else { return UICollectionViewCell() }
-            let movie = self?.presenter.returnRecomendedVideoWorks()[indexPath.section][indexPath.item]
+            let movie = self?.presenter.getVideoWorks(section: indexPath.section)[indexPath.item]
             let image = (movie?.posterData == nil) ? UIImage(named: "no_image") : UIImage(data: (movie?.posterData!)!)
-            let title = self?.presenter.makeRecommendationTitle(indexPath: indexPath) ?? "タイトル無し"
-            let releaseDay = self?.presenter.makeRecommendationReleaseDay(indexPath: indexPath) ?? "公開日不明"
+            let title = self?.presenter.makeTitle(indexPath: indexPath) ?? "タイトル無し"
+            let releaseDay = self?.presenter.makeReleaseDay(indexPath: indexPath) ?? "公開日不明"
             cell.configure(image: image, title: title, releaseDay: releaseDay)
             return cell
         })
@@ -165,9 +164,9 @@ extension SearchMovieViewController {
             return self?.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
         var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        for section in (0..<presenter.numberOfRecommendationSections) {
+        for section in (0..<presenter.numberOfSections) {
             snapshot.appendSections([section])
-            snapshot.appendItems(presenter.returnRecomendedVideoWorks()[section])
+            snapshot.appendItems(presenter.getVideoWorks(section: section))
             dataSource.apply(snapshot, animatingDifferences: true)
         }
     }

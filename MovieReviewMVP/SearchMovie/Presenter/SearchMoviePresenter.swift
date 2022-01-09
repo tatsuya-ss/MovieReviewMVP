@@ -8,20 +8,14 @@
 import Foundation
 
 protocol SearchMoviePresenterInput {
-    var numberOfRecommendationSections: Int { get }
-    var numberOfSearchResultSections: Int { get }
-    var numberOfMovies: Int { get }
-    func returnRecomendedVideoWorks() -> [[VideoWork]]
-    func returnSearchResult(indexPath: IndexPath) -> VideoWork
-    func returnSearchResults() -> [VideoWork]
+    var numberOfSections: Int { get }
+    func getVideoWorks(section: Int) -> [VideoWork]
     var getFetchState: FetchMovieState { get }
     func didSelectRow(at indexPath: IndexPath)
     func didSaveReview()
     func fetchMovie(state: FetchMovieState, text: String?)
-    func makeRecommendationTitle(indexPath: IndexPath) -> String
-    func makeRecommendationReleaseDay(indexPath: IndexPath) -> String
-    func makeSearchResultTitle(indexPath: IndexPath) -> String
-    func makeSearchResultReleaseDay(indexPath: IndexPath) -> String
+    func makeTitle(indexPath: IndexPath) -> String
+    func makeReleaseDay(indexPath: IndexPath) -> String
     func changeFetchStateToRecommend()
 }
 
@@ -56,50 +50,51 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         fetchState.changeState(state: .recommend)
     }
     
-    var numberOfRecommendationSections: Int {
-        recomendations.videoWorks.count
+    var numberOfSections: Int {
+        switch fetchState {
+        case .search:
+            return 1
+        case .recommend:
+            return recomendations.videoWorks.count
+        }
     }
     
-    var numberOfSearchResultSections: Int {
-        1
+    func getVideoWorks(section: Int) -> [VideoWork] {
+        switch fetchState {
+        case .search:
+            return reviewManagement.returnReviews()
+        case .recommend:
+            return recomendations.videoWorks[section]
+        }
     }
     
-    func returnRecomendedVideoWorks() -> [[VideoWork]] {
-        recomendations.videoWorks
+    func makeTitle(indexPath: IndexPath) -> String {
+        switch fetchState {
+        case .search:
+            return reviewManagement.makeTitle(indexPath: indexPath)
+        case .recommend:
+            return recomendations.makeTitle(indexPath: indexPath)
+        }
     }
     
-    var numberOfMovies: Int {
-        reviewManagement.returnNumberOfReviews()
-    }
-    
-    func returnSearchResult(indexPath: IndexPath) -> VideoWork {
-        reviewManagement.returnReviews()[indexPath.item]
-    }
-    
-    func returnSearchResults() -> [VideoWork] {
-        reviewManagement.returnReviews()
-    }
-    
-    func makeRecommendationTitle(indexPath: IndexPath) -> String {
-        recomendations.makeTitle(indexPath: indexPath)
-    }
-    
-    func makeRecommendationReleaseDay(indexPath: IndexPath) -> String {
-        recomendations.makeReleaseDay(indexPath: indexPath)
-    }
-    
-    func makeSearchResultTitle(indexPath: IndexPath) -> String {
-        reviewManagement.makeTitle(indexPath: indexPath)
-    }
-    
-    func makeSearchResultReleaseDay(indexPath: IndexPath) -> String {
-        reviewManagement.makeReleaseDay(indexPath: indexPath)
+    func makeReleaseDay(indexPath: IndexPath) -> String {
+        switch fetchState {
+        case .search:
+            return reviewManagement.makeReleaseDay(indexPath: indexPath)
+        case .recommend:
+            return recomendations.makeReleaseDay(indexPath: indexPath)
+        }
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-//        let selectResult = reviewManagement.returnSelectedReview(indexPath: indexPath)
-        let selectResult = recomendations.videoWorks[indexPath.section][indexPath.item]
-        view.reviewTheMovie(movie: selectResult, movieUpdateState: .insert)
+        switch fetchState {
+        case .search:
+            let selectResult = reviewManagement.returnSelectedReview(indexPath: indexPath)
+            view.reviewTheMovie(movie: selectResult, movieUpdateState: .insert)
+        case .recommend:
+            let selectResult = recomendations.videoWorks[indexPath.section][indexPath.item]
+            view.reviewTheMovie(movie: selectResult, movieUpdateState: .insert)
+        }
     }
     
     func didSaveReview() {
