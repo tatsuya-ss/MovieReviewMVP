@@ -70,6 +70,75 @@ extension SearchMovieViewController {
     
 }
 
+// MARK: - SearchMoviePresenterOutput
+
+extension SearchMovieViewController : SearchMoviePresenterOutput {
+    
+    func initialRecommendation() {
+        collectionView.collectionViewLayout = createRecommendationLayout()
+        configureRecommendationDataSource()
+        collectionViewRecommendationSnapshot()
+        stopIndicator(indicator: activityIndicatorView)
+    }
+    
+    func searchInitial() {
+        collectionView.collectionViewLayout = createSearchResultLayout()
+        collectionViewSearchResultSnapshot()
+        stopIndicator(indicator: activityIndicatorView)
+    }
+    
+    func searchRefresh() {
+        collectionViewSearchResultSnapshot()
+        stopIndicator(indicator: activityIndicatorView)
+    }
+    
+    func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
+        let reviewMovieVC = SelectSearchReviewViewController()
+        let videoWorkUseCase = VideoWorkUseCase()
+        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
+        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
+        let presenter = SelectSearchReviewPresenter(view: reviewMovieVC, selectedReview: SelectedReview(review: movie), reviewUseCase: reviewUseCase, userUseCase: userUseCase, videoWorkuseCase: videoWorkUseCase)
+        
+        reviewMovieVC.inject(presenter: presenter)
+        
+        let nav = UINavigationController(rootViewController: reviewMovieVC)
+        
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    func displayStoreReviewController() {
+        if let windowScene = UIApplication.shared.windows.first?.windowScene {
+            SKStoreReviewController.requestReview(in: windowScene)
+        }
+    }
+    
+}
+
+// MARK: - UISearchBarDelegate
+extension SearchMovieViewController : UISearchBarDelegate {
+    
+    // MARK: 検索ボタンが押された時
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        startIndicator(indicator: activityIndicatorView)
+        configureSearchResultDataSource()
+        self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
+        searchBar.resignFirstResponder()
+    }
+    
+    // MARK: キャンセルボタンが押された時
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        startIndicator(indicator: activityIndicatorView)
+        presenter.changeFetchStateToRecommend()
+        searchBar.text = nil
+        collectionView.collectionViewLayout = createRecommendationLayout()
+        configureRecommendationDataSource()
+        collectionViewRecommendationSnapshot()
+        searchBar.resignFirstResponder()
+        stopIndicator(indicator: activityIndicatorView)
+    }
+    
+}
+
 // MARK: - setup
 extension SearchMovieViewController {
     
@@ -122,11 +191,6 @@ extension SearchMovieViewController {
         dataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
             return self?.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
         }
-
-        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        snapshot.appendSections([presenter.numberOfSections])
-        snapshot.appendItems(presenter.getVideoWorks(section: 0))
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func configureRecommendationDataSource() {
@@ -148,12 +212,6 @@ extension SearchMovieViewController {
         }
         dataSource.supplementaryViewProvider = { [weak self] (view, kind, index) in
             return self?.collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: index)
-        }
-        var snapshot = NSDiffableDataSourceSnapshot<Int, VideoWork>()
-        for section in (0..<presenter.numberOfSections) {
-            snapshot.appendSections([section])
-            snapshot.appendItems(presenter.getVideoWorks(section: section))
-            dataSource.apply(snapshot, animatingDifferences: true)
         }
     }
     
@@ -269,28 +327,6 @@ extension SearchMovieViewController {
     
 }
 
-// MARK: - UISearchBarDelegate
-extension SearchMovieViewController : UISearchBarDelegate {
-    // MARK: 検索ボタンが押された時
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        startIndicator(indicator: activityIndicatorView)
-        self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
-        searchBar.resignFirstResponder()
-    }
-    
-    // MARK: キャンセルボタンが押された時
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        startIndicator(indicator: activityIndicatorView)
-        presenter.changeFetchStateToRecommend()
-        searchBar.text = nil
-        collectionView.collectionViewLayout = createRecommendationLayout()
-        configureRecommendationDataSource()
-        searchBar.resignFirstResponder()
-        stopIndicator(indicator: activityIndicatorView)
-    }
-    
-}
-
 // MARK: - UICollectionViewDelegate
 extension SearchMovieViewController: UICollectionViewDelegate {
     
@@ -340,52 +376,6 @@ extension SearchMovieViewController: UICollectionViewDelegate {
                     isLoadingMore = false
                 }
             }
-        }
-    }
-    
-}
-
-// MARK: - SearchMoviePresenterOutput
-
-extension SearchMovieViewController : SearchMoviePresenterOutput {
-    
-    func initialRecommendation() {
-        collectionView.collectionViewLayout = createRecommendationLayout()
-        configureRecommendationDataSource()
-        collectionViewRecommendationSnapshot()
-        stopIndicator(indicator: activityIndicatorView)
-    }
-    
-    func searchInitial() {
-        collectionView.collectionViewLayout = createSearchResultLayout()
-        configureSearchResultDataSource()
-        collectionViewSearchResultSnapshot()
-        stopIndicator(indicator: activityIndicatorView)
-    }
-    
-    func searchRefresh() {
-        configureSearchResultDataSource()
-        collectionViewSearchResultSnapshot()
-        stopIndicator(indicator: activityIndicatorView)
-    }
-    
-    func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
-        let reviewMovieVC = SelectSearchReviewViewController()
-        let videoWorkUseCase = VideoWorkUseCase()
-        let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
-        let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
-        let presenter = SelectSearchReviewPresenter(view: reviewMovieVC, selectedReview: SelectedReview(review: movie), reviewUseCase: reviewUseCase, userUseCase: userUseCase, videoWorkuseCase: videoWorkUseCase)
-        
-        reviewMovieVC.inject(presenter: presenter)
-        
-        let nav = UINavigationController(rootViewController: reviewMovieVC)
-        
-        self.present(nav, animated: true, completion: nil)
-    }
-    
-    func displayStoreReviewController() {
-        if let windowScene = UIApplication.shared.windows.first?.windowScene {
-            SKStoreReviewController.requestReview(in: windowScene)
         }
     }
     
