@@ -164,7 +164,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let results):
-                    self?.recomendations.upcoming.append(videoWorks: results)
+                    self?.recomendations.fetchUpcoming(videoWorks: results)
                     self?.fetchUpcomingPosterImage(results: results, dispatchGroup: dispatchGroup)
                 }
             }
@@ -176,7 +176,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let results):
-                    self?.recomendations.trendingWeek.append(videoWorks: results)
+                    self?.recomendations.fetchTrendingWeek(videoWorks: results)
                     self?.fetchTrendingWeekPosterImage(results: results, dispatchGroup: dispatchGroup)
                 }
             }
@@ -189,7 +189,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                     print(error)
                 case .success(let results):
                     print(result)
-                    self?.recomendations.nowPlaying.append(videoWorks: results)
+                    self?.recomendations.fetchNowPlaying(videoWorks: results)
                     self?.fetchNowPlayingPosterImage(results: results, dispatchGroup: dispatchGroup)
                 }
             }
@@ -210,7 +210,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.recomendations.nowPlaying.fetchPosterData(index: videoWork.offset, data: data)
+                    self?.recomendations.fetchNowPlayingPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
@@ -225,7 +225,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.recomendations.trendingWeek.fetchPosterData(index: videoWork.offset, data: data)
+                    self?.recomendations.fetchTrendingWeekPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
@@ -240,7 +240,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.recomendations.upcoming.fetchPosterData(index: videoWork.offset, data: data)
+                    self?.recomendations.fetchUpcomingPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
