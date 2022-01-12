@@ -158,7 +158,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             
         case .recommend:
             dispatchGroup.enter()
-            useCase.fetchRecommendVideoWorks { [weak self] result in
+            useCase.fetchUpcomingVideoWorks { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):

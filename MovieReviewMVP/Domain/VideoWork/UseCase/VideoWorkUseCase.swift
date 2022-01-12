@@ -10,7 +10,7 @@ import Foundation
 protocol VideoWorkUseCaseProtocol {
     func fetchVideoWorks(page: Int, query: String,
                          completion: @escaping ResultHandler<[VideoWork]>)
-    func fetchRecommendVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
     func fetchTrendingWeekVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
     func fetchNowPlayingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>)
     func fetchVideoWorkDetail(videoWork: VideoWork,
@@ -38,7 +38,7 @@ final class VideoWorkUseCase: VideoWorkUseCaseProtocol {
                                         completion: completion)
     }
     
-    func fetchRecommendVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
         guard let url = TMDbAPI.UpcomingRequest().upcomingURL else {
             completion(.failure(TMDbSearchError.urlError))
             return
