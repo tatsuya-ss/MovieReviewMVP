@@ -13,7 +13,10 @@ final class VideoWorkUseCaseStub: VideoWorkUseCaseProtocol {
     
     var fetchVideoWorksResponses: Result<[VideoWork], Error>?
     var fetchPosterImageResponses: Result<Data, Error>?
-
+    var fetchUpcomingVideoWorksResponses: Result<[VideoWork], Error>?
+    var fetchTrendingWeekVideoWorksResponses: Result<[VideoWork], Error>?
+    var fetchNowPlayingVideoWorksResponses: Result<[VideoWork], Error>?
+    
     // MARK: add
     func addFetchVideoWorks(result: Result<[VideoWork], Error>) {
         fetchVideoWorksResponses = result
@@ -23,25 +26,42 @@ final class VideoWorkUseCaseStub: VideoWorkUseCaseProtocol {
         fetchPosterImageResponses = result
     }
     
+    func addFetchUpcomingVideoWorks(result: Result<[VideoWork], Error>) {
+        fetchUpcomingVideoWorksResponses = result
+    }
+    
+    func addFetchTrendingWeekVideoWorks(result: Result<[VideoWork], Error>) {
+        fetchTrendingWeekVideoWorksResponses = result
+    }
+    
+    func addFetchNowPlayingVideoWorks(result: Result<[VideoWork], Error>) {
+        fetchNowPlayingVideoWorksResponses = result
+    }
+    
+    
     // MARK: VideoWorkUseCaseProtocolのメソッド
     func fetchVideoWorks(page: Int, query: String, completion: @escaping ResultHandler<[VideoWork]>) {
         guard let responses = fetchVideoWorksResponses
-        else {
-            fatalError("fetchVideoWorksResponsesが見つかりません")
-        }
+        else { fatalError("fetchVideoWorksResponsesが見つかりません") }
         completion(responses)
     }
     
-    func fetchRecommendVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
-        print(#function)
+    func fetchUpcomingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
+        guard let responses = fetchUpcomingVideoWorksResponses
+        else { fatalError("fetchRecommendVideoWorksResponsesが見つかりません") }
+        completion(responses)
     }
     
     func fetchTrendingWeekVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
-        print(#function)
+        guard let responses = fetchTrendingWeekVideoWorksResponses
+        else { fatalError("fetchTrendingWeekVideoWorksResponsesが見つかりません") }
+        completion(responses)
     }
     
     func fetchNowPlayingVideoWorks(completion: @escaping ResultHandler<[VideoWork]>) {
-        print(#function)
+        guard let responses = fetchNowPlayingVideoWorksResponses
+        else { fatalError("fetchNowPlayingVideoWorksResponsesが見つかりません") }
+        completion(responses)
     }
     
     func fetchVideoWorkDetail(videoWork: VideoWork, completion: @escaping ResultHandler<[CastDetail]>) {
@@ -66,11 +86,12 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     private(set) var countOfInvokingReviewTheMovie = 0
     private(set) var countOfInvokingDisplayStoreReviewController = 0
     private(set) var countOfInvokingInitialRecommendation = 0
-
+    
     let reviewManagement = ReviewManagement()
     
     var searchInitialCalledWithVideoWorks: (() -> Void)?
-
+    var initialRecommendationCalledWithVideoWorks: (() -> Void)?
+    
     func searchInitial() {
         countOfInvokingSearchInitial += 1
         searchInitialCalledWithVideoWorks?()
@@ -89,7 +110,8 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     }
     
     func initialRecommendation() {
-        print(#function)
+        countOfInvokingInitialRecommendation += 1
+        initialRecommendationCalledWithVideoWorks?()
     }
     
 }
@@ -99,19 +121,49 @@ final class SearchVideoWorks: XCTestCase {
     
     var spy: SearchMoviePresenterOutputSpy!
     var stub: VideoWorkUseCaseStub!
-    var videoWorksMock: [VideoWork]!
-    
+    var videoWorksSearchMock: [VideoWork]!
+    var videoWorksNowPlayingMock: [VideoWork]!
+    var videoWorksUpcomingMock: [VideoWork]!
+    var videoWorksTrendingWeekMock: [VideoWork]!
+
     override func setUp() {
         spy = SearchMoviePresenterOutputSpy()
         stub = VideoWorkUseCaseStub()
-        videoWorksMock = VideoWork.mock()
+        videoWorksSearchMock = VideoWork.searchMock()
+        videoWorksNowPlayingMock = VideoWork.nowPlayingMock()
+        videoWorksUpcomingMock = VideoWork.upcomingMock()
+        videoWorksTrendingWeekMock = VideoWork.trendingWeekMock()
+    }
+    
+    func test初期表示の時() {
+        
+        XCTContext.runActivity(named: "おすすめ映画情報を取得") { _ in
+            let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+            stub.addFetchNowPlayingVideoWorks(result: .success(videoWorksNowPlayingMock))
+            stub.addFetchUpcomingVideoWorks(result: .success(videoWorksUpcomingMock))
+            stub.addFetchTrendingWeekVideoWorks(result: .success(videoWorksTrendingWeekMock))
+            stub.addFetchPosterImage(result: .success(Data()))
+            let exp = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchUpcomingVideoWorks,fetchTrendingWeekVideoWorks,fetchNowPlayingVideoWorksの実行を待つ")
+            spy.initialRecommendationCalledWithVideoWorks = {
+                exp.fulfill()
+            }
+            presenter.fetchMovie(state: .recommend, text: nil)
+            wait(for: [exp], timeout: 1)
+            XCTAssertEqual(3, presenter.getVideoWorks(section: 0).count)
+            XCTAssertEqual(4, presenter.getVideoWorks(section: 1).count)
+            XCTAssertEqual(5, presenter.getVideoWorks(section: 2).count)
+            XCTAssertEqual("呪術廻戦", presenter.getVideoWorks(section: 0)[0].title)
+            XCTAssertEqual("ノイズ", presenter.getVideoWorks(section: 1)[2].title)
+            XCTAssertEqual("ヴェノム", presenter.getVideoWorks(section: 2)[3].title)
+        }
+        
     }
     
     func test検索ボタンタップ時() {
         
         XCTContext.runActivity(named: "検索ワードがある時") { _ in
             let presenter = SearchMoviePresenter(view: spy, useCase: stub)
-            stub.addFetchVideoWorks(result: .success(videoWorksMock))
+            stub.addFetchVideoWorks(result: .success(videoWorksSearchMock))
             stub.addFetchPosterImage(result: .success(Data()))
             let exp = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchVideoWorksの実行を待つ")
             spy.searchInitialCalledWithVideoWorks = {

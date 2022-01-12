@@ -10,33 +10,46 @@ import Foundation
 
 // MARK: - モック作成
 extension VideoWork {
-    static func mock() -> [VideoWork] {
+    
+    static func searchMock() -> [VideoWork] {
         [
             VideoWork(title: "ナルト",
-                      posterPath: nil,
-                      originalName: nil,
-                      backdropPath: nil,
-                      overview: nil,
-                      releaseDay: nil,
                       reviewStars: 4.0,
                       review: "かっこいい",
-                      createAt: nil,
-                      id: 100,
-                      isStoredAsReview: nil,
-                      mediaType: nil),
+                      id: 100),
             
             VideoWork(title: "ナルト疾風伝",
-                      posterPath: nil,
-                      originalName: nil,
-                      backdropPath: nil,
-                      overview: nil,
-                      releaseDay: nil,
                       reviewStars: 5.0,
                       review: "👏",
-                      createAt: nil,
-                      id: 200,
-                      isStoredAsReview: nil,
-                      mediaType: nil)
+                      id: 200)
         ]
     }
+    
+    static func nowPlayingMock() -> [VideoWork] {
+        [
+            VideoWork(title: "呪術廻戦", id: 1),
+            VideoWork(title: "マトリックス", id: 2),
+            VideoWork(title: "あなたの番です", id: 3),
+        ]
+    }
+    
+    static func upcomingMock() -> [VideoWork] {
+        [
+            VideoWork(title: "バイオハザード", id: 4),
+            VideoWork(title: "フタリノセカイ", id: 5),
+            VideoWork(title: "ノイズ", id: 6),
+            VideoWork(title: "前科者", id: 7),
+        ]
+    }
+    
+    static func trendingWeekMock() -> [VideoWork] {
+        [
+            VideoWork(title: "スパイダーマン", id: 8),
+            VideoWork(title: "SING2", id: 9),
+            VideoWork(title: "ハリーボッター", id: 10),
+            VideoWork(title: "ヴェノム", id: 11),
+            VideoWork(title: "進撃の巨人", id: 12),
+        ]
+    }
+    
 }
