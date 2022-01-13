@@ -92,6 +92,8 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     var searchInitialCalledWithVideoWorks: (() -> Void)?
     var initialRecommendationCalledWithVideoWorks: (() -> Void)?
     var searchRefreshCalledWithVideoWorks: (() -> Void)?
+    
+    var reviewTheMovieVideoWork: VideoWork?
 
     func changeIsHidden(isHidden: Bool, alpha: Double) {
         print(#function)
@@ -109,6 +111,7 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
         countOfInvokingReviewTheMovie += 1
+        reviewTheMovieVideoWork = movie
     }
     
     func displayStoreReviewController() {
@@ -122,7 +125,7 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     
 }
 
-// MARK: - extension
+// MARK: - func SearchMoviePresenterOutputSpy
 extension SearchMoviePresenterOutputSpy {
     
     func initialCountOfInvokingInitialRecommendation() {
@@ -242,10 +245,12 @@ final class SearchVideoWorksTests: XCTestCase {
         search(presenter: presenter)
         presenter.didSelectRow(at: IndexPath(item: 0, section: 0))
         XCTAssertTrue(spy.countOfInvokingReviewTheMovie == 1)
+        XCTAssertEqual("ナルト", spy.reviewTheMovieVideoWork?.title)
     }
     
 }
 
+// MARK: - func SearchVideoWorksTests
 extension SearchVideoWorksTests {
     
     private func search(presenter: SearchMoviePresenter) {
