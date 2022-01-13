@@ -91,6 +91,11 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     
     var searchInitialCalledWithVideoWorks: (() -> Void)?
     var initialRecommendationCalledWithVideoWorks: (() -> Void)?
+    var searchRefreshCalledWithVideoWorks: (() -> Void)?
+
+    func changeIsHidden(isHidden: Bool, alpha: Double) {
+        print(#function)
+    }
     
     func searchInitial() {
         countOfInvokingSearchInitial += 1
@@ -98,7 +103,8 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     }
     
     func searchRefresh() {
-        print(#function)
+        countOfInvokingSearchRefresh += 1
+        searchRefreshCalledWithVideoWorks?()
     }
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
@@ -205,6 +211,34 @@ final class SearchVideoWorks: XCTestCase {
             
         }
         
+    }
+    
+    func test検索結果更新処理() {
+        
+        XCTContext.runActivity(named: "更新ボタンを押した時") { _ in
+            let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+            stub.addFetchVideoWorks(result: .success(videoWorksSearchMock))
+            stub.addFetchPosterImage(result: .success(Data()))
+            // MARK: 検索ワードのキャッシュが無しだとreturnされるので、最初の検索を実行
+            let expSearchInitial = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchVideoWorksの実行を待つ")
+            spy.searchInitialCalledWithVideoWorks = {
+                expSearchInitial.fulfill()
+            }
+            presenter.fetchMovie(state: .search(.initial), text: "ナルト")
+            wait(for: [expSearchInitial], timeout: 1)
+            XCTAssertEqual(2, presenter.getVideoWorks(section: 0).count)
+            XCTAssertTrue(spy.countOfInvokingSearchInitial == 1)
+
+            // MARK: 今回テストしたいRefresh処理
+            let expRefresh = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchVideoWorksの実行を待つ")
+            spy.searchRefreshCalledWithVideoWorks = {
+                expRefresh.fulfill()
+            }
+            presenter.fetchMovie(state: .search(.refresh), text: "ナルト")
+            wait(for: [expRefresh], timeout: 1)
+            XCTAssertEqual(4, presenter.getVideoWorks(section: 0).count)
+            XCTAssertTrue(spy.countOfInvokingSearchInitial == 1)
+        }
     }
     
 }
