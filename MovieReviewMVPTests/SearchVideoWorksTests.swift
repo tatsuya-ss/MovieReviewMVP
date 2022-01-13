@@ -108,7 +108,7 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     }
     
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState) {
-        print(#function)
+        countOfInvokingReviewTheMovie += 1
     }
     
     func displayStoreReviewController() {
@@ -132,7 +132,7 @@ extension SearchMoviePresenterOutputSpy {
 }
 
 // MARK: - XCTestCase
-final class SearchVideoWorks: XCTestCase {
+final class SearchVideoWorksTests: XCTestCase {
     
     var spy: SearchMoviePresenterOutputSpy!
     var stub: VideoWorkUseCaseStub!
@@ -220,15 +220,8 @@ final class SearchVideoWorks: XCTestCase {
             stub.addFetchVideoWorks(result: .success(videoWorksSearchMock))
             stub.addFetchPosterImage(result: .success(Data()))
             // MARK: 検索ワードのキャッシュが無しだとreturnされるので、最初の検索を実行
-            let expSearchInitial = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchVideoWorksの実行を待つ")
-            spy.searchInitialCalledWithVideoWorks = {
-                expSearchInitial.fulfill()
-            }
-            presenter.fetchMovie(state: .search(.initial), text: "ナルト")
-            wait(for: [expSearchInitial], timeout: 1)
-            XCTAssertEqual(2, presenter.getVideoWorks(section: 0).count)
-            XCTAssertTrue(spy.countOfInvokingSearchInitial == 1)
-
+            search(presenter: presenter)
+            
             // MARK: 今回テストしたいRefresh処理
             let expRefresh = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchVideoWorksの実行を待つ")
             spy.searchRefreshCalledWithVideoWorks = {
@@ -239,6 +232,31 @@ final class SearchVideoWorks: XCTestCase {
             XCTAssertEqual(4, presenter.getVideoWorks(section: 0).count)
             XCTAssertTrue(spy.countOfInvokingSearchInitial == 1)
         }
+    }
+    
+    func testセルをタップ時() {
+        let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+        stub.addFetchVideoWorks(result: .success(videoWorksSearchMock))
+        stub.addFetchPosterImage(result: .success(Data()))
+        // MARK: 検索ワードのキャッシュが無しだとreturnされるので、最初の検索を実行
+        search(presenter: presenter)
+        presenter.didSelectRow(at: IndexPath(item: 0, section: 0))
+        XCTAssertTrue(spy.countOfInvokingReviewTheMovie == 1)
+    }
+    
+}
+
+extension SearchVideoWorksTests {
+    
+    private func search(presenter: SearchMoviePresenter) {
+        let expSearchInitial = XCTestExpectation(description: "fetchMovie内で呼ばれるfetchVideoWorksの実行を待つ")
+        spy.searchInitialCalledWithVideoWorks = {
+            expSearchInitial.fulfill()
+        }
+        presenter.fetchMovie(state: .search(.initial), text: "ナルト")
+        wait(for: [expSearchInitial], timeout: 1)
+        XCTAssertEqual(2, presenter.getVideoWorks(section: 0).count)
+        XCTAssertTrue(spy.countOfInvokingSearchInitial == 1)
     }
     
 }
