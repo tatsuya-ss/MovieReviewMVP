@@ -13,7 +13,7 @@ protocol SearchMoviePresenterInput {
     var getFetchState: FetchMovieState { get }
     func getHeaderTitle(indexPath: IndexPath) -> String
     func didSelectRow(at indexPath: IndexPath)
-    func didSaveReview()
+    func didSaveReview(saveCount: Int)
     func fetchMovie(state: FetchMovieState, text: String?)
     func makeTitle(indexPath: IndexPath) -> String
     func makeReleaseDay(indexPath: IndexPath) -> String
@@ -111,8 +111,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         }
     }
     
-    func didSaveReview() {
-        let saveCount = UserDefaults.standard.loadNumberOfSaves()
+    func didSaveReview(saveCount: Int) {
         if saveCount % 10 == 0 {
             view.displayStoreReviewController()
         }

@@ -191,7 +191,8 @@ extension SearchMovieViewController {
     }
     
     @objc private func didSaveReview() {
-        presenter.didSaveReview()
+        let saveCount = UserDefaults.standard.loadNumberOfSaves()
+        presenter.didSaveReview(saveCount: saveCount)
     }
     
     private func setupCollectionView() {
