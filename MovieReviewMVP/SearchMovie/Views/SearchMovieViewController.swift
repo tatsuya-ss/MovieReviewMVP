@@ -36,6 +36,7 @@ final class SearchMovieViewController: UIViewController {
         setupSearchBar()
         setupRefreshButton()
         setupBanner()
+        setupNotification()
         setupIndicator(indicator: activityIndicatorView)
         startIndicator(indicator: activityIndicatorView)
         setupCollectionView()
@@ -46,10 +47,6 @@ final class SearchMovieViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         refreshButton.layer.cornerRadius = refreshButton.bounds.height / 2
-    }
-    
-    @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
-        presenter.didSaveReview()
     }
     
     @IBAction private func didTapRefreshButton(_ sender: Any) {
@@ -184,6 +181,17 @@ extension SearchMovieViewController {
     
     private func setupRefreshButton() {
         refreshButton.isHidden = true
+    }
+    
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(didSaveReview),
+                                       name: .insertReview,
+                                       object: nil)
+    }
+    
+    @objc private func didSaveReview() {
+        presenter.didSaveReview()
     }
     
     private func setupCollectionView() {
