@@ -8,10 +8,10 @@
 import Foundation
 
 struct Recommendation {
-    var videoWorks: [VideoWork] = []
+    private(set) var videoWorks: [VideoWork] = []
     let title: String
     
-    mutating func append(videoWorks: [VideoWork]) {
+    mutating func fetchVideoWorks(videoWorks: [VideoWork]) {
         self.videoWorks = videoWorks
     }
     
@@ -21,9 +21,9 @@ struct Recommendation {
 }
 
 struct Recommendations {
-    var nowPlaying = Recommendation(title: "公開中")
-    var upcoming = Recommendation(title: "近日公開")
-    var trendingWeek = Recommendation(title: "１週間のトレンド")
+    private(set) var nowPlaying = Recommendation(title: "公開中")
+    private(set) var upcoming = Recommendation(title: "近日公開")
+    private(set) var trendingWeek = Recommendation(title: "１週間のトレンド")
     var recommendations: [Recommendation] {
         [nowPlaying, upcoming, trendingWeek]
     }
@@ -33,6 +33,30 @@ struct Recommendations {
             upcoming.videoWorks,
             trendingWeek.videoWorks
         ]
+    }
+    
+    mutating func fetchNowPlaying(videoWorks: [VideoWork]) {
+        nowPlaying.fetchVideoWorks(videoWorks: videoWorks)
+    }
+    
+    mutating func fetchUpcoming(videoWorks: [VideoWork]) {
+        upcoming.fetchVideoWorks(videoWorks: videoWorks)
+    }
+    
+    mutating func fetchTrendingWeek(videoWorks: [VideoWork]) {
+        trendingWeek.fetchVideoWorks(videoWorks: videoWorks)
+    }
+    
+    mutating func fetchNowPlayingPosterData(index: Int, data: Data) {
+        nowPlaying.fetchPosterData(index: index, data: data)
+    }
+    
+    mutating func fetchUpcomingPosterData(index: Int, data: Data) {
+        upcoming.fetchPosterData(index: index, data: data)
+    }
+    
+    mutating func fetchTrendingWeekPosterData(index: Int, data: Data) {
+        trendingWeek.fetchPosterData(index: index, data: data)
     }
     
     func makeTitle(indexPath: IndexPath) -> String {

@@ -13,11 +13,12 @@ protocol SearchMoviePresenterInput {
     var getFetchState: FetchMovieState { get }
     func getHeaderTitle(indexPath: IndexPath) -> String
     func didSelectRow(at indexPath: IndexPath)
-    func didSaveReview()
+    func didSaveReview(saveCount: Int)
     func fetchMovie(state: FetchMovieState, text: String?)
     func makeTitle(indexPath: IndexPath) -> String
     func makeReleaseDay(indexPath: IndexPath) -> String
     func changeFetchStateToRecommend()
+    func didScroll(isHidden: Bool)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
@@ -26,6 +27,7 @@ protocol SearchMoviePresenterOutput : AnyObject {
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState)
     func displayStoreReviewController()
     func initialRecommendation()
+    func changeIsHidden(isHidden: Bool, alpha: Double)
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
@@ -62,6 +64,13 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     func getHeaderTitle(indexPath: IndexPath) -> String {
         recomendations.recommendations[indexPath.section].title
+    }
+    
+    func didScroll(isHidden: Bool) {
+        if case .search = fetchState {
+            let alpha = isHidden ? 0.0 : 1.0
+            view.changeIsHidden(isHidden: isHidden, alpha: alpha)
+        }
     }
     
     func getVideoWorks(section: Int) -> [VideoWork] {
@@ -102,8 +111,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         }
     }
     
-    func didSaveReview() {
-        let saveCount = UserDefaults.standard.loadNumberOfSaves()
+    func didSaveReview(saveCount: Int) {
         if saveCount % 10 == 0 {
             view.displayStoreReviewController()
         }
@@ -158,13 +166,13 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             
         case .recommend:
             dispatchGroup.enter()
-            useCase.fetchRecommendVideoWorks { [weak self] result in
+            useCase.fetchUpcomingVideoWorks { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
                     print(error)
                 case .success(let results):
-                    self?.recomendations.upcoming.append(videoWorks: results)
+                    self?.recomendations.fetchUpcoming(videoWorks: results)
                     self?.fetchUpcomingPosterImage(results: results, dispatchGroup: dispatchGroup)
                 }
             }
@@ -176,7 +184,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let results):
-                    self?.recomendations.trendingWeek.append(videoWorks: results)
+                    self?.recomendations.fetchTrendingWeek(videoWorks: results)
                     self?.fetchTrendingWeekPosterImage(results: results, dispatchGroup: dispatchGroup)
                 }
             }
@@ -189,7 +197,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                     print(error)
                 case .success(let results):
                     print(result)
-                    self?.recomendations.nowPlaying.append(videoWorks: results)
+                    self?.recomendations.fetchNowPlaying(videoWorks: results)
                     self?.fetchNowPlayingPosterImage(results: results, dispatchGroup: dispatchGroup)
                 }
             }
@@ -201,6 +209,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         }
     }
     
+}
+
+// MARK: - func
+extension SearchMoviePresenter {
+    
     private func fetchNowPlayingPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
             dispatchGroup.enter()
@@ -210,7 +223,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.recomendations.nowPlaying.fetchPosterData(index: videoWork.offset, data: data)
+                    self?.recomendations.fetchNowPlayingPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
@@ -225,7 +238,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.recomendations.trendingWeek.fetchPosterData(index: videoWork.offset, data: data)
+                    self?.recomendations.fetchTrendingWeekPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
@@ -240,7 +253,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 case .failure(let error):
                     print(error)
                 case .success(let data):
-                    self?.recomendations.upcoming.fetchPosterData(index: videoWork.offset, data: data)
+                    self?.recomendations.fetchUpcomingPosterData(index: videoWork.offset, data: data)
                 }
             }
         }
@@ -261,4 +274,5 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             }
         }
     }
+    
 }

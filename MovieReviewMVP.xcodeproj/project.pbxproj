@@ -12,6 +12,8 @@
 		750B440B2685CF0A00191E17 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B440A2685CF0A00191E17 /* Date.swift */; };
 		750B44612687096F00191E17 /* ReviewTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B44602687096F00191E17 /* ReviewTextView.swift */; };
 		750B44B52689C32D00191E17 /* Notification.Name+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */; };
+		7511A10F278EAAA100F72356 /* VideoWorksMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7511A10E278EAAA100F72356 /* VideoWorksMock.swift */; };
+		7511A111278EAC1100F72356 /* SearchVideoWorksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7511A110278EAC1100F72356 /* SearchVideoWorksTests.swift */; };
 		7518C0D5269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D6269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
 		7518C0D7269C14B300C27C1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */; };
@@ -138,6 +140,8 @@
 		750B440A2685CF0A00191E17 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		750B44602687096F00191E17 /* ReviewTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTextView.swift; sourceTree = "<group>"; };
 		750B44B42689C32D00191E17 /* Notification.Name+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Ext.swift"; sourceTree = "<group>"; };
+		7511A10E278EAAA100F72356 /* VideoWorksMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoWorksMock.swift; sourceTree = "<group>"; };
+		7511A110278EAC1100F72356 /* SearchVideoWorksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVideoWorksTests.swift; sourceTree = "<group>"; };
 		7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7518C0D8269C1F3C00C27C1C /* ReviewDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDataStore.swift; sourceTree = "<group>"; };
 		7518C0DC269C2B9300C27C1C /* ReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRepository.swift; sourceTree = "<group>"; };
@@ -423,7 +427,9 @@
 			isa = PBXGroup;
 			children = (
 				75676EF2263A89B600569AF5 /* MovieReviewMVPTests.swift */,
+				7511A110278EAC1100F72356 /* SearchVideoWorksTests.swift */,
 				75676EF4263A89B600569AF5 /* Info.plist */,
+				7511A10E278EAAA100F72356 /* VideoWorksMock.swift */,
 			);
 			path = MovieReviewMVPTests;
 			sourceTree = "<group>";
@@ -1250,7 +1256,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7511A10F278EAAA100F72356 /* VideoWorksMock.swift in Sources */,
 				75676EF3263A89B600569AF5 /* MovieReviewMVPTests.swift in Sources */,
+				7511A111278EAC1100F72356 /* SearchVideoWorksTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
