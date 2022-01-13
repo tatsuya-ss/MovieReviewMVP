@@ -17,9 +17,9 @@ final class SearchMovieViewController: UIViewController {
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet private weak var refreshButton: UIButton!
     
     private var bannerView: GADBannerView!
-    private var scrollIndicator: UIActivityIndicatorView!
     private var tableViewCellHeight: CGFloat?
     private var presenter: SearchMoviePresenterInput!
     private var dataSource: UICollectionViewDiffableDataSource<Int, VideoWork>! = nil
@@ -33,8 +33,8 @@ final class SearchMovieViewController: UIViewController {
         setupTabBarController()
         setupNavigationController()
         setupPresenter()
-        setupIndicator()
         setupSearchBar()
+        setupRefreshButton()
         setupBanner()
         setupIndicator(indicator: activityIndicatorView)
         startIndicator(indicator: activityIndicatorView)
@@ -43,8 +43,18 @@ final class SearchMovieViewController: UIViewController {
         presenter.fetchMovie(state: .recommend, text: nil)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        refreshButton.layer.cornerRadius = refreshButton.bounds.height / 2
+    }
+    
     @IBAction func saveButtonTappedForInsertSegue(segue: UIStoryboardSegue) {
         presenter.didSaveReview()
+    }
+    
+    @IBAction private func didTapRefreshButton(_ sender: Any) {
+        startIndicator(indicator: activityIndicatorView)
+        presenter.fetchMovie(state: .search(.refresh), text: nil)
     }
     
 }
@@ -74,6 +84,14 @@ extension SearchMovieViewController {
 
 extension SearchMovieViewController : SearchMoviePresenterOutput {
     
+    func changeIsHidden(isHidden: Bool, alpha: Double) {
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            self?.refreshButton.alpha = alpha
+        }, completion:  { [weak self] _ in
+            self?.refreshButton.isHidden = isHidden
+        })
+    }
+    
     func initialRecommendation() {
         collectionView.collectionViewLayout = createRecommendationLayout()
         configureRecommendationDataSource()
@@ -89,6 +107,7 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
     
     func searchRefresh() {
         collectionViewSearchResultSnapshot()
+        refreshButton.isHidden = true
         stopIndicator(indicator: activityIndicatorView)
     }
     
@@ -161,6 +180,10 @@ extension SearchMovieViewController {
     private func setupNavigationController() {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: .setNavigationTitleLeft(title: .searchTitle))
+    }
+    
+    private func setupRefreshButton() {
+        refreshButton.isHidden = true
     }
     
     private func setupCollectionView() {
@@ -268,18 +291,6 @@ extension SearchMovieViewController {
         return layout
     }
     
-    private func setupIndicator() {
-        scrollIndicator = UIActivityIndicatorView()
-        scrollIndicator.color = .white
-        scrollIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollIndicator)
-        
-        [scrollIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-         scrollIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-         scrollIndicator.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-         scrollIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor)].forEach { $0.isActive = true }
-    }
-    
     private func setupPresenter() {
         let videoWorkUseCase = VideoWorkUseCase(repository:
                                                     VideoWorksRepository(dataStore:
@@ -341,42 +352,10 @@ extension SearchMovieViewController: UICollectionViewDelegate {
     
     // MARK: 下部スクロール
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let fetchState = presenter.getFetchState
-        if case .search = fetchState {
-            let contentSize = scrollView.contentSize.height
-            let tableSize = scrollView.frame.size.height
-            let canLoadFromBottom = contentSize > tableSize
-            // Offset　何かの位置を指し示す際に、基準となる位置からの差（距離、ズレ、相対位置）を表す値のことをオフセット
-            let currentOffset = scrollView.contentOffset.y
-            let maximumOffset = contentSize - tableSize
-            let difference = maximumOffset - currentOffset
-            
-            scrollView.backgroundColor = .black
-            
-            let previousScrollViewBottomInset = CGFloat(0)
-            let indicatorHeight = scrollIndicator.bounds.height + 16
-            var isLoadingMore = false
-            
-            if isLoadingMore == true {
-                scrollView.contentInset.bottom = previousScrollViewBottomInset + indicatorHeight
-            } else {
-                scrollView.contentInset.bottom = previousScrollViewBottomInset
-            }
-            
-            if canLoadFromBottom, difference <= -120 {
-                isLoadingMore = true
-                
-                scrollIndicator.isHidden = false
-                scrollIndicator.startAnimating()
-                
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) { [weak self] in
-                    self?.presenter.fetchMovie(state: .search(.refresh), text: nil)
-                    self?.scrollIndicator.stopAnimating()
-                    self?.scrollIndicator.isHidden = true
-                    isLoadingMore = false
-                }
-            }
-        }
+        let scroll = scrollView.contentOffset.y + scrollView.frame.size.height
+        let cellHeight = collectionView.bounds.height * 0.2
+        let isHidden = scrollView.contentSize.height >= scroll + cellHeight
+        presenter.didScroll(isHidden: isHidden)
     }
     
 }
@@ -385,7 +364,7 @@ extension SearchMovieViewController: UICollectionViewDelegate {
 extension SearchMovieViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         let bannerHeight = CGFloat(50)
-        collectionViewBottomAnchor.constant = -bannerHeight
+        collectionViewBottomAnchor.constant = bannerHeight
         
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {

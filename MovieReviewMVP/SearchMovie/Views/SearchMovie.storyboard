@@ -50,12 +50,29 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DjA-oQ-7gZ">
                                 <rect key="frame" x="197" y="396.5" width="20" height="20"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gjL-mB-Dq1">
+                                <rect key="frame" x="190" y="774.5" width="34" height="33.5"/>
+                                <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="gjL-mB-Dq1" secondAttribute="height" multiplier="1:1" id="GNy-Am-56G"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="arrow.clockwise" catalog="system"/>
+                                <buttonConfiguration key="configuration" style="plain" image="arrow.clockwise" catalog="system"/>
+                                <connections>
+                                    <action selector="didTapRefreshButton:" destination="1KX-y3-LyB" eventType="touchUpInside" id="mRt-9L-hEy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KGb-Lq-u2a"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="gjL-mB-Dq1" firstAttribute="bottom" secondItem="2Ji-sI-fw3" secondAttribute="bottom" constant="-5" id="0ef-Fa-uO8"/>
                             <constraint firstItem="KGb-Lq-u2a" firstAttribute="bottom" secondItem="2Ji-sI-fw3" secondAttribute="bottom" id="38t-Np-AqY"/>
+                            <constraint firstItem="gjL-mB-Dq1" firstAttribute="centerX" secondItem="2Ji-sI-fw3" secondAttribute="centerX" id="AAE-2b-nnW"/>
                             <constraint firstItem="DjA-oQ-7gZ" firstAttribute="centerX" secondItem="oTg-gg-1IR" secondAttribute="centerX" id="PCq-2g-N8u"/>
+                            <constraint firstItem="gjL-mB-Dq1" firstAttribute="height" secondItem="2Ji-sI-fw3" secondAttribute="height" multiplier="0.05" id="Tdo-Sx-EFD"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="trailing" secondItem="KGb-Lq-u2a" secondAttribute="trailing" id="cfG-aq-C0c"/>
                             <constraint firstItem="2Ji-sI-fw3" firstAttribute="top" secondItem="ZbQ-Q1-UzC" secondAttribute="bottom" symbolic="YES" id="fty-sA-eHU"/>
                             <constraint firstItem="ZbQ-Q1-UzC" firstAttribute="top" secondItem="KGb-Lq-u2a" secondAttribute="top" id="hJH-If-tUb"/>
@@ -69,8 +86,9 @@
                     <connections>
                         <outlet property="activityIndicatorView" destination="DjA-oQ-7gZ" id="sjo-yg-w1X"/>
                         <outlet property="collectionView" destination="2Ji-sI-fw3" id="x4W-DS-Fta"/>
-                        <outlet property="collectionViewBottomAnchor" destination="38t-Np-AqY" id="lFT-fr-Cwu"/>
+                        <outlet property="collectionViewBottomAnchor" destination="38t-Np-AqY" id="RnY-W2-Eof"/>
                         <outlet property="movieSearchBar" destination="ZbQ-Q1-UzC" id="d2g-5M-Muh"/>
+                        <outlet property="refreshButton" destination="gjL-mB-Dq1" id="0Hf-fi-77J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDf-vD-iyS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -140,11 +158,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

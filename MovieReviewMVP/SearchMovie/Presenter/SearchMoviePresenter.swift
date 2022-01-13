@@ -18,6 +18,7 @@ protocol SearchMoviePresenterInput {
     func makeTitle(indexPath: IndexPath) -> String
     func makeReleaseDay(indexPath: IndexPath) -> String
     func changeFetchStateToRecommend()
+    func didScroll(isHidden: Bool)
 }
 
 protocol SearchMoviePresenterOutput : AnyObject {
@@ -26,6 +27,7 @@ protocol SearchMoviePresenterOutput : AnyObject {
     func reviewTheMovie(movie: VideoWork, movieUpdateState: MovieUpdateState)
     func displayStoreReviewController()
     func initialRecommendation()
+    func changeIsHidden(isHidden: Bool, alpha: Double)
 }
 
 final class SearchMoviePresenter : SearchMoviePresenterInput {
@@ -62,6 +64,13 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     
     func getHeaderTitle(indexPath: IndexPath) -> String {
         recomendations.recommendations[indexPath.section].title
+    }
+    
+    func didScroll(isHidden: Bool) {
+        if case .search = fetchState {
+            let alpha = isHidden ? 0.0 : 1.0
+            view.changeIsHidden(isHidden: isHidden, alpha: alpha)
+        }
     }
     
     func getVideoWorks(section: Int) -> [VideoWork] {
