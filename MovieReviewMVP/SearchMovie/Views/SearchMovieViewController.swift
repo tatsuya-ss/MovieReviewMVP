@@ -85,7 +85,14 @@ extension SearchMovieViewController : SearchMoviePresenterOutput {
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.refreshButton.alpha = alpha
         }, completion:  { [weak self] _ in
-            self?.refreshButton.isHidden = isHidden
+            // ここで再度stateを確認しないと、isHiddenが上書きされてしまう。
+            // このメソッドはinitialRecommendationより先に呼ばれるが、completion内の処理はinitialRecommendationの後に呼ばれるため
+            let fetchState = self?.presenter.getFetchState ?? .recommend
+            if case .search = fetchState {
+                self?.refreshButton.isHidden = isHidden
+            } else {
+                self?.refreshButton.isHidden = true
+            }
         })
     }
     
@@ -138,6 +145,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
         startIndicator(indicator: activityIndicatorView)
         configureSearchResultDataSource()
         self.presenter.fetchMovie(state: .search(.initial), text: searchBar.text)
+        refreshButton.isHidden = true
         searchBar.resignFirstResponder()
     }
     
@@ -149,6 +157,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
         collectionView.collectionViewLayout = createRecommendationLayout()
         configureRecommendationDataSource()
         collectionViewRecommendationSnapshot()
+        refreshButton.isHidden = true
         searchBar.resignFirstResponder()
         stopIndicator(indicator: activityIndicatorView)
     }
@@ -280,7 +289,7 @@ extension SearchMovieViewController {
                                                                                         heightDimension: .fractionalHeight(1.0)))
             leadingItem.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
             let containerHeightDimention = (sectionIndex == 0) ? 0.4 : 0.3
-            let containerWidth = containerHeightDimention * self.view.bounds.height * 18 / 28
+            let containerWidth = containerHeightDimention * self.view.bounds.height * 18 / 30
             let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(containerWidth),
                                                                                                        heightDimension: .fractionalHeight(containerHeightDimention)),
                                                                     subitems: [leadingItem])
@@ -371,35 +380,15 @@ extension SearchMovieViewController: UICollectionViewDelegate {
 
 // MARK: - GADBannerViewDelegate
 extension SearchMovieViewController : GADBannerViewDelegate {
+    
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         let bannerHeight = CGFloat(50)
-        collectionViewBottomAnchor.constant = bannerHeight
-        
+        self.collectionViewBottomAnchor.constant = bannerHeight
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {
             bannerView.alpha = 1
         })
         print("bannerViewDidReceiveAd")
-    }
-    
-    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
-    }
-    
-    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
-        print("bannerViewDidRecordImpression")
-    }
-    
-    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-        print("bannerViewWillPresentScreen")
-    }
-    
-    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
-        print("bannerViewWillDIsmissScreen")
-    }
-    
-    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-        print("bannerViewDidDismissScreen")
     }
     
 }
