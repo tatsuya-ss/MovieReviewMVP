@@ -115,7 +115,7 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     }
     
     func displayStoreReviewController() {
-        print(#function)
+        countOfInvokingDisplayStoreReviewController += 1
     }
     
     func initialRecommendation() {
@@ -130,6 +130,10 @@ extension SearchMoviePresenterOutputSpy {
     
     func initialCountOfInvokingInitialRecommendation() {
         countOfInvokingInitialRecommendation = 0
+    }
+    
+    func initialCountOfInvokingDisplayStoreReviewController() {
+        countOfInvokingDisplayStoreReviewController = 0
     }
     
 }
@@ -246,6 +250,24 @@ final class SearchVideoWorksTests: XCTestCase {
         presenter.didSelectRow(at: IndexPath(item: 0, section: 0))
         XCTAssertTrue(spy.countOfInvokingReviewTheMovie == 1)
         XCTAssertEqual("ナルト", spy.reviewTheMovieVideoWork?.title)
+    }
+    
+    func testレビューを保存した時() {
+        XCTContext.runActivity(named: "10の倍数個保存された場合ストアレビューが呼ばれていること") { _ in
+            let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+            spy.initialCountOfInvokingDisplayStoreReviewController()
+            XCTAssertTrue(spy.countOfInvokingDisplayStoreReviewController == 0)
+            presenter.didSaveReview(saveCount: 20)
+            XCTAssertEqual(1, spy.countOfInvokingDisplayStoreReviewController)
+        }
+        
+        XCTContext.runActivity(named: "10の倍数個じゃない場合ストアレビューが呼ばれていないこと") { _ in
+            let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+            spy.initialCountOfInvokingDisplayStoreReviewController()
+            XCTAssertTrue(spy.countOfInvokingDisplayStoreReviewController == 0)
+            presenter.didSaveReview(saveCount: 7)
+            XCTAssertEqual(0, spy.countOfInvokingDisplayStoreReviewController)
+        }
     }
     
 }
