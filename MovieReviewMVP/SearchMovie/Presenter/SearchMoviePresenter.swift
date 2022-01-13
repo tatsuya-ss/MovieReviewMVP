@@ -210,6 +210,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         }
     }
     
+}
+
+// MARK: - func
+extension SearchMoviePresenter {
+    
     private func fetchNowPlayingPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
             dispatchGroup.enter()
@@ -270,4 +275,5 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             }
         }
     }
+    
 }
