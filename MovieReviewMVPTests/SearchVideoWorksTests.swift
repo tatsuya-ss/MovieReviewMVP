@@ -116,6 +116,15 @@ final class SearchMoviePresenterOutputSpy: SearchMoviePresenterOutput {
     
 }
 
+// MARK: - extension
+extension SearchMoviePresenterOutputSpy {
+    
+    func initialCountOfInvokingInitialRecommendation() {
+        countOfInvokingInitialRecommendation = 0
+    }
+    
+}
+
 // MARK: - XCTestCase
 final class SearchVideoWorks: XCTestCase {
     
@@ -155,6 +164,7 @@ final class SearchVideoWorks: XCTestCase {
             XCTAssertEqual("呪術廻戦", presenter.getVideoWorks(section: 0)[0].title)
             XCTAssertEqual("ノイズ", presenter.getVideoWorks(section: 1)[2].title)
             XCTAssertEqual("ヴェノム", presenter.getVideoWorks(section: 2)[3].title)
+            XCTAssertTrue(spy.countOfInvokingInitialRecommendation == 1)
         }
         
     }
@@ -176,7 +186,23 @@ final class SearchVideoWorks: XCTestCase {
         }
         
         XCTContext.runActivity(named: "検索ワードがない時") { _ in
-            print(#function)
+            
+            XCTContext.runActivity(named: "検索ワードがnilの時") { _ in
+                let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+                spy.initialCountOfInvokingInitialRecommendation()
+                XCTAssertTrue(spy.countOfInvokingInitialRecommendation == 0)
+                presenter.fetchMovie(state: .search(.initial), text: nil)
+                XCTAssertTrue(spy.countOfInvokingInitialRecommendation == 1)
+            }
+            
+            XCTContext.runActivity(named: "検索ワードが空の時") { _ in
+                let presenter = SearchMoviePresenter(view: spy, useCase: stub)
+                spy.initialCountOfInvokingInitialRecommendation()
+                XCTAssertTrue(spy.countOfInvokingInitialRecommendation == 0)
+                presenter.fetchMovie(state: .search(.initial), text: "")
+                XCTAssertTrue(spy.countOfInvokingInitialRecommendation == 1)
+            }
+            
         }
         
     }
