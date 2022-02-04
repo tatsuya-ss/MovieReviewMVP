@@ -76,7 +76,6 @@
 		758B059A26AD4DA100DFA33A /* TMDbAttribution.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 758B059926AD4DA100DFA33A /* TMDbAttribution.storyboard */; };
 		758B059C26AD4DBD00DFA33A /* TMDbAttributionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059B26AD4DBD00DFA33A /* TMDbAttributionViewController.swift */; };
 		758B059E26AE3B7C00DFA33A /* DetailedSettingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059D26AE3B7C00DFA33A /* DetailedSettingPresenter.swift */; };
-		758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B059F26AE3B8A00DFA33A /* DetailedSettingModel.swift */; };
 		758B05A426AE459E00DFA33A /* DetailedSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B05A226AE459E00DFA33A /* DetailedSettingTableViewCell.swift */; };
 		758B05A526AE459E00DFA33A /* DetailedSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 758B05A326AE459E00DFA33A /* DetailedSettingTableViewCell.xib */; };
 		758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758B05A726AE506B00DFA33A /* DetailedSettingHeaderView.swift */; };
@@ -209,7 +208,6 @@
 		758B059926AD4DA100DFA33A /* TMDbAttribution.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TMDbAttribution.storyboard; sourceTree = "<group>"; };
 		758B059B26AD4DBD00DFA33A /* TMDbAttributionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDbAttributionViewController.swift; sourceTree = "<group>"; };
 		758B059D26AE3B7C00DFA33A /* DetailedSettingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingPresenter.swift; sourceTree = "<group>"; };
-		758B059F26AE3B8A00DFA33A /* DetailedSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingModel.swift; sourceTree = "<group>"; };
 		758B05A226AE459E00DFA33A /* DetailedSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingTableViewCell.swift; sourceTree = "<group>"; };
 		758B05A326AE459E00DFA33A /* DetailedSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailedSettingTableViewCell.xib; sourceTree = "<group>"; };
 		758B05A726AE506B00DFA33A /* DetailedSettingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedSettingHeaderView.swift; sourceTree = "<group>"; };
@@ -572,7 +570,6 @@
 			children = (
 				758B05AB26AF72FE00DFA33A /* UserLoginState.swift */,
 				758B059426AD129300DFA33A /* DetailedSetting.storyboard */,
-				758B059F26AE3B8A00DFA33A /* DetailedSettingModel.swift */,
 				758B059D26AE3B7C00DFA33A /* DetailedSettingPresenter.swift */,
 				758B059626AD12C100DFA33A /* DetailedSettingViewController.swift */,
 				758B05A626AE500100DFA33A /* Header */,
@@ -1246,7 +1243,6 @@
 				7518C0DD269C2B9300C27C1C /* ReviewRepository.swift in Sources */,
 				754856BF27449FCE00A4C31B /* CachedSearchConditions.swift in Sources */,
 				75928723271518D400322CF8 /* ReviewUseCase.swift in Sources */,
-				758B05A026AE3B8A00DFA33A /* DetailedSettingModel.swift in Sources */,
 				758B05A826AE506B00DFA33A /* DetailedSettingHeaderView.swift in Sources */,
 				75B12EB32775274100F35F83 /* SelectSearchReviewPresenter.swift in Sources */,
 			);
