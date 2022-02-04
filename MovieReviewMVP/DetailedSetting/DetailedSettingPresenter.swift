@@ -47,21 +47,22 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     let userLoginState = UserLoginState()
     
     private weak var view: DetailedSettingPresenterOutput!
-    private var model: DetailedSettingModelInput
+    private let userUseCase: UserUseCaseProtocol
+//    private var model: DetailedSettingModelInput
     private let notificationCenter = NotificationCenter()
     
-    init(view: DetailedSettingPresenterOutput, model: DetailedSettingModelInput) {
+    init(view: DetailedSettingPresenterOutput, userUseCase: UserUseCaseProtocol) {
         self.view = view
-        self.model = model
+        self.userUseCase = userUseCase
     }
     
     var numberOfSections: Int { userInfomations.count }
     
     func returnUserInfomations() -> [[UserInfoMation]] {
-        let email = model.fetchUserInfomations()
+        let email = userUseCase.returnCurrentUserEmail()
         userInfomations[0][0].infomation = email
         
-        let isLogin = model.returnloginStatus()
+        let isLogin = userUseCase.returnloginStatus()
         let loginItem = userLoginState.checkIsLogin(isLogin: isLogin)
         userInfomations[1][0].item = loginItem
         return userInfomations
@@ -82,7 +83,7 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     }
     
     func logout() {
-        model.logout()
+        userUseCase.logout()
         view.didLogout()
         NotificationCenter.default.post(name: .logout, object: nil)
     }

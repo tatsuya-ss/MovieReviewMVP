@@ -28,8 +28,12 @@ final class DetailedSettingViewController: UIViewController {
 extension DetailedSettingViewController {
     
     private func setupPresenter() {
-        let detailedSettingModel = DetailedSettingModel()
-        let detailedSettingPresenter = DetailedSettingPresenter(view: self, model: detailedSettingModel)
+        let detailedSettingPresenter = DetailedSettingPresenter(
+            view: self,
+            userUseCase: UserUseCase(repository: UserRepository(
+                dataStore: UserDataStore()
+            ))
+        )
         inject(presenter: detailedSettingPresenter)
     }
     
