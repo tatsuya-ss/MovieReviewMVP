@@ -10,6 +10,12 @@ import Foundation
 struct UserInfoMation {
     var item: String
     var infomation: String?
+    var textColorType: TextColorType
+}
+
+enum TextColorType {
+    case nomal
+    case warning
 }
 
 protocol DetailedSettingPresenterInput {
@@ -28,12 +34,13 @@ protocol DetailedSettingPresenterOutput : AnyObject {
 
 final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     
-    var userInfomations = [
-        [UserInfoMation(item: "メールアドレス", infomation: nil)],
-        [UserInfoMation(item: "ログアウトする", infomation: nil)]
+    private var userInfomations = [
+        [UserInfoMation(item: "メールアドレス", infomation: nil, textColorType: .nomal)],
+        [UserInfoMation(item: "ログアウトする", infomation: nil, textColorType: .nomal),
+         UserInfoMation(item: "アカウントを削除する", infomation: nil, textColorType: .warning)]
     ]
     
-    var headerItems = [
+    private var headerItems = [
         "ユーザー情報",
         "ログイン"
     ]
@@ -42,6 +49,7 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     private weak var view: DetailedSettingPresenterOutput!
     private var model: DetailedSettingModelInput
     private let notificationCenter = NotificationCenter()
+    
     init(view: DetailedSettingPresenterOutput, model: DetailedSettingModelInput) {
         self.view = view
         self.model = model

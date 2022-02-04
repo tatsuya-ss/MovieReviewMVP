@@ -13,8 +13,9 @@ class DetailedSettingTableViewCell: UITableViewCell {
     
     static let identifier = String(describing: DetailedSettingTableViewCell.self)
     
-    func configure(item: String, infomation: String?) {
+    func configure(item: String, infomation: String?, textColor: UIColor) {
         textLabel?.text = item
+        textLabel?.textColor = textColor
         detailTextLabel?.text = infomation
     }
 

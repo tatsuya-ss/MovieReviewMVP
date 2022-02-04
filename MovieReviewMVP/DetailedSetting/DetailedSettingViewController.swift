@@ -62,8 +62,10 @@ extension DetailedSettingViewController : UITableViewDataSource {
         let cell = userDetailsTableView.dequeueReusableCell(withIdentifier: DetailedSettingTableViewCell.identifier, for: indexPath) as! DetailedSettingTableViewCell
         let userInfomations = presenter.returnUserInfomations()
         let userInfomation = userInfomations[indexPath.section][indexPath.row]
+        let textColor: UIColor = userInfomation.textColorType == .warning ? .systemRed : .stringColor
         cell.configure(item: userInfomation.item,
-                       infomation: userInfomation.infomation)
+                       infomation: userInfomation.infomation,
+                       textColor: textColor)
         
         return cell
     }
