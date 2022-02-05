@@ -24,12 +24,15 @@ protocol DetailedSettingPresenterInput {
     func returnHeaderItems() -> [String]
     func didSelectRow(indexPath: IndexPath)
     func logout()
+    func deleteAuth()
 }
 
 protocol DetailedSettingPresenterOutput : AnyObject {
     func displayLogoutAlert()
     func didLogout()
     func displayLoginView()
+    func displayDeleteAuthAlert()
+    func displayDeleteAuthResultAlert(title: String, message: String?)
 }
 
 final class DetailedSettingPresenter : DetailedSettingPresenterInput {
@@ -48,7 +51,6 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     
     private weak var view: DetailedSettingPresenterOutput!
     private let userUseCase: UserUseCaseProtocol
-//    private var model: DetailedSettingModelInput
     private let notificationCenter = NotificationCenter()
     
     init(view: DetailedSettingPresenterOutput, userUseCase: UserUseCaseProtocol) {
@@ -80,11 +82,28 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
             case false: view.displayLoginView()
             }
         }
+        
+        if indexPath == [1, 1] && userLoginState.returnLoginState() == true {
+            view.displayDeleteAuthAlert()
+        }
     }
     
     func logout() {
         userUseCase.logout()
         view.didLogout()
         NotificationCenter.default.post(name: .logout, object: nil)
+    }
+    
+    func deleteAuth() {
+        userUseCase.deleteAuth { [weak self] result in
+            switch result {
+            case .success:
+                NotificationCenter.default.post(name: .logout, object: nil)
+                self?.view.displayDeleteAuthResultAlert(title: "削除しました", message: nil)
+            case .failure(let error):
+                print(error.localizedDescription)
+                self?.view.displayDeleteAuthResultAlert(title: "削除に失敗しました", message: "再度ログインし直してからアカウント削除を行なってください")
+            }
+        }
     }
 }

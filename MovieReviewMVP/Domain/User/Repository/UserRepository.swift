@@ -12,6 +12,7 @@ protocol UserRepositoryProtocol {
     func logout()
     func returnCurrentUserEmail() -> String?
     func returnloginStatus() -> Bool
+    func deleteAuth(completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
 final class UserRepository: UserRepositoryProtocol {
@@ -37,4 +38,7 @@ final class UserRepository: UserRepositoryProtocol {
         dataStore.returnloginStatus()
     }
     
+    func deleteAuth(completion: @escaping (Result<Any?, Error>) -> Void) {
+        dataStore.deleteAuth(completion: completion)
+    }
 }

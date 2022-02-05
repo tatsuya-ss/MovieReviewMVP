@@ -13,6 +13,7 @@ protocol UserDataStoreProtocol {
     func logout()
     func returnCurrentUserEmail() -> String?
     func returnloginStatus() -> Bool
+    func deleteAuth(completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
 final class UserDataStore: UserDataStoreProtocol {
@@ -40,6 +41,20 @@ final class UserDataStore: UserDataStoreProtocol {
     func returnloginStatus() -> Bool {
         guard let _ = Auth.auth().currentUser else { return false }
         return true
+    }
+    
+    func deleteAuth(completion: @escaping (Result<Any?, Error>) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(.failure(FirebaseError.notLoginError))
+            return
+        }
+        user.delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(nil))
+            }
+        }
     }
     
 }

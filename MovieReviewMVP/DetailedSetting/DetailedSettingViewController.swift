@@ -137,4 +137,20 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     func didLogout() {
         userDetailsTableView.reloadData()
     }
+    
+    func displayDeleteAuthAlert() {
+        let alert = UIAlertController(title: "アカウントを削除しますか？", message: "この操作は取り消せません。", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "削除", style: .destructive, handler: { [weak self] _ in
+            self?.presenter.deleteAuth()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func displayDeleteAuthResultAlert(title: String, message: String?) {
+        userDetailsTableView.reloadData()
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
