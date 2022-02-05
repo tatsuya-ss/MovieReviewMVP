@@ -12,6 +12,7 @@ protocol UserUseCaseProtocol {
     func logout()
     func returnCurrentUserEmail() -> String?
     func returnloginStatus() -> Bool
+    func deleteAuth(completion: @escaping (Result<Any?, Error>) -> Void)
 }
 
 final class UserUseCase: UserUseCaseProtocol {
@@ -35,6 +36,10 @@ final class UserUseCase: UserUseCaseProtocol {
     
     func returnloginStatus() -> Bool {
         repository.returnloginStatus()
+    }
+    
+    func deleteAuth(completion: @escaping (Result<Any?, Error>) -> Void) {
+        repository.deleteAuth(completion: completion)
     }
     
 }

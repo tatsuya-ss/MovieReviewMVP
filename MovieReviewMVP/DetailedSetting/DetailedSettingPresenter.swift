@@ -10,6 +10,12 @@ import Foundation
 struct UserInfoMation {
     var item: String
     var infomation: String?
+    var textColorType: TextColorType
+}
+
+enum TextColorType {
+    case nomal
+    case warning
 }
 
 protocol DetailedSettingPresenterInput {
@@ -18,42 +24,48 @@ protocol DetailedSettingPresenterInput {
     func returnHeaderItems() -> [String]
     func didSelectRow(indexPath: IndexPath)
     func logout()
+    func deleteAuth()
 }
 
 protocol DetailedSettingPresenterOutput : AnyObject {
     func displayLogoutAlert()
     func didLogout()
     func displayLoginView()
+    func displayDeleteAuthAlert()
+    func displayNotLoginAlert()
+    func displayDeleteAuthResultAlert(title: String, message: String?)
 }
 
 final class DetailedSettingPresenter : DetailedSettingPresenterInput {
     
-    var userInfomations = [
-        [UserInfoMation(item: "メールアドレス", infomation: nil)],
-        [UserInfoMation(item: "ログアウトする", infomation: nil)]
+    private var userInfomations = [
+        [UserInfoMation(item: "メールアドレス", infomation: nil, textColorType: .nomal)],
+        [UserInfoMation(item: "ログアウトする", infomation: nil, textColorType: .nomal),
+         UserInfoMation(item: "アカウントを削除する", infomation: nil, textColorType: .warning)]
     ]
     
-    var headerItems = [
+    private var headerItems = [
         "ユーザー情報",
         "ログイン"
     ]
     let userLoginState = UserLoginState()
     
     private weak var view: DetailedSettingPresenterOutput!
-    private var model: DetailedSettingModelInput
+    private let userUseCase: UserUseCaseProtocol
     private let notificationCenter = NotificationCenter()
-    init(view: DetailedSettingPresenterOutput, model: DetailedSettingModelInput) {
+    
+    init(view: DetailedSettingPresenterOutput, userUseCase: UserUseCaseProtocol) {
         self.view = view
-        self.model = model
+        self.userUseCase = userUseCase
     }
     
     var numberOfSections: Int { userInfomations.count }
     
     func returnUserInfomations() -> [[UserInfoMation]] {
-        let email = model.fetchUserInfomations()
+        let email = userUseCase.returnCurrentUserEmail()
         userInfomations[0][0].infomation = email
         
-        let isLogin = model.returnloginStatus()
+        let isLogin = userUseCase.returnloginStatus()
         let loginItem = userLoginState.checkIsLogin(isLogin: isLogin)
         userInfomations[1][0].item = loginItem
         return userInfomations
@@ -71,11 +83,31 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
             case false: view.displayLoginView()
             }
         }
+        
+        if indexPath == [1, 1] {
+            switch userLoginState.returnLoginState() {
+            case true: view.displayDeleteAuthAlert()
+            case false: view.displayNotLoginAlert()
+            }
+        }
     }
     
     func logout() {
-        model.logout()
+        userUseCase.logout()
         view.didLogout()
         NotificationCenter.default.post(name: .logout, object: nil)
+    }
+    
+    func deleteAuth() {
+        userUseCase.deleteAuth { [weak self] result in
+            switch result {
+            case .success:
+                NotificationCenter.default.post(name: .logout, object: nil)
+                self?.view.displayDeleteAuthResultAlert(title: "削除しました", message: nil)
+            case .failure(let error):
+                print(error.localizedDescription)
+                self?.view.displayDeleteAuthResultAlert(title: "削除に失敗しました", message: "再度ログインし直してからアカウント削除を行なってください")
+            }
+        }
     }
 }

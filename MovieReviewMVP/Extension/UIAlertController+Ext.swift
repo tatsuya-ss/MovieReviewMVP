@@ -9,21 +9,6 @@ import UIKit
 
 extension UIAlertController {
     
-    class func makeLogoutAlert(presenter: DetailedSettingPresenterInput) -> UIAlertController? {
-        let logoutAlert = UIAlertController(title: "ログアウト",
-                                            message: "ログアウトしますか？",
-                                            preferredStyle: .alert)
-        logoutAlert.addAction(UIAlertAction(title: "キャンセル",
-                                            style: .cancel,
-                                            handler: nil))
-        logoutAlert.addAction(UIAlertAction(title: "ログアウト",
-                                            style: .destructive,
-                                            handler: { _ in
-                                                presenter.logout()
-                                            }))
-        return logoutAlert
-    }
-    
     // MARK: ストックの並び替えアクションシート（iOS13）
     class func makeSortAlertForStockReview(presenter: StockReviewMovieManagementPresenterInput) -> UIAlertController {
         let alert = UIAlertController(title: "並び替える", message: nil, preferredStyle: .actionSheet)

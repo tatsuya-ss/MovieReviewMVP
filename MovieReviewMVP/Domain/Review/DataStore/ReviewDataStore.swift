@@ -20,6 +20,7 @@ struct UserError: Error {
 
 enum FirebaseError: Error {
     case fetchError
+    case notLoginError
 }
 
 protocol ReviewDataStoreProtocol {

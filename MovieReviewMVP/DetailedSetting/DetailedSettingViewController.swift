@@ -8,8 +8,12 @@
 import UIKit
 import FirebaseUI
 
+extension DetailedSettingViewController: UIActivityIndicatorProtocol { }
+
 final class DetailedSettingViewController: UIViewController {
-    @IBOutlet weak var userDetailsTableView: UITableView!
+    
+    @IBOutlet private weak var userDetailsTableView: UITableView!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     
     private var presenter: DetailedSettingPresenterInput!
     func inject(presenter: DetailedSettingPresenterInput) {
@@ -21,6 +25,7 @@ final class DetailedSettingViewController: UIViewController {
         setupPresenter()
         setupTableView()
         setupNavigation()
+        setupIndicator(indicator: activityIndicatorView)
     }
 
 }
@@ -28,8 +33,12 @@ final class DetailedSettingViewController: UIViewController {
 extension DetailedSettingViewController {
     
     private func setupPresenter() {
-        let detailedSettingModel = DetailedSettingModel()
-        let detailedSettingPresenter = DetailedSettingPresenter(view: self, model: detailedSettingModel)
+        let detailedSettingPresenter = DetailedSettingPresenter(
+            view: self,
+            userUseCase: UserUseCase(repository: UserRepository(
+                dataStore: UserDataStore()
+            ))
+        )
         inject(presenter: detailedSettingPresenter)
     }
     
@@ -62,8 +71,10 @@ extension DetailedSettingViewController : UITableViewDataSource {
         let cell = userDetailsTableView.dequeueReusableCell(withIdentifier: DetailedSettingTableViewCell.identifier, for: indexPath) as! DetailedSettingTableViewCell
         let userInfomations = presenter.returnUserInfomations()
         let userInfomation = userInfomations[indexPath.section][indexPath.row]
+        let textColor: UIColor = userInfomation.textColorType == .warning ? .systemRed : .stringColor
         cell.configure(item: userInfomation.item,
-                       infomation: userInfomation.infomation)
+                       infomation: userInfomation.infomation,
+                       textColor: textColor)
         
         return cell
     }
@@ -119,9 +130,13 @@ extension DetailedSettingViewController : FUIAuthDelegate {
 
 extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     func displayLogoutAlert() {
-        if let logoutAlert = UIAlertController.makeLogoutAlert(presenter: presenter) {
-            present(logoutAlert, animated: true, completion: nil)
-        }
+        let logoutAlert = UIAlertController(title: "ログアウト", message: "ログアウトしますか？", preferredStyle: .alert)
+        logoutAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        logoutAlert.addAction(UIAlertAction(title: "ログアウト", style: .destructive, handler: { [weak self] _ in
+            self?.startIndicator(indicator: self?.activityIndicatorView ?? UIActivityIndicatorView())
+            self?.presenter.logout()
+        }))
+        present(logoutAlert, animated: true, completion: nil)
     }
     
     func displayLoginView() {
@@ -130,5 +145,31 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     
     func didLogout() {
         userDetailsTableView.reloadData()
+        stopIndicator(indicator: activityIndicatorView)
+    }
+    
+    func displayDeleteAuthAlert() {
+        let alert = UIAlertController(title: "アカウントを削除しますか？", message: "この操作は取り消せません。", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "削除", style: .destructive, handler: { [weak self] _ in
+            self?.startIndicator(indicator: self?.activityIndicatorView ?? UIActivityIndicatorView())
+            self?.presenter.deleteAuth()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func displayNotLoginAlert() {
+        stopIndicator(indicator: activityIndicatorView)
+        let alert = UIAlertController(title: "ログインされていないため、削除するアカウントがありません", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func displayDeleteAuthResultAlert(title: String, message: String?) {
+        userDetailsTableView.reloadData()
+        stopIndicator(indicator: activityIndicatorView)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
