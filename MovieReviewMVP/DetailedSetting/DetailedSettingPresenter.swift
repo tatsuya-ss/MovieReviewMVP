@@ -32,6 +32,7 @@ protocol DetailedSettingPresenterOutput : AnyObject {
     func didLogout()
     func displayLoginView()
     func displayDeleteAuthAlert()
+    func displayNotLoginAlert()
     func displayDeleteAuthResultAlert(title: String, message: String?)
 }
 
@@ -83,8 +84,11 @@ final class DetailedSettingPresenter : DetailedSettingPresenterInput {
             }
         }
         
-        if indexPath == [1, 1] && userLoginState.returnLoginState() == true {
-            view.displayDeleteAuthAlert()
+        if indexPath == [1, 1] {
+            switch userLoginState.returnLoginState() {
+            case true: view.displayDeleteAuthAlert()
+            case false: view.displayNotLoginAlert()
+            }
         }
     }
     

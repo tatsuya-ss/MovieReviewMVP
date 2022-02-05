@@ -147,6 +147,12 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
         present(alert, animated: true, completion: nil)
     }
     
+    func displayNotLoginAlert() {
+        let alert = UIAlertController(title: "ログインされていないため、削除するアカウントがありません", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
     func displayDeleteAuthResultAlert(title: String, message: String?) {
         userDetailsTableView.reloadData()
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
