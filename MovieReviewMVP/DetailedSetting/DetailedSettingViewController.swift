@@ -130,9 +130,13 @@ extension DetailedSettingViewController : FUIAuthDelegate {
 
 extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     func displayLogoutAlert() {
-        if let logoutAlert = UIAlertController.makeLogoutAlert(presenter: presenter) {
-            present(logoutAlert, animated: true, completion: nil)
-        }
+        let logoutAlert = UIAlertController(title: "ログアウト", message: "ログアウトしますか？", preferredStyle: .alert)
+        logoutAlert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        logoutAlert.addAction(UIAlertAction(title: "ログアウト", style: .destructive, handler: { [weak self] _ in
+            self?.startIndicator(indicator: self?.activityIndicatorView ?? UIActivityIndicatorView())
+            self?.presenter.logout()
+        }))
+        present(logoutAlert, animated: true, completion: nil)
     }
     
     func displayLoginView() {
@@ -141,6 +145,7 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     
     func didLogout() {
         userDetailsTableView.reloadData()
+        stopIndicator(indicator: activityIndicatorView)
     }
     
     func displayDeleteAuthAlert() {
