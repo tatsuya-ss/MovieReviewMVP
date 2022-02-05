@@ -8,8 +8,12 @@
 import UIKit
 import FirebaseUI
 
+extension DetailedSettingViewController: UIActivityIndicatorProtocol { }
+
 final class DetailedSettingViewController: UIViewController {
-    @IBOutlet weak var userDetailsTableView: UITableView!
+    
+    @IBOutlet private weak var userDetailsTableView: UITableView!
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     
     private var presenter: DetailedSettingPresenterInput!
     func inject(presenter: DetailedSettingPresenterInput) {
@@ -21,6 +25,7 @@ final class DetailedSettingViewController: UIViewController {
         setupPresenter()
         setupTableView()
         setupNavigation()
+        setupIndicator(indicator: activityIndicatorView)
     }
 
 }
@@ -142,12 +147,14 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
         let alert = UIAlertController(title: "アカウントを削除しますか？", message: "この操作は取り消せません。", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "削除", style: .destructive, handler: { [weak self] _ in
+            self?.startIndicator(indicator: self?.activityIndicatorView ?? UIActivityIndicatorView())
             self?.presenter.deleteAuth()
         }))
         present(alert, animated: true, completion: nil)
     }
     
     func displayNotLoginAlert() {
+        stopIndicator(indicator: activityIndicatorView)
         let alert = UIAlertController(title: "ログインされていないため、削除するアカウントがありません", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -155,6 +162,7 @@ extension DetailedSettingViewController : DetailedSettingPresenterOutput {
     
     func displayDeleteAuthResultAlert(title: String, message: String?) {
         userDetailsTableView.reloadData()
+        stopIndicator(indicator: activityIndicatorView)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
