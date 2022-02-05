@@ -195,6 +195,12 @@ extension SettingManagementViewController : SettingManagementPresenterOutput {
     func didLogout() {
         SettingManagementTableView.reloadData()
     }
+    
+    func requestReview() {
+        guard let writeReviewURL = URL(string: "https://apps.apple.com/jp/app/id1578614989?mt=8&action=write-review")
+        else { return }
+        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
+    }
 }
 
 extension SettingManagementViewController : GADBannerViewDelegate {
