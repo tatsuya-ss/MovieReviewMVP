@@ -172,11 +172,13 @@ extension SearchMovieViewController {
         movieSearchBar.keyboardType = .namePhonePad
         movieSearchBar.searchTextField.backgroundColor = .white
         movieSearchBar.barStyle = .default
-        
+        movieSearchBar.searchTextField.leftView?.tintColor = .black
         // キャンセルボタンを白
         movieSearchBar.tintColor = .white
         // カーソルの色を黒
         UITextField.appearance(whenContainedInInstancesOf: [type(of: movieSearchBar)]).tintColor = .black
+        // searchBarのテキストの色
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
     }
     
     private func setupTabBarController() {
