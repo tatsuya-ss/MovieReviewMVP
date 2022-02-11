@@ -288,11 +288,13 @@ extension SearchMovieViewController {
             let leadingItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                                                         heightDimension: .fractionalHeight(1.0)))
             leadingItem.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-            let containerHeightDimention = (sectionIndex == 0) ? 0.45 : 0.35
-            let containerWidth = containerHeightDimention * self.view.bounds.height * 18 / 30
-            let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(containerWidth),
-                                                                                                       heightDimension: .fractionalHeight(containerHeightDimention)),
-                                                                    subitems: [leadingItem])
+            let containerWidth = (UIDevice.current.userInterfaceIdiom == .phone)
+            ? (sectionIndex == 0) ? 0.45 : 0.35
+            : (sectionIndex == 0) ? 0.3 : 0.2
+            let containerHeightDimention = containerWidth * self.view.bounds.width * 28 / 19
+            let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(containerWidth),
+                                                                                    heightDimension: .absolute(containerHeightDimention)),
+                                                 subitems: [leadingItem])
             let section = NSCollectionLayoutSection(group: containerGroup)
             section.orthogonalScrollingBehavior = .continuous
             
