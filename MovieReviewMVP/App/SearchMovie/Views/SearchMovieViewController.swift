@@ -266,7 +266,7 @@ extension SearchMovieViewController {
                                                                                         heightDimension: .fractionalHeight(1.0)))
             leadingItem.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
             let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                                                                       heightDimension: .fractionalHeight(0.2)),
+                                                                                                       heightDimension: .fractionalHeight(0.25)),
                                                                     subitems: [leadingItem])
             let section = NSCollectionLayoutSection(group: containerGroup)
             
