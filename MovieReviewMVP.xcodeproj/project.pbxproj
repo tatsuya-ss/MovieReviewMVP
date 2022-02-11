@@ -189,7 +189,7 @@
 		75699F3A264BCE28001904C4 /* ReviewManagementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementCollectionViewCell.swift; sourceTree = "<group>"; };
 		75699F3B264BCE28001904C4 /* ReviewManagementCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewManagementCollectionViewCell.xib; sourceTree = "<group>"; };
 		75699F47264BD307001904C4 /* ReviewManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManagementViewController.swift; sourceTree = "<group>"; };
-		7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StockReviewMovieManagement.storyboard; path = MovieReviewMVP/StockReviewMovieManagement/Views/StockReviewMovieManagement.storyboard; sourceTree = SOURCE_ROOT; };
+		7569BAA82679EFEA0058D495 /* StockReviewMovieManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StockReviewMovieManagement.storyboard; path = MovieReviewMVP/App/StockReviewMovieManagement/Views/StockReviewMovieManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		7569BAAD2679F0320058D495 /* StockReviewMovieManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementViewController.swift; sourceTree = "<group>"; };
 		7569BAB52679F0530058D495 /* StockReviewMovieManagementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieManagementPresenter.swift; sourceTree = "<group>"; };
 		7569BAC9267B40EA0058D495 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 		756AD28C268469A500BF5D6A /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		756D8FB1267308210026889B /* StockReviewMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockReviewMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		756D8FB2267308210026889B /* StockReviewMovieCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StockReviewMovieCollectionViewCell.xib; sourceTree = "<group>"; };
-		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/ReviewManagement/Views/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
+		756DFC8E264CCBF500C6AF07 /* ReviewManagement.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ReviewManagement.storyboard; path = MovieReviewMVP/App/ReviewManagement/Views/ReviewManagement.storyboard; sourceTree = SOURCE_ROOT; };
 		756DFCBA264D5B6900C6AF07 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		7573D972271532A6008ED07A /* UserDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataStore.swift; sourceTree = "<group>"; };
 		757B8D122767FF2200C8DC5F /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = SOURCE_ROOT; };
@@ -343,6 +343,20 @@
 			path = Instructions;
 			sourceTree = "<group>";
 		};
+		7562649B27B600C8005A6224 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				756620D72647AF8700D211EC /* ReviewManagement */,
+				75676F0E263A94BB00569AF5 /* SearchMovie */,
+				75636BED263C004400281DB1 /* ReviewMovie */,
+				7569BAA42679EE930058D495 /* StockReviewMovieManagement */,
+				75834ADD26A80A35004AC09C /* SettingManagement */,
+				758B059826AD4D5000DFA33A /* TMDbAttribution */,
+				758B059326AD11ED00DFA33A /* DetailedSetting */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		75636BED263C004400281DB1 /* ReviewMovie */ = {
 			isa = PBXGroup;
 			children = (
@@ -388,7 +402,8 @@
 		75676EDA263A89B400569AF5 /* MovieReviewMVP */ = {
 			isa = PBXGroup;
 			children = (
-				75E4A625276A0D0D00E9A838 /* Protocol */,
+				7562649B27B600C8005A6224 /* App */,
+				75676F29263AA0A200569AF5 /* Domain */,
 				7567D58926B3F9EF006DA25A /* MovieReviewMVP.entitlements */,
 				75676EDB263A89B400569AF5 /* AppDelegate.swift */,
 				75676EDD263A89B400569AF5 /* SceneDelegate.swift */,
@@ -397,16 +412,9 @@
 				757B8D122767FF2200C8DC5F /* .env */,
 				75676EE9263A89B500569AF5 /* Info.plist */,
 				7518C0D4269C14B200C27C1C /* GoogleService-Info.plist */,
+				75E4A625276A0D0D00E9A838 /* Protocol */,
 				75EC661D270DC9670001F464 /* Utilities */,
 				7569BAC8267B40B20058D495 /* Extension */,
-				75676F29263AA0A200569AF5 /* Domain */,
-				758B059326AD11ED00DFA33A /* DetailedSetting */,
-				758B059826AD4D5000DFA33A /* TMDbAttribution */,
-				75834ADD26A80A35004AC09C /* SettingManagement */,
-				7569BAA42679EE930058D495 /* StockReviewMovieManagement */,
-				756620D72647AF8700D211EC /* ReviewManagement */,
-				75676F0E263A94BB00569AF5 /* SearchMovie */,
-				75636BED263C004400281DB1 /* ReviewMovie */,
 			);
 			path = MovieReviewMVP;
 			sourceTree = "<group>";
