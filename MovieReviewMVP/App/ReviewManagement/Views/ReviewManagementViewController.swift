@@ -304,7 +304,7 @@ extension ReviewManagementViewController : GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.isHidden = false
         let bannerHeight = CGFloat(50)
-        collectionViewBottomAnchor.constant = -bannerHeight
+        collectionViewBottomAnchor.constant = bannerHeight
         [trashButtonBottomAnchor,
          stockButtonBottomAnchor]
             .forEach { $0?.constant = -bannerHeight + buttonConstant }
