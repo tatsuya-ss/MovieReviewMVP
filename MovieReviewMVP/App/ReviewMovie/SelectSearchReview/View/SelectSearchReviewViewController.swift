@@ -100,7 +100,7 @@ extension SelectSearchReviewViewController {
             self?.presenter.didTapSaveLocationAlert(isStoredAsReview: true)
         })
         storeLocationAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
-        
+        storeLocationAlert.popoverPresentationController?.barButtonItem = saveButton
         return storeLocationAlert
     }
     

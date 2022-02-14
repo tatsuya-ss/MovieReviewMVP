@@ -73,7 +73,7 @@ extension SelectStockReviewViewController {
             self?.presenter.didTapSelectSaveDateAlert(storeDateState: .today)
         })
         storeDateAlert.addAction(UIAlertAction(title: .cancelAlert, style: .cancel, handler: nil))
-        
+        storeDateAlert.popoverPresentationController?.barButtonItem = saveButton
         return storeDateAlert
     }
     
