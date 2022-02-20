@@ -4,3 +4,6 @@ Pods/*
 *xcdebugger
 !Podfile
 .env
+
+# Firebase
+.firebase
