@@ -23,10 +23,10 @@ final class ReviewManagementViewController: UIViewController {
     private var editButton: UIBarButtonItem!
     private var trashButton: UIButton!
     private var stockButton: UIButton!
-        
+    
     private var bannerView: GADBannerView!
     private let buttonConstant = CGFloat(-15)
-
+    
     private var trashButtonBottomAnchor: NSLayoutConstraint!
     private var stockButtonBottomAnchor: NSLayoutConstraint!
     @IBOutlet private weak var collectionViewBottomAnchor: NSLayoutConstraint!
@@ -122,7 +122,7 @@ extension ReviewManagementViewController {
         })
         
         let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
-
+        
         [createdDescendAction,
          createdAscendAction,
          reviewStarAscendAction,
@@ -132,7 +132,7 @@ extension ReviewManagementViewController {
         
         return alert
     }
-
+    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -185,8 +185,8 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
     
     func changeTapCellState(indexPath: IndexPath, cellSelectedState: CellSelectedState) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ReviewManagementCollectionViewCell else { return }
-            cell.tapCell(state: cellSelectedState)
-            collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
+        cell.tapCell(state: cellSelectedState)
+        collectionView.indexPathsForSelectedItems == [] ? (trashButton.isEnabled = false) : (trashButton.isEnabled = true)
     }
     
     func sortReview() {
@@ -204,15 +204,19 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
             stopIndicator(indicator: activityIndicatorView)
             isEditing = false
         }
-        if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
-            collectionView.reloadData()
-        } else {
-            collectionView.performBatchUpdates {
-                for index in 0...presenter.numberOfMovies - 1 {
-                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
-                }
-            }
-        }
+        // TODO: UICollectionViewの更新処理でクラッシュ
+        // クラッシュが起きているので一旦reloadDataで対応
+        // クラッシュは再現できなかった
+        collectionView.reloadData()
+        
+        //        if presenter.numberOfMovies == 0 || presenter.numberOfMovies == 1 {
+        //        } else {
+        //            collectionView.performBatchUpdates {
+        //                for index in 0..<presenter.numberOfMovies {
+        //                    collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        //                }
+        //            }
+        //        }
     }
     
     func deleteReview(indexPath: IndexPath) {
@@ -254,7 +258,7 @@ extension ReviewManagementViewController : ReviewManagementPresenterOutput {
         let videoWorkUseCase = VideoWorkUseCase()
         let reviewUseCase = ReviewUseCase(repository: ReviewRepository(dataStore: ReviewDataStore()))
         let userUseCase = UserUseCase(repository: UserRepository(dataStore: UserDataStore()))
-
+        
         let presenter = SelectSavedReviewPresenter(view: selectSavedReviewVC, selectedReview: SelectedReview(review: selectReview), reviewUseCase: reviewUseCase, userUseCase: userUseCase, videoWorkuseCase: videoWorkUseCase)
         selectSavedReviewVC.inject(presenter: presenter)
         let navigationController = UINavigationController(rootViewController: selectSavedReviewVC)
@@ -296,7 +300,7 @@ extension ReviewManagementViewController : FUIAuthDelegate {
             presenter.fetchUpdateReviewMovies()
         }
     }
-
+    
 }
 
 // MARK: - GADBannerViewDelegate
@@ -310,30 +314,30 @@ extension ReviewManagementViewController : GADBannerViewDelegate {
             .forEach { $0?.constant = -bannerHeight + buttonConstant }
         bannerView.alpha = 0
         UIView.animate(withDuration: 1, animations: {
-          bannerView.alpha = 1
+            bannerView.alpha = 1
         })
-      print("bannerViewDidReceiveAd")
+        print("bannerViewDidReceiveAd")
     }
-
+    
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
         bannerView.isHidden = true
         print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
     }
-
+    
     func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
-      print("bannerViewDidRecordImpression")
+        print("bannerViewDidRecordImpression")
     }
-
+    
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-      print("bannerViewWillPresentScreen")
+        print("bannerViewWillPresentScreen")
     }
-
+    
     func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
-      print("bannerViewWillDIsmissScreen")
+        print("bannerViewWillDIsmissScreen")
     }
-
+    
     func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-      print("bannerViewDidDismissScreen")
+        print("bannerViewDidDismissScreen")
     }
 }
 
@@ -365,27 +369,27 @@ extension ReviewManagementViewController {
         trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
         collectionView.addSubview(trashButton)
         let buttonWidth: CGFloat = 55
-
+        
         trashButtonBottomAnchor = trashButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: buttonConstant)
         [trashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: buttonConstant),
          trashButtonBottomAnchor,
          trashButton.widthAnchor.constraint(equalToConstant: buttonWidth),
          trashButton.heightAnchor.constraint(equalTo: trashButton.widthAnchor)]
             .forEach { $0.isActive = true }
-
+        
         trashButton.layer.cornerRadius = buttonWidth / 2
         
-//        // 影をつける設定
-//        trashButton.layer.shadowColor = UIColor.black.cgColor
-//        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-//        trashButton.layer.shadowOpacity = 0.7
-//        trashButton.layer.shadowRadius = 10
-//
-//        // 紫色の警告(レンダリングの最適化を行ってくださいみたいな)が出るため、以下の２行で対応
-//        // https://stackoverflow.com/questions/64277067/how-to-fix-optimization-opportunities
-//        trashButton.layer.shouldRasterize = true
-//        trashButton.layer.rasterizationScale = UIScreen.main.scale
-
+        //        // 影をつける設定
+        //        trashButton.layer.shadowColor = UIColor.black.cgColor
+        //        trashButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        //        trashButton.layer.shadowOpacity = 0.7
+        //        trashButton.layer.shadowRadius = 10
+        //
+        //        // 紫色の警告(レンダリングの最適化を行ってくださいみたいな)が出るため、以下の２行で対応
+        //        // https://stackoverflow.com/questions/64277067/how-to-fix-optimization-opportunities
+        //        trashButton.layer.shouldRasterize = true
+        //        trashButton.layer.rasterizationScale = UIScreen.main.scale
+        
         trashButton.isHidden = true
     }
     
@@ -409,16 +413,16 @@ extension ReviewManagementViewController {
             .forEach { $0.isActive = true }
         
         stockButton.layer.cornerRadius = buttonWidth / 2
-
-//        stockButton.clipsToBounds = false
-//        stockButton.layer.shadowColor = UIColor.black.cgColor
-//        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-//        stockButton.layer.shadowOpacity = 0.7
-//        stockButton.layer.shadowRadius = 10
-//
-//        stockButton.layer.shouldRasterize = true
-//        stockButton.layer.rasterizationScale = UIScreen.main.scale
-
+        
+        //        stockButton.clipsToBounds = false
+        //        stockButton.layer.shadowColor = UIColor.black.cgColor
+        //        stockButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        //        stockButton.layer.shadowOpacity = 0.7
+        //        stockButton.layer.shadowRadius = 10
+        //
+        //        stockButton.layer.shouldRasterize = true
+        //        stockButton.layer.rasterizationScale = UIScreen.main.scale
+        
         stockButton.isHidden = false
         
     }
@@ -465,9 +469,9 @@ extension ReviewManagementViewController {
     
     private func setupNotification() {
         NotificationCenter.default.addObserver(self,
-                                       selector: #selector(updateReviewManagementCollectionView),
-                                       name: .insertReview,
-                                       object: nil)
+                                               selector: #selector(updateReviewManagementCollectionView),
+                                               name: .insertReview,
+                                               object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(logout),
                                                name: .logout,
@@ -477,12 +481,12 @@ extension ReviewManagementViewController {
                                                name: .login,
                                                object: nil)
     }
-
+    
     private func setupBanner() {
         bannerView = GADBannerView(adSize: GADAdSizeBanner)
-
+        
         addBannerViewToView(bannerView)
-
+        
         bannerView.delegate = self
         
         if let id = adUnitID(key: "banner") {
@@ -499,7 +503,7 @@ extension ReviewManagementViewController {
             }
             return adUnitIDs[key]
         }
-
+        
     }
     
     private func addBannerViewToView(_ bannerView: GADBannerView) {
@@ -511,7 +515,6 @@ extension ReviewManagementViewController {
          bannerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)]
             .forEach { $0.isActive = true }
     }
-
 }
 
 // MARK: - @objc
