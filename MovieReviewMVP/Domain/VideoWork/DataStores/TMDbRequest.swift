@@ -9,14 +9,16 @@ import Foundation
 
 struct TMDbAPI {
     
-    static let key = ProcessInfo.processInfo.environment["TMDbAPIKEY"]!
+    static let v3Key = ProcessInfo.processInfo.environment["TMDB_V3_API_KEY"]!
+    static let v4Key = ProcessInfo.processInfo.environment["TMDB_V4_API_KEY"]!
+    static let apiVersion = 4
     
     struct SearchRequest {
         let query: String
         let page: Int
         
         func returnSearchURL() -> URL? {
-            let urlString = "https://api.themoviedb.org/3/search/multi?api_key=\(TMDbAPI.key)&language=ja-JP&page=\(page)&query=\(query)"
+            let urlString = "https://api.themoviedb.org/3/search/multi?api_key=\(TMDbAPI.v3Key)&language=ja-JP&page=\(page)&query=\(query)"
             // addingPercentEncodingで検索文字列を変換してる
             // 例）ナルト → %E3%83%8A%E3%83%AB%E3%83%88
             guard let encodingUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -37,7 +39,7 @@ struct TMDbAPI {
         let mediaType: String
         
         func returnDetailsURLRequest() -> URL? {
-            let detailsURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDbAPI.key)&language=ja-JP"
+            let detailsURL = "https://api.themoviedb.org/3/\(mediaType)/\(String(id))/credits?api_key=\(TMDbAPI.v3Key)&language=ja-JP"
             guard let encodingURLString = detailsURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                   let encodingURL = URL(string: encodingURLString)
             else { return nil }
@@ -48,7 +50,7 @@ struct TMDbAPI {
     // MARK: 近日公開
     struct UpcomingRequest {
         var upcomingURL: URL? {
-            let urlString = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
+            let urlString = "https://api.themoviedb.org/3/movie/upcoming?api_key=\(TMDbAPI.v3Key)&language=ja-JA&page=1&region=JP"
             return URL(string: urlString)
         }
     }
@@ -56,7 +58,7 @@ struct TMDbAPI {
     // MARK: １週間
     struct TrendingWeekRequest {
         var url: URL? {
-            let urlString = "https://api.themoviedb.org/3/trending/all/week?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
+            let urlString = "https://api.themoviedb.org/3/trending/all/week?api_key=\(TMDbAPI.v3Key)&language=ja-JA&page=1&region=JP"
             return URL(string: urlString)
         }
     }
@@ -64,7 +66,7 @@ struct TMDbAPI {
     // MARK: 公開中
     struct NowPlayingRequest {
         var url: URL? {
-            let urlString = "https://api.themoviedb.org/3/movie/now_playing?api_key=\(TMDbAPI.key)&language=ja-JA&page=1&region=JP"
+            let urlString = "https://api.themoviedb.org/3/movie/now_playing?api_key=\(TMDbAPI.v3Key)&language=ja-JA&page=1&region=JP"
             return URL(string: urlString)
         }
     }

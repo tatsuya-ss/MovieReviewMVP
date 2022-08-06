@@ -140,6 +140,7 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
             //            }
             
             guard response.statusCode == 200 else {
+                print(#function, response, response.statusCode)
                 completion(.failure(TMDbSearchError.responseError))
                 return
             }
