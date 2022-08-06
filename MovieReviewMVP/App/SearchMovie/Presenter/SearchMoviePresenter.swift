@@ -135,7 +135,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.reviewManagement.fetchReviews(state: state, results: results)
                     self?.fetchPosterImage(results: results, dispatchGroup: dispatchGroup)
@@ -153,7 +153,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.reviewManagement.fetchReviews(state: state, results: results)
                     guard let reviews = self?.reviewManagement.returnReviews() else { return }
@@ -170,7 +170,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.recomendations.fetchUpcoming(videoWorks: results)
                     self?.fetchUpcomingPosterImage(results: results, dispatchGroup: dispatchGroup)
@@ -182,7 +182,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.recomendations.fetchTrendingWeek(videoWorks: results)
                     self?.fetchTrendingWeekPosterImage(results: results, dispatchGroup: dispatchGroup)
@@ -194,7 +194,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     print(result)
                     self?.recomendations.fetchNowPlaying(videoWorks: results)
@@ -221,7 +221,7 @@ extension SearchMoviePresenter {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.recomendations.fetchNowPlayingPosterData(index: videoWork.offset, data: data)
                 }
@@ -236,7 +236,7 @@ extension SearchMoviePresenter {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.recomendations.fetchTrendingWeekPosterData(index: videoWork.offset, data: data)
                 }
@@ -251,7 +251,7 @@ extension SearchMoviePresenter {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.recomendations.fetchUpcomingPosterData(index: videoWork.offset, data: data)
                 }
@@ -267,7 +267,7 @@ extension SearchMoviePresenter {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.reviewManagement.fetchPosterData(index: videoWork.offset, data: data)
                 }
