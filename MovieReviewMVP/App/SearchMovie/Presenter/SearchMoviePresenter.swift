@@ -38,8 +38,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private var cachedSearchConditions = CachedSearchConditions()
     private var recomendations = Recommendations()
     private var fetchState: FetchMovieState = .recommend
-    private var requestCounter = RequestCounter()
-    private(set) var sleepTime = UInt32(1.1)
+    private let sleepTime = RequestTime().sleepTime
     
     init(view: SearchMoviePresenterOutput,
          useCase: VideoWorkUseCaseProtocol) {
@@ -169,12 +168,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         case .recommend:
             dispatchGroup.enter()
             useCase.fetchUpcomingVideoWorks { [weak self] result in
-                self?.requestCounter.incrementRequestCount()
-                if self?.requestCounter.isLimit == true {
-                    sleep(self?.sleepTime ?? UInt32(1.5))
-                    self?.requestCounter.reset()
-                }
-
+                Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
@@ -187,12 +181,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             
             dispatchGroup.enter()
             useCase.fetchTrendingWeekVideoWorks { [weak self] result in
-                self?.requestCounter.incrementRequestCount()
-                if self?.requestCounter.isLimit == true {
-                    sleep(self?.sleepTime ?? UInt32(1.5))
-                    self?.requestCounter.reset()
-                }
-
+                Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
@@ -205,12 +194,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             
             dispatchGroup.enter()
             useCase.fetchNowPlayingVideoWorks { [weak self] result in
-                self?.requestCounter.incrementRequestCount()
-                if self?.requestCounter.isLimit == true {
-                    sleep(self?.sleepTime ?? UInt32(1.5))
-                    self?.requestCounter.reset()
-                }
-
+                Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
@@ -236,12 +220,7 @@ extension SearchMoviePresenter {
     
     private func fetchNowPlayingPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
-            self.requestCounter.incrementRequestCount()
-            if self.requestCounter.isLimit == true {
-                sleep(self.sleepTime)
-                self.requestCounter.reset()
-            }
-
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
@@ -257,12 +236,7 @@ extension SearchMoviePresenter {
     
     private func fetchTrendingWeekPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
-            self.requestCounter.incrementRequestCount()
-            if self.requestCounter.isLimit == true {
-                sleep(self.sleepTime)
-                self.requestCounter.reset()
-            }
-
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
@@ -278,12 +252,7 @@ extension SearchMoviePresenter {
     
     private func fetchUpcomingPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
-            self.requestCounter.incrementRequestCount()
-            if self.requestCounter.isLimit == true {
-                sleep(self.sleepTime)
-                self.requestCounter.reset()
-            }
-
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
@@ -300,12 +269,7 @@ extension SearchMoviePresenter {
     
     private func fetchPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
-            self.requestCounter.incrementRequestCount()
-            if self.requestCounter.isLimit == true {
-                sleep(self.sleepTime)
-                self.requestCounter.reset()
-            }
-
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }

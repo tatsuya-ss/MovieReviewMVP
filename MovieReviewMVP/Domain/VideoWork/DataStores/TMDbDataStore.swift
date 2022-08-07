@@ -146,9 +146,9 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
             case 429:
                 // １秒間に40以上のリクエストした際のステータスコード
                 // 極力発生しないようにしているが、発生した場合再帰的に処理を走らせる
+                print(#function, response, "再帰")
                 self.fetchPosterImage(posterPath: posterPath, completion: completion)
             default:
-                print(#function, response, response.statusCode)
                 completion(.failure(TMDbSearchError.responseError))
             }
         }
