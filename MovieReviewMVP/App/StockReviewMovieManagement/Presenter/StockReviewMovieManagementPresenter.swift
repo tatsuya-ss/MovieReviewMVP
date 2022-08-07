@@ -99,6 +99,7 @@ final class StockReviewMovieManagementPresenter : StockReviewMovieManagementPres
             case .success(let reviews):
                 self?.reviewManagement.fetchReviews(state: .search(.initial), results: reviews)
                 reviews.enumerated().forEach { videoWorks in
+                    Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                     dispatchGroup.enter()
                     self?.videoWorkuseCase.fetchPosterImage(posterPath: videoWorks.element.posterPath) { result in
                         defer { dispatchGroup.leave() }

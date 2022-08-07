@@ -17,7 +17,7 @@ typealias ResultHandler<T> = (Result<T, Error>) -> Void
 
 protocol TMDbDataStoreProtocol {
     func fetchVideoWorks(page: Int, query: String,
-                    completion: @escaping ResultHandler<TMDbSearchResponses>)
+                         completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchRecommendVideoWorks(url: URL, completion: @escaping ResultHandler<TMDbSearchResponses>)
     func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<TMDbCredits>)
@@ -25,9 +25,9 @@ protocol TMDbDataStoreProtocol {
 }
 
 final class TMDbDataStore: TMDbDataStoreProtocol {
-
+    
     func fetchVideoWorks(page: Int, query: String,
-                    completion: @escaping ResultHandler<TMDbSearchResponses>) {
+                         completion: @escaping ResultHandler<TMDbSearchResponses>) {
         guard let url = TMDbAPI.SearchRequest(query: query,
                                               page: page).returnSearchURL()
         else {
@@ -88,6 +88,7 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
     
     func fetchVideoWorkDetail(videoWork: VideoWork,
                               completion: @escaping ResultHandler<TMDbCredits>) {
+
         guard let url = TMDbAPI.DetailsRequest(id: videoWork.id, mediaType: videoWork.mediaType ?? "movie").returnDetailsURLRequest() else {
             completion(.failure(TMDbSearchError.urlError))
             return
@@ -139,13 +140,18 @@ final class TMDbDataStore: TMDbDataStoreProtocol {
             //                completion(.success(data))
             //            }
             
-            guard response.statusCode == 200 else {
+            switch response.statusCode {
+            case 200:
+                completion(.success(data))
+            case 429:
+                // １秒間に40以上のリクエストした際のステータスコード
+                // 極力発生しないようにしているが、発生した場合再帰的に処理を走らせる
+                print(#function, response, "再帰")
+                self.fetchPosterImage(posterPath: posterPath, completion: completion)
+            default:
                 completion(.failure(TMDbSearchError.responseError))
-                return
             }
-            completion(.success(data))
         }
         task.resume()
     }
-    
 }

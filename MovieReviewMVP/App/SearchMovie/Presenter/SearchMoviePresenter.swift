@@ -38,7 +38,8 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
     private var cachedSearchConditions = CachedSearchConditions()
     private var recomendations = Recommendations()
     private var fetchState: FetchMovieState = .recommend
-
+    private let sleepTime = RequestTime().sleepTime
+    
     init(view: SearchMoviePresenterOutput,
          useCase: VideoWorkUseCaseProtocol) {
         self.view = view
@@ -135,7 +136,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.reviewManagement.fetchReviews(state: state, results: results)
                     self?.fetchPosterImage(results: results, dispatchGroup: dispatchGroup)
@@ -153,7 +154,7 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.reviewManagement.fetchReviews(state: state, results: results)
                     guard let reviews = self?.reviewManagement.returnReviews() else { return }
@@ -167,10 +168,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
         case .recommend:
             dispatchGroup.enter()
             useCase.fetchUpcomingVideoWorks { [weak self] result in
+                Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.recomendations.fetchUpcoming(videoWorks: results)
                     self?.fetchUpcomingPosterImage(results: results, dispatchGroup: dispatchGroup)
@@ -179,10 +181,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             
             dispatchGroup.enter()
             useCase.fetchTrendingWeekVideoWorks { [weak self] result in
+                Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     self?.recomendations.fetchTrendingWeek(videoWorks: results)
                     self?.fetchTrendingWeekPosterImage(results: results, dispatchGroup: dispatchGroup)
@@ -191,10 +194,11 @@ final class SearchMoviePresenter : SearchMoviePresenterInput {
             
             dispatchGroup.enter()
             useCase.fetchNowPlayingVideoWorks { [weak self] result in
+                Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let results):
                     print(result)
                     self?.recomendations.fetchNowPlaying(videoWorks: results)
@@ -216,12 +220,13 @@ extension SearchMoviePresenter {
     
     private func fetchNowPlayingPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.recomendations.fetchNowPlayingPosterData(index: videoWork.offset, data: data)
                 }
@@ -231,12 +236,13 @@ extension SearchMoviePresenter {
     
     private func fetchTrendingWeekPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.recomendations.fetchTrendingWeekPosterData(index: videoWork.offset, data: data)
                 }
@@ -246,12 +252,13 @@ extension SearchMoviePresenter {
     
     private func fetchUpcomingPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.recomendations.fetchUpcomingPosterData(index: videoWork.offset, data: data)
                 }
@@ -262,12 +269,13 @@ extension SearchMoviePresenter {
     
     private func fetchPosterImage(results: [VideoWork], dispatchGroup: DispatchGroup) {
         results.enumerated().forEach { videoWork in
+            Thread.sleep(forTimeInterval: RequestTime().sleepTime)
             dispatchGroup.enter()
             useCase.fetchPosterImage(posterPath: videoWork.element.posterPath) { [weak self] result in
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .failure(let error):
-                    print(error)
+                    print(#function, error)
                 case .success(let data):
                     self?.reviewManagement.fetchPosterData(index: videoWork.offset, data: data)
                 }

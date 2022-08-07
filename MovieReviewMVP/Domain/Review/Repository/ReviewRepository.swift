@@ -11,7 +11,7 @@ import Firebase
 protocol ReviewRepositoryProtocol {
     func checkSaved(movie: VideoWork,
                     completion: @escaping (Bool) -> Void)
-    func save(movie: VideoWork)
+    func save(movie: VideoWork, completion: @escaping (Result<(), Error>) -> Void)
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
                completion: @escaping (Result<[VideoWork], Error>) -> Void)
@@ -32,8 +32,8 @@ final class ReviewRepository: ReviewRepositoryProtocol {
         dataStore.checkSaved(movie: movie, completion: completion)
     }
     
-    func save(movie: VideoWork) {
-        dataStore.save(movie: movie)
+    func save(movie: VideoWork, completion: @escaping (Result<(), Error>) -> Void) {
+        dataStore.save(movie: movie, completion: completion)
     }
     
     func fetch(isStoredAsReview: Bool?,

@@ -90,6 +90,7 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
             case .success(let result):
                 self?.reviewManagement.fetchReviews(state: .search(.initial), results: result)
                 result.enumerated().forEach { videoWorks in
+                    Thread.sleep(forTimeInterval: RequestTime().sleepTime)
                     dispatchGroup.enter()
                     self?.videoWorkuseCase.fetchPosterImage(posterPath: videoWorks.element.posterPath) { result in
                         defer { dispatchGroup.leave() }
