@@ -25,7 +25,7 @@ enum FirebaseError: Error {
 
 protocol ReviewDataStoreProtocol {
     func checkSaved(movie: VideoWork, completion: @escaping (Bool) -> Void)
-    func save(movie: VideoWork)
+    func save(movie: VideoWork, completion: @escaping (Result<(), Error>) -> Void)
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
                completion: @escaping (Result<[[String: Any]], Error>) -> Void)
@@ -58,7 +58,7 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
         
     }
     
-    func save(movie: VideoWork) {
+    func save(movie: VideoWork, completion: @escaping (Result<(), Error>) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
         let uid = user.uid
         let dataToSave: [String: Any] = [
@@ -82,8 +82,10 @@ final class ReviewDataStore : ReviewDataStoreProtocol {
             .setData(dataToSave) { error in
             if let error = error {
                 print(error.localizedDescription)
+                completion(.failure(error))
             } else {
                 print("\(documentTitle)を保存しました!")
+                completion(.success(()))
             }
         }
     }

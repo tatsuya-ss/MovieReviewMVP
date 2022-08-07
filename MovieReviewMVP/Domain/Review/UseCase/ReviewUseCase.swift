@@ -10,7 +10,7 @@ import Foundation
 protocol ReviewUseCaseProtocol {
     func checkSaved(movie: VideoWork,
                     completion: @escaping (Bool) -> Void)
-    func save(movie: VideoWork)
+    func save(movie: VideoWork, completion: @escaping (Result<(), Error>) -> Void)
     func fetch(isStoredAsReview: Bool?,
                sortState: sortState,
                completion: @escaping (Result<[VideoWork], Error>) -> Void)
@@ -31,8 +31,8 @@ final class ReviewUseCase: ReviewUseCaseProtocol {
         repository.checkSaved(movie: movie, completion: completion)
     }
     
-    func save(movie: VideoWork) {
-        repository.save(movie: movie)
+    func save(movie: VideoWork, completion: @escaping (Result<(), Error>) -> Void) {
+        repository.save(movie: movie, completion: completion)
     }
     
     func fetch(isStoredAsReview: Bool?,

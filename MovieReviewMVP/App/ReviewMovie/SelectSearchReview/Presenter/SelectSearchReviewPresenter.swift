@@ -20,6 +20,7 @@ protocol SelectSearchReviewPresenterOutput: AnyObject {
     func showLogingOutAlert()
     func closeReviewMovieView()
     func displayCastImage(casts: [CastDetail])
+    func showSaveFailureAlert()
 }
 
 final class SelectSearchReviewPresenter {
@@ -131,10 +132,17 @@ extension SelectSearchReviewPresenter: SelectSearchReviewPresenterInput {
         selectedReview.update(isSavedAsReview: isStoredAsReview)
         selectedReview.checkTitle()
         let reviewElement = selectedReview.getReview()
-        reviewUseCase.save(movie: reviewElement)
-        NotificationCenter.default.post(name: .insertReview, object: nil)
-        UserDefaults.standard.saveNumberOfSaves()
-        view.closeReviewMovieView()
+        reviewUseCase.save(movie: reviewElement) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                print(error)
+                self?.view.showSaveFailureAlert()
+            case .success(()):
+                NotificationCenter.default.post(name: .insertReview, object: nil)
+                UserDefaults.standard.saveNumberOfSaves()
+                self?.view.closeReviewMovieView()
+            }
+        }
     }
     
 }

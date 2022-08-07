@@ -86,6 +86,12 @@ extension SelectSearchReviewViewController: SelectSearchReviewPresenterOutput {
     func displayCastImage(casts: [CastDetail]) {
         reviewMovieOwner.configureCastsCollectionView(casts: casts)
     }
+    
+    func showSaveFailureAlert() {
+        let alert = UIAlertController(title: "保存出来ませんでした", message: "もう1度保存してください", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "はい", style: .default, handler: nil))
+        present(alert, animated: true , completion: nil)
+    }
 }
 
 // MARK: - func
