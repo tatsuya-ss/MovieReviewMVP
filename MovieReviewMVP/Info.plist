@@ -2,15 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict/>
-		<key>api.themoviedb.org</key>
-		<dict/>
-		<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-		<true/>
-	</dict>
 	<key>AdUnitIDs</key>
 	<dict>
 		<key>banner</key>
@@ -49,6 +40,15 @@
 	<string>$(GADApplicationIdentifier)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict/>
+		<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+		<true/>
+		<key>api.themoviedb.org</key>
+		<dict/>
+	</dict>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>許可するとお客様に無関係な広告が表示されにくくなります。</string>
 	<key>SKAdNetworkItems</key>
