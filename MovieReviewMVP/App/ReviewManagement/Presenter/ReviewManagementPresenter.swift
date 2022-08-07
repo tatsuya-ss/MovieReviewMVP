@@ -40,6 +40,8 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
     private var videoWorkuseCase: VideoWorkUseCaseProtocol
     private var movieUpdateState: MovieUpdateState = .modificate
     private let reviewManagement = ReviewManagement()
+    private var requestCounter = RequestCounter()
+    private(set) var sleepTime = UInt32(1.1)
     
     init(view: ReviewManagementPresenterOutput,
          reviewUseCase: ReviewUseCaseProtocol,
@@ -90,6 +92,12 @@ final class ReviewManagementPresenter : ReviewManagementPresenterInput {
             case .success(let result):
                 self?.reviewManagement.fetchReviews(state: .search(.initial), results: result)
                 result.enumerated().forEach { videoWorks in
+                    self?.requestCounter.incrementRequestCount()
+                    if self?.requestCounter.isLimit == true {
+                        sleep(self?.sleepTime ?? UInt32(1.5))
+                        self?.requestCounter.reset()
+                    }
+
                     dispatchGroup.enter()
                     self?.videoWorkuseCase.fetchPosterImage(posterPath: videoWorks.element.posterPath) { result in
                         defer { dispatchGroup.leave() }
