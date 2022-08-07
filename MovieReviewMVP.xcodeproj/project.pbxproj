@@ -1445,7 +1445,7 @@
 				BANNER_ID = "ca-app-pub-3940256099942544/2934735716";
 				CODE_SIGN_ENTITLEMENTS = MovieReviewMVP/MovieReviewMVP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3.1.1;
+				CURRENT_PROJECT_VERSION = 1.1.4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = N53995CJPD;
 				GADApplicationIdentifier = "ca-app-pub-3940256099942544~1458002511";
@@ -1455,7 +1455,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3.1;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tatsuo.MovieReviewMVP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1472,7 +1472,7 @@
 				BANNER_ID = "ca-app-pub-3889534374234643/2516620302";
 				CODE_SIGN_ENTITLEMENTS = MovieReviewMVP/MovieReviewMVP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3.1.1;
+				CURRENT_PROJECT_VERSION = 1.1.4;
 				DEVELOPMENT_TEAM = N53995CJPD;
 				GADApplicationIdentifier = "ca-app-pub-3889534374234643~9612743206";
 				INFOPLIST_FILE = MovieReviewMVP/Info.plist;
@@ -1481,7 +1481,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3.1;
+				MARKETING_VERSION = 1.1.4;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tatsuo.MovieReviewMVP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
